@@ -3,7 +3,7 @@ Project Homless Connect <br> Android Application
 
 What is Project Homeless Connect?
 ----
-![Banner](http://www.projecthomelessconnect.com/servlet/servlet.ImageServer?oid=00DA0000000BrJLMA0&id=015A0000001b2QaIAI "PHC Banner")
+![Banner](http://www.projecthomelessconnect.com/servlet/servlet.ImageServer?oid=00DA0000000BrJLMA0&id=015A0000001b2QaIAI "PHC Banner") <br>
 **[Project Homeless Connect](http://www.projecthomelessconnect.com/)** is a nonprofit organization based in San Francisco that provides necessary services for the homeless and those at risk of being homeless.  Every year they give out services such as STI testing, dental care, haircuts, CA ID, ect.
 What We Are Doing
 ----
