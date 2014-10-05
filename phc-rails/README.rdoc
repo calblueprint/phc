@@ -1,0 +1,3 @@
+== README
+
+Rails application to do data processing for PHC Android application
