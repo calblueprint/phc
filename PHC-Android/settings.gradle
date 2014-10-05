@@ -1,1 +1,1 @@
-include ':PHC'
+include ':PHC', ':libs:SalesforceSDK'
