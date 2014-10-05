@@ -1,7 +1,0 @@
-development:
-  adapter: postgresql
-  encoding: unicode
-  database: phc_development
-  pool: 5
-  username: howardchen
-  password:
