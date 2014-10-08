@@ -1,5 +1,8 @@
 <h1>Accounts</h1>
 
 <% @accounts.each do |a| %>
-  <%= a.FirstName %>
+  <%= a.FirstName %> <%= a.LastName %>
+  <br>
+  <%= a.LastModifiedDate %>
+  <br>
 <% end %>
