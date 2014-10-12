@@ -36,7 +36,7 @@
                     android:id="@+id/first_name"
                     android:layout_width="@dimen/input_text_width"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_first_name"
+                    android:hint="@string/prompt_first"
                     android:maxLines="1"
                     android:singleLine="true"/>
 
@@ -44,7 +44,7 @@
                     android:id="@+id/last_name"
                     android:layout_width="@dimen/input_text_width"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_last_name"
+                    android:hint="@string/prompt_last"
                     android:maxLines="1"
                     android:singleLine="true"/>
 
@@ -70,12 +70,12 @@
                     android:id="@+id/phone"
                     android:layout_width="@dimen/input_text_width"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_phone_number"
+                    android:hint="@string/prompt_phone"
                     android:inputType="phone"
                     android:maxLines="1"
                     android:singleLine="true"/>
 
-                <AutoCompleteTextView
+                <EditText
                     android:id="@+id/email"
                     android:layout_width="@dimen/input_text_width"
                     android:layout_height="wrap_content"
@@ -84,17 +84,32 @@
                     android:maxLines="1"
                     android:singleLine="true"/>
 
-                <!--<EditText-->
-                    <!--android:id="@+id/password"-->
-                    <!--android:layout_width="@dimen/input_text_width"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:hint="@string/prompt_first_name"-->
-                    <!--android:imeActionId="@+id/login"-->
-                    <!--android:imeActionLabel="@string/action_sign_in_short"-->
-                    <!--android:imeOptions="actionUnspecified"-->
-                    <!--android:inputType="textPassword"-->
-                    <!--android:maxLines="1"-->
-                    <!--android:singleLine="true"/>-->
+                <Spinner
+                    android:id="@+id/gender_spinner"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+
+                <Spinner
+                    android:id="@+id/ethnicity_spinner"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+
+                <Spinner
+                    android:id="@+id/language_spinner"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+
+                <CheckBox android:id="@+id/checkbox_military"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prompt_military"
+                    android:onClick="onCheckboxClicked"/>
+
+                <CheckBox android:id="@+id/checkbox_foster"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prompt_foster"
+                    android:onClick="onCheckboxClicked"/>
 
                 <Button
                     android:id="@+id/continue_button"
@@ -103,8 +118,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="@string/action_continue"
-                    android:textStyle="bold"/>
-
+                    android:textStyle="bold"
+                    android:onClick=""/>
             </LinearLayout>
     </ScrollView>
 
