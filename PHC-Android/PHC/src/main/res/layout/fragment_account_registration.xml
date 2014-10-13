@@ -70,12 +70,12 @@
 
             <Spinner
                 android:id="@+id/gender_spinner"
-                android:layout_width="fill_parent"
+                android:layout_width="@dimen/input_text_width"
                 android:layout_height="wrap_content" />
 
             <!--<Button-->
                 <!--android:id="@+id/gender_button"-->
-                <!--android:layout_width="match_parent"-->
+                <!--android:layout_width="@dimen/input_text_width"-->
                 <!--android:layout_height="wrap_content"-->
                 <!--android:layout_margin="5dp"-->
                 <!--android:gravity="left"-->
@@ -85,7 +85,7 @@
 
             <Spinner
                 android:id="@+id/ethnicity_spinner"
-                android:layout_width="fill_parent"
+                android:layout_width="@dimen/input_text_width"
                 android:layout_height="wrap_content" />
 
             <!--<Button-->
@@ -99,7 +99,7 @@
 
             <Spinner
                 android:id="@+id/language_spinner"
-                android:layout_width="fill_parent"
+                android:layout_width="@dimen/input_text_width"
                 android:layout_height="wrap_content" />
 
             <!--<Button-->
@@ -112,13 +112,13 @@
                 <!--android:text="@string/prompt_language" />-->
 
             <CheckBox android:id="@+id/checkbox_military"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/input_text_width"
                 android:layout_height="wrap_content"
                 android:text="@string/prompt_military"
                 android:onClick="onCheckboxClicked"/>
 
             <CheckBox android:id="@+id/checkbox_foster"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/input_text_width"
                 android:layout_height="wrap_content"
                 android:text="@string/prompt_foster"
                 android:onClick="onCheckboxClicked"/>

@@ -11,14 +11,14 @@
 
         <LinearLayout
             android:id="@+id/email_login_form"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/input_text_width"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="vertical">
 
             <Spinner
                 android:id="@+id/neighborhood_spinner"
-                android:layout_width="fill_parent"
+                android:layout_width="@dimen/input_text_width"
                 android:layout_height="wrap_content" />
 
             <!--<Button-->
@@ -32,7 +32,7 @@
                 <!--android:onClick="onClick"/>-->
 
             <CheckBox android:id="@+id/checkbox_homeless"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/input_text_width"
                 android:layout_height="wrap_content"
                 android:text="@string/prompt_homeless"
                 android:onClick="onCheckboxClicked"/>
@@ -49,6 +49,11 @@
                 android:text="@string/prompt_doctor"
                 android:onClick="onCheckboxClicked"/>
 
+            <Spinner
+                android:id="@+id/best_spinner"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
             <Button
                 android:id="@+id/continue_button"
                 style="?android:textAppearanceSmall"
@@ -58,11 +63,6 @@
                 android:text="@string/action_continue"
                 android:textStyle="bold"
                 android:onClick=""/>
-
-            <Spinner
-                android:id="@+id/best_spinner"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
 
         </LinearLayout>
     </ScrollView>
