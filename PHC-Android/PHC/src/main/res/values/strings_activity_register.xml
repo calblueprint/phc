@@ -16,6 +16,7 @@
     <string name="prompt_foster">Been in Foster Care?</string>
 
     <string-array name="gender_array">
+        <item>Gender Identity...</item>
         <item>Male</item>
         <item>Female</item>
         <item>Transgender</item>
@@ -23,6 +24,7 @@
     </string-array>
 
     <string-array name="ethnicity_array">
+        <item>Ethnicity...</item>
         <item>African American</item>
         <item>Latino</item>
         <item>Asian/Pacific Islander</item>
@@ -32,6 +34,7 @@
     </string-array>
 
     <string-array name="language_array">
+        <item>Primary Language...</item>
         <item>English</item>
         <item>Spanish</item>
         <item>Cantonese/Mandarin</item>
@@ -54,6 +57,7 @@
     <string name="prompt_doctor">Do you currently have a primary care doctor?</string>
 
     <string-array name="neighborhood_array">
+        <item>Neighborhood of Residence...</item>
         <item>Bayview/HP</item>
         <item>SOMA</item>
         <item>GGPark/Haight</item>
@@ -63,6 +67,7 @@
     </string-array>
 
     <string-array name="best_array">
+        <item>Sexiest BP Team...</item>
         <item>PHC</item>
         <item>PHC</item>
         <item>PHC</item>
