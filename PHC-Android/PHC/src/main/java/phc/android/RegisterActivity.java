@@ -3,36 +3,19 @@ package phc.android;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.ContentResolver;
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build.VERSION;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
-import java.util.ArrayList;
-import java.util.List;
 
-public class RegisterActivity extends Activity implements AdapterView.OnItemSelectedListener{
-
+public class RegisterActivity extends ActionBarActivity{
     // UI references.
     private AutoCompleteTextView mEmailView;
     private View mProgressView;
@@ -41,25 +24,30 @@ public class RegisterActivity extends Activity implements AdapterView.OnItemSele
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.register_1);
+        setContentView(R.layout.register);
 
-        Spinner gender_spinner = (Spinner) findViewById(R.id.gender_spinner);
-        ArrayAdapter<CharSequence> gender_adapter = ArrayAdapter.createFromResource(this,
-                R.array.gender_array, android.R.layout.simple_spinner_item);
-        gender_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        gender_spinner.setAdapter(gender_adapter);
+        // Check that the activity is using the layout version with
+        // the fragment_container FrameLayout
+        if (findViewById(R.id.registration_fragment_container) != null) {
 
-        Spinner ethnicity_spinner = (Spinner) findViewById(R.id.ethnicity_spinner);
-        ArrayAdapter<CharSequence> ethnicity_adapter = ArrayAdapter.createFromResource(this,
-                R.array.ethnicity_array, android.R.layout.simple_spinner_item);
-        ethnicity_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        ethnicity_spinner.setAdapter(ethnicity_adapter);
-        
-        Spinner language_spinner = (Spinner) findViewById(R.id.language_spinner);
-        ArrayAdapter<CharSequence> language_adapter = ArrayAdapter.createFromResource(this,
-                R.array.language_array, android.R.layout.simple_spinner_item);
-        language_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        language_spinner.setAdapter(language_adapter);
+            // However, if we're being restored from a previous state,
+            // then we don't need to do anything and should return or else
+            // we could end up with overlapping fragments.
+            if (savedInstanceState != null) {
+                return;
+            }
+
+            // Create a new Fragment to be placed in the activity layout
+            AccountRegistrationFragment firstFragment = new AccountRegistrationFragment();
+
+            // In case this activity was started with special instructions from an
+            // Intent, pass the Intent's extras to the fragment as arguments
+            firstFragment.setArguments(getIntent().getExtras());
+
+            // Add the fragment to the 'fragment_container' FrameLayout
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.registration_fragment_container, firstFragment).commit();
+        }
     }
 
     public void onCheckboxClicked(View view) {
@@ -74,9 +62,19 @@ public class RegisterActivity extends Activity implements AdapterView.OnItemSele
             case R.id.checkbox_military:
                 if (checked){}
                 break;
+            case R.id.checkbox_doctor:
+                if (checked){}
+                break;
+            case R.id.checkbox_children:
+                if (checked){}
+                break;
+            case R.id.checkbox_homeless:
+                if (checked){}
+                break;
         }
     }
 
+    //Responding to user selections for a Spinner object
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
         // An item was selected. You can retrieve the selected item using
@@ -85,6 +83,24 @@ public class RegisterActivity extends Activity implements AdapterView.OnItemSele
 
     public void onNothingSelected(AdapterView<?> parent) {
         // Another interface callback
+    }
+
+    //Takes user to Event Registration
+    public void onContinue() {
+        // Calls attemptContinue() first to make sure current page is valid
+        // attemptContinue();
+
+        // Create fragment
+        EventRegistrationFragment newFragment = new EventRegistrationFragment();
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack so the user can navigate back
+        transaction.replace(R.id.registration_fragment_container, newFragment);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
     }
 
     /**
