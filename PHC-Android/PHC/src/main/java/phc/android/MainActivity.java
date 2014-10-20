@@ -1,5 +1,6 @@
 package phc.android;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -7,13 +8,59 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.salesforce.androidsdk.app.SalesforceSDKManager;
+import com.salesforce.androidsdk.rest.ClientManager;
+import com.salesforce.androidsdk.rest.RestClient;
+import com.salesforce.androidsdk.security.PasscodeManager;
+import android.widget.TextView;
+
 
 public class MainActivity extends ActionBarActivity {
 
+    private PasscodeManager passcodeManager;
+    private String apiVersion;
+    private RestClient client;
+    private TextView resultText;
+    AlertDialog logoutConfirmationDialog;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // Passcode manager
+        passcodeManager = SalesforceSDKManager.getInstance().getPasscodeManager();
+
+        // ApiVersion
+        apiVersion = getString(R.string.api_version);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
+        // Bring up passcode screen if needed
+        if (passcodeManager.onResume(this)) {
+            // Login options
+            String accountType = SalesforceSDKManager.getInstance().getAccountType();
+
+            // Get a rest client
+            new ClientManager(this, accountType, SalesforceSDKManager.getInstance().getLoginOptions(),
+                    SalesforceSDKManager.getInstance().shouldLogoutWhenTokenRevoked()).getRestClient(this, new ClientManager.RestClientCallback() {
+
+                @Override
+                public void authenticatedRestClient(RestClient client) {
+                    if (client == null) {
+                        SalesforceSDKManager.getInstance().logout(MainActivity.this);
+                        return;
+                    }
+                    MainActivity.this.client = client;
+                }
+            });
+        }
     }
 
     @Override
