@@ -24,11 +24,5 @@ public class EventRegistrationFragment extends Fragment {
                 R.array.neighborhood_array, android.R.layout.simple_spinner_item);
         neighborhood_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         neighborhood_spinner.setAdapter(neighborhood_adapter);
-
-        Spinner best_spinner = (Spinner) view.findViewById(R.id.best_spinner);
-        ArrayAdapter<CharSequence> best_adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.best_array, android.R.layout.simple_spinner_item);
-        best_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        best_spinner.setAdapter(best_adapter);
     }
 }
