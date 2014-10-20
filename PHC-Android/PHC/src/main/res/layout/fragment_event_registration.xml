@@ -62,9 +62,9 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/action_continue"
                 android:textStyle="bold"
-                android:onClick=""/>
-
+                android:onClick="onContinueToServiceSelection"/>
         </LinearLayout>
+
     </ScrollView>
 
 </LinearLayout>
