@@ -8,6 +8,7 @@
 #  birthday   :datetime
 #  created_at :datetime
 #  updated_at :datetime
+#  sf_id      :string(255)
 #
 
 class PersonAccount < ActiveRecord::Base
