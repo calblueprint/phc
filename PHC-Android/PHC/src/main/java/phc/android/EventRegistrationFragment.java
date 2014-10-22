@@ -9,26 +9,21 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 public class EventRegistrationFragment extends Fragment {
+    Spinner mNeighborhoodSpinner;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_event_registration, container, false);
         setSpinnerContent(view);
         return view;
     }
 
     private void setSpinnerContent(View view){
-        Spinner neighborhood_spinner = (Spinner) view.findViewById(R.id.neighborhood_spinner);
-        ArrayAdapter<CharSequence> neighborhood_adapter = ArrayAdapter.createFromResource(getActivity(),
+        mNeighborhoodSpinner = (Spinner) view.findViewById(R.id.neighborhood_spinner);
+        ArrayAdapter<CharSequence> mNeighborhoodAdapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.neighborhood_array, android.R.layout.simple_spinner_item);
-        neighborhood_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        neighborhood_spinner.setAdapter(neighborhood_adapter);
-
-        Spinner best_spinner = (Spinner) view.findViewById(R.id.best_spinner);
-        ArrayAdapter<CharSequence> best_adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.best_array, android.R.layout.simple_spinner_item);
-        best_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        best_spinner.setAdapter(best_adapter);
+        mNeighborhoodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mNeighborhoodSpinner.setAdapter(mNeighborhoodAdapter);
     }
 }
