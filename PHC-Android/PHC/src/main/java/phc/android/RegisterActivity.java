@@ -29,14 +29,12 @@ public class RegisterActivity extends ActionBarActivity{
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
         if (findViewById(R.id.registration_fragment_container) != null) {
-
             // However, if we're being restored from a previous state,
             // then we don't need to do anything and should return or else
             // we could end up with overlapping fragments.
             if (savedInstanceState != null) {
                 return;
             }
-
             // Create a new Fragment to be placed in the activity layout
             AccountRegistrationFragment firstFragment = new AccountRegistrationFragment();
 
@@ -86,12 +84,26 @@ public class RegisterActivity extends ActionBarActivity{
     }
 
     //Takes user to Event Registration
-    public void onContinue() {
+    public void onContinueToEventRegistration(View view) {
         // Calls attemptContinue() first to make sure current page is valid
         // attemptContinue();
 
         // Create fragment
         EventRegistrationFragment newFragment = new EventRegistrationFragment();
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack so the user can navigate back
+        transaction.replace(R.id.registration_fragment_container, newFragment);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
+    }
+
+    public void onContinueToServiceSelection(View vew) {
+        // Create fragment
+        SelectServicesFragment newFragment = new SelectServicesFragment();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         // Replace whatever is in the fragment_container view with this fragment,

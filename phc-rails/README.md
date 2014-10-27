@@ -12,3 +12,5 @@ debugging: true                   # Can be useful while developing
 username: me@mycompany.com
 password: mypasswordplusmysecuritytoken
 ```
+
+Link to how to get Salesforce data into app: https://developer.salesforce.com/page/Accessing_Salesforce_Data_From_Ruby

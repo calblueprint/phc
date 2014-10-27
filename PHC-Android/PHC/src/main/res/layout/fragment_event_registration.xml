@@ -21,16 +21,6 @@
                 android:layout_width="@dimen/input_text_width"
                 android:layout_height="wrap_content" />
 
-            <!--<Button-->
-                <!--android:id="@+id/neighborhood_button"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_margin="5dp"-->
-                <!--android:gravity="left"-->
-                <!--android:background="@android:drawable/btn_dropdown"-->
-                <!--android:text="@string/prompt_neighborhood"-->
-                <!--android:onClick="onClick"/>-->
-
             <CheckBox android:id="@+id/checkbox_homeless"
                 android:layout_width="@dimen/input_text_width"
                 android:layout_height="wrap_content"
@@ -49,11 +39,6 @@
                 android:text="@string/prompt_doctor"
                 android:onClick="onCheckboxClicked"/>
 
-            <Spinner
-                android:id="@+id/best_spinner"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-
             <Button
                 android:id="@+id/continue_button"
                 style="?android:textAppearanceSmall"
@@ -62,9 +47,9 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/action_continue"
                 android:textStyle="bold"
-                android:onClick=""/>
-
+                android:onClick="onContinueToServiceSelection"/>
         </LinearLayout>
+
     </ScrollView>
 
 </LinearLayout>
