@@ -1,6 +1,5 @@
 package phc.android;
 
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.res.Resources;
 import android.graphics.Typeface;
@@ -8,12 +7,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsoluteLayout;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 public class SelectServicesFragment extends Fragment {
