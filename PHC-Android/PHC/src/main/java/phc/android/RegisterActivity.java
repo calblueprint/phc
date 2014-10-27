@@ -2,7 +2,6 @@ package phc.android;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -49,6 +48,7 @@ public class RegisterActivity extends Activity {
             t.commit();
         }
     }
+
 
     public void onCheckboxClicked(View view) {
         // Is the view now checked?
@@ -151,7 +151,6 @@ public class RegisterActivity extends Activity {
     /**
      * Shows the progress UI and hides the login form.
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     public void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in

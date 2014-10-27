@@ -89,11 +89,16 @@
     </string-array>
 
     <!-- Sidebar Stuff -->
+
+    <string name="sidebar_selection">Selection</string>
+    <string name="sidebar_personal_info">Personal Info</string>
+    <string name="sidebar_event_info">Event Info</string>
+    <string name="sidebar_confirmation">Confirmation</string>
     <string-array name="sidebar">
-        <item>asdfadsf</item>
-        <item>Male</item>
-        <item>Femalasdfsae</item>
-        <item>Brian Tseng</item>
+        <item>Selection</item>
+        <item>Personal Info</item>
+        <item>Event Info</item>
+        <item>Confirmation</item>
     </string-array>
 
 </resources>

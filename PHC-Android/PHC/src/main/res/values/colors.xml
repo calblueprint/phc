@@ -5,6 +5,7 @@
     <item name="red_actionbar" type="color">#FFD64541</item>
     <item name="red_sidebar" type="color">#FFFFE9E9</item>
     <item name="gray_sidebar" type="color">#FFC0C0C0</item>
+    <item name="button_text_color" type="color">#FF444444</item>
 
 
 

@@ -3,16 +3,19 @@ package phc.android;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsoluteLayout;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class SideBarFragment extends Fragment {
     @Override
@@ -23,17 +26,28 @@ public class SideBarFragment extends Fragment {
 
         // Grab list of all services offered for the current event from Salesforce DB
         Resources res = getResources();
-        String[] services = res.getStringArray(R.array.sidebar);
-
-        // Dynamically populate linear layout with checkboxes for each service
+        String[] elements = res.getStringArray(R.array.sidebar);
         LinearLayout ll = (LinearLayout) view.findViewById(R.id.sidebar_list);
-        for(int i = 0; i < services.length; i++){
-            CheckBox cb = new CheckBox(getActivity());
-            cb.setLayoutParams(new LinearLayout.LayoutParams(
-                    R.dimen.input_text_width,
+
+        // Dynamically add sidebar buttons to sidebar
+        for (int i = 0; i < elements.length; i++) {
+            Button button = new Button(getActivity());
+            button.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT));
-            cb.setText(services[i]);
-            ll.addView(cb);
+            button.setBackgroundColor(Color.TRANSPARENT);
+            button.setText(elements[i]);
+            button.setTextColor(getResources().getColor(R.color.button_text_color));
+            button.setTextSize(getResources().getDimensionPixelSize(R.dimen.button_text_size));
+            button.setTag(elements[i]);
+            ll.addView(button);
+
+            View horizRule = new View(getActivity());
+            horizRule.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    getResources().getDimensionPixelSize(R.dimen.horizontal_rule_height)));
+            horizRule.setBackgroundColor(getResources().getColor(R.color.gray_sidebar));
+            ll.addView(horizRule);
         }
 
         return view;
