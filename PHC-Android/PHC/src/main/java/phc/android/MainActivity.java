@@ -19,11 +19,7 @@ import com.salesforce.androidsdk.rest.RestClient;
 import com.salesforce.androidsdk.rest.RestRequest;
 import com.salesforce.androidsdk.rest.RestResponse;
 import com.salesforce.androidsdk.security.PasscodeManager;
-import com.salesforce.androidsdk.util.EventsObservable;
 import com.salesforce.androidsdk.util.UserSwitchReceiver;
-
-import android.widget.TextView;
-
 
 public class MainActivity extends ActionBarActivity {
 
