@@ -41,7 +41,8 @@ public class SelectServicesFragment extends Fragment {
         LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.sidebar_list);
         for (int i=0; i < sidebarList.getChildCount(); i++) {
             View v = sidebarList.getChildAt(i);
-            if ((v.getTag() != null) && (v.getTag().equals(getResources().getText(R.string.sidebar_event_info)))) {
+            Object vTag = v.getTag();
+            if ((vTag != null) && (vTag.equals(getResources().getText(R.string.sidebar_event_info)))) {
                 TextView tv = (TextView) v;
                 tv.setTypeface(null, Typeface.BOLD);
             } else if (v instanceof TextView) {

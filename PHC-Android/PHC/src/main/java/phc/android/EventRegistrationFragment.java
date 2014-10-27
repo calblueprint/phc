@@ -26,9 +26,10 @@ public class EventRegistrationFragment extends Fragment {
     @Override
     public void onResume() {
         LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.sidebar_list);
-        for (int i=0; i < sidebarList.getChildCount(); i++) {
+        for (int i = 0; i < sidebarList.getChildCount(); i++) {
             View v = sidebarList.getChildAt(i);
-            if ((v.getTag() != null) && (v.getTag().equals(getResources().getText(R.string.sidebar_personal_info)))) {
+            Object vTag = v.getTag();
+            if ((vTag != null) && (vTag.equals(getResources().getText(R.string.sidebar_personal_info)))) {
                 TextView tv = (TextView) v;
                 tv.setTypeface(null, Typeface.BOLD);
             } else if (v instanceof TextView) {
