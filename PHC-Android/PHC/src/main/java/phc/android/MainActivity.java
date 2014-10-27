@@ -2,16 +2,24 @@ package phc.android;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.salesforce.androidsdk.accounts.UserAccountManager;
 import com.salesforce.androidsdk.app.SalesforceSDKManager;
 import com.salesforce.androidsdk.rest.ClientManager;
 import com.salesforce.androidsdk.rest.RestClient;
+import com.salesforce.androidsdk.rest.RestRequest;
+import com.salesforce.androidsdk.rest.RestResponse;
 import com.salesforce.androidsdk.security.PasscodeManager;
+import com.salesforce.androidsdk.util.EventsObservable;
+import com.salesforce.androidsdk.util.UserSwitchReceiver;
+
 import android.widget.TextView;
 
 
@@ -20,8 +28,11 @@ public class MainActivity extends ActionBarActivity {
     private PasscodeManager passcodeManager;
     private String apiVersion;
     private RestClient client;
-    private TextView resultText;
+    private UserSwitchReceiver userSwitchReceiver;
+
+
     AlertDialog logoutConfirmationDialog;
+    private static final int LOGOUT_CONFIRMATION_DIALOG_ID = 0;
 
 
     @Override
@@ -33,8 +44,24 @@ public class MainActivity extends ActionBarActivity {
         // ApiVersion
         apiVersion = getString(R.string.api_version);
 
+        userSwitchReceiver = new PHCUserSwitchReceiver();
+        registerReceiver(userSwitchReceiver, new IntentFilter(UserAccountManager.USER_SWITCH_INTENT_ACTION));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        passcodeManager.onPause(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        unregisterReceiver(userSwitchReceiver);
+        super.onDestroy();
     }
 
     @Override
@@ -86,6 +113,69 @@ public class MainActivity extends ActionBarActivity {
     public void openRegister(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
+    }
+
+    /**
+     * Helper that sends request to server and print result in text field
+     *
+     * @param request
+     */
+    private void sendRequest(RestRequest request, RestClient.AsyncRequestCallback callback) {
+
+        try {
+
+            sendFromUIThread(request, callback);
+            // response is printed by RestCallTask:onPostExecute
+        } catch (Exception error) {
+            Log.e("SF Request Error", error.toString());
+        }
+    }
+
+    /**
+     * Send restRequest using RestClient's sendAsync method.
+     * Note: Synchronous calls are not allowed from code running on the UI thread.
+     * @param restRequest
+     */
+    private void sendFromUIThread(RestRequest restRequest, RestClient.AsyncRequestCallback callback) {
+        client.sendAsync(restRequest, callback);
+    }
+
+
+
+    /**
+     * Refreshes the client if the user has been switched.
+     */
+    private void refreshIfUserSwitched() {
+        if (passcodeManager.onResume(this)) {
+            final String accountType = SalesforceSDKManager.getInstance().getAccountType();
+
+            // Get a rest client
+            new ClientManager(this, accountType, SalesforceSDKManager.getInstance().getLoginOptions(),
+                    SalesforceSDKManager.getInstance().shouldLogoutWhenTokenRevoked()).getRestClient(this, new ClientManager.RestClientCallback() {
+
+                @Override
+                public void authenticatedRestClient(RestClient client) {
+                    if (client == null) {
+                        SalesforceSDKManager.getInstance().logout(MainActivity.this);
+                        return;
+                    }
+                    MainActivity.this.client = client;
+                }
+            });
+        }
+    }
+
+    /**
+     * Acts on the user switch event.
+     *
+     * @author bhariharan
+     */
+    private class PHCUserSwitchReceiver extends UserSwitchReceiver {
+
+        @Override
+        protected void onUserSwitch() {
+            refreshIfUserSwitched();
+        }
     }
 
 }
