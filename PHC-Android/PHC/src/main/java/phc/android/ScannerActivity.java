@@ -12,10 +12,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import com.google.zxing.BinaryBitmap;
@@ -39,10 +41,6 @@ public class ScannerActivity extends ActionBarActivity {
     public static final String TAG = "ScannerActivity";
 
     public static String mScanResult = null;
-    private static final int ORIENTATION_90 = 1;
-    private static final int ORIENTATION_0 = 0;
-    private static final int ORIENTATION_180 = 2;
-    private static final int ORIENTATION_270 = 3;
 
     public static class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
         Camera mCamera;
@@ -57,9 +55,11 @@ public class ScannerActivity extends ActionBarActivity {
             mFrame = frame;
             mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         }
+
         public void updateCamera(Camera c) {
             this.mCamera = c;
         }
+
         public void surfaceCreated(SurfaceHolder holder) {
             try {
                 mCamera.setPreviewDisplay(holder);
@@ -69,11 +69,15 @@ public class ScannerActivity extends ActionBarActivity {
                 Log.d(VIEW_LOG_TAG, "Error setting camera preview: " + e.getMessage());
             }
         }
+
         public void surfaceDestroyed(SurfaceHolder holder) {
+
         }
+
         public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
             // TODO: Implement for change/ rotate preview functionality
             boolean portrait = false;
+            WindowManager manager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
             if (mHolder.getSurface() == null) {
                 return;
             }
@@ -83,23 +87,25 @@ public class ScannerActivity extends ActionBarActivity {
                 //ignore, tried to stop non-existent preview
             }
             //TODO: FIX SCREEN ORIENTATION ISSUE!
-            switch (getResources().getConfiguration().orientation) {
-                case ORIENTATION_180:
-                    mCamera.setDisplayOrientation(180);
-                    break;
-                case ORIENTATION_270:
+            switch (manager.getDefaultDisplay().getRotation()) {
+                case Surface.ROTATION_180:
                     mCamera.setDisplayOrientation(270);
-                    break;
-                case ORIENTATION_90:
-                    mCamera.setDisplayOrientation(90);
                     portrait = true;
                     break;
+                case Surface.ROTATION_270:
+                    mCamera.setDisplayOrientation(180);
+                    break;
+                case Surface.ROTATION_90:
+                    mCamera.setDisplayOrientation(0);
+                    break;
                 default:
+                    mCamera.setDisplayOrientation(90);
                     portrait = true;
                     break;
             }
             Camera.Parameters parameters = mCamera.getParameters();
             //parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
+            //TODO: fix picture size!
             int last = parameters.getSupportedPictureSizes().size() -1;
             Camera.Size picSize = parameters.getSupportedPictureSizes().get(7);//getSmallestPictureSize(w,h);
             parameters.setPictureSize(picSize.width,picSize.height);
@@ -120,6 +126,7 @@ public class ScannerActivity extends ActionBarActivity {
                 Log.d(VIEW_LOG_TAG, "Error starting camera preview: " + e.getMessage());
             }
         }
+
         private Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int w, int h) {
             final double ASPECT_TOLERANCE = 0.1;
             double targetRatio=(double)h / w;
@@ -146,6 +153,7 @@ public class ScannerActivity extends ActionBarActivity {
             }
             return optimalSize;
         }
+
         @Override
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
             final int width = resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec);
@@ -156,8 +164,8 @@ public class ScannerActivity extends ActionBarActivity {
                 mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, width, height);
             }
         }
-        private Camera.Size getBestPreviewSize(int width, int height)
-        {
+
+        private Camera.Size getBestPreviewSize(int width, int height) {
             Camera.Size result=null;
             Camera.Parameters p = mCamera.getParameters();
             for (Camera.Size size : p.getSupportedPreviewSizes()) {
@@ -175,8 +183,8 @@ public class ScannerActivity extends ActionBarActivity {
             }
             return result;
         }
-        private Camera.Size getSmallestPictureSize(int width, int height)
-        {
+
+        private Camera.Size getSmallestPictureSize(int width, int height) {
             Camera.Size result=null;
             Camera.Parameters p = mCamera.getParameters();
             for (Camera.Size size : p.getSupportedPictureSizes()) {
@@ -195,9 +203,11 @@ public class ScannerActivity extends ActionBarActivity {
             return result;
         }
     }
+
     Camera mBackCamera;
     CameraPreview mPreview;
     TextView mResultText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -219,9 +229,11 @@ public class ScannerActivity extends ActionBarActivity {
             }
 
         });
+
         FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
         preview.addView(mPreview);
     }
+
     private PictureCallback mPicture = new PictureCallback() {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
@@ -279,28 +291,33 @@ public class ScannerActivity extends ActionBarActivity {
             mBackCamera.startPreview();
         }
     };
+
     private void returnSuccessfulResult(String result) {
         Intent scanResult = new Intent();
         scanResult.putExtra("scan_result", result);
         setResult(RESULT_OK, scanResult);
         finish();
     }
+
     private void returnCanceledResult() {
         Intent scanResult = new Intent();
         setResult(RESULT_CANCELED, scanResult);
         finish();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-// Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
     @Override
     public void onPause() {
         super.onPause();
         releaseBackCamera();
     }
+
     @Override
     public void onBackPressed() {
         if (mScanResult == null) {
@@ -310,17 +327,20 @@ public class ScannerActivity extends ActionBarActivity {
         }
         super.onBackPressed();
     }
+
     @Override
     public void onResume() {
         super.onResume();
         acquireBackCamera();
         mPreview.updateCamera(mBackCamera);
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         releaseBackCamera();
     }
+
     public void releaseBackCamera() {
         if (mBackCamera != null) {
             try {
@@ -329,22 +349,24 @@ public class ScannerActivity extends ActionBarActivity {
             } catch (Exception e) {}
         }
     }
+
     public void acquireBackCamera() {
         try {
             mBackCamera = Camera.open();
         }
         catch (Exception e) {
-// Already have camera? If so then continue, else throw error.
+            // Already have camera? If so then continue, else throw error.
             if (mBackCamera == null) {
                 System.exit(0);
             }
         }
     }
+    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-// Handle action bar item clicks here. The action bar will
-// automatically handle clicks on the Home/Up button, so long
-// as you specify a parent activity in AndroidManifest.xml.
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
