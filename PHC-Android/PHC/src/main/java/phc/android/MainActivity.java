@@ -1,6 +1,8 @@
 package phc.android;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v7.app.ActionBarActivity;
@@ -141,6 +143,10 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
+    public void onLogoutClick(View v) {
+        showDialog(LOGOUT_CONFIRMATION_DIALOG_ID);
+    }
+
 
     /**
      * Refreshes the client if the user has been switched.
@@ -163,6 +169,26 @@ public class MainActivity extends ActionBarActivity {
                 }
             });
         }
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        if (id == LOGOUT_CONFIRMATION_DIALOG_ID) {
+            logoutConfirmationDialog = new AlertDialog.Builder(this)
+                    .setTitle(R.string.logout_title)
+                    .setPositiveButton(R.string.logout_yes,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    SalesforceSDKManager.getInstance().logout(MainActivity.this);
+                                }
+                            })
+                    .setNegativeButton(R.string.logout_cancel, null)
+                    .create();
+            return logoutConfirmationDialog;
+        }
+        return super.onCreateDialog(id);
     }
 
     /**
