@@ -17,7 +17,6 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
@@ -204,7 +203,7 @@ public class ScannerActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanner);
         // TODO: move camera open to async task
-        // We should do this as soosn as the app starts
+        // We should do this as soon as the app starts
         mResultText = (TextView) findViewById(R.id.confirm_scan);
         FrameLayout fl = (FrameLayout) findViewById(R.id.camera_preview);
         acquireBackCamera();
@@ -212,9 +211,13 @@ public class ScannerActivity extends ActionBarActivity {
         mPreview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBackCamera.startPreview();
-                mBackCamera.takePicture(null,null,mPicture);
+                try {
+                    mBackCamera.takePicture(null, null, mPicture);
+                } catch (Exception e) {}
+                //TODO: Find a better way to lock this!
+
             }
+
         });
         FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
         preview.addView(mPreview);
@@ -225,7 +228,7 @@ public class ScannerActivity extends ActionBarActivity {
             final int MEDIA_TYPE_IMAGE = 1;
             final int MEDIA_TYPE_VIDEO = 2;
             File pictureFile;
-//TODO: catch NPE and delete from cache!
+            //TODO: catch NPE and delete from cache!
             File outputDir = getApplicationContext().getCacheDir();
             try {
                 pictureFile = File.createTempFile("prefix", "extension", outputDir);
