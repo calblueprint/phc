@@ -40,6 +40,7 @@ public class ScannerActivity extends ActionBarActivity {
 
     public static final String TAG = "ScannerActivity";
 
+    // The result returned to the calling activity through an Intent.
     public static String mScanResult;
 
     Camera mBackCamera;
@@ -51,19 +52,26 @@ public class ScannerActivity extends ActionBarActivity {
         SurfaceHolder mHolder;
         Camera.Size mPreviewSize;
         FrameLayout mFrame;
+
         public CameraPreview(Camera camera, Context context, FrameLayout frame) {
             super(context);
             mCamera = camera;
             mHolder = getHolder();
             mHolder.addCallback(this);
             mFrame = frame;
+            // Used in previous Android versions.
             mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         }
 
+        // called after Camera.open() in order to keep instance references current.
         public void updateCamera(Camera c) {
             this.mCamera = c;
         }
 
+        /* surfaceCreated() is called immediately after the
+         * surface is first created, further initial rendering
+         * code should be put here.
+         */
         public void surfaceCreated(SurfaceHolder holder) {
             try {
                 mCamera.setPreviewDisplay(holder);
@@ -79,6 +87,12 @@ public class ScannerActivity extends ActionBarActivity {
             // preview when replacing or destroying this surface.
         }
 
+        /* Takes care of screen orientation and
+         * preview frame resizing. Currently we are
+         * only changing the dimensions of the
+         * FrameLayout to give the camera preview
+         * the correct dimensions.
+         */
         public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
             // TODO: Implement for change/ rotate preview functionality
             boolean portrait = false;
@@ -162,6 +176,9 @@ public class ScannerActivity extends ActionBarActivity {
         }
 
         @Override
+        /* Called when surface is changed or initialized
+         * to set preview size.
+         */
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
             final int width = resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec);
             final int height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
@@ -172,6 +189,10 @@ public class ScannerActivity extends ActionBarActivity {
             }
         }
 
+        /* Currently not used. May eventually be used to
+         * find the best preview size for the camera
+         * preview frame.
+         */
         private Camera.Size getBestPreviewSize(int width, int height) {
             Camera.Size result = null;
             Camera.Parameters p = mCamera.getParameters();
@@ -191,6 +212,10 @@ public class ScannerActivity extends ActionBarActivity {
             return result;
         }
 
+        /* Currently not used. May eventually be used to
+         * find the best picture size to pass to the zxing
+         * library.
+         */
         private Camera.Size getSmallestPictureSize(int width, int height) {
             Camera.Size result = null;
             Camera.Parameters p = mCamera.getParameters();
@@ -212,6 +237,10 @@ public class ScannerActivity extends ActionBarActivity {
     }
 
     @Override
+    /* As soon as the activity starts, this sets up
+     * the camera preview and the listener for the camera
+     * preview frame.
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanner);
@@ -226,9 +255,12 @@ public class ScannerActivity extends ActionBarActivity {
             public void onClick(View v) {
                 try {
                     mBackCamera.takePicture(null, null, mPicture);
-                } catch (Exception e) {}
-                //TODO: Find a better way to lock this!
-
+                } catch (Exception e) {
+                    //TODO: Find a better way to lock this!
+                    // This handles the case where the user double
+                    // taps the preview frame, so takePicture() fails
+                    // since the preview has not been started.
+                }
             }
 
         });
@@ -237,6 +269,12 @@ public class ScannerActivity extends ActionBarActivity {
         preview.addView(mPreview);
     }
 
+    /* This is where we interface with the zxing library.
+     * Once a picture is taken, this callback saves the file
+     * to a local cache. Then, it is converted to a BinaryBitmap
+     * so it can be passed to a MultiFormatReader in the zxing library
+     * to obtain a string result.
+     */
     private PictureCallback mPicture = new PictureCallback() {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
@@ -295,6 +333,11 @@ public class ScannerActivity extends ActionBarActivity {
         }
     };
 
+    /* Lets the calling activity know that a valid
+    * QR code was received. This valid code may be
+    * overwritten multiple times before it is
+    * returned to the calling activity.
+    */
     private void returnSuccessfulResult(String result) {
         Intent scanResult = new Intent();
         scanResult.putExtra("scan_result", result);
@@ -302,6 +345,10 @@ public class ScannerActivity extends ActionBarActivity {
         finish();
     }
 
+    /* Lets the calling activity know that a valid
+     * QR code was not received before the user
+     * returned using the back button.
+     */
     private void returnCanceledResult() {
         Intent scanResult = new Intent();
         setResult(RESULT_CANCELED, scanResult);
@@ -316,12 +363,20 @@ public class ScannerActivity extends ActionBarActivity {
     }
 
     @Override
+    /* Called when phone goes to sleep, user opens
+     * another app, or pressed the home button.
+     */
     public void onPause() {
         super.onPause();
         releaseBackCamera();
     }
 
     @Override
+    /* onBackPressed() overrides the default back button
+     * functionality. It ensures that the calling activity
+     * will receive the appropriate result if the user
+     * returns using the back button.
+     */
     public void onBackPressed() {
         if (mScanResult == null) {
             returnCanceledResult();
@@ -332,6 +387,7 @@ public class ScannerActivity extends ActionBarActivity {
     }
 
     @Override
+    // Called when activity is re opened.
     public void onResume() {
         super.onResume();
         acquireBackCamera();
@@ -339,22 +395,33 @@ public class ScannerActivity extends ActionBarActivity {
     }
 
     @Override
+    // Called when activity is finished or terminated by user
     public void onDestroy() {
         super.onDestroy();
         releaseBackCamera();
     }
 
+    /* Called when activity is paused and destroyed
+     * in order to release resources for other activities
+     * to use.
+     */
     public void releaseBackCamera() {
         if (mBackCamera != null) {
             try {
                 mBackCamera.stopPreview();
                 mBackCamera.release();
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                //TODO: is this too general?
+            }
         }
     }
 
+    /* Called to initially access camera, and after release()
+     * to reinitialize a handle on the camera instance
+     */
     public void acquireBackCamera() {
         try {
+            // will access an instance of the back camera by default
             mBackCamera = Camera.open();
         }
         catch (Exception e) {
