@@ -2,11 +2,11 @@ package phc.android;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,7 +15,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 
-public class RegisterActivity extends ActionBarActivity{
+public class RegisterActivity extends Activity {
     // UI references.
     private AutoCompleteTextView mEmailView;
     private View mProgressView;
@@ -43,10 +43,12 @@ public class RegisterActivity extends ActionBarActivity{
             firstFragment.setArguments(getIntent().getExtras());
 
             // Add the fragment to the 'fragment_container' FrameLayout
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.registration_fragment_container, firstFragment).commit();
+            FragmentTransaction t = getFragmentManager().beginTransaction();
+            t.add(R.id.registration_fragment_container, (Fragment) firstFragment);
+            t.commit();
         }
     }
+
 
     public void onCheckboxClicked(View view) {
         // Is the view now checked?
@@ -91,7 +93,7 @@ public class RegisterActivity extends ActionBarActivity{
         // Create fragment
         EventRegistrationFragment newFragment = new EventRegistrationFragment();
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
         // Replace whatever is in the fragment_container view with this fragment,
         // and add the transaction to the back stack so the user can navigate back
         transaction.replace(R.id.registration_fragment_container, newFragment);
@@ -105,7 +107,7 @@ public class RegisterActivity extends ActionBarActivity{
         // Create fragment
         SelectServicesFragment newFragment = new SelectServicesFragment();
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
         // Replace whatever is in the fragment_container view with this fragment,
         // and add the transaction to the back stack so the user can navigate back
         transaction.replace(R.id.registration_fragment_container, newFragment);
@@ -149,7 +151,6 @@ public class RegisterActivity extends ActionBarActivity{
     /**
      * Shows the progress UI and hides the login form.
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     public void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
@@ -182,6 +183,3 @@ public class RegisterActivity extends ActionBarActivity{
         }
     }
 }
-
-
-

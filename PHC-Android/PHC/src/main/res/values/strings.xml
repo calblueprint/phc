@@ -2,7 +2,7 @@
 <resources>
 
     <!--App-->
-    <string name="app_name">Project Homeless Connect</string>
+    <string name="app_name">  Project Homeless Connect</string>
     <string name="action_settings">Settings</string>
 
     <!--Splash Page-->
@@ -86,6 +86,19 @@
         <item>mental health</item>
         <item>needle exchange</item>
         <item>tb testing</item>
+    </string-array>
+
+    <!-- Sidebar Stuff -->
+
+    <string name="sidebar_selection">Selection</string>
+    <string name="sidebar_personal_info">Personal Info</string>
+    <string name="sidebar_event_info">Event Info</string>
+    <string name="sidebar_confirmation">Confirmation</string>
+    <string-array name="sidebar">
+        <item>Selection</item>
+        <item>Personal Info</item>
+        <item>Event Info</item>
+        <item>Confirmation</item>
     </string-array>
 
 </resources>
