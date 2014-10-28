@@ -1,5 +1,6 @@
 package phc.android;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -36,7 +37,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-public class ScannerActivity extends ActionBarActivity {
+public class ScannerActivity extends Activity {
 
     // Used in error logs to identify this activity.
     public static final String TAG = "ScannerActivity";
@@ -100,7 +101,6 @@ public class ScannerActivity extends ActionBarActivity {
         /**
          * @param holder is automatically created and passed in by the Android library code
          */
-        @param
         public void surfaceDestroyed(SurfaceHolder holder) {
             // Not implemented. If necessary, implement to stop
             // preview when replacing or destroying this surface.
