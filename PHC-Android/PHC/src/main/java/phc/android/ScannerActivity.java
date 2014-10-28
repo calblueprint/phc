@@ -40,7 +40,11 @@ public class ScannerActivity extends ActionBarActivity {
 
     public static final String TAG = "ScannerActivity";
 
-    public static String mScanResult = null;
+    public static String mScanResult;
+
+    Camera mBackCamera;
+    CameraPreview mPreview;
+    TextView mResultText;
 
     public static class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
         Camera mCamera;
@@ -71,7 +75,8 @@ public class ScannerActivity extends ActionBarActivity {
         }
 
         public void surfaceDestroyed(SurfaceHolder holder) {
-
+            // Not implemented. If necessary, implement to stop
+            // preview when replacing or destroying this surface.
         }
 
         public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
@@ -129,8 +134,10 @@ public class ScannerActivity extends ActionBarActivity {
 
         private Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int w, int h) {
             final double ASPECT_TOLERANCE = 0.1;
-            double targetRatio=(double)h / w;
-            if (sizes == null) return null;
+            double targetRatio = (double)h / w;
+            if (sizes == null) {
+                return null;
+            }
             Camera.Size optimalSize = null;
             double minDiff = Double.MAX_VALUE;
             int targetHeight = h;
@@ -166,12 +173,12 @@ public class ScannerActivity extends ActionBarActivity {
         }
 
         private Camera.Size getBestPreviewSize(int width, int height) {
-            Camera.Size result=null;
+            Camera.Size result = null;
             Camera.Parameters p = mCamera.getParameters();
             for (Camera.Size size : p.getSupportedPreviewSizes()) {
                 if (size.width<=width && size.height<=height) {
-                    if (result==null) {
-                        result=size;
+                    if (result == null) {
+                        result = size;
                     } else {
                         int resultArea=result.width*result.height;
                         int newArea=size.width*size.height;
@@ -185,11 +192,11 @@ public class ScannerActivity extends ActionBarActivity {
         }
 
         private Camera.Size getSmallestPictureSize(int width, int height) {
-            Camera.Size result=null;
+            Camera.Size result = null;
             Camera.Parameters p = mCamera.getParameters();
             for (Camera.Size size : p.getSupportedPictureSizes()) {
                 if (size.width<=width && size.height<=height) {
-                    if (result==null) {
+                    if (result == null) {
                         result=size;
                     } else {
                         int resultArea=result.width*result.height;
@@ -203,10 +210,6 @@ public class ScannerActivity extends ActionBarActivity {
             return result;
         }
     }
-
-    Camera mBackCamera;
-    CameraPreview mPreview;
-    TextView mResultText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -361,7 +364,7 @@ public class ScannerActivity extends ActionBarActivity {
             }
         }
     }
-    
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
