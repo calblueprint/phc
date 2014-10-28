@@ -207,13 +207,13 @@ public class ScannerActivity extends ActionBarActivity {
             return optimalSize;
         }
 
-        @Override
         /**
          * Called when surface is changed or initialized
          * to set preview size.
          * @param widthMeasureSpec is passed in by library code
          * @param heightMeasureSpec is passed in by library code
          */
+        @Override
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
             final int width = resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec);
             final int height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
@@ -275,7 +275,6 @@ public class ScannerActivity extends ActionBarActivity {
         }
     }
 
-    @Override
     /**
      * As soon as the activity starts, this sets up
      * the camera preview and the listener for the camera
@@ -283,6 +282,7 @@ public class ScannerActivity extends ActionBarActivity {
      * @param savedInstanceState is passed in by the calling
      * activity
      */
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanner);
@@ -293,6 +293,7 @@ public class ScannerActivity extends ActionBarActivity {
         acquireBackCamera();
         mPreview = new CameraPreview(mBackCamera, this, fl);
         mPreview.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 try {
@@ -316,7 +317,6 @@ public class ScannerActivity extends ActionBarActivity {
      */
     private PictureCallback mPicture = new PictureCallback() {
 
-        @Override
         /**
          * Once a picture is taken, this callback saves the file
          * to a local cache. Then, it is converted to a BinaryBitmap
@@ -325,6 +325,7 @@ public class ScannerActivity extends ActionBarActivity {
          * @param data is the actual camera information
          * @param camera is the camera instance
          */
+        @Override
         public void onPictureTaken(byte[] data, Camera camera) {
             final int MEDIA_TYPE_IMAGE = 1;
             final int MEDIA_TYPE_VIDEO = 2;
@@ -408,7 +409,6 @@ public class ScannerActivity extends ActionBarActivity {
         finish();
     }
 
-    @Override
     /**
      * Not currently implemented. This will eventually
      * have the following options:
@@ -417,29 +417,30 @@ public class ScannerActivity extends ActionBarActivity {
      * @param menu is passed in by the library
      * @return must be true for menu to be displayed.
      */
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
-    @Override
     /**
      * Called when phone goes to sleep, user opens
      * another app, or pressed the home button.
      */
+    @Override
     public void onPause() {
         super.onPause();
         releaseBackCamera();
     }
 
-    @Override
     /**
      * onBackPressed() overrides the default back button
      * functionality. It ensures that the calling activity
      * will receive the appropriate result if the user
      * returns using the back button.
      */
+    @Override
     public void onBackPressed() {
         if (mScanResult == null) {
             returnCanceledResult();
@@ -449,24 +450,24 @@ public class ScannerActivity extends ActionBarActivity {
         super.onBackPressed();
     }
 
-    @Override
     /**
      * Called when activity is re opened.
      * Camera must be acquired again, and
      * the preview's camera handle should
      * be updated as well.
      */
+    @Override
     public void onResume() {
         super.onResume();
         acquireBackCamera();
         mPreview.updateCamera(mBackCamera);
     }
 
-    @Override
     /**
      * Called when activity is finished or terminated by user.
      * Camera MUST be released so other activities can use it!
      */
+    @Override
     public void onDestroy() {
         super.onDestroy();
         releaseBackCamera();
@@ -505,13 +506,13 @@ public class ScannerActivity extends ActionBarActivity {
         }
     }
 
-    @Override
     /**
      * Handles item selection in the menu.
      * @param item is the selected item
      * @return true if the action is consumed here,
      * false otherwise
      */
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
