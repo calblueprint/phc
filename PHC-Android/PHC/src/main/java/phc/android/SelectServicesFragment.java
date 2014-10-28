@@ -1,18 +1,15 @@
 package phc.android;
 
-import android.app.ActionBar;
+import android.app.Fragment;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsoluteLayout;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.Spinner;
+import android.widget.TextView;
 
 public class SelectServicesFragment extends Fragment {
     @Override
@@ -37,5 +34,22 @@ public class SelectServicesFragment extends Fragment {
         }
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.sidebar_list);
+        for (int i=0; i < sidebarList.getChildCount(); i++) {
+            View v = sidebarList.getChildAt(i);
+            Object vTag = v.getTag();
+            if ((vTag != null) && (vTag.equals(getResources().getText(R.string.sidebar_event_info)))) {
+                TextView tv = (TextView) v;
+                tv.setTypeface(null, Typeface.BOLD);
+            } else if (v instanceof TextView) {
+                TextView tv = (TextView) v;
+                tv.setTypeface(null, Typeface.NORMAL);
+            }
+        }
+        super.onResume();
     }
 }
