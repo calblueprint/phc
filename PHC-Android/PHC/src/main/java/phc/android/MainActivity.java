@@ -35,6 +35,11 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    //Handles the "Services" Button on the splash page
+    public void openServices(View view) {
+        Intent intent = new Intent(this, ScannerActivity.class);
+        startActivityForResult(intent, 0);
+    }
     //Handles the "Register" Button on the splash page
     public void openRegister(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
