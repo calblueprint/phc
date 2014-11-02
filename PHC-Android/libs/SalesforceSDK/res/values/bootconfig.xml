@@ -2,7 +2,7 @@
 
 <resources>
     <string name="remoteAccessConsumerKey">3MVG9MHOv_bskkhQINT2J8p7qcSiJx3y0VphoXBtGR9VDd1NkhZQCqHEWHFy94RQGHBa257q8w3Yl.V08AeDo</string>
-    <string name="oauthRedirectURI">sfdc://success</string>
+    <string name="oauthRedirectURI">testsfdc://success</string>
     <string-array name="oauthScopes">
         <item>api</item>
     </string-array>

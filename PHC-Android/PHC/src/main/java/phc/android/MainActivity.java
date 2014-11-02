@@ -9,17 +9,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.salesforce.androidsdk.accounts.UserAccountManager;
 import com.salesforce.androidsdk.app.SalesforceSDKManager;
 import com.salesforce.androidsdk.rest.ClientManager;
 import com.salesforce.androidsdk.rest.RestClient;
+import com.salesforce.androidsdk.rest.RestClient.AsyncRequestCallback;
 import com.salesforce.androidsdk.rest.RestRequest;
 import com.salesforce.androidsdk.rest.RestResponse;
 import com.salesforce.androidsdk.security.PasscodeManager;
 import com.salesforce.androidsdk.util.UserSwitchReceiver;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity{
 
     private PasscodeManager passcodeManager;
     private String apiVersion;
@@ -27,11 +29,15 @@ public class MainActivity extends Activity {
     private UserSwitchReceiver userSwitchReceiver;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         // Passcode manager
         passcodeManager = SalesforceSDKManager.getInstance().getPasscodeManager();
+
+        //@TODO: Remove this line before production
+        SalesforceSDKManager.getInstance().getLoginServerManager().useSandbox();
 
         // ApiVersion
         apiVersion = getString(R.string.api_version);
@@ -41,6 +47,9 @@ public class MainActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
 
     }
 
@@ -80,7 +89,10 @@ public class MainActivity extends Activity {
                 }
             });
         }
+
     }
+
+
 
     @Override
     // Inflate the menu; this adds items to the action bar if it is present.
@@ -97,8 +109,15 @@ public class MainActivity extends Activity {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_logout) {
+            onLogoutClick();
+            return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onLogoutClick() {
+        SalesforceSDKManager.getInstance().logout(this);
     }
 
     //Handles the "Services" Button on the splash page
@@ -124,13 +143,8 @@ public class MainActivity extends Activity {
             client.sendAsync(request, callback);
 
         } catch (Exception error) {
-            Log.e("SF Request Error", error.toString());
+            Log.e("SF Request", error.toString());
         }
-    }
-
-
-    public void onLogoutClick(View v) {
-        SalesforceSDKManager.getInstance().logout(this);
     }
 
 
