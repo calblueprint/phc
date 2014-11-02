@@ -115,20 +115,11 @@ public class MainActivity extends ActionBarActivity {
 
         try {
 
-            sendFromUIThread(request, callback);
-            // response is printed by RestCallTask:onPostExecute
+            client.sendAsync(request, callback);
+
         } catch (Exception error) {
             Log.e("SF Request Error", error.toString());
         }
-    }
-
-    /**
-     * Send restRequest using RestClient's sendAsync method.
-     * Note: Synchronous calls are not allowed from code running on the UI thread.
-     * @param restRequest
-     */
-    private void sendFromUIThread(RestRequest restRequest, RestClient.AsyncRequestCallback callback) {
-        client.sendAsync(restRequest, callback);
     }
 
 
