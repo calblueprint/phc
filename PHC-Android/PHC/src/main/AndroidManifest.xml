@@ -4,26 +4,32 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:logo="@drawable/logo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         android:name=".PHCApp">
         <uses-sdk
             android:minSdkVersion="7"
             android:targetSdkVersion="20" />
+        android:theme="@style/CustomActionBarTheme">
+
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:name=".MainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
         <activity
             android:name=".RegisterActivity"
-            android:label="@string/title_activity_register"
             android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
+        <activity
+            android:name=".ScannerActivity"
+            android:label="@string/title_activity_services" >
         </activity>
     </application>
 </manifest>

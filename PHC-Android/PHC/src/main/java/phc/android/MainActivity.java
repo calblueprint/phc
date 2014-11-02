@@ -1,5 +1,6 @@
 package phc.android;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v7.app.ActionBarActivity;
@@ -18,7 +19,7 @@ import com.salesforce.androidsdk.rest.RestResponse;
 import com.salesforce.androidsdk.security.PasscodeManager;
 import com.salesforce.androidsdk.util.UserSwitchReceiver;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
     private PasscodeManager passcodeManager;
     private String apiVersion;
@@ -100,6 +101,11 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //Handles the "Services" Button on the splash page
+    public void openServices(View view) {
+        Intent intent = new Intent(this, ScannerActivity.class);
+        startActivityForResult(intent, 0);
+    }
     //Handles the "Register" Button on the splash page
     public void openRegister(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
