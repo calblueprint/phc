@@ -1,14 +1,28 @@
 <resources>
 
     <!-- the theme applied to the application or activity -->
-    <style name="CustomActionBarTheme"
+    <style name="PHCTheme"
         parent="@android:style/Theme.Holo.Light.DarkActionBar">
-        <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="android:actionBarStyle">@style/PHCActionBar</item>
+        <item name="android:editTextStyle">@style/PHCEditText</item>
     </style>
 
-    <!-- ActionBar styles -->
-    <style name="MyActionBar"
+    <style name="PHCActionBar"
         parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@color/red_actionbar</item>
     </style>
+
+    <style name="PHCEditText"
+        parent="@android:style/Widget.EditText">
+
+        <!-- WARNING! This item sets the size, more or less, of the actual EditText-->
+        <item name="android:background">@drawable/rectangular_text_edit</item>
+
+        <item name="android:textColor">#ffabcdef</item>
+        <item name="android:textColorHint">#ffabcdef</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:padding">2dp</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmallInverse</item>
+    </style>
+
 </resources>
