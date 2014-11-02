@@ -14,29 +14,31 @@
 
         <!-- TODO: is there a better way to generate consistent spacing between LinearLayout elements?-->
         <!-- TODO: is there a way to shift this to a 2-column layout when in landscape mode? -->
+        <!-- TODO: line up the check boxes, rearrange elements to make it look better-->
         <LinearLayout
             android:id="@+id/form_fields"
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:gravity="center_horizontal">
 
             <EditText
                 android:id="@+id/first_name"
-                android:layout_width="@dimen/input_text_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_first"
                 android:maxLines="1"/>
 
             <EditText
                 android:id="@+id/last_name"
-                android:layout_width="@dimen/input_text_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_last"
                 android:maxLines="1" />
 
             <EditText
                 android:id="@+id/ssn"
-                android:layout_width="@dimen/input_text_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_ssn"
                 android:maxLines="1"
@@ -45,7 +47,7 @@
 
             <EditText
                 android:id="@+id/birthday"
-                android:layout_width="@dimen/input_text_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_birthday"
                 android:inputType="date"
@@ -53,7 +55,7 @@
 
             <EditText
                 android:id="@+id/phone"
-                android:layout_width="@dimen/input_text_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_phone"
                 android:inputType="phone"
@@ -61,7 +63,7 @@
 
             <EditText
                 android:id="@+id/email"
-                android:layout_width="@dimen/input_text_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_email"
                 android:inputType="textEmailAddress"
@@ -69,11 +71,11 @@
 
             <Spinner
                 android:id="@+id/neighborhood_spinner"
-                android:layout_width="@dimen/input_text_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <CheckBox android:id="@+id/checkbox_homeless"
-                android:layout_width="@dimen/input_text_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/prompt_homeless"
                 android:onClick="onCheckboxClicked"/>
@@ -92,27 +94,27 @@
 
             <Spinner
                 android:id="@+id/gender_spinner"
-                android:layout_width="@dimen/input_text_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <Spinner
                 android:id="@+id/ethnicity_spinner"
-                android:layout_width="@dimen/input_text_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <Spinner
                 android:id="@+id/language_spinner"
-                android:layout_width="@dimen/input_text_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <CheckBox android:id="@+id/checkbox_military"
-                android:layout_width="@dimen/input_text_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/prompt_military"
                 android:onClick="onCheckboxClicked"/>
 
             <CheckBox android:id="@+id/checkbox_foster"
-                android:layout_width="@dimen/input_text_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/prompt_foster"
                 android:onClick="onCheckboxClicked"/>
@@ -120,7 +122,7 @@
             <Button
                 android:id="@+id/continue_button"
                 style="?android:textAppearanceSmall"
-                android:layout_width="@dimen/input_text_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/action_continue"
