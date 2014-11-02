@@ -26,30 +26,30 @@
     <string name="prompt_foster">Been in Foster Care?</string>
 
     <string-array name="gender_array">
-        <item>Gender Identity...</item>
         <item>Male</item>
         <item>Female</item>
         <item>Transgender</item>
+        <item>Gender Identity...</item>
     </string-array>
 
     <string-array name="ethnicity_array">
-        <item>Ethnicity...</item>
         <item>African American</item>
         <item>Latino</item>
         <item>Asian/Pacific Islander</item>
         <item>Caucasian</item>
         <item>Native American</item>
         <item>Other</item>
+        <item>Ethnicity...</item>
     </string-array>
 
     <string-array name="language_array">
-        <item>Primary Language...</item>
         <item>English</item>
         <item>Spanish</item>
         <item>Cantonese/Mandarin</item>
         <item>Vietnamese</item>
         <item>Russian</item>
         <item>Other</item>
+        <item>Primary Language...</item>
     </string-array>
 
     <string name="error_field_required">This field is required</string>

@@ -20,9 +20,9 @@
         <!-- WARNING! This item sets the size, more or less, of the actual EditText-->
         <!-- TODO: Adjust rectangular_text_edit to make it better fit whatever textSize we choose to use.  Will have to adjust padding, etc as well.-->
         <item name="android:background">@drawable/rectangular_text_edit</item>
-        <item name="android:textColor">#ff444444</item>
-        <item name="android:textColorHint">#ff888888</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textColorHint">@color/hint_color</item>
+        <item name="android:textSize">@dimen/text_size</item>
         <item name="android:padding">7dp</item>
     </style>
 
@@ -31,16 +31,14 @@
     <style name="PHCSpinner"
         parent="@android:style/Widget.Holo.Light.Spinner">
         <item name="android:background">@drawable/rectangular_spinner</item>
-        <item name="android:textColorHint">#ff888888</item>
-        <item name="android:textColor">#ff444444</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textSize">@dimen/text_size</item>
     </style>
 
     <style name="PHCSpinnerItem"
         parent="@android:style/Widget.Holo.TextView.SpinnerItem">
-        <item name="android:textColorHint">#ff888888</item>
-        <item name="android:textColor">#ff444444</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textSize">@dimen/text_size</item>
 
     </style>
 </resources>
