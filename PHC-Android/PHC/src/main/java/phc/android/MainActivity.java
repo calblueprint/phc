@@ -3,13 +3,11 @@ package phc.android;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.salesforce.androidsdk.accounts.UserAccountManager;
 import com.salesforce.androidsdk.app.SalesforceSDKManager;
@@ -68,8 +66,10 @@ public class MainActivity extends Activity{
     @Override
     public void onResume() {
         super.onResume();
+        loginSalesforce();
+    }
 
-
+    private void loginSalesforce() {
         // Bring up passcode screen if needed
         if (passcodeManager.onResume(this)) {
             // Login options
@@ -89,7 +89,6 @@ public class MainActivity extends Activity{
                 }
             });
         }
-
     }
 
 
@@ -116,6 +115,8 @@ public class MainActivity extends Activity{
         return super.onOptionsItemSelected(item);
     }
 
+    //Calls Salesforce SDK to log out client.
+    //Should be used when the session is over.
     public void onLogoutClick() {
         SalesforceSDKManager.getInstance().logout(this);
     }
@@ -134,7 +135,9 @@ public class MainActivity extends Activity{
     /**
      * Helper that sends request to server and print result in text field
      *
-     * @param request
+     * @param request - The request object that gets executed by the SF SDK
+     * @param callback - The functions that get called when yhe response comes back
+     *                   Modify UI elements here.
      */
     private void sendRequest(RestRequest request, AsyncRequestCallback callback) {
 
@@ -152,23 +155,7 @@ public class MainActivity extends Activity{
      * Refreshes the client if the user has been switched.
      */
     private void refreshIfUserSwitched() {
-        if (passcodeManager.onResume(this)) {
-            final String accountType = SalesforceSDKManager.getInstance().getAccountType();
-
-            // Get a rest client
-            new ClientManager(this, accountType, SalesforceSDKManager.getInstance().getLoginOptions(),
-                    SalesforceSDKManager.getInstance().shouldLogoutWhenTokenRevoked()).getRestClient(this, new ClientManager.RestClientCallback() {
-
-                @Override
-                public void authenticatedRestClient(RestClient client) {
-                    if (client == null) {
-                        SalesforceSDKManager.getInstance().logout(MainActivity.this);
-                        return;
-                    }
-                    MainActivity.this.client = client;
-                }
-            });
-        }
+       loginSalesforce();
     }
 
 
