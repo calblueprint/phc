@@ -4,52 +4,52 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
-        android:id="@+id/login_form"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <!--<ScrollView-->
+        <!--android:id="@+id/login_form"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
 
-        <LinearLayout
-            android:id="@+id/email_login_form"
-            android:layout_width="@dimen/input_text_width"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
+        <!--<LinearLayout-->
+            <!--android:id="@+id/email_login_form"-->
+            <!--android:layout_width="@dimen/input_text_width"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:orientation="vertical">-->
 
-            <Spinner
-                android:id="@+id/neighborhood_spinner"
-                android:layout_width="@dimen/input_text_width"
-                android:layout_height="wrap_content" />
+            <!--<Spinner-->
+                <!--android:id="@+id/neighborhood_spinner"-->
+                <!--android:layout_width="@dimen/input_text_width"-->
+                <!--android:layout_height="wrap_content" />-->
 
-            <CheckBox android:id="@+id/checkbox_homeless"
-                android:layout_width="@dimen/input_text_width"
-                android:layout_height="wrap_content"
-                android:text="@string/prompt_homeless"
-                android:onClick="onCheckboxClicked"/>
+            <!--<CheckBox android:id="@+id/checkbox_homeless"-->
+                <!--android:layout_width="@dimen/input_text_width"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/prompt_homeless"-->
+                <!--android:onClick="onCheckboxClicked"/>-->
 
-            <CheckBox android:id="@+id/checkbox_children"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/prompt_children"
-                android:onClick="onCheckboxClicked"/>
+            <!--<CheckBox android:id="@+id/checkbox_children"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/prompt_children"-->
+                <!--android:onClick="onCheckboxClicked"/>-->
 
-            <CheckBox android:id="@+id/checkbox_doctor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/prompt_doctor"
-                android:onClick="onCheckboxClicked"/>
+            <!--<CheckBox android:id="@+id/checkbox_doctor"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/prompt_doctor"-->
+                <!--android:onClick="onCheckboxClicked"/>-->
 
-            <Button
-                android:id="@+id/continue_button"
-                style="?android:textAppearanceSmall"
-                android:layout_width="@dimen/input_text_width"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/action_continue"
-                android:textStyle="bold"
-                android:onClick="onContinueToServiceSelection"/>
-        </LinearLayout>
+            <!--<Button-->
+                <!--android:id="@+id/continue_button"-->
+                <!--style="?android:textAppearanceSmall"-->
+                <!--android:layout_width="@dimen/input_text_width"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="16dp"-->
+                <!--android:text="@string/action_continue"-->
+                <!--android:textStyle="bold"-->
+                <!--android:onClick="onContinueToServiceSelection"/>-->
+        <!--</LinearLayout>-->
 
-    </ScrollView>
+    <!--</ScrollView>-->
 
 </LinearLayout>
