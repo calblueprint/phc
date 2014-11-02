@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <ScrollView
-        android:id="@+id/login_form"
+        android:id="@+id/personal_information"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -17,21 +17,28 @@
             android:layout_gravity="center"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/first_name"
-                android:layout_width="@dimen/input_text_width"
+            <LinearLayout
+                android:id="@+id/first_last_names"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="@string/prompt_first"
-                android:maxLines="1"
-                android:singleLine="true"/>
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/last_name"
-                android:layout_width="@dimen/input_text_width"
-                android:layout_height="wrap_content"
-                android:hint="@string/prompt_last"
-                android:maxLines="1"
-                android:singleLine="true"/>
+                <!-- TODO: is there a better way to generate consistent spacing between LinearLayout elements?-->
+                <EditText
+                    android:id="@+id/first_name"
+                    android:layout_width="@dimen/input_text_width"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:hint="@string/prompt_first"
+                    android:maxLines="1"/>
+                <EditText
+                    android:id="@+id/last_name"
+                    android:layout_width="@dimen/input_text_width"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/prompt_last"
+                    android:maxLines="1" />
+
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/ssn"
@@ -39,8 +46,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_ssn"
                 android:maxLines="1"
-                android:singleLine="true"
-                android:inputType="numberPassword"/>
+                android:inputType="number"
+                android:maxLength="9"/>
 
             <EditText
                 android:id="@+id/birthday"
@@ -48,8 +55,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_birthday"
                 android:inputType="date"
-                android:maxLines="1"
-                android:singleLine="true"/>
+                android:maxLines="1" />
 
             <EditText
                 android:id="@+id/phone"
@@ -57,8 +63,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_phone"
                 android:inputType="phone"
-                android:maxLines="1"
-                android:singleLine="true"/>
+                android:maxLines="1" />
 
             <EditText
                 android:id="@+id/email"
@@ -66,8 +71,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_email"
                 android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:singleLine="true"/>
+                android:maxLines="1" />
 
             <Spinner
                 android:id="@+id/gender_spinner"
