@@ -40,28 +40,31 @@ public class AccountRegistrationFragment extends Fragment {
     }
 
     private void setSpinnerContent(View view){
+
+        mNeighborhoodSpinner = (Spinner) view.findViewById(R.id.neighborhood_spinner);
+        String[] neighborhoods = getResources().getStringArray(R.array.neighborhood_array);
+        ArrayAdapter<String> mNeighborhoodAdapter = new HintAdapter(getActivity(), android.R.layout.simple_spinner_item, neighborhoods);
+        mNeighborhoodSpinner.setAdapter(mNeighborhoodAdapter);
+        mNeighborhoodSpinner.setSelection(mNeighborhoodAdapter.getCount());
+
+
         mGenderSpinner = (Spinner) view.findViewById(R.id.gender_spinner);
-        ArrayAdapter<CharSequence> mGenderAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.gender_array, android.R.layout.simple_spinner_item);
-        mGenderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        String[] genders = getResources().getStringArray(R.array.gender_array);
+        ArrayAdapter<String> mGenderAdapter = new HintAdapter(getActivity(), android.R.layout.simple_spinner_item, genders);
+        mNeighborhoodSpinner.setAdapter(mGenderAdapter);
         mGenderSpinner.setAdapter(mGenderAdapter);
 
         mEthnicitySpinner = (Spinner) view.findViewById(R.id.ethnicity_spinner);
-        ArrayAdapter<CharSequence> ethnicity_adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.ethnicity_array, android.R.layout.simple_spinner_item);
-        ethnicity_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mEthnicitySpinner.setAdapter(ethnicity_adapter);
+        String[] ethnicities = getResources().getStringArray(R.array.ethnicity_array);
+        ArrayAdapter<String> mEthnicityAdapter = new HintAdapter(getActivity(), android.R.layout.simple_spinner_item, ethnicities);
+        mNeighborhoodSpinner.setAdapter(mEthnicityAdapter);
+        mEthnicitySpinner.setAdapter(mEthnicityAdapter);
+
 
         mLanguageSpinner = (Spinner) view.findViewById(R.id.language_spinner);
-        ArrayAdapter<CharSequence> mLanguageAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.language_array, android.R.layout.simple_spinner_item);
-        mLanguageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        String[] languages = getResources().getStringArray(R.array.language_array);
+        ArrayAdapter<String> mLanguageAdapter = new HintAdapter(getActivity(), android.R.layout.simple_spinner_item, languages);
+        mNeighborhoodSpinner.setAdapter(mLanguageAdapter);
         mLanguageSpinner.setAdapter(mLanguageAdapter);
-
-        mNeighborhoodSpinner = (Spinner) view.findViewById(R.id.neighborhood_spinner);
-        ArrayAdapter<CharSequence> mNeighborhoodAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.neighborhood_array, android.R.layout.simple_spinner_item);
-        mNeighborhoodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mNeighborhoodSpinner.setAdapter(mNeighborhoodAdapter);
     }
 }

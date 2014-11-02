@@ -5,6 +5,8 @@
         parent="@android:style/Theme.Holo.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/PHCActionBar</item>
         <item name="android:editTextStyle">@style/PHCEditText</item>
+        <item name="android:spinnerStyle">@style/PHCSpinner</item>
+        <item name="android:spinnerItemStyle">@style/PHCSpinnerItem</item>
     </style>
 
     <style name="PHCActionBar"
@@ -22,8 +24,23 @@
         <item name="android:textColorHint">#ff888888</item>
         <item name="android:textSize">14sp</item>
         <item name="android:padding">7dp</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceSmallInverse</item>
     </style>
 
     <!-- TODO: Make a PHCSpinner, PHCCheckbox which match the style given in PHCEditText.  While we're at it, make some standardized set of assets for this... -->
+
+    <style name="PHCSpinner"
+        parent="@android:style/Widget.Holo.Light.Spinner">
+        <item name="android:background">@drawable/rectangular_spinner</item>
+        <item name="android:textColorHint">#ff888888</item>
+        <item name="android:textColor">#ff444444</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="PHCSpinnerItem"
+        parent="@android:style/Widget.Holo.TextView.SpinnerItem">
+        <item name="android:textColorHint">#ff888888</item>
+        <item name="android:textColor">#ff444444</item>
+        <item name="android:textSize">14sp</item>
+
+    </style>
 </resources>
