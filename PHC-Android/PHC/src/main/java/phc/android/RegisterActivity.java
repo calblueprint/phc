@@ -103,20 +103,6 @@ public class RegisterActivity extends Activity {
         transaction.commit();
     }
 
-    public void onContinueToServiceSelection(View vew) {
-        // Create fragment
-        SelectServicesFragment newFragment = new SelectServicesFragment();
-
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack so the user can navigate back
-        transaction.replace(R.id.registration_fragment_container, newFragment);
-        transaction.addToBackStack(null);
-
-        // Commit the transaction
-        transaction.commit();
-    }
-
     /**
      * Attempts to register.
      * If there are form errors (invalid email, missing fields, etc.), the

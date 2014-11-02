@@ -12,7 +12,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 public class AccountRegistrationFragment extends Fragment {
-    Spinner mGenderSpinner, mEthnicitySpinner, mLanguageSpinner;
+    Spinner mGenderSpinner, mEthnicitySpinner, mLanguageSpinner, mNeighborhoodSpinner;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,5 +57,11 @@ public class AccountRegistrationFragment extends Fragment {
                 R.array.language_array, android.R.layout.simple_spinner_item);
         mLanguageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mLanguageSpinner.setAdapter(mLanguageAdapter);
+
+        mNeighborhoodSpinner = (Spinner) view.findViewById(R.id.neighborhood_spinner);
+        ArrayAdapter<CharSequence> mNeighborhoodAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.neighborhood_array, android.R.layout.simple_spinner_item);
+        mNeighborhoodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mNeighborhoodSpinner.setAdapter(mNeighborhoodAdapter);
     }
 }

@@ -4,88 +4,68 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:gravity="center_horizontal">
 
-    <!-- TODO: is there a better way to generate consistent spacing between LinearLayout elements?-->
-    <LinearLayout
-        android:id="@+id/first_last_name_info"
+    <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <EditText
-            android:id="@+id/first_name"
-            android:layout_width="@dimen/input_text_width"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/pa_linear_layout_spacing"
-            android:hint="@string/prompt_first"
-            android:maxLines="1"/>
-        <EditText
-            android:id="@+id/last_name"
-            android:layout_width="@dimen/input_text_width"
-            android:layout_height="wrap_content"
-            android:hint="@string/prompt_last"
-            android:maxLines="1" />
-    </LinearLayout>
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp">
 
-    <LinearLayout
-        android:id="@+id/birthday_ssn_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <EditText
-            android:id="@+id/ssn"
-            android:layout_width="@dimen/input_text_width"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/pa_linear_layout_spacing"
-            android:hint="@string/prompt_ssn"
-            android:maxLines="1"
-            android:inputType="number"
-            android:maxLength="9"/>
-
-        <EditText
-            android:id="@+id/birthday"
-            android:layout_width="@dimen/input_text_width"
-            android:layout_height="wrap_content"
-            android:hint="@string/prompt_birthday"
-            android:inputType="date"
-            android:maxLines="1" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/first_last_names"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <EditText
-            android:id="@+id/phone"
-            android:layout_width="@dimen/input_text_width"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/pa_linear_layout_spacing"
-            android:hint="@string/prompt_phone"
-            android:inputType="phone"
-            android:maxLines="1" />
-
-        <EditText
-            android:id="@+id/email"
-            android:layout_width="@dimen/input_text_width"
-            android:layout_height="wrap_content"
-            android:hint="@string/prompt_email"
-            android:inputType="textEmailAddress"
-            android:maxLines="1" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-
+        <!-- TODO: is there a better way to generate consistent spacing between LinearLayout elements?-->
+        <!-- TODO: is there a way to shift this to a 2-column layout when in landscape mode? -->
         <LinearLayout
-            android:id="@+id/email_login_form"
-            android:layout_width="@dimen/input_text_width"
+            android:id="@+id/form_fields"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/first_name"
+                android:layout_width="@dimen/input_text_width"
+                android:layout_height="wrap_content"
+                android:hint="@string/prompt_first"
+                android:maxLines="1"/>
+
+            <EditText
+                android:id="@+id/last_name"
+                android:layout_width="@dimen/input_text_width"
+                android:layout_height="wrap_content"
+                android:hint="@string/prompt_last"
+                android:maxLines="1" />
+
+            <EditText
+                android:id="@+id/ssn"
+                android:layout_width="@dimen/input_text_width"
+                android:layout_height="wrap_content"
+                android:hint="@string/prompt_ssn"
+                android:maxLines="1"
+                android:inputType="number"
+                android:maxLength="9"/>
+
+            <EditText
+                android:id="@+id/birthday"
+                android:layout_width="@dimen/input_text_width"
+                android:layout_height="wrap_content"
+                android:hint="@string/prompt_birthday"
+                android:inputType="date"
+                android:maxLines="1" />
+
+            <EditText
+                android:id="@+id/phone"
+                android:layout_width="@dimen/input_text_width"
+                android:layout_height="wrap_content"
+                android:hint="@string/prompt_phone"
+                android:inputType="phone"
+                android:maxLines="1" />
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="@dimen/input_text_width"
+                android:layout_height="wrap_content"
+                android:hint="@string/prompt_email"
+                android:inputType="textEmailAddress"
+                android:maxLines="1" />
 
             <Spinner
                 android:id="@+id/neighborhood_spinner"
@@ -109,57 +89,21 @@
                 android:layout_height="wrap_content"
                 android:text="@string/prompt_doctor"
                 android:onClick="onCheckboxClicked"/>
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
 
             <Spinner
                 android:id="@+id/gender_spinner"
                 android:layout_width="@dimen/input_text_width"
                 android:layout_height="wrap_content" />
 
-            <!--<Button-->
-            <!--android:id="@+id/gender_button"-->
-            <!--android:layout_width="@dimen/input_text_width"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="5dp"-->
-            <!--android:gravity="left"-->
-            <!--android:background="@android:drawable/btn_dropdown"-->
-            <!--android:text="@string/prompt_gender"-->
-            <!--android:onClick="onClick"/>-->
-
             <Spinner
                 android:id="@+id/ethnicity_spinner"
                 android:layout_width="@dimen/input_text_width"
                 android:layout_height="wrap_content" />
 
-            <!--<Button-->
-            <!--android:id="@+id/ethnicity_button"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="5dp"-->
-            <!--android:gravity="left"-->
-            <!--android:background="@android:drawable/btn_dropdown"-->
-            <!--android:text="@string/prompt_ethnicity" />-->
-
             <Spinner
                 android:id="@+id/language_spinner"
                 android:layout_width="@dimen/input_text_width"
                 android:layout_height="wrap_content" />
-
-            <!--<Button-->
-            <!--android:id="@+id/language_button"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="5dp"-->
-            <!--android:gravity="left"-->
-            <!--android:background="@android:drawable/btn_dropdown"-->
-            <!--android:text="@string/prompt_language" />-->
 
             <CheckBox android:id="@+id/checkbox_military"
                 android:layout_width="@dimen/input_text_width"
@@ -173,19 +117,18 @@
                 android:text="@string/prompt_foster"
                 android:onClick="onCheckboxClicked"/>
 
+            <Button
+                android:id="@+id/continue_button"
+                style="?android:textAppearanceSmall"
+                android:layout_width="@dimen/input_text_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/action_continue"
+                android:textStyle="bold"
+                android:onClick="onContinueToEventRegistration"/>
+
         </LinearLayout>
 
-    </LinearLayout>
-
-
-    <Button
-        android:id="@+id/continue_button"
-        style="?android:textAppearanceSmall"
-        android:layout_width="@dimen/input_text_width"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/action_continue"
-        android:textStyle="bold"
-        android:onClick="onContinueToEventRegistration"/>
+    </ScrollView>
 
 </LinearLayout>
