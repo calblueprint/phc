@@ -1,6 +1,8 @@
 package phc.android;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -36,6 +38,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Scanner;
 
 public class ServiceActivity extends Activity {
 
@@ -44,6 +47,9 @@ public class ServiceActivity extends Activity {
 
     // The result returned to the calling activity through an Intent.
     public static String mScanResult;
+
+    // A handle on the fragment that holds the camera to open and release it.
+    public ScannerFragment mScannerFragment;
 
     // Holds an instance of the back camera on the device
     Camera mBackCamera;
@@ -63,102 +69,36 @@ public class ServiceActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scanner);
-        // TODO: move camera open to async task
-        // We should do this as soon as the app starts
-        mResultText = (TextView) findViewById(R.id.confirm_scan);
-        FrameLayout fl = (FrameLayout) findViewById(R.id.camera_preview);
-        acquireBackCamera();
-        mPreview = new CameraPreview(mBackCamera, this, fl);
-        mPreview.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                try {
-                    mBackCamera.takePicture(null, null, mPicture);
-                } catch (Exception e) {
-                    //TODO: Find a better way to lock this!
-                    // This handles the case where the user double
-                    // taps the preview frame, so takePicture() fails
-                    // since the preview has not been started.
-                }
-            }
-
-        });
-
-        //FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
-        fl.addView(mPreview);
-    }
-
-    /**
-     * This is where we interface with the zxing library.
-     */
-    private PictureCallback mPicture = new PictureCallback() {
-
-        /**
-         * Once a picture is taken, this callback saves the file
-         * to a local cache. Then, it is converted to a BinaryBitmap
-         * so it can be passed to a MultiFormatReader in the zxing library
-         * to obtain a string result.
-         * @param data is the actual camera information
-         * @param camera is the camera instance
-         */
-        @Override
-        public void onPictureTaken(byte[] data, Camera camera) {
-            final int MEDIA_TYPE_IMAGE = 1;
-            final int MEDIA_TYPE_VIDEO = 2;
-            File pictureFile;
-            //TODO: catch NPE and delete from cache!
-            File outputDir = getApplicationContext().getCacheDir();
-            try {
-                pictureFile = File.createTempFile("prefix", "extension", outputDir);
-            } catch (IOException e) {
-                Log.d(TAG, "Error creating media file, check storage permissions: " + e.getMessage());
+        setContentView(R.layout.service);
+        if (findViewById(R.id.service_fragment_container) != null) {
+            // However, if we're being restored from a previous state,
+            // then we don't need to do anything and should return or else
+            // we could end up with overlapping fragments.
+            if (savedInstanceState != null) {
                 return;
             }
-            try {
-                FileOutputStream fos = new FileOutputStream(pictureFile);
-                fos.write(data);
-                fos.close();
-            } catch (FileNotFoundException e) {
-                Log.d(TAG, "File not found: " + e.getMessage());
-            } catch (IOException e) {
-                Log.d(TAG, "Error accessing file: " + e.getMessage());
-            }
-            Bitmap bmpImage = BitmapFactory.decodeFile(pictureFile.getAbsolutePath());
-            int pixels[] = new int[bmpImage.getHeight()*bmpImage.getWidth()];
-            bmpImage.getPixels(
-                    pixels,
-                    0,
-                    bmpImage.getWidth(),
-                    0,
-                    0,
-                    bmpImage.getWidth() - 1,
-                    bmpImage.getHeight() - 1);
-            LuminanceSource source = new RGBLuminanceSource(
-                    bmpImage.getWidth(),
-                    bmpImage.getHeight(),
-                    pixels);
-            BinaryBitmap bitmap = new BinaryBitmap(
-                    new HybridBinarizer(source));
-            Reader reader = new MultiFormatReader();
-            try{
-                Result result = reader.decode(bitmap);
-                mScanResult = result.getText();
-                mResultText.setTextColor(Color.GREEN);
-                mResultText.setText("SUCCESS! Result: " + mScanResult);
-            } catch (ChecksumException e) {
-                e.printStackTrace();
-            } catch (NotFoundException e) {
-                mResultText.setTextColor(Color.RED);
-                mResultText.setText("X TRY AGAIN");
-                e.printStackTrace();
-            } catch (FormatException e) {
-                e.printStackTrace();
-            }
-            mBackCamera.startPreview();
+
+            //TODO: take care of these cases.
+            // Create a new Fragment to be placed in the activity layout
+            //AccountRegistrationFragment firstFragment = new AccountRegistrationFragment();
+
+            // In case this activity was started with special instructions from an
+            // Intent, pass the Intent's extras to the fragment as arguments
+            //firstFragment.setArguments(getIntent().getExtras());
+
+            // Add the fragment to the 'fragment_container' FrameLayout
+            //FragmentTransaction t = getFragmentManager().beginTransaction();
+            //t.add(R.id.registration_fragment_container, (Fragment) firstFragment);
+            //t.commit();
+
+            mScannerFragment = new ScannerFragment();
+            mScannerFragment.setArguments(getIntent().getExtras());
+            FragmentTransaction t = getFragmentManager().beginTransaction();
+            t.add(R.id.service_fragment_container, (Fragment) mScannerFragment);
+            t.commit();
+
         }
-    };
+    }
 
     /**
     * Lets the calling activity know that a valid
@@ -238,7 +178,9 @@ public class ServiceActivity extends Activity {
     public void onResume() {
         super.onResume();
         acquireBackCamera();
-        mPreview.updateCamera(mBackCamera);
+        //TODO: make sure this doesn't need to be updated!
+        // taken care of in fragment's lifecycle right now.
+        //mPreview.updateCamera(mBackCamera);
     }
 
     /**
@@ -257,10 +199,9 @@ public class ServiceActivity extends Activity {
      * to use.
      */
     public void releaseBackCamera() {
-        if (mBackCamera != null) {
+        if (mScannerFragment != null) {
             try {
-                mBackCamera.stopPreview();
-                mBackCamera.release();
+                mScannerFragment.releaseBackCamera();
             } catch (Exception e) {
                 //TODO: is this too general?
             }
@@ -272,17 +213,16 @@ public class ServiceActivity extends Activity {
      * to reinitialize a handle on the camera instance
      */
     public void acquireBackCamera() {
-        try {
-            // will access an instance of the back camera by default
-            mBackCamera = Camera.open();
-        }
-        catch (Exception e) {
-            // Already have camera? If so then continue, else throw error.
-            if (mBackCamera == null) {
+        if (mScannerFragment != null) {
+            try {
+
+                mScannerFragment.acquireBackCamera();
+            } catch (Exception e) {
                 System.exit(0);
             }
         }
     }
+
 
     /**
      * Handles item selection in the menu.

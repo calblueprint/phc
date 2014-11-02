@@ -35,7 +35,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class ScannerFragment extends Fragment {
+public class ScannerFragment extends android.app.Fragment {
 
     public final static String TAG = "ScannerFragment";
 
@@ -52,12 +52,12 @@ public class ScannerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_select_services, container, false);
+        View view = inflater.inflate(R.layout.fragment_scanner, container, false);
 
         // TODO: move camera open to async task
         // We should do this as soon as the app starts
-        mResultText = (TextView) getView().findViewById(R.id.confirm_scan);
-        FrameLayout fl = (FrameLayout) getView().findViewById(R.id.camera_preview);
+        mResultText = (TextView) view.findViewById(R.id.confirm_scan);
+        FrameLayout fl = (FrameLayout) view.findViewById(R.id.camera_preview);
         acquireBackCamera();
         mPreview = new CameraPreview(mBackCamera, getActivity(), fl);
         mPreview.setOnClickListener(new View.OnClickListener() {
