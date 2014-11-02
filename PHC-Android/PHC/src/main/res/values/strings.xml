@@ -9,6 +9,7 @@
     <string name="button_register">Register</string>
     <string name="button_services">Services</string>
     <string name="title_activity_register">Register Client</string>
+    <string name="title_activity_services">Manage Services</string>
 
     <!-- Account Registration -->
     <string name="prompt_first">First Name</string>

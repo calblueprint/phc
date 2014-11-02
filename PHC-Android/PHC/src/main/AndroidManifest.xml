@@ -22,6 +22,9 @@
             android:name=".RegisterActivity"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
-
+        <activity
+            android:name=".ScannerActivity"
+            android:label="@string/title_activity_services" >
+        </activity>
     </application>
 </manifest>
