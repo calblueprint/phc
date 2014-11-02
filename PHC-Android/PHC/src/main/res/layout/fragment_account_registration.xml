@@ -9,8 +9,8 @@
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp">
+        android:layout_marginTop="@dimen/top_bottom_margins"
+        android:layout_marginBottom="@dimen/top_bottom_margins">
 
         <!-- TODO: is there a better way to generate consistent spacing between LinearLayout elements?-->
         <!-- TODO: is there a way to shift this to a 2-column layout when in landscape mode? -->
