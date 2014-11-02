@@ -133,7 +133,7 @@ public class MainActivity extends Activity{
     }
 
     /**
-     * Helper that sends request to server and print result in text field
+     * Helper that sends request to server and print result in text field.
      *
      * @param request - The request object that gets executed by the SF SDK
      * @param callback - The functions that get called when yhe response comes back
