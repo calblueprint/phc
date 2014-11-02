@@ -136,7 +136,7 @@ public class MainActivity extends Activity{
      *
      * @param request
      */
-    private void sendRequest(RestRequest request, RestClient.AsyncRequestCallback callback) {
+    private void sendRequest(RestRequest request, AsyncRequestCallback callback) {
 
         try {
 
