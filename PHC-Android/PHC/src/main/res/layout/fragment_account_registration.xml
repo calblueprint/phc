@@ -74,24 +74,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <CheckBox android:id="@+id/checkbox_homeless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/prompt_homeless"
-                android:onClick="onCheckboxClicked"/>
-
-            <CheckBox android:id="@+id/checkbox_children"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/prompt_children"
-                android:onClick="onCheckboxClicked"/>
-
-            <CheckBox android:id="@+id/checkbox_doctor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/prompt_doctor"
-                android:onClick="onCheckboxClicked"/>
-
             <Spinner
                 android:id="@+id/gender_spinner"
                 android:layout_width="wrap_content"
@@ -107,17 +89,46 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <CheckBox android:id="@+id/checkbox_military"
+            <LinearLayout
+                android:id="@+id/checkboxes"
+                android:layout_marginTop="@dimen/checkboxes_margin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/prompt_military"
-                android:onClick="onCheckboxClicked"/>
+                android:orientation="vertical"
+                android:layout_gravity="left">
 
-            <CheckBox android:id="@+id/checkbox_foster"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/prompt_foster"
-                android:onClick="onCheckboxClicked"/>
+                <CheckBox android:id="@+id/checkbox_homeless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prompt_homeless"
+                    android:onClick="onCheckboxClicked"/>
+
+                <CheckBox android:id="@+id/checkbox_children"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prompt_children"
+                    android:onClick="onCheckboxClicked"/>
+
+                <CheckBox android:id="@+id/checkbox_doctor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prompt_doctor"
+                    android:onClick="onCheckboxClicked"/>
+
+                <CheckBox android:id="@+id/checkbox_military"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prompt_military"
+                    android:onClick="onCheckboxClicked"/>
+
+                <CheckBox android:id="@+id/checkbox_foster"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prompt_foster"
+                    android:onClick="onCheckboxClicked"/>
+
+
+            </LinearLayout>
 
             <Button
                 android:id="@+id/continue_button"

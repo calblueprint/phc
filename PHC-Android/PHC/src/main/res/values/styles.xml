@@ -7,6 +7,7 @@
         <item name="android:editTextStyle">@style/PHCEditText</item>
         <item name="android:spinnerStyle">@style/PHCSpinner</item>
         <item name="android:spinnerItemStyle">@style/PHCSpinnerItem</item>
+        <item name="android:checkboxStyle">@style/PHCCheckBox</item>
     </style>
 
     <style name="PHCActionBar"
@@ -39,6 +40,16 @@
         parent="@android:style/Widget.Holo.TextView.SpinnerItem">
         <item name="android:textColor">@color/text_color</item>
         <item name="android:textSize">@dimen/text_size</item>
-
     </style>
+
+    <style name="PHCCheckBox"
+        parent="@android:style/Widget.Holo.CompoundButton.CheckBox">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:button">@null</item>
+        <item name="android:drawableLeft">@drawable/checkbox</item>
+        <item name="android:drawablePadding">@dimen/checkbox_left_padding</item>
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textSize">@dimen/text_size</item>
+    </style>
+
 </resources>
