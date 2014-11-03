@@ -78,6 +78,8 @@
 
     <!-- Services Selection -->
     <string name="prompt_services">Which services will you be using today?</string>
+    <string name="medical_services">Medical Services</string>
+    <string name="support_services">Support Services</string>
     <string-array name="services_array">
         <item>acupuncture</item>
         <item>addiction recovery</item>

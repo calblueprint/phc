@@ -12,8 +12,13 @@
         android:layout_marginTop="@dimen/top_bottom_margins"
         android:layout_marginBottom="@dimen/top_bottom_margins">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/prompt_services"/>
+
         <LinearLayout
-            android:id="@+id/services_list"
+            android:id="@+id/medical_services_list"
             android:layout_width="@dimen/input_text_width"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -22,7 +27,21 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/prompt_services"/>
+                android:text="@string/medical_services"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/support_services_list"
+            android:layout_width="@dimen/input_text_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/support_services"/>
 
         </LinearLayout>
 
