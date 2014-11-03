@@ -10,10 +10,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
-import android.widget.Spinner;
 
 public class RegisterActivity extends Activity {
     // UI references.
@@ -44,7 +42,7 @@ public class RegisterActivity extends Activity {
 
             // Add the fragment to the 'fragment_container' FrameLayout
             FragmentTransaction t = getFragmentManager().beginTransaction();
-            t.add(R.id.registration_fragment_container, (Fragment) firstFragment);
+            t.add(R.id.registration_fragment_container, (Fragment) firstFragment, getResources().getString(R.string.sidebar_personal_info));
             t.commit();
         }
     }
@@ -86,20 +84,17 @@ public class RegisterActivity extends Activity {
     }
 
     //Takes user to Event Registration
+    // TODO: Maybe we should try to modularize this code to continue to any page correctly?
+    // Not that important because our app has a static number of pages though...
     public void onContinueToEventRegistration(View view) {
         // Calls attemptContinue() first to make sure current page is valid
         // attemptContinue();
 
         // Create fragment
         EventRegistrationFragment newFragment = new EventRegistrationFragment();
-
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack so the user can navigate back
-        transaction.replace(R.id.registration_fragment_container, newFragment);
+        transaction.replace(R.id.registration_fragment_container, newFragment, getResources().getString(R.string.sidebar_event_info));
         transaction.addToBackStack(null);
-
-        // Commit the transaction
         transaction.commit();
     }
 

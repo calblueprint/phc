@@ -18,15 +18,28 @@ public class EventRegistrationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        LinearLayout ll;
+        String[] services;
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_event_registration, container, false);
 
         // Grab list of all services offered for the current event from Salesforce DB
-        Resources res = getResources();
-        String[] services = res.getStringArray(R.array.services_array);
-
         // Dynamically populate linear layout with checkboxes for each service
-        LinearLayout ll = (LinearLayout) view.findViewById(R.id.services_list);
+        Resources res = getResources();
+
+        services = res.getStringArray(R.array.medical_services_array);
+        ll = (LinearLayout) view.findViewById(R.id.medical_services_list);
+        for(int i = 0; i < services.length; i++){
+            CheckBox cb = new CheckBox(getActivity());
+            cb.setLayoutParams(new LinearLayout.LayoutParams(
+                    R.dimen.input_text_width,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+            cb.setText(services[i]);
+            ll.addView(cb);
+        }
+
+        services = res.getStringArray(R.array.support_services_array);
+        ll = (LinearLayout) view.findViewById(R.id.support_services_list);
         for(int i = 0; i < services.length; i++){
             CheckBox cb = new CheckBox(getActivity());
             cb.setLayoutParams(new LinearLayout.LayoutParams(

@@ -79,16 +79,17 @@
     <!-- Services Selection -->
     <string name="prompt_services">Which services will you be using today?</string>
     <string name="medical_services">Medical Services</string>
-    <string name="support_services">Support Services</string>
-    <string-array name="services_array">
+    <string-array name="medical_services_array">
         <item>acupuncture</item>
         <item>addiction recovery</item>
-        <item>bugs and lice</item>
-        <item>dental</item>
-        <item>medical</item>
-        <item>mental health</item>
-        <item>needle exchange</item>
-        <item>tb testing</item>
+        <item>medicine things</item>
+    </string-array>
+
+    <string name="support_services">Support Services</string>
+    <string-array name="support_services_array">
+        <item>support</item>
+        <item>support</item>
+        <item>moar support</item>
     </string-array>
 
     <!-- Sidebar Stuff -->
