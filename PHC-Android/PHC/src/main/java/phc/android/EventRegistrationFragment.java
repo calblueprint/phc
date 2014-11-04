@@ -4,14 +4,11 @@ import android.app.Fragment;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 public class EventRegistrationFragment extends Fragment {
@@ -29,23 +26,23 @@ public class EventRegistrationFragment extends Fragment {
 
         services = res.getStringArray(R.array.medical_services_array);
         ll = (LinearLayout) view.findViewById(R.id.medical_services_list);
-        for(int i = 0; i < services.length; i++){
+        for (String service : services) {
             CheckBox cb = new CheckBox(getActivity());
             cb.setLayoutParams(new LinearLayout.LayoutParams(
                     R.dimen.input_text_width,
                     LinearLayout.LayoutParams.WRAP_CONTENT));
-            cb.setText(services[i]);
+            cb.setText(service);
             ll.addView(cb);
         }
 
         services = res.getStringArray(R.array.support_services_array);
         ll = (LinearLayout) view.findViewById(R.id.support_services_list);
-        for(int i = 0; i < services.length; i++){
+        for (String service : services) {
             CheckBox cb = new CheckBox(getActivity());
             cb.setLayoutParams(new LinearLayout.LayoutParams(
                     R.dimen.input_text_width,
                     LinearLayout.LayoutParams.WRAP_CONTENT));
-            cb.setText(services[i]);
+            cb.setText(service);
             ll.addView(cb);
         }
 

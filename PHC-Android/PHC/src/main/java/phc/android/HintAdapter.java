@@ -14,8 +14,8 @@ public class HintAdapter extends ArrayAdapter<String> {
 
     public HintAdapter(Context context, int textViewResourceId, String[] items) {
         super(context, textViewResourceId);
-        for (int i = 0; i < items.length; i++) {
-            this.add(items[i]);
+        for (String item : items) {
+            this.add(item);
         }
     }
 
