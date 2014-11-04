@@ -1,9 +1,11 @@
 package phc.android;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -40,7 +42,15 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
+/* Call with resultCode of 0 if providing a service
+ * Call with resultCode of 1 if scanning for registration
+ */
 public class ServiceActivity extends Activity {
+
+    // Used to hold which service this user is scanning for
+    public String serviceSelected;
+
+    public AlertDialog serviceDialog;
 
     // Used in error logs to identify this activity.
     public static final String TAG = "ServiceActivity";
@@ -75,6 +85,7 @@ public class ServiceActivity extends Activity {
             // then we don't need to do anything and should return or else
             // we could end up with overlapping fragments.
             if (savedInstanceState != null) {
+
                 return;
             }
 
@@ -97,7 +108,47 @@ public class ServiceActivity extends Activity {
             t.add(R.id.service_fragment_container, (Fragment) mScannerFragment);
             t.commit();
 
+            Bundle bundle = getIntent().getExtras();
+            int intention = (Integer) bundle.get("request_code");
+            if (bundle.get("provided_service") == null && intention == MainActivity.FOR_SERVICE) {
+                showSelectServiceDialog(null);
+            } else {
+                serviceSelected = (String) bundle.get("provided_service");
+            }
         }
+    }
+
+
+    private void showSelectServiceDialog(String previousService) {
+        final CharSequence[] services = getResources().getStringArray(R.array.services_array);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Provided Service");
+        // if service is already selected, pre select a button.
+        int prevIndex = -1;
+        if (previousService != null) {
+            for (int i = 0; i < services.length; i++) {
+                if (previousService.equals(services[i])) {
+                    prevIndex = i;
+                }
+            }
+        }
+        builder.setSingleChoiceItems(services, prevIndex, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int item) {
+                serviceSelected = services[item].toString();
+                serviceDialog.dismiss();
+            }
+        });
+        serviceDialog = builder.create();
+        serviceDialog.setCanceledOnTouchOutside(false);
+        serviceDialog.show();
+        // handle back button
+        serviceDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                onBackPressed();
+            }
+        });
     }
 
     /**
@@ -111,6 +162,7 @@ public class ServiceActivity extends Activity {
     private void returnSuccessfulResult(String result) {
         Intent scanResult = new Intent();
         scanResult.putExtra("scan_result", result);
+        scanResult.putExtra("new_provided_service", serviceSelected);
         setResult(RESULT_OK, scanResult);
         finish();
     }
@@ -123,6 +175,7 @@ public class ServiceActivity extends Activity {
      */
     private void returnCanceledResult() {
         Intent scanResult = new Intent();
+        scanResult.putExtra("new_provided_service", serviceSelected);
         setResult(RESULT_CANCELED, scanResult);
         finish();
     }

@@ -10,6 +10,18 @@ import android.view.View;
 
 public class MainActivity extends Activity {
 
+
+    /* Use to set resultCode
+     * when calling ServiceActivity
+     * to specify intention.
+     */
+    public static final int FOR_SERVICE = 0;
+    public static final int FOR_REGISTRATION = 0;
+
+    // Holds the service provided by the user, selected in the
+    // ServiceActivity alert dialog.
+    private String providedService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +50,9 @@ public class MainActivity extends Activity {
     //Handles the "Services" Button on the splash page
     public void openServices(View view) {
         Intent intent = new Intent(this, ServiceActivity.class);
-        startActivityForResult(intent, 0);
+        intent.putExtra("provided_service", providedService);
+        intent.putExtra("request_code", FOR_SERVICE);
+        startActivityForResult(intent, FOR_SERVICE);
     }
     //Handles the "Register" Button on the splash page
     public void openRegister(View view) {
@@ -46,4 +60,15 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == FOR_SERVICE) {
+            if (resultCode == RESULT_CANCELED) {
+                providedService = data.getStringExtra("new_provided_service");
+            }
+            else if (resultCode == RESULT_OK) {
+                providedService = data.getStringExtra("new_provided_service");
+            }
+        }
+    }
 }
