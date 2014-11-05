@@ -90,6 +90,9 @@
         <item>moar support</item>
     </string-array>
 
+    <string name="logout_title">Logout from PHC</string>
+    <string name="logout_yes">Logout</string>
+    <string name="logout_cancel">Cancel</string>
     <!-- Sidebar Stuff -->
 
     <string name="sidebar_selection">Selection</string>

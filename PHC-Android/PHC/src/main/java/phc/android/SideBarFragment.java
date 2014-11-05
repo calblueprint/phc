@@ -50,6 +50,8 @@ public class SideBarFragment extends Fragment {
                             newFragment = new AccountRegistrationFragment();
                         } else if (tag.equals(getResources().getString(R.string.sidebar_event_info))) {
                             newFragment = new EventRegistrationFragment();
+                        } else if (tag.equals(getResources().getString(R.string.sidebar_selection))) {
+                            newFragment = new SelectionFragment();
                         }
                     }
 
