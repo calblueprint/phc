@@ -76,7 +76,6 @@ public class MainActivity extends Activity{
         super.onResume();
         if (!initialized) {
             loginSalesforce(true);
-            initialized = true;
         } else {
             loginSalesforce();
         }
@@ -194,10 +193,21 @@ public class MainActivity extends Activity{
         }
     }
 
+
+    /**
+     * Static method that returns a map with all of the resources for the most recent event.
+     *
+     * @return Map of resources. Key = Salesforce Field name; Value = Display Name;
+     */
     public Map<String, String> getResourceList() {
         return this.resources;
     }
 
+    /**
+     * Run this when the app starts up. This will create the object that contains
+     * all resources offered at the most recently created event object. Calls
+     * describeResources when it receives a successful response.
+     */
     private void initResourceList() {
         RestRequest idRequest = null;
         String soql = "SELECT id FROM PHC_EVENT__c ORDER BY createddate DESC LIMIT 1";
@@ -233,6 +243,13 @@ public class MainActivity extends Activity{
         }
     }
 
+    /**
+     * Created a describe request for the PHC_Resource__c object in the Salesforce
+     * backend. This will give us the list of fields we need to query in the next step.
+     *
+     * @param eventId: The eventId returned from the previous step. This will be used in
+     *               the next step
+     */
     private void describeResources(final String eventId){
         RestRequest fieldRequest = null;
         final ArrayList<String> fields = new ArrayList<String>();
@@ -274,6 +291,15 @@ public class MainActivity extends Activity{
         }
     }
 
+    /**
+     *Final step: uses the eventId to find the right PHC_Resource object and queries the
+     * fields we found in Step 2 to find which services are available at the given event.
+     * Places these into a Map where the key is the column name and the value is its display
+     * value.
+     *
+     * @param eventId: The id of the event associated with the desired resource
+     * @param fields: The fields we need to query, since SF doesn't support * notation... -_-
+     */
     private void getResourceValues(final String eventId, final List<String> fields){
         fields.remove("Event__c");
         String fieldsString = fields.toString();
@@ -297,6 +323,7 @@ public class MainActivity extends Activity{
                                 MainActivity.this.resources.put(field, MainActivity.fieldNameHelper(field));
                             }
                         }
+                        MainActivity.this.initialized = true;
 
                     } catch (Exception e) {
                         Log.e("Value Response Error 2", e.toString());
@@ -315,6 +342,15 @@ public class MainActivity extends Activity{
         }
     }
 
+
+    /**
+     * Takes in the name of a salesforce object attribute and returns the human-
+     * readable version. Truncates the last 3 characters to get rid of "__c" and
+     * replaces remaining underscores ("_") with spaces (" ").
+     *
+     * @param columnName: the salesforce column name to be converted
+     * @return human readable version of columnName
+     */
     private static String fieldNameHelper(String columnName) {
         columnName = columnName.substring(0, columnName.length()-3);
         columnName = columnName.replace("_", " ");
