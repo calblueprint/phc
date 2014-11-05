@@ -2,6 +2,7 @@ package phc.android;
 
 import android.app.Fragment;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class SelectServicesFragment extends Fragment{
     /* Submit button. */
@@ -60,5 +62,22 @@ public class SelectServicesFragment extends Fragment{
         mSubmitButton = (Button) view.findViewById(R.id.button_submit);
         mSubmitClickListener = new OnSubmitClickListener(getActivity());
         mSubmitButton.setOnClickListener(mSubmitClickListener);
+    }
+
+    @Override
+    public void onResume() {
+        LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.sidebar_list);
+        for (int i=0; i < sidebarList.getChildCount(); i++) {
+            View v = sidebarList.getChildAt(i);
+            Object vTag = v.getTag();
+            if ((vTag != null) && (vTag.equals(getResources().getText(R.string.sidebar_event_info)))) {
+                TextView tv = (TextView) v;
+                tv.setTypeface(null, Typeface.BOLD);
+            } else if (v instanceof TextView) {
+                TextView tv = (TextView) v;
+                tv.setTypeface(null, Typeface.NORMAL);
+            }
+        }
+        super.onResume();
     }
 }

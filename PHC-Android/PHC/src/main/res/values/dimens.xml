@@ -1,7 +1,12 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
+    <!-- Don't know if we really need these margins, but hey why not for now -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
     <dimen name="input_text_width">300dp</dimen>
+    <dimen name="actionbar_gap">40dp</dimen>
+    <dimen name="horizontal_rule_height">1dp</dimen>
+    <dimen name="button_text_size">8dp</dimen>
 
 </resources>

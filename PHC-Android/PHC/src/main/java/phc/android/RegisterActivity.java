@@ -1,14 +1,14 @@
 package phc.android;
 
+import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 
 /**
  * RegisterActivity is the main activity for registering a client.
  * It calls all FormFragments.
  */
-public class RegisterActivity extends ActionBarActivity{
+public class RegisterActivity extends Activity {
 
     /**
      * On creation of the activity, launches the first fragment,
@@ -19,7 +19,6 @@ public class RegisterActivity extends ActionBarActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
-
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.add(R.id.registration_fragment_container, new AccountRegistrationFragment());
         transaction.commit();
