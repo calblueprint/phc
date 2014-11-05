@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--App-->
-    <string name="app_name">  Project Homeless Connect</string>
+    <!-- App -->
+    <string name="app_name">Project Homeless Connect</string>
     <string name="action_settings">Settings</string>
 
-    <!--Splash Page-->
+    <!-- Logout -->
+    <string name="logout_title">Logout from PHC</string>
+    <string name="logout_yes">Logout</string>
+    <string name="logout_cancel">Cancel</string>
+
+    <!-- Sidebar-->
+    <string name="sidebar_selection">Selection</string>
+    <string name="sidebar_personal_info">Personal Info</string>
+    <string name="sidebar_event_info">Event Info</string>
+    <string name="sidebar_confirmation">Confirmation</string>
+    <string-array name="sidebar">
+        <item>Selection</item>
+        <item>Personal Info</item>
+        <item>Event Info</item>
+        <item>Confirmation</item>
+    </string-array>
+
+    <!-- Splash Page -->
     <string name="button_register">Register</string>
     <string name="button_services">Services</string>
     <string name="title_activity_register">Register Client</string>
@@ -18,7 +35,6 @@
     <string name="prompt_birthday">Birthday</string>
     <string name="prompt_phone">Phone</string>
     <string name="prompt_email">E-mail</string>
-
     <string name="prompt_gender">Gender Identity</string>
     <string name="prompt_ethnicity">Ethnicity</string>
     <string name="prompt_language">Primary Language</string>
@@ -31,7 +47,6 @@
         <item>Female</item>
         <item>Transgender</item>
     </string-array>
-
     <string-array name="ethnicity_array">
         <item>Ethnicity...</item>
         <item>African American</item>
@@ -41,7 +56,6 @@
         <item>Native American</item>
         <item>Other</item>
     </string-array>
-
     <string-array name="language_array">
         <item>Primary Language...</item>
         <item>English</item>
@@ -57,7 +71,6 @@
     <string name="error_invalid_ssn">This SSN is invalid</string>
     <string name="error_invalid_birthday">This date of birth is invalid</string>
     <string name="error_invalid_phone_number">This phone number is invalid</string>
-
     <string name="action_continue">Continue</string>
 
     <!-- Event Registration -->
@@ -78,6 +91,7 @@
 
     <!-- Services Selection -->
     <string name="prompt_services">Which services will you be using today?</string>
+
     <string-array name="services_array">
         <item>acupuncture</item>
         <item>addiction recovery</item>
@@ -89,20 +103,10 @@
         <item>tb testing</item>
     </string-array>
 
-    <string name="logout_title">Logout from PHC</string>
-    <string name="logout_yes">Logout</string>
-    <string name="logout_cancel">Cancel</string>
-    <!-- Sidebar Stuff -->
+    <string name="action_submit">Submit</string>
 
-    <string name="sidebar_selection">Selection</string>
-    <string name="sidebar_personal_info">Personal Info</string>
-    <string name="sidebar_event_info">Event Info</string>
-    <string name="sidebar_confirmation">Confirmation</string>
-    <string-array name="sidebar">
-        <item>Selection</item>
-        <item>Personal Info</item>
-        <item>Event Info</item>
-        <item>Confirmation</item>
-    </string-array>
+    <!-- Success Page -->
+    <string name="text_success">Success!</string>
+    <string name="button_register_another">Register another client</string>
 
 </resources>

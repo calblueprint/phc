@@ -2,8 +2,8 @@ package phc.android;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
+import android.content.IntentFilter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,8 +36,6 @@ public class MainActivity extends Activity{
     private Map<String, String> resources = new HashMap<String, String>();
     private boolean initialized = false;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -55,8 +53,6 @@ public class MainActivity extends Activity{
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
     }
 
     @Override
@@ -111,8 +107,6 @@ public class MainActivity extends Activity{
             });
         }
     }
-
-
 
     @Override
     // Inflate the menu; this adds items to the action bar if it is present.
@@ -171,7 +165,6 @@ public class MainActivity extends Activity{
         }
     }
 
-
     /**
      * Refreshes the client if the user has been switched.
      */
@@ -192,7 +185,6 @@ public class MainActivity extends Activity{
             refreshIfUserSwitched();
         }
     }
-
 
     /**
      * Static method that returns a map with all of the resources for the most recent event.
@@ -356,8 +348,4 @@ public class MainActivity extends Activity{
         columnName = columnName.replace("_", " ");
         return columnName;
     }
-
-
-
-
 }
