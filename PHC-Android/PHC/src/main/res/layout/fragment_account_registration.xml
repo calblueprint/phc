@@ -22,6 +22,7 @@
                 android:layout_width="@dimen/input_text_width"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_first"
+                android:inputType="textCapWords"
                 android:maxLines="1"
                 android:singleLine="true"/>
 
@@ -30,6 +31,7 @@
                 android:layout_width="@dimen/input_text_width"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_last"
+                android:inputType="textCapWords"
                 android:maxLines="1"
                 android:singleLine="true"/>
 
@@ -37,10 +39,10 @@
                 android:id="@+id/ssn"
                 android:layout_width="@dimen/input_text_width"
                 android:layout_height="wrap_content"
+                android:inputType="numberPassword"
                 android:hint="@string/prompt_ssn"
                 android:maxLines="1"
-                android:singleLine="true"
-                android:inputType="numberPassword"/>
+                android:singleLine="true"/>
 
             <EditText
                 android:id="@+id/birthday"
@@ -70,7 +72,7 @@
                 android:singleLine="true"/>
 
             <Spinner
-                android:id="@+id/gender_spinner"
+                android:id="@+id/spinner_gender"
                 android:layout_width="@dimen/input_text_width"
                 android:layout_height="wrap_content" />
 
@@ -85,7 +87,7 @@
                 <!--android:onClick="onClick"/>-->
 
             <Spinner
-                android:id="@+id/ethnicity_spinner"
+                android:id="@+id/spinner_ethnicity"
                 android:layout_width="@dimen/input_text_width"
                 android:layout_height="wrap_content" />
 
@@ -99,7 +101,7 @@
                 <!--android:text="@string/prompt_ethnicity" />-->
 
             <Spinner
-                android:id="@+id/language_spinner"
+                android:id="@+id/spinner_language"
                 android:layout_width="@dimen/input_text_width"
                 android:layout_height="wrap_content" />
 
@@ -115,24 +117,21 @@
             <CheckBox android:id="@+id/checkbox_military"
                 android:layout_width="@dimen/input_text_width"
                 android:layout_height="wrap_content"
-                android:text="@string/prompt_military"
-                android:onClick="onCheckboxClicked"/>
+                android:text="@string/prompt_military"/>
 
             <CheckBox android:id="@+id/checkbox_foster"
                 android:layout_width="@dimen/input_text_width"
                 android:layout_height="wrap_content"
-                android:text="@string/prompt_foster"
-                android:onClick="onCheckboxClicked"/>
+                android:text="@string/prompt_foster"/>
 
             <Button
-                android:id="@+id/continue_button"
+                android:id="@+id/button_account_continue"
                 style="?android:textAppearanceSmall"
                 android:layout_width="@dimen/input_text_width"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/action_continue"
-                android:textStyle="bold"
-                android:onClick="onContinueToEventRegistration"/>
+                android:textStyle="bold"/>
 
         </LinearLayout>
     </ScrollView>
