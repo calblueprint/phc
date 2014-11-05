@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :accounts
-      get 'show', to: 'accounts#search'
+      get 'search', to: 'accounts#search'
     end
   end
 end
