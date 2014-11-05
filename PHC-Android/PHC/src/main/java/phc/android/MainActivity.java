@@ -24,6 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,8 @@ public class MainActivity extends Activity{
     private String apiVersion;
     private RestClient client;
     private UserSwitchReceiver userSwitchReceiver;
-    private Map<String, String> resources = null;
+    private Map<String, String> resources = new HashMap<String, String>();
+    private boolean initialized = false;
 
 
 
@@ -74,8 +76,9 @@ public class MainActivity extends Activity{
     @Override
     public void onResume() {
         super.onResume();
-        if (resources == null) {
+        if (!initialized) {
             loginSalesforce(true);
+            initialized = true;
         } else {
             loginSalesforce();
         }
@@ -274,9 +277,10 @@ public class MainActivity extends Activity{
     }
 
     private void getResourceValues(final String eventId, final List<String> fields){
+        fields.remove("Event__c");
         String fieldsString = fields.toString();
         fieldsString = fieldsString.substring(1, fieldsString.length()-1);
-        String soql = "SELECT " + fieldsString + " FROM RESOURCES WHERE event__c = " + eventId;
+        String soql = "SELECT " + fieldsString + " FROM PHC_Resource__c WHERE event__c = '" + eventId + "'";
 
 
         try {
@@ -297,19 +301,19 @@ public class MainActivity extends Activity{
                         }
 
                     } catch (Exception e) {
-                        Log.e("ValueResponse Error 2", e.getLocalizedMessage());
+                        Log.e("Value Response Error 2", e.toString());
                     }
                 }
 
                 @Override
                 public void onError(Exception exception) {
-                    Log.e("Value Response Error", exception.getLocalizedMessage());
+                    Log.e("Value Response Error", exception.toString());
                 }
             };
             sendRequest(valueRequest, callback);
 
         } catch (Exception e) {
-            Log.e("Value Request Error", e.getLocalizedMessage());
+            Log.e("Value Request Error", e.toString());
         }
     }
 
