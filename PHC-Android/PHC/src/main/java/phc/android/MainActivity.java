@@ -19,12 +19,22 @@ import com.salesforce.androidsdk.rest.RestResponse;
 import com.salesforce.androidsdk.security.PasscodeManager;
 import com.salesforce.androidsdk.util.UserSwitchReceiver;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class MainActivity extends Activity{
 
     private PasscodeManager passcodeManager;
     private String apiVersion;
     private RestClient client;
     private UserSwitchReceiver userSwitchReceiver;
+    private Map<String, String> resources = new HashMap<String, String>();
+    private boolean initialized = false;
 
 
 
@@ -47,8 +57,6 @@ public class MainActivity extends Activity{
         setContentView(R.layout.activity_main);
 
 
-
-
     }
 
     @Override
@@ -66,10 +74,19 @@ public class MainActivity extends Activity{
     @Override
     public void onResume() {
         super.onResume();
-        loginSalesforce();
+        if (!initialized) {
+            loginSalesforce(true);
+        } else {
+            loginSalesforce();
+        }
+
     }
 
     private void loginSalesforce() {
+        loginSalesforce(false);
+    }
+
+    private void loginSalesforce(final boolean first) {
         // Bring up passcode screen if needed
         if (passcodeManager.onResume(this)) {
             // Login options
@@ -77,15 +94,19 @@ public class MainActivity extends Activity{
 
             // Get a rest client
             new ClientManager(this, accountType, SalesforceSDKManager.getInstance().getLoginOptions(),
-                    SalesforceSDKManager.getInstance().shouldLogoutWhenTokenRevoked()).getRestClient(this, new ClientManager.RestClientCallback() {
+                SalesforceSDKManager.getInstance().shouldLogoutWhenTokenRevoked()).getRestClient(this, new ClientManager.RestClientCallback() {
 
-                @Override
-                public void authenticatedRestClient(RestClient client) {
-                    if (client == null) {
-                        SalesforceSDKManager.getInstance().logout(MainActivity.this);
-                        return;
-                    }
-                    MainActivity.this.client = client;
+            @Override
+            public void authenticatedRestClient(RestClient client) {
+                if (client == null) {
+                    SalesforceSDKManager.getInstance().logout(MainActivity.this);
+                    return;
+                }
+                MainActivity.this.client = client;
+
+                if (first) {
+                    MainActivity.this.initResourceList();
+                }
                 }
             });
         }
@@ -171,5 +192,172 @@ public class MainActivity extends Activity{
             refreshIfUserSwitched();
         }
     }
+
+
+    /**
+     * Static method that returns a map with all of the resources for the most recent event.
+     *
+     * @return Map of resources. Key = Salesforce Field name; Value = Display Name;
+     */
+    public Map<String, String> getResourceList() {
+        return this.resources;
+    }
+
+    /**
+     * Run this when the app starts up. This will create the object that contains
+     * all resources offered at the most recently created event object. Calls
+     * describeResources when it receives a successful response.
+     */
+    private void initResourceList() {
+        RestRequest idRequest = null;
+        String soql = "SELECT id FROM PHC_EVENT__c ORDER BY createddate DESC LIMIT 1";
+        try {
+            idRequest = RestRequest.getRequestForQuery(apiVersion, soql);
+
+            AsyncRequestCallback callback = new AsyncRequestCallback() {
+                @Override
+                public void onSuccess(RestRequest request, RestResponse response) {
+                    try {
+                        JSONObject json = response.asJSONObject();
+                        JSONObject item = (JSONObject) ((JSONArray)json.get("records")).get(0);
+                        String id = item.getString("Id");
+                        MainActivity.this.describeResources(id);
+                    } catch (Exception e) {
+                        Log.e("Id Response Error", e.getLocalizedMessage());
+                    }
+
+
+                }
+
+                @Override
+                public void onError(Exception exception) {
+                    Log.e("Id Response Error 2", exception.getLocalizedMessage());
+                }
+            };
+
+            sendRequest(idRequest, callback);
+
+
+        } catch (Exception e) {
+            Log.e("Id Request Error", e.getLocalizedMessage());
+        }
+    }
+
+    /**
+     * Created a describe request for the PHC_Resource__c object in the Salesforce
+     * backend. This will give us the list of fields we need to query in the next step.
+     *
+     * @param eventId: The eventId returned from the previous step. This will be used in
+     *               the next step
+     */
+    private void describeResources(final String eventId){
+        RestRequest fieldRequest = null;
+        final ArrayList<String> fields = new ArrayList<String>();
+
+        try {
+            fieldRequest = RestRequest.getRequestForDescribe(apiVersion, "PHC_Resource__c");
+
+            AsyncRequestCallback callback = new AsyncRequestCallback() {
+                @Override
+                public void onSuccess(RestRequest request, RestResponse response) {
+                    try {
+                        JSONObject json = response.asJSONObject();
+                        JSONArray fieldArray = json.getJSONArray("fields");
+
+                        for (int i = 0; i < fieldArray.length(); i++) {
+                            JSONObject field = fieldArray.getJSONObject(i);
+                            if (field.getBoolean("custom")) {
+                                fields.add(field.getString("name"));
+                            }
+                        }
+
+                        MainActivity.this.getResourceValues(eventId, fields);
+
+                    } catch (Exception e) {
+                        Log.e("Field Response Error", e.getLocalizedMessage());
+                    }
+                }
+
+                @Override
+                public void onError(Exception exception) {
+                    Log.e("Field Response Error 2", exception.getLocalizedMessage());
+                }
+            };
+
+            sendRequest(fieldRequest, callback);
+
+        } catch (Exception e) {
+            Log.e("Field Request Exception", e.getLocalizedMessage());
+        }
+    }
+
+    /**
+     *Final step: uses the eventId to find the right PHC_Resource object and queries the
+     * fields we found in Step 2 to find which services are available at the given event.
+     * Places these into a Map where the key is the column name and the value is its display
+     * value.
+     *
+     * @param eventId: The id of the event associated with the desired resource
+     * @param fields: The fields we need to query, since SF doesn't support * notation... -_-
+     */
+    private void getResourceValues(final String eventId, final List<String> fields){
+        fields.remove("Event__c");
+        String fieldsString = fields.toString();
+        fieldsString = fieldsString.substring(1, fieldsString.length()-1);
+        String soql = "SELECT " + fieldsString + " FROM PHC_Resource__c WHERE event__c = '" + eventId + "'";
+
+
+        try {
+            RestRequest valueRequest = RestRequest.getRequestForQuery(apiVersion, soql);
+            AsyncRequestCallback callback = new AsyncRequestCallback() {
+                @Override
+                public void onSuccess(RestRequest request, RestResponse response) {
+                    try {
+                        JSONObject json = response.asJSONObject();
+                        JSONArray records = json.getJSONArray("records");
+                        JSONObject item = records.getJSONObject(0);
+
+                        for (String field : fields) {
+                            Boolean hasField = item.getBoolean(field);
+                            if (hasField) {
+                                MainActivity.this.resources.put(field, MainActivity.fieldNameHelper(field));
+                            }
+                        }
+                        MainActivity.this.initialized = true;
+
+                    } catch (Exception e) {
+                        Log.e("Value Response Error 2", e.toString());
+                    }
+                }
+
+                @Override
+                public void onError(Exception exception) {
+                    Log.e("Value Response Error", exception.toString());
+                }
+            };
+            sendRequest(valueRequest, callback);
+
+        } catch (Exception e) {
+            Log.e("Value Request Error", e.toString());
+        }
+    }
+
+
+    /**
+     * Takes in the name of a salesforce object attribute and returns the human-
+     * readable version. Truncates the last 3 characters to get rid of "__c" and
+     * replaces remaining underscores ("_") with spaces (" ").
+     *
+     * @param columnName: the salesforce column name to be converted
+     * @return human readable version of columnName
+     */
+    private static String fieldNameHelper(String columnName) {
+        columnName = columnName.substring(0, columnName.length()-3);
+        columnName = columnName.replace("_", " ");
+        return columnName;
+    }
+
+
+
 
 }
