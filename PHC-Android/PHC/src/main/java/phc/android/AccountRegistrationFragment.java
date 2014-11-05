@@ -58,22 +58,22 @@ public class AccountRegistrationFragment extends Fragment{
      */
     protected void setSpinnerContent(View view){
         mGenderSpinner = (Spinner) view.findViewById(R.id.spinner_gender);
-        ArrayAdapter<CharSequence> mGenderAdapter = ArrayAdapter.createFromResource(getActivity(),
+        ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.gender_array, android.R.layout.simple_spinner_item);
-        mGenderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mGenderSpinner.setAdapter(mGenderAdapter);
+        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mGenderSpinner.setAdapter(genderAdapter);
 
         mEthnicitySpinner = (Spinner) view.findViewById(R.id.spinner_ethnicity);
-        ArrayAdapter<CharSequence> ethnicity_adapter = ArrayAdapter.createFromResource(getActivity(),
+        ArrayAdapter<CharSequence> ethnicityAdapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.ethnicity_array, android.R.layout.simple_spinner_item);
-        ethnicity_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mEthnicitySpinner.setAdapter(ethnicity_adapter);
+        ethnicityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mEthnicitySpinner.setAdapter(ethnicityAdapter);
 
         mLanguageSpinner = (Spinner) view.findViewById(R.id.spinner_language);
-        ArrayAdapter<CharSequence> mLanguageAdapter = ArrayAdapter.createFromResource(getActivity(),
+        ArrayAdapter<CharSequence> languageAdapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.language_array, android.R.layout.simple_spinner_item);
-        mLanguageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mLanguageSpinner.setAdapter(mLanguageAdapter);
+        languageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mLanguageSpinner.setAdapter(languageAdapter);
     }
 
     /**

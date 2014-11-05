@@ -58,10 +58,10 @@ public class EventRegistrationFragment extends Fragment{
      */
     protected void setSpinnerContent(View view){
         mNeighborhoodSpinner = (Spinner) view.findViewById(R.id.spinner_neighborhood);
-        ArrayAdapter<CharSequence> mNeighborhoodAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.neighborhood_array, android.R.layout.simple_spinner_item);
-        mNeighborhoodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mNeighborhoodSpinner.setAdapter(mNeighborhoodAdapter);
+        ArrayAdapter<CharSequence> neighborhoodAdapter = ArrayAdapter.createFromResource
+                (getActivity(), R.array.neighborhood_array, android.R.layout.simple_spinner_item);
+        neighborhoodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mNeighborhoodSpinner.setAdapter(neighborhoodAdapter);
     }
 
     /**
