@@ -4,10 +4,10 @@ Rails.application.routes.draw do
   resources :accounts
   get 'pull', to: 'accounts#pull'
 
-  namespace :api, defaults: { format: :json },
-                  constraints: { subdomain: 'api' }, path: '/' do
-    scope module: :v1,
-          constraints: ApiConstraints.new(version: 1, default: true) do
+  namespace :api do
+    namespace :v1 do
+      resources :accounts
+      get 'show', to: 'accounts#search'
     end
   end
 end
