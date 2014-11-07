@@ -43,13 +43,14 @@ public class SelectServicesFragment extends Fragment{
         services = res.getStringArray(R.array.services_array);
         LinearLayout layout = (LinearLayout) view.findViewById(R.id.services_list);
 
-        for(String s: services){
+        for(int i = 0; i < services.length; i++){
             CheckBox cb = new CheckBox(getActivity());
             cb.setLayoutParams(new LinearLayout.LayoutParams(
                     R.dimen.input_text_width,
                     LinearLayout.LayoutParams.WRAP_CONTENT));
-            cb.setText(s);
-            cb.setOnClickListener(new OnDynamicCheckboxClickListener(getActivity(), s));
+            cb.setId(i);
+            cb.setText(services[i]);
+            cb.setOnClickListener(new OnDynamicCheckboxClickListener(getActivity(), services[i]));
             layout.addView(cb);
         }
     }
