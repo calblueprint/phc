@@ -5,7 +5,7 @@ class Api::V1::AccountsController < ApplicationController
     if request.headers["AuthToken"].eql? ENV["AuthToken"]
         respond_with PersonAccount.fuzzy_search({first_name: params[:first_name], last_name: params[:last_name]}, false)
     else
-        respond_with ENV["AuthToken"]
+        respond_with []
     end
   end
 
