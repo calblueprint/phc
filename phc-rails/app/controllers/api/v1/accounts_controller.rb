@@ -2,7 +2,11 @@ class Api::V1::AccountsController < ApplicationController
   respond_to :json
 
   def search
-    respond_with PersonAccount.fuzzy_search({first_name: params[:first_name], last_name: params[:last_name]}, false)
+    if request.headers["AuthToken"].eql? ENV["AuthToken"]
+        respond_with PersonAccount.fuzzy_search({first_name: params[:first_name], last_name: params[:last_name]}, false)
+    else
+        respond_with ENV["AuthToken"]
+    end
   end
 
   def show
