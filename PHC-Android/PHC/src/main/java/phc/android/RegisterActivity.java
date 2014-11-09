@@ -34,7 +34,7 @@ public class RegisterActivity extends Activity {
                 return;
             }
             // Create a new Fragment to be placed in the activity layout
-            AccountRegistrationFragment firstFragment = new AccountRegistrationFragment();
+            SelectionFragment firstFragment = new SelectionFragment();
 
             // In case this activity was started with special instructions from an
             // Intent, pass the Intent's extras to the fragment as arguments
@@ -83,20 +83,6 @@ public class RegisterActivity extends Activity {
         // Another interface callback
     }
 
-    //Takes user to Event Registration
-    // TODO: Maybe we should try to modularize this code to continue to any page correctly?
-    // Not that important because our app has a static number of pages though...
-    public void onContinueToEventRegistration(View view) {
-        // Calls attemptContinue() first to make sure current page is valid
-        // attemptContinue();
-
-        // Create fragment
-        EventRegistrationFragment newFragment = new EventRegistrationFragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.registration_fragment_container, newFragment, getResources().getString(R.string.sidebar_event_info));
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
 
     /**
      * Attempts to register.

@@ -46,12 +46,12 @@ public class SideBarFragment extends Fragment {
                     FragmentManager fragMan = getFragmentManager();
                     Fragment newFragment = fragMan.findFragmentByTag(tag);
                     if (newFragment == null) {
-                        if (tag.equals(getResources().getString(R.string.sidebar_personal_info))) {
+                        if (tag.equals(getResources().getString(R.string.sidebar_selection))) {
+                            newFragment = new SelectionFragment();
+                        } else if (tag.equals(getResources().getString(R.string.sidebar_personal_info))) {
                             newFragment = new AccountRegistrationFragment();
                         } else if (tag.equals(getResources().getString(R.string.sidebar_event_info))) {
                             newFragment = new EventRegistrationFragment();
-                        } else if (tag.equals(getResources().getString(R.string.sidebar_selection))) {
-                            newFragment = new SelectionFragment();
                         }
                     }
 
