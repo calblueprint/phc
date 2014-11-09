@@ -4,6 +4,22 @@
     <!-- App -->
     <string name="app_name">  Project Homeless Connect</string>
     <string name="action_settings">Settings</string>
+    <!-- Logout -->
+    <string name="logout_title">Logout from PHC</string>
+    <string name="logout_yes">Logout</string>
+    <string name="logout_cancel">Cancel</string>
+
+    <!-- Sidebar-->
+    <string name="sidebar_selection">Selection</string>
+    <string name="sidebar_personal_info">Personal Info</string>
+    <string name="sidebar_event_info">Event Info</string>
+    <string name="sidebar_confirmation">Confirmation</string>
+    <string-array name="sidebar">
+        <item>Selection</item>
+        <item>Personal Info</item>
+        <item>Event Info</item>
+        <item>Confirmation</item>
+    </string-array>
 
     <!-- Splash Page -->
     <string name="button_register">Register</string>
@@ -90,23 +106,11 @@
         <item>moar support</item>
     </string-array>
 
-    <string name="logout_title">Logout from PHC</string>
-    <string name="logout_yes">Logout</string>
-    <string name="logout_cancel">Cancel</string>
-    <!-- Sidebar Stuff -->
+    <string name="action_submit">Submit</string>
 
-    <string name="sidebar_selection">Selection</string>
-    <string name="sidebar_personal_info">Personal Info</string>
-    <string name="sidebar_event_info">Event Info</string>
-    <string name="sidebar_confirmation">Confirmation</string>
-
-    <string-array name="sidebar">
-        <item>Selection</item>
-        <item>Personal Info</item>
-        <item>Event Info</item>
-        <item>Confirmation</item>
-    </string-array>
-
+    <!-- Success Page -->
+    <string name="text_success">Success!</string>
+    <string name="button_register_another">Register another client</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

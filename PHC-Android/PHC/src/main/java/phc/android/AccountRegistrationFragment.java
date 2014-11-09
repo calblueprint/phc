@@ -13,14 +13,32 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+<<<<<<< HEAD
 public class AccountRegistrationFragment extends Fragment {
     Spinner mGenderSpinner, mEthnicitySpinner, mLanguageSpinner, mNeighborhoodSpinner;
+=======
+/**
+ * AccountRegistrationFragment is the registration form for all new clients
+ * and contains personal account questions that do not change over time.
+ */
+public class AccountRegistrationFragment extends Fragment{
+    /* Continue button */
+    Button mContinueButton;
+    /* Listener for when the continue button is clicked */
+    OnContinueClickListener mContinueClickListener;
+    /* Spinners for multiple choice questions */
+    Spinner mGenderSpinner, mEthnicitySpinner, mLanguageSpinner;
+>>>>>>> 379c9ed3f844de7a74f3ab737f65bbcf58d83bad
 
-    @Override
+    /**
+     * On creation of the fragment, sets content for spinners and an onClickListener
+     * for the continue button.
+     */
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account_registration, container, false);
         setSpinnerContent(view);
+<<<<<<< HEAD
 
         Button continueButton = (Button) view.findViewById(R.id.continue_button);
         continueButton.setOnClickListener(new View.OnClickListener() {
@@ -34,6 +52,9 @@ public class AccountRegistrationFragment extends Fragment {
             }
         });
 
+=======
+        setOnContinueClickListener(view);
+>>>>>>> 379c9ed3f844de7a74f3ab737f65bbcf58d83bad
         return view;
     }
 
@@ -54,6 +75,7 @@ public class AccountRegistrationFragment extends Fragment {
         super.onResume();
     }
 
+<<<<<<< HEAD
     private void setSpinnerContent(View view){
 
         mNeighborhoodSpinner = (Spinner) view.findViewById(R.id.neighborhood_spinner);
@@ -81,5 +103,39 @@ public class AccountRegistrationFragment extends Fragment {
         ArrayAdapter<String> mLanguageAdapter = new HintAdapter(getActivity(), android.R.layout.simple_spinner_item, languages);
         mLanguageSpinner.setAdapter(mLanguageAdapter);
         mLanguageSpinner.setSelection(mLanguageAdapter.getCount());
+=======
+    /**
+     * Sets multiple choice options for each spinner.
+     */
+    protected void setSpinnerContent(View view){
+        mGenderSpinner = (Spinner) view.findViewById(R.id.spinner_gender);
+        ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.gender_array, android.R.layout.simple_spinner_item);
+        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mGenderSpinner.setAdapter(genderAdapter);
+
+        mEthnicitySpinner = (Spinner) view.findViewById(R.id.spinner_ethnicity);
+        ArrayAdapter<CharSequence> ethnicityAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.ethnicity_array, android.R.layout.simple_spinner_item);
+        ethnicityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mEthnicitySpinner.setAdapter(ethnicityAdapter);
+
+        mLanguageSpinner = (Spinner) view.findViewById(R.id.spinner_language);
+        ArrayAdapter<CharSequence> languageAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.language_array, android.R.layout.simple_spinner_item);
+        languageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mLanguageSpinner.setAdapter(languageAdapter);
+    }
+
+    /**
+     * Sets on-click listener for the continue button.
+     * and sets the next fragment to the EventRegistrationFragment.
+     */
+    protected void setOnContinueClickListener(View view) {
+        mContinueButton = (Button) view.findViewById(R.id.button_account_continue);
+        mContinueClickListener =
+                new OnContinueClickListener(getActivity(), new EventRegistrationFragment());
+        mContinueButton.setOnClickListener(mContinueClickListener);
+>>>>>>> 379c9ed3f844de7a74f3ab737f65bbcf58d83bad
     }
 }

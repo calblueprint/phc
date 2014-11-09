@@ -11,6 +11,7 @@
         <uses-sdk
             android:minSdkVersion="14"
             android:targetSdkVersion="20" />
+
         <activity
             android:name=".MainActivity">
 
@@ -23,6 +24,8 @@
 
         <activity
             android:name=".RegisterActivity"
+            android:exported="true"
+            android:label="@string/title_activity_register"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
         <activity
@@ -30,4 +33,5 @@
             android:label="@string/title_activity_services" >
         </activity>
     </application>
+
 </manifest>

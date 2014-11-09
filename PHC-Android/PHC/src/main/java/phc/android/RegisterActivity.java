@@ -1,11 +1,8 @@
 package phc.android;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,12 +10,17 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 
+/**
+ * RegisterActivity is the main activity for registering a client.
+ * It calls all FormFragments.
+ */
 public class RegisterActivity extends Activity {
-    // UI references.
-    private AutoCompleteTextView mEmailView;
-    private View mProgressView;
-    private View mLoginFormView;
 
+    /**
+     * On creation of the activity, launches the first fragment,
+     * creates SharedPreferences file to store input data, and
+     * initializes checkbox fields to false.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,70 +85,14 @@ public class RegisterActivity extends Activity {
         // Another interface callback
     }
 
-
     /**
-     * Attempts to register.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented.
+     * Takes in a string ID and converts it to key format
+     * used in the SalesForce database via the following changes:
+     *   - add "__c" to the end of the field
+     *   - replace nonalphanumeric characters (e.g. "/" and "-") with "_".
      */
-    public void attemptContinue() {
-        // Reset errors.
-        mEmailView.setError(null);
-
-        // Store values at the time of the registration attempt.
-        String email = mEmailView.getText().toString();
-
-        boolean cancel = false;
-        View focusView = null;
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
-    }
-
-    private boolean isEmailValid(String email) {
-        return email.contains("@");
-    }
-
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    public void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
-
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
+    public String keyToKeyConverter(String key){
+        key = key.replaceAll("[\\W\\s]","_") + "__c";
+        return key;
     }
 }

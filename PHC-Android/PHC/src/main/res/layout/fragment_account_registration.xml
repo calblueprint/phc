@@ -27,6 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_first"
+                android:inputType="textCapWords"
                 android:maxLines="1"/>
 
             <EditText
@@ -34,7 +35,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_last"
-                android:maxLines="1" />
+                android:inputType="textCapWords"
+                android:maxLines="1"/>
 
             <EditText
                 android:id="@+id/ssn"
@@ -131,7 +133,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/continue_button"
+                android:id="@+id/button_account_continue"
                 style="?android:textAppearanceSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
