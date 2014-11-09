@@ -22,7 +22,7 @@ public class AccountRegistrationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_account_registration, container, false);
         setSpinnerContent(view);
 
-        Button continueButton = (Button) getActivity().findViewById(R.id.continue_button);
+        Button continueButton = (Button) view.findViewById(R.id.continue_button);
         continueButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Do something in response to button click

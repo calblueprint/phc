@@ -3,37 +3,28 @@ package phc.android;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.Typeface;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class SelectionFragment extends Fragment {
+public class ConfirmationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_selection, container, false);
-
-        ImageButton newUserButton = (ImageButton) view.findViewById(R.id.new_user_button);
+        ImageButton newUserButton = (ImageButton) getActivity().findViewById(R.id.new_user_button);
         newUserButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Blank AccountRegistrationFragment
-                continueToAccountRegistration();
+                restartRegistration();
             }
         });
 
-        ImageButton returningUserButton = (ImageButton) view.findViewById(R.id.returning_user_button);
-        returningUserButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // TODO: Grab all the relevant data from Salesforce
-                continueToAccountRegistration();
-            }
-        });
-
-        return view;
+        return inflater.inflate(R.layout.fragment_selection, container, false);
     }
 
     @Override
@@ -42,7 +33,7 @@ public class SelectionFragment extends Fragment {
         for (int i = 0; i < sidebarList.getChildCount(); i++) {
             View v = sidebarList.getChildAt(i);
             Object vTag = v.getTag();
-            if ((vTag != null) && (vTag.equals(getResources().getText(R.string.sidebar_selection)))) {
+            if ((vTag != null) && (vTag.equals(getResources().getText(R.string.sidebar_confirmation)))) {
                 TextView tv = (TextView) v;
                 tv.setTypeface(null, Typeface.BOLD);
             } else if (v instanceof TextView) {
@@ -53,7 +44,7 @@ public class SelectionFragment extends Fragment {
         super.onResume();
     }
 
-    protected void continueToAccountRegistration() {
+    protected void restartRegistration() {
         AccountRegistrationFragment newFragment = new AccountRegistrationFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.registration_fragment_container, newFragment, getResources().getString(R.string.sidebar_event_info));
