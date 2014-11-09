@@ -17,14 +17,16 @@ public class ConfirmationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ImageButton newUserButton = (ImageButton) getActivity().findViewById(R.id.new_user_button);
+        View view = inflater.inflate(R.layout.fragment_selection, container, false);
+
+        ImageButton newUserButton = (ImageButton) view.findViewById(R.id.new_user_button);
         newUserButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 restartRegistration();
             }
         });
 
-        return inflater.inflate(R.layout.fragment_selection, container, false);
+        return view;
     }
 
     @Override
