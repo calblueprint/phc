@@ -109,4 +109,6 @@
     <string name="text_success">Success!</string>
     <string name="button_register_another">Register another client</string>
 
+    <!-- Service Activity -->
+    <string name="change_service">Change Service</string>
 </resources>

@@ -4,43 +4,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.hardware.Camera;
-import android.hardware.Camera.PictureCallback;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Surface;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.TextView;
-import com.google.zxing.BinaryBitmap;
-import com.google.zxing.ChecksumException;
-import com.google.zxing.FormatException;
-import com.google.zxing.LuminanceSource;
-import com.google.zxing.MultiFormatReader;
-import com.google.zxing.NotFoundException;
-import com.google.zxing.RGBLuminanceSource;
-import com.google.zxing.Reader;
-import com.google.zxing.Result;
-import com.google.zxing.common.HybridBinarizer;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.List;
-import java.util.Scanner;
 
 /* Call with resultCode of 0 if providing a service
  * Call with resultCode of 1 if scanning for registration
@@ -48,9 +18,10 @@ import java.util.Scanner;
 public class ServiceActivity extends Activity {
 
     // Used to hold which service this user is scanning for
-    public String serviceSelected;
+    public String mServiceSelected;
 
-    public AlertDialog serviceDialog;
+    // Created when selecting the provided service
+    public AlertDialog mServiceDialog;
 
     // Used in error logs to identify this activity.
     public static final String TAG = "ServiceActivity";
@@ -61,10 +32,15 @@ public class ServiceActivity extends Activity {
     // A handle on the fragment that holds the camera to open and release it.
     public ScannerFragment mScannerFragment;
 
+    // Holds the menu item generated in onPrepareOptionsMenu()
+    private MenuItem mServiceMenuItem;
+
     // Holds an instance of the back camera on the device
     Camera mBackCamera;
+
     // Renders a preview for the user onto a FrameLayout
     CameraPreview mPreview;
+
     // Used to display "SUCCESS" or "TRY AGAIN"
     // TODO: Change to check and X assets.
     TextView mResultText;
@@ -89,19 +65,6 @@ public class ServiceActivity extends Activity {
                 return;
             }
 
-            //TODO: take care of these cases.
-            // Create a new Fragment to be placed in the activity layout
-            //AccountRegistrationFragment firstFragment = new AccountRegistrationFragment();
-
-            // In case this activity was started with special instructions from an
-            // Intent, pass the Intent's extras to the fragment as arguments
-            //firstFragment.setArguments(getIntent().getExtras());
-
-            // Add the fragment to the 'fragment_container' FrameLayout
-            //FragmentTransaction t = getFragmentManager().beginTransaction();
-            //t.add(R.id.registration_fragment_container, (Fragment) firstFragment);
-            //t.commit();
-
             mScannerFragment = new ScannerFragment();
             mScannerFragment.setArguments(getIntent().getExtras());
             FragmentTransaction t = getFragmentManager().beginTransaction();
@@ -111,15 +74,22 @@ public class ServiceActivity extends Activity {
             Bundle bundle = getIntent().getExtras();
             int intention = (Integer) bundle.get("request_code");
             if (bundle.get("provided_service") == null && intention == MainActivity.FOR_SERVICE) {
-                showSelectServiceDialog(null);
+                showSelectServiceDialog(null, true);
             } else {
-                serviceSelected = (String) bundle.get("provided_service");
+                mServiceSelected = (String) bundle.get("provided_service");
             }
         }
     }
 
 
-    private void showSelectServiceDialog(String previousService) {
+    /**
+     * Displays a dialog box that prompts the user to select the service
+     * that they provide.
+     * @param previousService is null if a service has not been
+     * selected, the service name otherwise
+     * @param mustSelect is True if the user has not already selected a service.
+     */
+    private void showSelectServiceDialog(String previousService, final boolean mustSelect) {
         final CharSequence[] services = getResources().getStringArray(R.array.services_array);
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select Provided Service");
@@ -135,20 +105,24 @@ public class ServiceActivity extends Activity {
         builder.setSingleChoiceItems(services, prevIndex, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int item) {
-                serviceSelected = services[item].toString();
-                serviceDialog.dismiss();
+                mServiceSelected = services[item].toString();
+                mServiceDialog.dismiss();
             }
         });
-        serviceDialog = builder.create();
-        serviceDialog.setCanceledOnTouchOutside(false);
-        serviceDialog.show();
-        // handle back button
-        serviceDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        // handle back button press
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialogInterface) {
-                onBackPressed();
+                if (mustSelect) {
+                    onBackPressed();
+                } else {
+                    dialogInterface.dismiss();
+                }
             }
         });
+        mServiceDialog = builder.create();
+        mServiceDialog.setCanceledOnTouchOutside(false);
+        mServiceDialog.show();
     }
 
     /**
@@ -162,7 +136,7 @@ public class ServiceActivity extends Activity {
     private void returnSuccessfulResult(String result) {
         Intent scanResult = new Intent();
         scanResult.putExtra("scan_result", result);
-        scanResult.putExtra("new_provided_service", serviceSelected);
+        scanResult.putExtra("new_provided_service", mServiceSelected);
         setResult(RESULT_OK, scanResult);
         finish();
     }
@@ -175,16 +149,27 @@ public class ServiceActivity extends Activity {
      */
     private void returnCanceledResult() {
         Intent scanResult = new Intent();
-        scanResult.putExtra("new_provided_service", serviceSelected);
+        scanResult.putExtra("new_provided_service", mServiceSelected);
         setResult(RESULT_CANCELED, scanResult);
         finish();
     }
 
     /**
-     * Not currently implemented. This will eventually
-     * have the following options:
-     * - change the service
-     *
+     * Dynamically clears the options menu and adds the option to
+     * change a service.
+     * @param menu is passed in by the library.
+     * @return true so that menu is created.
+     */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
+        // These parameters are the groupID, itemID, order, and text for the item
+        mServiceMenuItem = menu.add(Menu.NONE, Menu.NONE, Menu.NONE, R.string.change_service);
+        return true;
+    }
+    /**
+     * Not currently used. onPrepareOptionsMenu is
+     * used instead to add options.
      * @param menu is passed in by the library
      * @return must be true for menu to be displayed.
      */
@@ -291,6 +276,11 @@ public class ServiceActivity extends Activity {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
+        }
+        if (id == mServiceMenuItem.getItemId()) {
+            // User does not have to select another service
+            // option
+            showSelectServiceDialog(mServiceSelected, false);
         }
         return super.onOptionsItemSelected(item);
     }
