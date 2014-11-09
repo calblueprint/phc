@@ -1,6 +1,7 @@
 package phc.android;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -64,7 +65,19 @@ public class EventRegistrationFragment extends Fragment{
             ll.addView(cb);
         }
 
-        setSpinnerContent(view);
+        Button submitButton = (Button) view.findViewById(R.id.button_submit);
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Do something in response to button click
+                ConfirmationFragment newFragment = new ConfirmationFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.registration_fragment_container, newFragment, getResources().getString(R.string.sidebar_confirmation));
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
+
         return view;
     }
 
@@ -83,16 +96,5 @@ public class EventRegistrationFragment extends Fragment{
             }
         }
         super.onResume();
-    }
-
-    /**
-     * Sets multiple choice options for each spinner.
-     */
-    protected void setSpinnerContent(View view){
-        mNeighborhoodSpinner = (Spinner) view.findViewById(R.id.spinner_neighborhood);
-        ArrayAdapter<CharSequence> neighborhoodAdapter = ArrayAdapter.createFromResource
-                (getActivity(), R.array.neighborhood_array, android.R.layout.simple_spinner_item);
-        neighborhoodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mNeighborhoodSpinner.setAdapter(neighborhoodAdapter);
     }
 }

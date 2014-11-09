@@ -44,7 +44,7 @@ public class RegisterActivity extends Activity {
 
             // Add the fragment to the 'fragment_container' FrameLayout
             FragmentTransaction t = getFragmentManager().beginTransaction();
-            t.add(R.id.registration_fragment_container, (Fragment) firstFragment, getResources().getString(R.string.sidebar_personal_info));
+            t.add(R.id.registration_fragment_container, (Fragment) firstFragment, getResources().getString(R.string.sidebar_selection));
             t.commit();
         }
     }

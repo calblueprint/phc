@@ -72,22 +72,22 @@
                 android:maxLines="1" />
 
             <Spinner
-                android:id="@+id/neighborhood_spinner"
+                android:id="@+id/spinner_neighborhood"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <Spinner
-                android:id="@+id/gender_spinner"
+                android:id="@+id/spinner_gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <Spinner
-                android:id="@+id/ethnicity_spinner"
+                android:id="@+id/spinner_ethnicity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <Spinner
-                android:id="@+id/language_spinner"
+                android:id="@+id/spinner_language"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

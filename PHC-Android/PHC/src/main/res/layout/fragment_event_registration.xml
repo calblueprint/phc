@@ -55,6 +55,15 @@
 
             </LinearLayout>
 
+            <Button
+                android:id="@+id/button_submit"
+                style="?android:textAppearanceSmall"
+                android:layout_width="@dimen/input_text_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/action_submit"
+                android:textStyle="bold"/>
+
         </LinearLayout>
 
     </ScrollView>
