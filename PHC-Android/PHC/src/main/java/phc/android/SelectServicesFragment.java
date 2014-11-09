@@ -3,6 +3,7 @@ package phc.android;
 import android.app.Fragment;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +53,13 @@ public class SelectServicesFragment extends Fragment{
             cb.setLayoutParams(new LinearLayout.LayoutParams(
                     R.dimen.input_text_width,
                     LinearLayout.LayoutParams.WRAP_CONTENT));
-            cb.setId(generateViewId());
+            //assigns Id to checkbox. if build version is level 17 or higher, uses built-in method.
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                cb.setId(generateViewId());
+            }
+            else {
+                cb.setId(View.generateViewId());
+            }
             cb.setText(s);
             cb.setOnClickListener(new OnDynamicCheckboxClickListener(getActivity(), s));
             layout.addView(cb);
