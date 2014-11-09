@@ -56,7 +56,7 @@ public class SelectionFragment extends Fragment {
     protected void continueToAccountRegistration() {
         AccountRegistrationFragment newFragment = new AccountRegistrationFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.registration_fragment_container, newFragment, getResources().getString(R.string.sidebar_event_info));
+        transaction.replace(R.id.registration_fragment_container, newFragment, getResources().getString(R.string.sidebar_personal_info));
         transaction.addToBackStack(null);
         transaction.commit();
     }

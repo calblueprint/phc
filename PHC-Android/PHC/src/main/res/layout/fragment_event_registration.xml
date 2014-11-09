@@ -26,10 +26,6 @@
                 android:gravity="center_horizontal"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/prompt_services"/>
-            <Spinner
-                android:id="@+id/spinner_neighborhood"
-                android:layout_width="@dimen/input_text_width"
-                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:id="@+id/medical_services_list"
