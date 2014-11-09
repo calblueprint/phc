@@ -14,3 +14,5 @@ password: mypasswordplusmysecuritytoken
 ```
 
 Link to how to get Salesforce data into app: https://developer.salesforce.com/page/Accessing_Salesforce_Data_From_Ruby
+
+To make a API request for the search hit the endpoint /api/v1/search and in the Header include the AuthToken, FirstName, and LastName.
