@@ -29,7 +29,7 @@ class AccountsController < ApplicationController
   def update_db(accounts)
     accounts.each do |a|
       pa = PersonAccount.find_or_initialize_by(sf_id: a.Id)
-      pa.update(first_name: a.FirstName, last_name: a.LastName)
+      pa.update(first_name: a.FirstName, last_name: a.LastName, birthday: a.PersonBirthdate)
       pa.save
     end
   end
