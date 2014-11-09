@@ -23,6 +23,9 @@ gem "figaro"
 gem "databasedotcom"
 gem "databasedotcom-rails"
 
+gem "rails_12factor", group: :production
+
+
 #Recommended gems
 group :development do
     gem "better_errors"
