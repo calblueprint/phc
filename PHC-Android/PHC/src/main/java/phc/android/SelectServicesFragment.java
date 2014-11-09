@@ -3,6 +3,7 @@ package phc.android;
 import android.app.Fragment;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class SelectServicesFragment extends Fragment{
     /* Submit button. */
     private Button mSubmitButton;
@@ -19,6 +22,8 @@ public class SelectServicesFragment extends Fragment{
     private OnSubmitClickListener mSubmitClickListener;
     /* Services offered for the current event. */
     private String[] services;
+    /* Integer used to help generate unique IDs for the checkboxes. */
+    private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
 
     /**
      * On creation of the fragment, grabs list of all services offered for
@@ -48,9 +53,33 @@ public class SelectServicesFragment extends Fragment{
             cb.setLayoutParams(new LinearLayout.LayoutParams(
                     R.dimen.input_text_width,
                     LinearLayout.LayoutParams.WRAP_CONTENT));
+            //assigns Id to checkbox. if build version is level 17 or higher, uses built-in method.
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                cb.setId(generateViewId());
+            }
+            else {
+                cb.setId(View.generateViewId());
+            }
             cb.setText(s);
             cb.setOnClickListener(new OnDynamicCheckboxClickListener(getActivity(), s));
             layout.addView(cb);
+        }
+    }
+
+    /**
+     * Generate a unique ID for each checkbox view.
+     * This value will not collide with ID values generated at build time by aapt for R.id.
+     * @return a generated ID value
+     */
+    public static int generateViewId() {
+        for (;;) {
+            final int result = sNextGeneratedId.get();
+            // aapt-generated IDs have the high byte nonzero; clamp to the range under that.
+            int newValue = result + 1;
+            if (newValue > 0x00FFFFFF) newValue = 1; // Roll over to 1, not 0.
+            if (sNextGeneratedId.compareAndSet(result, newValue)) {
+                return result;
+            }
         }
     }
 
