@@ -2,11 +2,9 @@ package phc.android;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.hardware.Camera;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,32 +15,27 @@ import android.widget.TextView;
  */
 public class ServiceActivity extends Activity {
 
-    // Used to hold which service this user is scanning for
+    /* Used to hold which service this user is scanning for */
     public String mServiceSelected;
 
-    // Created when selecting the provided service
+    /* Created when selecting the provided service */
     public AlertDialog mServiceDialog;
 
-    // Used in error logs to identify this activity.
+    /* Used in error logs to identify this activity. */
     public static final String TAG = "ServiceActivity";
 
-    // The result returned to the calling activity through an Intent.
+    /* The result returned to the calling activity through an Intent. */
     public static String mScanResult;
 
-    // A handle on the fragment that holds the camera to open and release it.
+    /* A handle on the fragment that holds the camera to open and release it. */
     public ScannerFragment mScannerFragment;
 
-    // Holds the menu item generated in onPrepareOptionsMenu()
+    /* Holds the menu item generated in onPrepareOptionsMenu() */
     private MenuItem mServiceMenuItem;
 
-    // Holds an instance of the back camera on the device
-    Camera mBackCamera;
-
-    // Renders a preview for the user onto a FrameLayout
-    CameraPreview mPreview;
-
-    // Used to display "SUCCESS" or "TRY AGAIN"
+    /* Used to display "SUCCESS" or "TRY AGAIN" */
     // TODO: Change to check and X assets.
+    /* Not used right now, but we will take this out after moving to assets */
     TextView mResultText;
 
     /**
@@ -57,9 +50,10 @@ public class ServiceActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.service);
         if (findViewById(R.id.service_fragment_container) != null) {
-            // However, if we're being restored from a previous state,
-            // then we don't need to do anything and should return or else
-            // we could end up with overlapping fragments.
+            /* However, if we're being restored from a previous state,
+             * then we don't need to do anything and should return or else
+             * we could end up with overlapping fragments.
+             */
             if (savedInstanceState != null) {
 
                 return;
@@ -68,7 +62,7 @@ public class ServiceActivity extends Activity {
             mScannerFragment = new ScannerFragment();
             mScannerFragment.setArguments(getIntent().getExtras());
             FragmentTransaction t = getFragmentManager().beginTransaction();
-            t.add(R.id.service_fragment_container, (Fragment) mScannerFragment);
+            t.add(R.id.service_fragment_container, mScannerFragment);
             t.commit();
 
             Bundle bundle = getIntent().getExtras();
@@ -93,7 +87,7 @@ public class ServiceActivity extends Activity {
         final CharSequence[] services = getResources().getStringArray(R.array.services_array);
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select Provided Service");
-        // if service is already selected, pre select a button.
+        /* if service is already selected, pre select a button. */
         int prevIndex = -1;
         if (previousService != null) {
             for (int i = 0; i < services.length; i++) {
@@ -109,7 +103,7 @@ public class ServiceActivity extends Activity {
                 mServiceDialog.dismiss();
             }
         });
-        // handle back button press
+        /* handle back button press */
         builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialogInterface) {
@@ -163,7 +157,7 @@ public class ServiceActivity extends Activity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.clear();
-        // These parameters are the groupID, itemID, order, and text for the item
+        /* These parameters are the groupID, itemID, order, and text for the item */
         mServiceMenuItem = menu.add(Menu.NONE, Menu.NONE, Menu.NONE, R.string.change_service);
         return true;
     }
@@ -175,7 +169,7 @@ public class ServiceActivity extends Activity {
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        /* Inflate the menu; this adds items to the action bar if it is present. */
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -217,7 +211,7 @@ public class ServiceActivity extends Activity {
         super.onResume();
         acquireBackCamera();
         //TODO: make sure this doesn't need to be updated!
-        // taken care of in fragment's lifecycle right now.
+        /* taken care of in fragment's lifecycle right now. */
         //mPreview.updateCamera(mBackCamera);
     }
 
@@ -270,16 +264,16 @@ public class ServiceActivity extends Activity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        /* Handle action bar item clicks here. The action bar will
+         * automatically handle clicks on the Home/Up button, so long
+         * as you specify a parent activity in AndroidManifest.xml.
+         */
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
         }
         if (id == mServiceMenuItem.getItemId()) {
-            // User does not have to select another service
-            // option
+            /* User does not have to select another service option */
             showSelectServiceDialog(mServiceSelected, false);
         }
         return super.onOptionsItemSelected(item);

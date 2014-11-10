@@ -14,15 +14,15 @@ import java.io.IOException;
 import java.util.List;
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
-    // The camera instance shared between the activity and this class
+    /* The camera instance shared between the activity and this class */
     Camera mCamera;
-    // Used for the camera to render to this surface
+    /* Used for the camera to render to this surface */
     SurfaceHolder mHolder;
-    // Holds the best preview size for the camera parameters
+    /* Holds the best preview size for the camera parameters */
     Camera.Size mPreviewSize;
-    // The XML layout frame that contains this preview
+    /* The XML layout frame that contains this preview */
     FrameLayout mFrame;
-    // tag for error logs
+    /* tag for error logs */
     public final String TAG = "CameraPreview";
 
     public CameraPreview(Camera camera, Context context, FrameLayout frame) {
@@ -31,7 +31,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         mHolder = getHolder();
         mHolder.addCallback(this);
         mFrame = frame;
-        // Used in previous Android versions.
+        /* Used in previous Android versions. */
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
     }
 
@@ -64,8 +64,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
      * @param holder is automatically created and passed in by the Android library code
      */
     public void surfaceDestroyed(SurfaceHolder holder) {
-        // Not implemented. If necessary, implement to stop
-        // preview when replacing or destroying this surface.
+        /* Not implemented. If necessary, implement to stop
+         * preview when replacing or destroying this surface.
+         */
     }
 
     /**
@@ -196,14 +197,14 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         Camera.Size result = null;
         Camera.Parameters p = mCamera.getParameters();
         for (Camera.Size size : p.getSupportedPreviewSizes()) {
-            if (size.width<=width && size.height<=height) {
+            if (size.width <= width && size.height <= height) {
                 if (result == null) {
                     result = size;
                 } else {
-                    int resultArea=result.width*result.height;
-                    int newArea=size.width*size.height;
-                    if (newArea<resultArea) {
-                        result=size;
+                    int resultArea = result.width*result.height;
+                    int newArea = size.width * size.height;
+                    if (newArea < resultArea) {
+                        result = size;
                     }
                 }
             }
@@ -221,14 +222,14 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         Camera.Size result = null;
         Camera.Parameters p = mCamera.getParameters();
         for (Camera.Size size : p.getSupportedPictureSizes()) {
-            if (size.width<=width && size.height<=height) {
+            if (size.width <= width && size.height <= height) {
                 if (result == null) {
-                    result=size;
+                    result = size;
                 } else {
-                    int resultArea=result.width*result.height;
-                    int newArea=size.width*size.height;
-                    if (newArea<resultArea) {
-                        result=size;
+                    int resultArea=result.width * result.height;
+                    int newArea = size.width * size.height;
+                    if (newArea < resultArea) {
+                        result = size;
                     }
                 }
             }

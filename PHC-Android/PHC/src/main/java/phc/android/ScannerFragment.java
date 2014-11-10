@@ -1,22 +1,16 @@
 package phc.android;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.hardware.Camera;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.zxing.BinaryBitmap;
@@ -40,22 +34,22 @@ public class ScannerFragment extends android.app.Fragment {
     public final static String TAG = "ScannerFragment";
 
     public String mScanResult;
-    // Holds an instance of the back camera on the device
+    /* Holds an instance of the back camera on the device */
     Camera mBackCamera;
-    // Renders a preview for the user onto a FrameLayout
+    /* Renders a preview for the user onto a FrameLayout */
     CameraPreview mPreview;
-    // Used to display "SUCCESS" or "TRY AGAIN"
+    /* Used to display "SUCCESS" or "TRY AGAIN" */
     // TODO: Change to check and X assets.
     TextView mResultText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        /* Inflate the layout for this fragment */
         View view = inflater.inflate(R.layout.fragment_scanner, container, false);
 
         // TODO: move camera open to async task
-        // We should do this as soon as the app starts
+        /* We should do this as soon as the app starts */
         mResultText = (TextView) view.findViewById(R.id.confirm_scan);
         FrameLayout fl = (FrameLayout) view.findViewById(R.id.camera_preview);
         acquireBackCamera();
@@ -68,15 +62,15 @@ public class ScannerFragment extends android.app.Fragment {
                     mBackCamera.takePicture(null, null, mPicture);
                 } catch (Exception e) {
                     //TODO: Find a better way to lock this!
-                    // This handles the case where the user double
-                    // taps the preview frame, so takePicture() fails
-                    // since the preview has not been started.
+                    /* This handles the case where the user double
+                     * taps the preview frame, so takePicture() fails
+                     * since the preview has not been started.
+                     */
                 }
             }
 
         });
 
-        //FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
         fl.addView(mPreview);
 
         return view;
@@ -96,6 +90,7 @@ public class ScannerFragment extends android.app.Fragment {
          */
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
+            /* Not currently used. May be used in the future */
             final int MEDIA_TYPE_IMAGE = 1;
             final int MEDIA_TYPE_VIDEO = 2;
             File pictureFile;
@@ -233,11 +228,11 @@ public class ScannerFragment extends android.app.Fragment {
      */
     public void acquireBackCamera() {
         try {
-            // will access an instance of the back camera by default
+            /* will access an instance of the back camera by default */
             mBackCamera = Camera.open();
         }
         catch (Exception e) {
-            // Already have camera? If so then continue, else throw error.
+            /* Already have camera? If so then continue, else throw error. */
             if (mBackCamera == null) {
                 System.exit(0);
             }
