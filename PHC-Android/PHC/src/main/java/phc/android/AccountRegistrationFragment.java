@@ -34,18 +34,9 @@ public class AccountRegistrationFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_account_registration, container, false);
         setSpinnerContent(view);
 
-        Button continueButton = (Button) view.findViewById(R.id.button_account_continue);
-        continueButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Do something in response to button click
-                EventRegistrationFragment newFragment = new EventRegistrationFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.registration_fragment_container, newFragment, getResources().getString(R.string.sidebar_event_info));
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
-
+        mContinueButton = (Button) view.findViewById(R.id.button_account_continue);
+        mContinueButton.setOnClickListener(
+                new OnContinueClickListener(getActivity(), new EventRegistrationFragment()));
         return view;
     }
 

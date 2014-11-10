@@ -2,11 +2,14 @@ package phc.android;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 /**
  * SuccessFragment is launched on successful submission of a client's form data,
@@ -24,6 +27,23 @@ public class SuccessFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.sidebar_list);
+        for (int i = 0; i < sidebarList.getChildCount(); i++) {
+            View v = sidebarList.getChildAt(i);
+            Object vTag = v.getTag();
+            if ((vTag != null) && (vTag.equals(getResources().getText(R.string.sidebar_confirmation)))) {
+                TextView tv = (TextView) v;
+                tv.setTypeface(null, Typeface.BOLD);
+            } else if (v instanceof TextView) {
+                TextView tv = (TextView) v;
+                tv.setTypeface(null, Typeface.NORMAL);
+            }
+        }
+        super.onResume();
+    }
+
     /**
      * Creates an OnClickListener for the "Register Another Client" button,
      * which calls a new instance of RegisterActivity.
@@ -37,6 +57,6 @@ public class SuccessFragment extends Fragment {
                         Intent intent = new Intent(getActivity(), RegisterActivity.class);
                         getActivity().startActivity(intent);
                     }
-                });
+        });
     }
 }

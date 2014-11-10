@@ -16,6 +16,7 @@
     <string name="sidebar_confirmation">Confirmation</string>
     <string-array name="sidebar">
         <item>Selection</item>
+        <item>Search</item>
         <item>Personal Info</item>
         <item>Event Info</item>
         <item>Confirmation</item>

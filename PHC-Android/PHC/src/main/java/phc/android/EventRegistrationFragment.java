@@ -22,12 +22,7 @@ import android.widget.TextView;
  */
 public class EventRegistrationFragment extends Fragment{
     /* Continue button */
-    Button mContinueButton;
-    /* Listener for when the continue button is clicked */
-    OnContinueClickListener mContinueClickListener;
-    /* Spinners for multiple choice questions */
-    Spinner mNeighborhoodSpinner;
-
+    Button mSubmitButton;
     /**
      * On creation of the fragment, sets content for spinners and an onClickListener
      * for the continue button.
@@ -65,18 +60,8 @@ public class EventRegistrationFragment extends Fragment{
             ll.addView(cb);
         }
 
-        Button submitButton = (Button) view.findViewById(R.id.button_submit);
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Do something in response to button click
-                ConfirmationFragment newFragment = new ConfirmationFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.registration_fragment_container, newFragment, getResources().getString(R.string.sidebar_confirmation));
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
-
+        mSubmitButton = (Button) view.findViewById(R.id.button_submit);
+        mSubmitButton.setOnClickListener(new OnSubmitClickListener(getActivity()));
 
         return view;
     }
