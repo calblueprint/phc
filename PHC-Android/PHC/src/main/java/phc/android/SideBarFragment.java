@@ -48,6 +48,8 @@ public class SideBarFragment extends Fragment {
                     if (newFragment == null) {
                         if (tag.equals(getResources().getString(R.string.sidebar_selection))) {
                             newFragment = new SelectionFragment();
+                        } else if (tag.equals(getResources().getString(R.string.sidebar_search))) {
+                            newFragment = new SearchFragment();
                         } else if (tag.equals(getResources().getString(R.string.sidebar_personal_info))) {
                             newFragment = new AccountRegistrationFragment();
                         } else if (tag.equals(getResources().getString(R.string.sidebar_event_info))) {

@@ -20,8 +20,6 @@ import android.widget.TextView;
 public class AccountRegistrationFragment extends Fragment{
     /* Continue button */
     Button mContinueButton;
-    /* Listener for when the continue button is clicked */
-    OnContinueClickListener mContinueClickListener;
     /* Spinners for multiple choice questions */
     Spinner mGenderSpinner, mEthnicitySpinner, mLanguageSpinner, mNeighborhoodSpinner;
 
@@ -65,7 +63,6 @@ public class AccountRegistrationFragment extends Fragment{
         mNeighborhoodSpinner.setAdapter(neighborhoodAdapter);
         mNeighborhoodSpinner.setSelection(neighborhoodAdapter.getCount());
 
-
         mGenderSpinner = (Spinner) view.findViewById(R.id.spinner_gender);
         String[] genders = getResources().getStringArray(R.array.gender_array);
         ArrayAdapter<String> genderAdapter = new HintAdapter(getActivity(), android.R.layout.simple_spinner_item, genders);
@@ -77,7 +74,6 @@ public class AccountRegistrationFragment extends Fragment{
         ArrayAdapter<String> ethnicityAdapter = new HintAdapter(getActivity(), android.R.layout.simple_spinner_item, ethnicities);
         mEthnicitySpinner.setAdapter(ethnicityAdapter);
         mEthnicitySpinner.setSelection(ethnicityAdapter.getCount());
-
 
         mLanguageSpinner = (Spinner) view.findViewById(R.id.spinner_language);
         String[] languages = getResources().getStringArray(R.array.language_array);

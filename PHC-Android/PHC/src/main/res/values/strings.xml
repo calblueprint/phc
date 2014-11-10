@@ -11,6 +11,7 @@
 
     <!-- Sidebar-->
     <string name="sidebar_selection">Selection</string>
+    <string name="sidebar_search">Search</string>
     <string name="sidebar_personal_info">Personal Info</string>
     <string name="sidebar_event_info">Event Info</string>
     <string name="sidebar_confirmation">Confirmation</string>
@@ -22,11 +23,18 @@
         <item>Confirmation</item>
     </string-array>
 
+
+    <!-- Search -->
+    <string name="search_results_title">Results</string>
+
+
+
     <!-- Splash Page -->
     <string name="button_register">Register</string>
     <string name="button_services">Services</string>
     <string name="title_activity_register">Register Client</string>
     <string name="title_activity_services">Manage Services</string>
+    <string name="button_search_submit">Search</string>
 
     <!-- Account Registration -->
     <string name="prompt_first">First Name</string>

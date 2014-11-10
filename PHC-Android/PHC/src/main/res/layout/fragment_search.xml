@@ -7,28 +7,29 @@
     android:gravity="center_horizontal"
     android:layout_marginTop="@dimen/selection_top_margin">
 
-    <TextView
-        android:id="@+id/text_success"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/text_success"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <ImageView
-        android:id="@+id/register_again_icon"
+    <EditText
+        android:id="@+id/first_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/register_again_icon"
-        android:background="@android:color/transparent">
-    </ImageView>
+        android:hint="@string/prompt_first"
+        android:inputType="textCapWords"
+        android:maxLines="1"/>
+
+    <EditText
+        android:id="@+id/last_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/prompt_last"
+        android:inputType="textCapWords"
+        android:maxLines="1"/>
 
     <Button
-        android:id="@+id/button_register_another"
+        android:id="@+id/button_submit_search"
         style="?android:textAppearanceSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/button_register_another"
+        android:text="@string/button_search_submit"
         android:textStyle="bold"/>
 
 </LinearLayout>
