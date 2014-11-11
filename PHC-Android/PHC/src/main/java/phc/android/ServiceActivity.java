@@ -86,10 +86,10 @@ public class ServiceActivity extends Activity {
      * @param mustSelect is True if the user has not already selected a service.
      */
     private void showSelectServiceDialog(String previousService, final boolean mustSelect) {
-        CharSequence[] support = getResources().getStringArray(R.array.support_services_array);
-        CharSequence[] medical = getResources().getStringArray(R.array.support_services_array);
+        String[] support = getResources().getStringArray(R.array.support_services_array);
+        String[] medical = getResources().getStringArray(R.array.medical_services_array);
 
-        final CharSequence[] services = (CharSequence[]) Array.newInstance(support.getClass(), support.length + medical.length);
+        final CharSequence[] services = (CharSequence[]) Array.newInstance(support.getClass().getComponentType(), support.length + medical.length);
         System.arraycopy(support, 0, services, 0, support.length);
         System.arraycopy(medical, 0, services, support.length, medical.length);
 
