@@ -1,18 +1,15 @@
 package phc.android;
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -33,8 +30,6 @@ public class EventRegistrationFragment extends Fragment{
      */
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        LinearLayout ll;
-        String[] services;
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_event_registration, container, false);
 
@@ -42,14 +37,14 @@ public class EventRegistrationFragment extends Fragment{
         // Dynamically populate linear layout with checkboxes for each service
         Resources res = getResources();
 
-        services = res.getStringArray(R.array.medical_services_array);
-        ll = (LinearLayout) view.findViewById(R.id.medical_services_list);
-        dynamicSetCheckboxes(view, ll, services);
+        String[] medicalServices = res.getStringArray(R.array.medical_services_array);
+        LinearLayout medicalServicesList = (LinearLayout) view.findViewById(R.id.medical_services_list);
+        dynamicSetCheckboxes(view, medicalServicesList, medicalServices);
 
 
-        services = res.getStringArray(R.array.support_services_array);
-        ll = (LinearLayout) view.findViewById(R.id.support_services_list);
-        dynamicSetCheckboxes(view, ll, services);
+        String[] supportServices = res.getStringArray(R.array.support_services_array);
+        LinearLayout supportServicesList = (LinearLayout) view.findViewById(R.id.support_services_list);
+        dynamicSetCheckboxes(view, supportServicesList, supportServices);
 
         mSubmitButton = (Button) view.findViewById(R.id.button_submit);
         mSubmitButton.setOnClickListener(new OnSubmitClickListener(getActivity()));
