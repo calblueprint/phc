@@ -1,11 +1,10 @@
 Rails.application.routes.draw do
-  resources :accounts
-  get 'pull', to: 'accounts#pull'
+  resources :accounts #TODO: Remove this!
+  get "pull", to: "accounts#pull"
 
   namespace :api do
     namespace :v1 do
-      resources :accounts
-      get 'search', to: 'accounts#search'
+      get "search", to: "accounts#search"
     end
   end
 end
