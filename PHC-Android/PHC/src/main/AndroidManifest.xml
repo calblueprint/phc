@@ -29,7 +29,7 @@
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
         <activity
-            android:name=".ScannerActivity"
+            android:name=".ServiceActivity"
             android:label="@string/title_activity_services" >
         </activity>
     </application>
