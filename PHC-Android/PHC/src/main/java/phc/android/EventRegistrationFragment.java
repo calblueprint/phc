@@ -71,9 +71,11 @@ public class EventRegistrationFragment extends Fragment{
 
     /**
      * Dynamically populates layout with checkboxes for each service.
+     * @param checkboxList the layout to add checkboxes from
+     * @param services a list of services to add
      * TODO: CHANGE TO ACTUALLY GRAB FROM SALESFORCE.
      */
-    protected void dynamicSetCheckboxes(View view, LinearLayout ll, String[] services){
+    protected void dynamicSetCheckboxes(View view, LinearLayout checkboxList, String[] services){
 
         for(String s: services){
             CheckBox cb = new CheckBox(getActivity());
@@ -84,7 +86,7 @@ public class EventRegistrationFragment extends Fragment{
             cb.setId(generateViewId());
             cb.setText(s);
             cb.setOnClickListener(new OnDynamicCheckboxClickListener(getActivity(), s));
-            ll.addView(cb);
+            checkboxList.addView(cb);
         }
     }
 

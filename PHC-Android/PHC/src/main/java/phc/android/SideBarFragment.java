@@ -23,7 +23,7 @@ public class SideBarFragment extends Fragment {
         // Grab list of all services offered for the current event from Salesforce DB
         Resources res = getResources();
         final String[] elements = res.getStringArray(R.array.sidebar);
-        LinearLayout ll = (LinearLayout) view.findViewById(R.id.sidebar_list);
+        LinearLayout sidebarList = (LinearLayout) view.findViewById(R.id.sidebar_list);
 
         // Dynamically add sidebar buttons to sidebar
         for (String element : elements) {
@@ -65,14 +65,14 @@ public class SideBarFragment extends Fragment {
                     transaction.commit();
                 }
             });
-            ll.addView(button);
+            sidebarList.addView(button);
 
             View horizRule = new View(getActivity());
             horizRule.setLayoutParams(new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     getResources().getDimensionPixelSize(R.dimen.horizontal_rule_height)));
             horizRule.setBackgroundColor(getResources().getColor(R.color.gray_sidebar));
-            ll.addView(horizRule);
+            sidebarList.addView(horizRule);
         }
 
         return view;

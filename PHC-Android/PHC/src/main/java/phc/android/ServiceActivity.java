@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
+
 /* Call with resultCode of 0 if providing a service
  * Call with resultCode of 1 if scanning for registration
  */
@@ -84,7 +86,13 @@ public class ServiceActivity extends Activity {
      * @param mustSelect is True if the user has not already selected a service.
      */
     private void showSelectServiceDialog(String previousService, final boolean mustSelect) {
-        final CharSequence[] services = getResources().getStringArray(R.array.services_array);
+        CharSequence[] support = getResources().getStringArray(R.array.support_services_array);
+        CharSequence[] medical = getResources().getStringArray(R.array.support_services_array);
+
+        final CharSequence[] services = (CharSequence[]) Array.newInstance(support.getClass(), support.length + medical.length);
+        System.arraycopy(support, 0, services, 0, support.length);
+        System.arraycopy(medical, 0, services, support.length, medical.length);
+
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select Provided Service");
         /* if service is already selected, pre select a button. */
