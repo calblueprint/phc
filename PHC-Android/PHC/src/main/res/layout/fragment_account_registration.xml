@@ -3,136 +3,146 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/top_bottom_margins"
+        android:layout_marginBottom="@dimen/top_bottom_margins">
 
+        <!-- TODO: is there a better way to generate consistent spacing between LinearLayout elements?-->
+        <!-- TODO: is there a way to shift this to a 2-column layout when in landscape mode? -->
+        <!-- TODO: line up the check boxes, rearrange elements to make it look better-->
         <LinearLayout
-            android:id="@+id/layout_account_form"
+            android:id="@+id/form_fields"
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
+            android:gravity="center_horizontal">
 
             <EditText
                 android:id="@+id/first_name"
-                android:layout_width="@dimen/input_text_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_first"
                 android:inputType="textCapWords"
-                android:maxLines="1"
-                android:singleLine="true"/>
+                android:maxLines="1"/>
 
             <EditText
                 android:id="@+id/last_name"
-                android:layout_width="@dimen/input_text_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_last"
                 android:inputType="textCapWords"
-                android:maxLines="1"
-                android:singleLine="true"/>
+                android:maxLines="1"/>
 
             <EditText
                 android:id="@+id/ssn"
-                android:layout_width="@dimen/input_text_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="numberPassword"
                 android:hint="@string/prompt_ssn"
                 android:maxLines="1"
-                android:singleLine="true"/>
+                android:inputType="number"
+                android:maxLength="9"/>
 
             <EditText
                 android:id="@+id/birthday"
-                android:layout_width="@dimen/input_text_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_birthday"
                 android:inputType="date"
-                android:maxLines="1"
-                android:singleLine="true"/>
+                android:maxLines="1" />
 
             <EditText
                 android:id="@+id/phone"
-                android:layout_width="@dimen/input_text_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_phone"
                 android:inputType="phone"
-                android:maxLines="1"
-                android:singleLine="true"/>
+                android:maxLines="1" />
 
             <EditText
                 android:id="@+id/email"
-                android:layout_width="@dimen/input_text_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_email"
                 android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:singleLine="true"/>
+                android:maxLines="1" />
+
+            <Spinner
+                android:id="@+id/spinner_neighborhood"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <Spinner
                 android:id="@+id/spinner_gender"
-                android:layout_width="@dimen/input_text_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-
-            <!--<Button-->
-                <!--android:id="@+id/gender_button"-->
-                <!--android:layout_width="@dimen/input_text_width"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_margin="5dp"-->
-                <!--android:gravity="left"-->
-                <!--android:background="@android:drawable/btn_dropdown"-->
-                <!--android:text="@string/prompt_gender"-->
-                <!--android:onClick="onClick"/>-->
 
             <Spinner
                 android:id="@+id/spinner_ethnicity"
-                android:layout_width="@dimen/input_text_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-
-            <!--<Button-->
-                <!--android:id="@+id/ethnicity_button"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_margin="5dp"-->
-                <!--android:gravity="left"-->
-                <!--android:background="@android:drawable/btn_dropdown"-->
-                <!--android:text="@string/prompt_ethnicity" />-->
 
             <Spinner
                 android:id="@+id/spinner_language"
-                android:layout_width="@dimen/input_text_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <!--<Button-->
-                <!--android:id="@+id/language_button"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_margin="5dp"-->
-                <!--android:gravity="left"-->
-                <!--android:background="@android:drawable/btn_dropdown"-->
-                <!--android:text="@string/prompt_language" />-->
-
-            <CheckBox android:id="@+id/checkbox_military"
-                android:layout_width="@dimen/input_text_width"
+            <LinearLayout
+                android:id="@+id/checkboxes"
+                android:layout_marginTop="@dimen/checkboxes_margin"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/prompt_military"/>
+                android:orientation="vertical"
+                android:layout_gravity="left">
 
-            <CheckBox android:id="@+id/checkbox_foster"
-                android:layout_width="@dimen/input_text_width"
-                android:layout_height="wrap_content"
-                android:text="@string/prompt_foster"/>
+                <CheckBox android:id="@+id/checkbox_homeless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prompt_homeless"
+                    android:onClick="onCheckboxClicked"/>
+
+                <CheckBox android:id="@+id/checkbox_children"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prompt_children"
+                    android:onClick="onCheckboxClicked"/>
+
+                <CheckBox android:id="@+id/checkbox_doctor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prompt_doctor"
+                    android:onClick="onCheckboxClicked"/>
+
+                <CheckBox android:id="@+id/checkbox_military"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prompt_military"
+                    android:onClick="onCheckboxClicked"/>
+
+                <CheckBox android:id="@+id/checkbox_foster"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prompt_foster"
+                    android:onClick="onCheckboxClicked"/>
+
+
+            </LinearLayout>
 
             <Button
                 android:id="@+id/button_account_continue"
                 style="?android:textAppearanceSmall"
-                android:layout_width="@dimen/input_text_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/action_continue"
                 android:textStyle="bold"/>
 
         </LinearLayout>
+
     </ScrollView>
 
 </LinearLayout>

@@ -2,9 +2,8 @@
 <resources>
 
     <!-- App -->
-    <string name="app_name">Project Homeless Connect</string>
+    <string name="app_name">  Project Homeless Connect</string>
     <string name="action_settings">Settings</string>
-
     <!-- Logout -->
     <string name="logout_title">Logout from PHC</string>
     <string name="logout_yes">Logout</string>
@@ -12,21 +11,30 @@
 
     <!-- Sidebar-->
     <string name="sidebar_selection">Selection</string>
+    <string name="sidebar_search">Search</string>
     <string name="sidebar_personal_info">Personal Info</string>
     <string name="sidebar_event_info">Event Info</string>
     <string name="sidebar_confirmation">Confirmation</string>
     <string-array name="sidebar">
         <item>Selection</item>
+        <item>Search</item>
         <item>Personal Info</item>
         <item>Event Info</item>
         <item>Confirmation</item>
     </string-array>
+
+
+    <!-- Search -->
+    <string name="search_results_title">Results</string>
+
+
 
     <!-- Splash Page -->
     <string name="button_register">Register</string>
     <string name="button_services">Services</string>
     <string name="title_activity_register">Register Client</string>
     <string name="title_activity_services">Manage Services</string>
+    <string name="button_search_submit">Search</string>
 
     <!-- Account Registration -->
     <string name="prompt_first">First Name</string>
@@ -42,28 +50,28 @@
     <string name="prompt_foster">Been in Foster Care?</string>
 
     <string-array name="gender_array">
-        <item>Gender Identity...</item>
         <item>Male</item>
         <item>Female</item>
         <item>Transgender</item>
+        <item>Gender Identity...</item>
     </string-array>
     <string-array name="ethnicity_array">
-        <item>Ethnicity...</item>
         <item>African American</item>
         <item>Latino</item>
         <item>Asian/Pacific Islander</item>
         <item>Caucasian</item>
         <item>Native American</item>
         <item>Other</item>
+        <item>Ethnicity...</item>
     </string-array>
     <string-array name="language_array">
-        <item>Primary Language...</item>
         <item>English</item>
         <item>Spanish</item>
         <item>Cantonese/Mandarin</item>
         <item>Vietnamese</item>
         <item>Russian</item>
         <item>Other</item>
+        <item>Primary Language...</item>
     </string-array>
 
     <string name="error_field_required">This field is required</string>
@@ -80,27 +88,31 @@
     <string name="prompt_doctor">Do you currently have a primary care doctor?</string>
 
     <string-array name="neighborhood_array">
-        <item>Neighborhood of Residence...</item>
         <item>Bayview/HP</item>
         <item>SOMA</item>
         <item>GGPark/Haight</item>
         <item>Tenderloin</item>
         <item>Mission</item>
         <item>Other</item>
+        <item>Neighborhood of Residence...</item>
     </string-array>
 
     <!-- Services Selection -->
     <string name="prompt_services">Which services will you be using today?</string>
+    <string name="medical_services">Medical Services</string>
 
-    <string-array name="services_array">
+    <string-array name="medical_services_array">
         <item>acupuncture</item>
         <item>addiction recovery</item>
-        <item>bugs and lice</item>
-        <item>dental</item>
-        <item>medical</item>
-        <item>mental health</item>
-        <item>needle exchange</item>
-        <item>tb testing</item>
+        <item>medicine things</item>
+    </string-array>
+
+    <string name="support_services">Support Services</string>
+
+    <string-array name="support_services_array">
+        <item>support</item>
+        <item>support</item>
+        <item>moar support</item>
     </string-array>
 
     <string name="action_submit">Submit</string>
@@ -108,6 +120,7 @@
     <!-- Success Page -->
     <string name="text_success">Success!</string>
     <string name="button_register_another">Register another client</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Service Activity -->
     <string name="change_service">Change Service</string>

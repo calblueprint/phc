@@ -1,14 +1,55 @@
 <resources>
 
     <!-- the theme applied to the application or activity -->
-    <style name="CustomActionBarTheme"
+    <style name="PHCTheme"
         parent="@android:style/Theme.Holo.Light.DarkActionBar">
-        <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="android:actionBarStyle">@style/PHCActionBar</item>
+        <item name="android:editTextStyle">@style/PHCEditText</item>
+        <item name="android:spinnerStyle">@style/PHCSpinner</item>
+        <item name="android:spinnerItemStyle">@style/PHCSpinnerItem</item>
+        <item name="android:checkboxStyle">@style/PHCCheckBox</item>
     </style>
 
-    <!-- ActionBar styles -->
-    <style name="MyActionBar"
+    <style name="PHCActionBar"
         parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@color/red_actionbar</item>
     </style>
+
+    <style name="PHCEditText"
+        parent="@android:style/Widget.EditText">
+
+        <!-- WARNING! This item sets the size, more or less, of the actual EditText-->
+        <!-- TODO: Adjust rectangular_text_edit to make it better fit whatever textSize we choose to use.  Will have to adjust padding, etc as well.-->
+        <item name="android:background">@drawable/rectangular_text_edit</item>
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textColorHint">@color/hint_color</item>
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:padding">7dp</item>
+    </style>
+
+    <!-- TODO: Make a PHCSpinner, PHCCheckbox which match the style given in PHCEditText.  While we're at it, make some standardized set of assets for this... -->
+
+    <style name="PHCSpinner"
+        parent="@android:style/Widget.Holo.Light.Spinner">
+        <item name="android:background">@drawable/rectangular_spinner</item>
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textSize">@dimen/text_size</item>
+    </style>
+
+    <style name="PHCSpinnerItem"
+        parent="@android:style/Widget.Holo.TextView.SpinnerItem">
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textSize">@dimen/text_size</item>
+    </style>
+
+    <style name="PHCCheckBox"
+        parent="@android:style/Widget.Holo.CompoundButton.CheckBox">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:button">@null</item>
+        <item name="android:drawableLeft">@drawable/checkbox</item>
+        <item name="android:drawablePadding">@dimen/checkbox_left_padding</item>
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textSize">@dimen/text_size</item>
+    </style>
+
 </resources>

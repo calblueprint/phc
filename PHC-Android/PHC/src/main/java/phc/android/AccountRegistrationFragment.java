@@ -19,10 +19,8 @@ import android.widget.TextView;
 public class AccountRegistrationFragment extends Fragment{
     /* Continue button */
     Button mContinueButton;
-    /* Listener for when the continue button is clicked */
-    OnContinueClickListener mContinueClickListener;
     /* Spinners for multiple choice questions */
-    Spinner mGenderSpinner, mEthnicitySpinner, mLanguageSpinner;
+    Spinner mGenderSpinner, mEthnicitySpinner, mLanguageSpinner, mNeighborhoodSpinner;
 
     /**
      * On creation of the fragment, sets content for spinners and an onClickListener
@@ -32,7 +30,10 @@ public class AccountRegistrationFragment extends Fragment{
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account_registration, container, false);
         setSpinnerContent(view);
-        setOnContinueClickListener(view);
+
+        mContinueButton = (Button) view.findViewById(R.id.button_account_continue);
+        mContinueButton.setOnClickListener(
+                new OnContinueClickListener(getActivity(), new EventRegistrationFragment()));
         return view;
     }
 
@@ -53,37 +54,30 @@ public class AccountRegistrationFragment extends Fragment{
         super.onResume();
     }
 
-    /**
-     * Sets multiple choice options for each spinner.
-     */
-    protected void setSpinnerContent(View view){
+    private void setSpinnerContent(View view){
+
+        mNeighborhoodSpinner = (Spinner) view.findViewById(R.id.spinner_neighborhood);
+        String[] neighborhoods = getResources().getStringArray(R.array.neighborhood_array);
+        ArrayAdapter<String> neighborhoodAdapter = new HintAdapter(getActivity(), android.R.layout.simple_spinner_item, neighborhoods);
+        mNeighborhoodSpinner.setAdapter(neighborhoodAdapter);
+        mNeighborhoodSpinner.setSelection(neighborhoodAdapter.getCount());
+
         mGenderSpinner = (Spinner) view.findViewById(R.id.spinner_gender);
-        ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.gender_array, android.R.layout.simple_spinner_item);
-        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        String[] genders = getResources().getStringArray(R.array.gender_array);
+        ArrayAdapter<String> genderAdapter = new HintAdapter(getActivity(), android.R.layout.simple_spinner_item, genders);
         mGenderSpinner.setAdapter(genderAdapter);
+        mGenderSpinner.setSelection(genderAdapter.getCount());
 
         mEthnicitySpinner = (Spinner) view.findViewById(R.id.spinner_ethnicity);
-        ArrayAdapter<CharSequence> ethnicityAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.ethnicity_array, android.R.layout.simple_spinner_item);
-        ethnicityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        String[] ethnicities = getResources().getStringArray(R.array.ethnicity_array);
+        ArrayAdapter<String> ethnicityAdapter = new HintAdapter(getActivity(), android.R.layout.simple_spinner_item, ethnicities);
         mEthnicitySpinner.setAdapter(ethnicityAdapter);
+        mEthnicitySpinner.setSelection(ethnicityAdapter.getCount());
 
         mLanguageSpinner = (Spinner) view.findViewById(R.id.spinner_language);
-        ArrayAdapter<CharSequence> languageAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.language_array, android.R.layout.simple_spinner_item);
-        languageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        String[] languages = getResources().getStringArray(R.array.language_array);
+        ArrayAdapter<String> languageAdapter = new HintAdapter(getActivity(), android.R.layout.simple_spinner_item, languages);
         mLanguageSpinner.setAdapter(languageAdapter);
-    }
-
-    /**
-     * Sets on-click listener for the continue button.
-     * and sets the next fragment to the EventRegistrationFragment.
-     */
-    protected void setOnContinueClickListener(View view) {
-        mContinueButton = (Button) view.findViewById(R.id.button_account_continue);
-        mContinueClickListener =
-                new OnContinueClickListener(getActivity(), new EventRegistrationFragment());
-        mContinueButton.setOnClickListener(mContinueClickListener);
+        mLanguageSpinner.setSelection(languageAdapter.getCount());
     }
 }

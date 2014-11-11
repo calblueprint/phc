@@ -1,48 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/top_bottom_margins"
+        android:layout_marginBottom="@dimen/top_bottom_margins"
+        android:layout_gravity="center_horizontal">
 
         <LinearLayout
             android:id="@+id/layout_event_form"
             android:layout_width="@dimen/input_text_width"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center_horizontal"
             android:orientation="vertical">
 
-            <Spinner
-                android:id="@+id/spinner_neighborhood"
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/prompt_services"/>
+
+            <LinearLayout
+                android:id="@+id/medical_services_list"
                 android:layout_width="@dimen/input_text_width"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
 
-            <CheckBox android:id="@+id/checkbox_homeless"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/medical_services"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/support_services_list"
                 android:layout_width="@dimen/input_text_width"
                 android:layout_height="wrap_content"
-                android:text="@string/prompt_homeless"/>
+                android:layout_gravity="center"
+                android:orientation="vertical">
 
-            <CheckBox android:id="@+id/checkbox_children"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/prompt_children"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/support_services"/>
 
-            <CheckBox android:id="@+id/checkbox_doctor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/prompt_doctor"/>
+            </LinearLayout>
 
             <Button
-                android:id="@+id/button_event_continue"
+                android:id="@+id/button_submit"
                 style="?android:textAppearanceSmall"
                 android:layout_width="@dimen/input_text_width"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/action_continue"
+                android:text="@string/action_submit"
                 android:textStyle="bold"/>
+
         </LinearLayout>
 
     </ScrollView>
