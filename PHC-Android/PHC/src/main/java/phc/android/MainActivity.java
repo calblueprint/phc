@@ -249,7 +249,9 @@ public class MainActivity extends Activity{
 
                 @Override
                 public void onError(Exception exception) {
-                    Log.e("Id Response Error 2", exception.getLocalizedMessage());
+                    if (exception.getLocalizedMessage() != null) {
+                        Log.e("Id Response Error 2", exception.getLocalizedMessage());
+                    }
                 }
             };
 
