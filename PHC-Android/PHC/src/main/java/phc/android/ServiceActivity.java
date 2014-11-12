@@ -35,6 +35,8 @@ public class ServiceActivity extends Activity {
     /* Holds the menu item generated in onPrepareOptionsMenu() */
     private MenuItem mServiceMenuItem;
 
+    private CharSequence[] services;
+
     /* Used to display "SUCCESS" or "TRY AGAIN" */
     // TODO: Change to check and X assets.
     /* Not used right now, but we will take this out after moving to assets */
@@ -57,7 +59,6 @@ public class ServiceActivity extends Activity {
              * we could end up with overlapping fragments.
              */
             if (savedInstanceState != null) {
-
                 return;
             }
 
@@ -69,6 +70,8 @@ public class ServiceActivity extends Activity {
 
             Bundle bundle = getIntent().getExtras();
             int intention = (Integer) bundle.get("request_code");
+            /* This cannot be null! */
+            services = bundle.getCharSequenceArray("services_list");
             if (bundle.get("provided_service") == null && intention == MainActivity.FOR_SERVICE) {
                 showSelectServiceDialog(null, true);
             } else {
@@ -86,13 +89,6 @@ public class ServiceActivity extends Activity {
      * @param mustSelect is True if the user has not already selected a service.
      */
     private void showSelectServiceDialog(String previousService, final boolean mustSelect) {
-        String[] support = getResources().getStringArray(R.array.support_services_array);
-        String[] medical = getResources().getStringArray(R.array.medical_services_array);
-
-        final CharSequence[] services = (CharSequence[]) Array.newInstance(support.getClass().getComponentType(), support.length + medical.length);
-        System.arraycopy(support, 0, services, 0, support.length);
-        System.arraycopy(medical, 0, services, support.length, medical.length);
-
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select Provided Service");
         /* if service is already selected, pre select a button. */
