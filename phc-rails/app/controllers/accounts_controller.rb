@@ -1,14 +1,6 @@
 class AccountsController < ApplicationController
   include Databasedotcom::Rails::Controller
 
-  def index
-    @person_accounts = PersonAccount.all
-  end
-
-  def show
-    @person_account = PersonAccountn.find(params[:id])
-  end
-
   def pull
     if not LastModified.any?
       LastModified.create(last_modified_datetime: Time.now)
@@ -19,9 +11,8 @@ class AccountsController < ApplicationController
       @accounts = Account.all #Temporary
       @last.update_attributes(last_modified_datetime: Time.now)
     end
-    puts @accounts.size
     update_db @accounts
-    redirect_to accounts_path
+    redirect_to root_path
   end
 
   private
