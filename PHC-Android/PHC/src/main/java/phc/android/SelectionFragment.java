@@ -56,7 +56,7 @@ public class SelectionFragment extends RegistrationFragment {
                 TextView tv = (TextView) v;
                 tv.setTypeface(null, Typeface.NORMAL);
             }
-        };
+        }
         super.onResume();
     }
 }

@@ -1,8 +1,6 @@
 package phc.android;
 
-import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,7 +28,6 @@ public class SearchFragment extends RegistrationFragment {
                 transaction.replace(R.id.registration_fragment_container, newFragment, getResources().getString(R.string.sidebar_search));
                 transaction.addToBackStack(null);
                 transaction.commit();
-                hideKeyboard();
             }
         });
         return view;
@@ -52,15 +48,6 @@ public class SearchFragment extends RegistrationFragment {
             }
         }
         super.onResume();
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        RegisterActivity rActivity = (RegisterActivity) getActivity();
-        rActivity.hideKeyboard();
-        getActivity().getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
 }

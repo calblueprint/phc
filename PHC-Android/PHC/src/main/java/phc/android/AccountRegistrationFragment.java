@@ -31,7 +31,6 @@ public class AccountRegistrationFragment extends RegistrationFragment{
         mContinueButton = (Button) view.findViewById(R.id.button_account_continue);
         mContinueButton.setOnClickListener(
                 new OnContinueClickListener(getActivity(), new EventRegistrationFragment(), getResources().getString(R.string.sidebar_event_info)));
-
         return view;
     }
 

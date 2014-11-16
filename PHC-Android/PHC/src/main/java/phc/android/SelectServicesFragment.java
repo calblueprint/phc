@@ -39,7 +39,6 @@ public class SelectServicesFragment extends RegistrationFragment {
                 transaction.replace(R.id.registration_fragment_container, new SuccessFragment(), getResources().getString(R.string.sidebar_confirmation));
                 transaction.addToBackStack(null);
                 transaction.commit();
-                hideKeyboard();
             }
         });
 
@@ -92,7 +91,7 @@ public class SelectServicesFragment extends RegistrationFragment {
     @Override
     public void onResume() {
         LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.sidebar_list);
-        for (int i=0; i < sidebarList.getChildCount(); i++) {
+        for (int i = 0; i < sidebarList.getChildCount(); i++) {
             View v = sidebarList.getChildAt(i);
             Object vTag = v.getTag();
             if ((vTag != null) && (vTag.equals(getResources().getText(R.string.sidebar_services_info)))) {

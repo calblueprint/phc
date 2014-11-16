@@ -99,9 +99,4 @@ public class RegisterActivity extends Activity {
         return key;
     }
 
-    /** Hides the keyboard. */
-    public void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
-    }
 }

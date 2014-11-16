@@ -65,7 +65,6 @@ public class SideBarFragment extends RegistrationFragment {
                     transaction.replace(R.id.registration_fragment_container, newFragment, tag);
                     transaction.addToBackStack(null);
                     transaction.commit();
-                    hideKeyboard();
                 }
             });
             sidebarList.addView(button);
