@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -17,16 +18,17 @@ import android.widget.Spinner;
 public class OnContinueClickListener
         extends SharedPreferenceEditorListener implements View.OnClickListener{
 
-    /* The next fragment to be opened */
-    Fragment mNextFrag;
+    private final String mFragmentName;
+    private final Fragment mNextFrag;
 
     /**
      * Calls constructor of superclass to create SharedPreference instance
      * and keeps note of the next fragment to be launched.
      */
-    public OnContinueClickListener(Context context, Fragment fragment) {
+    public OnContinueClickListener(Context context, Fragment fragment, String fragmentName) {
         super(context);
         mNextFrag = fragment;
+        mFragmentName = fragmentName;
     }
 
     /**
@@ -50,6 +52,8 @@ public class OnContinueClickListener
             v = mLayout.getChildAt(i);
             name = mContext.getResources().getResourceEntryName(v.getId());
 
+            Log.v("a", name);
+
             if (v instanceof CheckBox) {
                 boolean checked = ((CheckBox) v).isChecked();
                 mUserInfoEditor.putBoolean(name, checked);
@@ -70,7 +74,7 @@ public class OnContinueClickListener
     private void loadNextFragment(){
         FragmentTransaction transaction =
                 ((Activity) mContext).getFragmentManager().beginTransaction();
-        transaction.replace(R.id.registration_fragment_container, mNextFrag);
+        transaction.replace(R.id.registration_fragment_container, mNextFrag, mFragmentName);
         transaction.addToBackStack(null);
         transaction.commit();
     }

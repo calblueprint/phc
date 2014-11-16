@@ -28,8 +28,9 @@ public class SelectServicesFragment extends Fragment{
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_select_services, container, false);
         dynamicSetCheckboxes(view);
-        Button mContinueButton = (Button) view.findViewById(R.id.button_event_continue);
-        mContinueButton.setOnClickListener(new OnContinueClickListener(getActivity(), new SelectServicesFragment()));
+
+        Button mContinueButton = (Button) view.findViewById(R.id.button_services_continue);
+        mContinueButton.setOnClickListener(new OnContinueClickListener(getActivity(), new SuccessFragment(), getResources().getString(R.string.sidebar_confirmation)));
         return view;
     }
 

@@ -44,6 +44,7 @@ public class SideBarFragment extends Fragment {
                 public void onClick(View v) {
                     FragmentManager fragMan = getFragmentManager();
                     Fragment newFragment = fragMan.findFragmentByTag(tag);
+
                     if (newFragment == null) {
                         if (tag.equals(getResources().getString(R.string.sidebar_selection))) {
                             newFragment = new SelectionFragment();

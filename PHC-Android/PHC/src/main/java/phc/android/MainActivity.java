@@ -160,7 +160,7 @@ public class MainActivity extends Activity{
         if (!initialized) {
             //TODO: TEST THIS WITH AN ACTUAL QUERY!
             // Using filler array right now.
-            services = getResources().getStringArray(R.array.support_services_array);
+            services = getResources().getStringArray(R.array.services_array);
         } else {
             services = getResourceList().values().toArray(new CharSequence[0]);
         }
