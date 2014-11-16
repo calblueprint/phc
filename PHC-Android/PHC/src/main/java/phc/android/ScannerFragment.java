@@ -47,7 +47,11 @@ public class ScannerFragment extends android.app.Fragment {
                              Bundle savedInstanceState) {
         /* Inflate the layout for this fragment */
         View view = inflater.inflate(R.layout.fragment_scanner, container, false);
+        setupView(view);
+        return view;
+    }
 
+    protected void setupView(View view) {
         // TODO: move camera open to async task
         /* We should do this as soon as the app starts */
         mResultText = (TextView) view.findViewById(R.id.confirm_scan);
@@ -72,9 +76,8 @@ public class ScannerFragment extends android.app.Fragment {
         });
 
         fl.addView(mPreview);
-
-        return view;
     }
+
     /**
      * This is where we interface with the zxing library.
      */
