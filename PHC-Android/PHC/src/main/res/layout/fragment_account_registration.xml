@@ -72,11 +72,6 @@
                 android:maxLines="1" />
 
             <Spinner
-                android:id="@+id/spinner_neighborhood"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <Spinner
                 android:id="@+id/spinner_gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -99,34 +94,16 @@
                 android:orientation="vertical"
                 android:layout_gravity="left">
 
-                <CheckBox android:id="@+id/checkbox_homeless"
+                <CheckBox android:id="@+id/checkbox_foster"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/prompt_homeless"
-                    android:onClick="onCheckboxClicked"/>
-
-                <CheckBox android:id="@+id/checkbox_children"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/prompt_children"
-                    android:onClick="onCheckboxClicked"/>
-
-                <CheckBox android:id="@+id/checkbox_doctor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/prompt_doctor"
+                    android:text="@string/prompt_foster"
                     android:onClick="onCheckboxClicked"/>
 
                 <CheckBox android:id="@+id/checkbox_military"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/prompt_military"
-                    android:onClick="onCheckboxClicked"/>
-
-                <CheckBox android:id="@+id/checkbox_foster"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/prompt_foster"
                     android:onClick="onCheckboxClicked"/>
 
 
