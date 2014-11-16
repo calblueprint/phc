@@ -5,8 +5,10 @@ class Api::V1::AccountsController < ApplicationController
     if request.headers["AuthToken"].eql? ENV["AuthToken"]
       first_name = request.headers["FirstName"]
       last_name = request.headers["LastName"]
-      hash = { first_name: first_name, last_name: last_name }
-      respond_with PersonAccount.fuzzy_search(hash, false)
+      fhash = { first_name: first_name }
+      lhash = { last_name: last_name }
+      res = PersonAccount.fuzzy_search(fhash, false).fuzzy_search(lhash, false)
+      respond_with res
     else
       respond_with []
     end
