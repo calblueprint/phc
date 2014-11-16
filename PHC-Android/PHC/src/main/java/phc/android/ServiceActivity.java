@@ -10,8 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
-
 /* Call with resultCode of 0 if providing a service
  * Call with resultCode of 1 if scanning for registration
  */
@@ -35,6 +33,8 @@ public class ServiceActivity extends Activity {
     /* Holds the menu item generated in onPrepareOptionsMenu() */
     private MenuItem mServiceMenuItem;
 
+    private CharSequence[] services;
+
     /* Used to display "SUCCESS" or "TRY AGAIN" */
     // TODO: Change to check and X assets.
     /* Not used right now, but we will take this out after moving to assets */
@@ -57,7 +57,6 @@ public class ServiceActivity extends Activity {
              * we could end up with overlapping fragments.
              */
             if (savedInstanceState != null) {
-
                 return;
             }
 
@@ -69,6 +68,8 @@ public class ServiceActivity extends Activity {
 
             Bundle bundle = getIntent().getExtras();
             int intention = (Integer) bundle.get("request_code");
+            /* This cannot be null! */
+            services = bundle.getCharSequenceArray("services_list");
             if (bundle.get("provided_service") == null && intention == MainActivity.FOR_SERVICE) {
                 showSelectServiceDialog(null, true);
             } else {
@@ -87,7 +88,6 @@ public class ServiceActivity extends Activity {
      */
     private void showSelectServiceDialog(String previousService, final boolean mustSelect) {
         final CharSequence[] services = getResources().getStringArray(R.array.services_array);
-
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select Provided Service");
         /* if service is already selected, pre select a button. */

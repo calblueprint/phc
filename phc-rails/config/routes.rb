@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :accounts #TODO: Remove this!
+  root "static_pages#index"
   get "pull", to: "accounts#pull"
 
   namespace :api do

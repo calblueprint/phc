@@ -46,11 +46,14 @@ public class MainActivity extends Activity{
 
     // Holds the service provided by the user, selected in the
     // ServiceActivity alert dialog.
-    private String providedService;
+    private String mProvidedService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        if (savedInstanceState != null) {
+            mProvidedService = savedInstanceState.getString("provided_service");
+        }
         // Passcode manager
         passcodeManager = SalesforceSDKManager.getInstance().getPasscodeManager();
 
@@ -151,8 +154,20 @@ public class MainActivity extends Activity{
     //Handles the "Services" Button on the splash page
     public void openServices(View view) {
         Intent intent = new Intent(this, ServiceActivity.class);
-        intent.putExtra("provided_service", providedService);
+        intent.putExtra("provided_service", mProvidedService);
         intent.putExtra("request_code", FOR_SERVICE);
+        CharSequence[] services;
+        if (!initialized) {
+            //TODO: TEST THIS WITH AN ACTUAL QUERY!
+            // Using filler array right now.
+            services = getResources().getStringArray(R.array.support_services_array);
+        } else {
+            services = getResourceList().values().toArray(new CharSequence[0]);
+        }
+        intent.putExtra("services_list", services);
+        /* Called with forResult so we can record the provided service if
+         * the user goes back to the MainActivity.
+         */
         startActivityForResult(intent, FOR_SERVICE);
     }
     //Handles the "Register" Button on the splash page
@@ -163,14 +178,22 @@ public class MainActivity extends Activity{
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        /* These are currently only used after calling the ServiceActivity. Make
+         * sure result codes are distinct if returning from another activity!
+         */
         if (requestCode == FOR_SERVICE) {
             if (resultCode == RESULT_CANCELED) {
-                providedService = data.getStringExtra("new_provided_service");
+                mProvidedService = data.getStringExtra("new_provided_service");
             }
             else if (resultCode == RESULT_OK) {
-                providedService = data.getStringExtra("new_provided_service");
+                mProvidedService = data.getStringExtra("new_provided_service");
             }
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString("provided_service", mProvidedService);
     }
 
     /**
@@ -249,7 +272,9 @@ public class MainActivity extends Activity{
 
                 @Override
                 public void onError(Exception exception) {
-                    Log.e("Id Response Error 2", exception.getLocalizedMessage());
+                    if (exception.getLocalizedMessage() != null) {
+                        Log.e("Id Response Error 2", exception.getLocalizedMessage());
+                    }
                 }
             };
 
