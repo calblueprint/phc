@@ -1,54 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/login_form"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
-        android:id="@+id/login_form"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/email_login_form"
+        android:layout_width="@dimen/input_text_width"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/email_login_form"
-            android:layout_width="@dimen/input_text_width"
+        <Spinner
+            android:id="@+id/spinner_neighborhood"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <CheckBox android:id="@+id/checkbox_homeless"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
+            android:text="@string/prompt_homeless"
+            android:onClick="onCheckboxClicked"/>
 
-            <Spinner
-                android:id="@+id/spinner_neighborhood"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+        <CheckBox android:id="@+id/checkbox_children"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/prompt_children"
+            android:onClick="onCheckboxClicked"/>
 
-            <CheckBox android:id="@+id/checkbox_homeless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/prompt_homeless"
-                android:onClick="onCheckboxClicked"/>
+        <CheckBox android:id="@+id/checkbox_doctor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/prompt_doctor"
+            android:onClick="onCheckboxClicked"/>
 
-            <CheckBox android:id="@+id/checkbox_children"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/prompt_children"
-                android:onClick="onCheckboxClicked"/>
+        <Button
+            android:id="@+id/button_event_continue"
+            style="?android:textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/action_continue"
+            android:textStyle="bold"/>
+    </LinearLayout>
 
-            <CheckBox android:id="@+id/checkbox_doctor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/prompt_doctor"
-                android:onClick="onCheckboxClicked"/>
-
-            <Button
-                android:id="@+id/button_event_continue"
-                style="?android:textAppearanceSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/action_continue"
-                android:textStyle="bold"/>
-        </LinearLayout>
-
-    </ScrollView>
-
-</LinearLayout>
+</ScrollView>
