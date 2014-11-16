@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -17,7 +18,7 @@ import android.widget.TextView;
  * SearchFragment is launched on successful submission of a client's form data,
  * and allows the user to go back to activity_register another client.
  */
-public class SearchFragment extends Fragment {
+public class SearchFragment extends RegistrationFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -30,6 +31,7 @@ public class SearchFragment extends Fragment {
                 transaction.replace(R.id.registration_fragment_container, newFragment, getResources().getString(R.string.sidebar_search));
                 transaction.addToBackStack(null);
                 transaction.commit();
+                hideKeyboard();
             }
         });
         return view;
@@ -51,4 +53,14 @@ public class SearchFragment extends Fragment {
         }
         super.onResume();
     }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        RegisterActivity rActivity = (RegisterActivity) getActivity();
+        rActivity.hideKeyboard();
+        getActivity().getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+
 }

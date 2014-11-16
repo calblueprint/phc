@@ -16,7 +16,7 @@ import android.widget.TextView;
  * AccountRegistrationFragment is the registration form for all new clients
  * and contains personal account questions that do not change over time.
  */
-public class AccountRegistrationFragment extends Fragment{
+public class AccountRegistrationFragment extends RegistrationFragment{
     Button mContinueButton;
     Spinner mGenderSpinner, mEthnicitySpinner, mLanguageSpinner, mNeighborhoodSpinner;
 
@@ -31,6 +31,7 @@ public class AccountRegistrationFragment extends Fragment{
         mContinueButton = (Button) view.findViewById(R.id.button_account_continue);
         mContinueButton.setOnClickListener(
                 new OnContinueClickListener(getActivity(), new EventRegistrationFragment(), getResources().getString(R.string.sidebar_event_info)));
+
         return view;
     }
 

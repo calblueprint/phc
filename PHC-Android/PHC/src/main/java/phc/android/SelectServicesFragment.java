@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class SelectServicesFragment extends Fragment{
+public class SelectServicesFragment extends RegistrationFragment {
     private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
 
     /**
@@ -39,6 +39,7 @@ public class SelectServicesFragment extends Fragment{
                 transaction.replace(R.id.registration_fragment_container, new SuccessFragment(), getResources().getString(R.string.sidebar_confirmation));
                 transaction.addToBackStack(null);
                 transaction.commit();
+                hideKeyboard();
             }
         });
 

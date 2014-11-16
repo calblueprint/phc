@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * EventRegistrationFragment is the event registration form for all clients
  * and includes fields that might have changed since the last event.
  */
-public class EventRegistrationFragment extends Fragment{
+public class EventRegistrationFragment extends RegistrationFragment{
     /* Continue button */
     Button mContinueButton;
     /* Integer used to help generate unique IDs for the checkboxes. */
@@ -43,6 +43,7 @@ public class EventRegistrationFragment extends Fragment{
         setSpinnerContent(view);
         mContinueButton = (Button) view.findViewById(R.id.button_event_continue);
         mContinueButton.setOnClickListener(new OnContinueClickListener(getActivity(), new SelectServicesFragment(), getResources().getString(R.string.sidebar_services_info)));
+        hideKeyboard();
 
         return view;
     }

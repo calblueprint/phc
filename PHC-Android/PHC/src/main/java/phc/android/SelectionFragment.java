@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class SelectionFragment extends Fragment {
+public class SelectionFragment extends RegistrationFragment {
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,7 +40,6 @@ public class SelectionFragment extends Fragment {
                 transaction.commit();
             }
         });
-
         return view;
     }
 
@@ -55,7 +56,7 @@ public class SelectionFragment extends Fragment {
                 TextView tv = (TextView) v;
                 tv.setTypeface(null, Typeface.NORMAL);
             }
-        }
+        };
         super.onResume();
     }
 }

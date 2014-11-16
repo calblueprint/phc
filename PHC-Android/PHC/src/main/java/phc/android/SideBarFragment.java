@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 
-public class SideBarFragment extends Fragment {
+public class SideBarFragment extends RegistrationFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -65,6 +65,7 @@ public class SideBarFragment extends Fragment {
                     transaction.replace(R.id.registration_fragment_container, newFragment, tag);
                     transaction.addToBackStack(null);
                     transaction.commit();
+                    hideKeyboard();
                 }
             });
             sidebarList.addView(button);
