@@ -48,19 +48,23 @@ public class OnContinueClickListener
         String name;
 
         mLayout = (ViewGroup) checkboxView.getParent();
+        Log.v("a", mContext.getResources().getResourceEntryName(mLayout.getId()));
+
+
         for (int i = 0; i < mLayout.getChildCount(); i++) {
             v = mLayout.getChildAt(i);
-            name = mContext.getResources().getResourceEntryName(v.getId());
-
-            Log.v("a", name);
 
             if (v instanceof CheckBox) {
+                name = mContext.getResources().getResourceEntryName(v.getId());
+                Log.v("a", name);
                 boolean checked = ((CheckBox) v).isChecked();
                 mUserInfoEditor.putBoolean(name, checked);
             } else if (v instanceof EditText) {
+                name = mContext.getResources().getResourceEntryName(v.getId());
                 String text = ((EditText) v).getText().toString();
                 mUserInfoEditor.putString(name, text);
             } else if (v instanceof Spinner) {
+                name = mContext.getResources().getResourceEntryName(v.getId());
                 String selection = ((Spinner) v).getSelectedItem().toString();
                 mUserInfoEditor.putString(name, selection);
             }

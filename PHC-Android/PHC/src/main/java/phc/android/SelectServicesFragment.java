@@ -1,6 +1,8 @@
 package phc.android;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -30,7 +32,16 @@ public class SelectServicesFragment extends Fragment{
         dynamicSetCheckboxes(view);
 
         Button mContinueButton = (Button) view.findViewById(R.id.button_services_continue);
-        mContinueButton.setOnClickListener(new OnContinueClickListener(getActivity(), new SuccessFragment(), getResources().getString(R.string.sidebar_confirmation)));
+        mContinueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
+                transaction.replace(R.id.registration_fragment_container, new SuccessFragment(), getResources().getString(R.string.sidebar_confirmation));
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
         return view;
     }
 

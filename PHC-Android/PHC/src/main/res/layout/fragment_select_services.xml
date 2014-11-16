@@ -18,14 +18,14 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/prompt_services"/>
+                android:text="@string/prompt_services" />
 
             <LinearLayout
                 android:id="@+id/services_list"
                 android:layout_width="@dimen/input_text_width"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="vertical"/>
+                android:orientation="vertical" />
 
             <Button
                 android:id="@+id/button_services_continue"
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/action_continue"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
     </ScrollView>
