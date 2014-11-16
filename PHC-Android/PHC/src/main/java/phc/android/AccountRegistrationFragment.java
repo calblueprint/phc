@@ -17,20 +17,17 @@ import android.widget.TextView;
  * and contains personal account questions that do not change over time.
  */
 public class AccountRegistrationFragment extends Fragment{
-    /* Continue button */
     Button mContinueButton;
-    /* Spinners for multiple choice questions */
     Spinner mGenderSpinner, mEthnicitySpinner, mLanguageSpinner, mNeighborhoodSpinner;
 
     /**
-     * On creation of the fragment, sets content for spinners and an onClickListener
-     * for the continue button.
+     * Set spinner content and continue button functionality.
      */
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account_registration, container, false);
-        setSpinnerContent(view);
 
+        setSpinnerContent(view);
         mContinueButton = (Button) view.findViewById(R.id.button_account_continue);
         mContinueButton.setOnClickListener(
                 new OnContinueClickListener(getActivity(), new EventRegistrationFragment()));
@@ -55,13 +52,6 @@ public class AccountRegistrationFragment extends Fragment{
     }
 
     private void setSpinnerContent(View view){
-
-        mNeighborhoodSpinner = (Spinner) view.findViewById(R.id.spinner_neighborhood);
-        String[] neighborhoods = getResources().getStringArray(R.array.neighborhood_array);
-        ArrayAdapter<String> neighborhoodAdapter = new HintAdapter(getActivity(), android.R.layout.simple_spinner_item, neighborhoods);
-        mNeighborhoodSpinner.setAdapter(neighborhoodAdapter);
-        mNeighborhoodSpinner.setSelection(neighborhoodAdapter.getCount());
-
         mGenderSpinner = (Spinner) view.findViewById(R.id.spinner_gender);
         String[] genders = getResources().getStringArray(R.array.gender_array);
         ArrayAdapter<String> genderAdapter = new HintAdapter(getActivity(), android.R.layout.simple_spinner_item, genders);
