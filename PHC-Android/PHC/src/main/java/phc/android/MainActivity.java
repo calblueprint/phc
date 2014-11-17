@@ -1,13 +1,19 @@
 package phc.android;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.content.IntentFilter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.salesforce.androidsdk.accounts.UserAccountManager;
 import com.salesforce.androidsdk.app.SalesforceSDKManager;
@@ -50,6 +56,12 @@ public class MainActivity extends Activity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        if(!isNetworkAvailable(this.getBaseContext())) {
+            Toast.makeText(getApplicationContext(), "No network available",
+                    Toast.LENGTH_SHORT).show();
+
+        }
 
         if (savedInstanceState != null) {
             mProvidedService = savedInstanceState.getString("provided_service");
@@ -400,4 +412,37 @@ public class MainActivity extends Activity{
         return columnName;
     }
 
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null) {
+            NetworkInfo[] info = connectivity.getAllNetworkInfo();
+            if (info != null) {
+                for (int i = 0; i < info.length; i++) {
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public void connectivityDialogue() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                finish();
+            }
+        });
+        AlertDialog dialog = builder.create();
+    }
+
+    public void checkConnectivity() {
+        
+    }
 }
