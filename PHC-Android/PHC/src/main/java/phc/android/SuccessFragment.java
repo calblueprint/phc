@@ -15,7 +15,7 @@ import android.widget.TextView;
  * SuccessFragment is launched on successful submission of a client's form data,
  * and allows the user to go back to activity_register another client.
  */
-public class SuccessFragment extends Fragment {
+public class SuccessFragment extends RegistrationFragment {
     /* Submit button. */
     private Button mRegisterAnotherButton;
 
