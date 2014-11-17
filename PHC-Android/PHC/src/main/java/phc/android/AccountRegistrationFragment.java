@@ -16,7 +16,7 @@ import android.widget.TextView;
  * AccountRegistrationFragment is the registration form for all new clients
  * and contains personal account questions that do not change over time.
  */
-public class AccountRegistrationFragment extends Fragment{
+public class AccountRegistrationFragment extends RegistrationFragment{
     Button mContinueButton;
     Spinner mGenderSpinner, mEthnicitySpinner, mLanguageSpinner, mNeighborhoodSpinner;
 
