@@ -14,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-
 import com.salesforce.androidsdk.accounts.UserAccountManager;
 import com.salesforce.androidsdk.app.SalesforceSDKManager;
 import com.salesforce.androidsdk.rest.ClientManager;
@@ -56,9 +55,7 @@ public class MainActivity extends Activity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         checkConnectivity();
-
         if (savedInstanceState != null) {
             mProvidedService = savedInstanceState.getString("provided_service");
         }
@@ -459,4 +456,5 @@ public class MainActivity extends Activity{
             connectivityDialogue();
         }
     }
+
 }
