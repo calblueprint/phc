@@ -13,7 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+
 
 import com.salesforce.androidsdk.accounts.UserAccountManager;
 import com.salesforce.androidsdk.app.SalesforceSDKManager;
@@ -57,11 +57,7 @@ public class MainActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        if(!isNetworkAvailable(this.getBaseContext())) {
-            Toast.makeText(getApplicationContext(), "No network available",
-                    Toast.LENGTH_SHORT).show();
-
-        }
+        checkConnectivity();
 
         if (savedInstanceState != null) {
             mProvidedService = savedInstanceState.getString("provided_service");
@@ -97,6 +93,7 @@ public class MainActivity extends Activity{
     @Override
     public void onResume() {
         super.onResume();
+        checkConnectivity();
         if (!initialized) {
             loginSalesforce(true);
         } else {
@@ -412,6 +409,11 @@ public class MainActivity extends Activity{
         return columnName;
     }
 
+    /** Checks to see if internet connection is available.
+     *
+     * @param context: the context of the current activity
+     * @return true iff the app has access to internet connection.
+     */
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivity != null) {
@@ -427,11 +429,15 @@ public class MainActivity extends Activity{
         return false;
     }
 
+    /**
+     * Creates an alert dialogue to tell the user that the app is not connected
+     * to the internet.
+     */
     public void connectivityDialogue() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User clicked OK button
+                checkConnectivity();
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -439,10 +445,18 @@ public class MainActivity extends Activity{
                 finish();
             }
         });
+        builder.setTitle("No internet connection");
         AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
+    /**
+     * Checks the internet connection.  If there is none, it will create
+     * an AlertDialogue that will force the user to reconnect.
+     */
     public void checkConnectivity() {
-        
+        if(!isNetworkAvailable(this.getBaseContext())) {
+            connectivityDialogue();
+        }
     }
 }
