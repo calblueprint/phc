@@ -115,6 +115,9 @@
 
     <string name="action_submit">Submit</string>
 
+    <!-- Registration Scan Page -->
+    <string name="scan_prompt">Please scan a QR code</string>
+
     <!-- Success Page -->
     <string name="text_success">Success!</string>
     <string name="button_register_another">Register another client</string>

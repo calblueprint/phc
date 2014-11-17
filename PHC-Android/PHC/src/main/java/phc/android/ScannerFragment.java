@@ -133,14 +133,11 @@ public class ScannerFragment extends android.app.Fragment {
             Reader reader = new MultiFormatReader();
             try{
                 Result result = reader.decode(bitmap);
-                mScanResult = result.getText();
-                mResultText.setTextColor(Color.GREEN);
-                mResultText.setText("SUCCESS! Result: " + mScanResult);
+                handleSuccessfulResult(result.getText());
             } catch (ChecksumException e) {
                 e.printStackTrace();
             } catch (NotFoundException e) {
-                mResultText.setTextColor(Color.RED);
-                mResultText.setText("X TRY AGAIN");
+                handleInvalidResult();
                 e.printStackTrace();
             } catch (FormatException e) {
                 e.printStackTrace();
@@ -148,6 +145,26 @@ public class ScannerFragment extends android.app.Fragment {
             mBackCamera.startPreview();
         }
     };
+
+
+    /**
+     * Called to handle a valid QR code after it has
+     * been scanned and decoded.
+     * @param result is the decoded string
+     */
+    protected void handleSuccessfulResult(String result) {
+        mScanResult = result;
+        mResultText.setTextColor(Color.GREEN);
+        mResultText.setText("SUCCESS! Result: " + mScanResult);
+    }
+
+    /**
+     * Called when an QR code could not be successfully read
+     */
+    protected void handleInvalidResult() {
+        mResultText.setTextColor(Color.RED);
+        mResultText.setText("X TRY AGAIN");
+    }
 
     /**
      * Lets the calling activity know that a valid
