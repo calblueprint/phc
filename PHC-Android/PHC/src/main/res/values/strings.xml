@@ -15,7 +15,7 @@
     <string name="sidebar_personal_info">Personal Info</string>
     <string name="sidebar_event_info">Event Info</string>
     <string name="sidebar_services_info">Services Info</string>
-    <string name="sidebar_scan">Scan QR Code</string>
+    <string name="sidebar_scan_code">Scan Code</string>
     <string name="sidebar_confirmation">Confirmation</string>
     <string-array name="sidebar">
         <item>Selection</item>
@@ -23,7 +23,7 @@
         <item>Personal Info</item>
         <item>Event Info</item>
         <item>Services Info</item>
-        <item>Scan QR Code</item>
+        <item>Scan Code</item>
         <item>Confirmation</item>
     </string-array>
 
@@ -114,6 +114,9 @@
     </string-array>
 
     <string name="action_submit">Submit</string>
+
+    <!-- Registration Scan Page -->
+    <string name="scan_prompt">Please scan a QR code</string>
 
     <!-- Success Page -->
     <string name="text_success">Success!</string>
