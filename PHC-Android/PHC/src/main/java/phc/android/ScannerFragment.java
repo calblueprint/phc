@@ -150,6 +150,7 @@ public class ScannerFragment extends android.app.Fragment {
     /**
      * Called to handle a valid QR code after it has
      * been scanned and decoded.
+     *
      * @param result is the decoded string
      */
     protected void handleSuccessfulResult(String result) {
@@ -171,6 +172,7 @@ public class ScannerFragment extends android.app.Fragment {
      * QR code was received. This valid code may be
      * overwritten multiple times before it is
      * returned to the calling activity.
+     *
      * @param result is the decoded string
      * @return no return value, uses Intent to communicate
      */
@@ -185,6 +187,7 @@ public class ScannerFragment extends android.app.Fragment {
      * Lets the calling activity know that a valid
      * QR code was not received before the user
      * returned using the back button.
+     *
      * @return no return value, uses Intent to communicate
      */
     private void returnCanceledResult() {
