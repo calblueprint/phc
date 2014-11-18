@@ -204,6 +204,7 @@ public class ScannerFragment extends android.app.Fragment {
     public void onPause() {
         super.onPause();
         releaseBackCamera();
+        mPreview.setVisibility(View.GONE);
     }
 
     /**
@@ -217,6 +218,7 @@ public class ScannerFragment extends android.app.Fragment {
         super.onResume();
         acquireBackCamera();
         mPreview.updateCamera(mBackCamera);
+        mPreview.setVisibility(View.VISIBLE);
     }
 
     /**

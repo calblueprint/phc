@@ -58,6 +58,7 @@ public class RegistrationScannerFragment extends ScannerFragment {
     /**
      * Called to handle a valid QR code after it has
      * been scanned and decoded.
+     *
      * @param result is the decoded string
      */
     @Override
