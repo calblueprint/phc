@@ -5,17 +5,16 @@
     android:layout_height="match_parent"
     android:layout_marginTop="@dimen/top_bottom_margins"
     android:layout_marginBottom="@dimen/top_bottom_margins">
-
     <LinearLayout
         android:id="@+id/services_page"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/prompt_services" />
 
         <LinearLayout
