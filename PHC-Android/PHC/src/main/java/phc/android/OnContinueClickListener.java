@@ -35,7 +35,7 @@ public class OnContinueClickListener
      * When continue button is clicked, updates SharedPreferences and loads the next fragment.
      */
     public void onClick(View view) {
-        updateSharedPreferences(view);
+        updateSharedPreferences((ViewGroup) view.getParent());
         loadNextFragment();
     }
 
@@ -43,20 +43,15 @@ public class OnContinueClickListener
      * Updates SharedPreferences with (string, boolean) key-value pairs for each checkbox
      * and (string, string) key-value pairs for each spinner and text entry view.
      */
-    private void updateSharedPreferences(View checkboxView){
+    private void updateSharedPreferences(ViewGroup mLayout){
         View v;
         String name;
-
-        mLayout = (ViewGroup) checkboxView.getParent();
-        Log.v("a", mContext.getResources().getResourceEntryName(mLayout.getId()));
-
 
         for (int i = 0; i < mLayout.getChildCount(); i++) {
             v = mLayout.getChildAt(i);
 
             if (v instanceof CheckBox) {
                 name = mContext.getResources().getResourceEntryName(v.getId());
-                Log.v("a", name);
                 boolean checked = ((CheckBox) v).isChecked();
                 mUserInfoEditor.putBoolean(name, checked);
             } else if (v instanceof EditText) {
@@ -67,6 +62,8 @@ public class OnContinueClickListener
                 name = mContext.getResources().getResourceEntryName(v.getId());
                 String selection = ((Spinner) v).getSelectedItem().toString();
                 mUserInfoEditor.putString(name, selection);
+            } else if (v instanceof ViewGroup) {
+                updateSharedPreferences((ViewGroup) v);
             }
         }
         mUserInfoEditor.commit();
