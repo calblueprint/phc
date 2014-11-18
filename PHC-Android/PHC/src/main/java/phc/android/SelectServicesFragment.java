@@ -1,7 +1,5 @@
 package phc.android;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.res.Resources;
 import android.graphics.Typeface;

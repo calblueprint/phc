@@ -12,19 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 
 /**
  * EventRegistrationFragment is the event registration form for all clients
  * and includes fields that might have changed since the last event.
  */
 public class EventRegistrationFragment extends RegistrationFragment{
-    /* Continue button */
-    Button mContinueButton;
-    /* Integer used to help generate unique IDs for the checkboxes. */
-    private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
-    private Spinner mNeighborhoodSpinner;
 
     /**
      * On creation of the fragment, sets content for spinners and an onClickListener
@@ -40,7 +33,7 @@ public class EventRegistrationFragment extends RegistrationFragment{
         Resources res = getResources();
 
         setSpinnerContent(view);
-        mContinueButton = (Button) view.findViewById(R.id.button_event_continue);
+        Button mContinueButton = (Button) view.findViewById(R.id.button_event_continue);
         mContinueButton.setOnClickListener(new OnContinueClickListener(getActivity(), new SelectServicesFragment(), getResources().getString(R.string.sidebar_services_info)));
         return view;
     }
@@ -66,7 +59,7 @@ public class EventRegistrationFragment extends RegistrationFragment{
      * Sets multiple choice options for each spinner.
      */
     protected void setSpinnerContent(View view){
-        mNeighborhoodSpinner = (Spinner) view.findViewById(R.id.spinner_neighborhood);
+        Spinner mNeighborhoodSpinner = (Spinner) view.findViewById(R.id.spinner_neighborhood);
         String[] neighborhoods = getResources().getStringArray(R.array.neighborhood_array);
         ArrayAdapter<String> neighborhoodAdapter = new HintAdapter(getActivity(), android.R.layout.simple_spinner_item, neighborhoods);
         mNeighborhoodSpinner.setAdapter(neighborhoodAdapter);

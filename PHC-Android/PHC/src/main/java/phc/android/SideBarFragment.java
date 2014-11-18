@@ -31,7 +31,7 @@ public class SideBarFragment extends RegistrationFragment {
 
             Button button = new Button(getActivity());
             button.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT));
             button.setBackgroundColor(Color.TRANSPARENT);
             button.setText(tag);

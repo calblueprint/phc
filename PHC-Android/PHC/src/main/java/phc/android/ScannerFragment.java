@@ -1,5 +1,6 @@
 package phc.android;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,7 +30,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class ScannerFragment extends android.app.Fragment {
+public class ScannerFragment extends Fragment {
 
     public final static String TAG = "ScannerFragment";
 
