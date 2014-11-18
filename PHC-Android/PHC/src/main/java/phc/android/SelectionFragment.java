@@ -1,6 +1,5 @@
 package phc.android;
 
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -11,7 +10,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class SelectionFragment extends Fragment {
+public class SelectionFragment extends RegistrationFragment {
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,7 +38,6 @@ public class SelectionFragment extends Fragment {
                 transaction.commit();
             }
         });
-
         return view;
     }
 

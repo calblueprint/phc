@@ -27,7 +27,6 @@
             android:name=".RegisterActivity"
             android:exported="true"
             android:label="@string/title_activity_register"
-            android:windowSoftInputMode="adjustResize|stateVisible"
             android:parentActivityName=".MainActivity">
         </activity>
 
