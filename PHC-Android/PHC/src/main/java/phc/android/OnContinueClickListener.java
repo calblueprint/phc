@@ -41,7 +41,8 @@ public class OnContinueClickListener
 
     /**
      * Updates SharedPreferences with (string, boolean) key-value pairs for each checkbox
-     * and (string, string) key-value pairs for each spinner and text entry view.
+     * and (string, string) key-value pairs for each spinner and EditText view.
+     * Ignores TextView objects.
      */
     private void updateSharedPreferences(View checkboxView){
         View v;
