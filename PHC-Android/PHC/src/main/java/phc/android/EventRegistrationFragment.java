@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class EventRegistrationFragment extends Fragment{
     /* Continue button */
-    Button mContinueButton;
+    private Button mContinueButton;
     /* Integer used to help generate unique IDs for the checkboxes. */
     private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
     private Spinner mNeighborhoodSpinner;
