@@ -42,7 +42,13 @@
     <string name="prompt_first">First Name</string>
     <string name="prompt_last">Last Name</string>
     <string name="prompt_ssn">SSN</string>
+    <string name="prompt_ssn_1">XXX</string>
+    <string name="prompt_ssn_2">XX</string>
+    <string name="prompt_ssn_3">XXXX</string>
     <string name="prompt_birthday">Birthday</string>
+    <string name="prompt_birthday_month">MM</string>
+    <string name="prompt_birthday_day">DD</string>
+    <string name="prompt_birthday_year">YYYY</string>
     <string name="prompt_phone">Phone</string>
     <string name="prompt_email">E-mail</string>
     <string name="prompt_gender">Gender Identity</string>
