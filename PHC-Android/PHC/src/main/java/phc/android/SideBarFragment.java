@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 
-public class SideBarFragment extends Fragment {
+public class SideBarFragment extends RegistrationFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -42,9 +42,9 @@ public class SideBarFragment extends Fragment {
 
                 @Override
                 public void onClick(View v) {
-
                     FragmentManager fragMan = getFragmentManager();
                     Fragment newFragment = fragMan.findFragmentByTag(tag);
+
                     if (newFragment == null) {
                         if (tag.equals(getResources().getString(R.string.sidebar_selection))) {
                             newFragment = new SelectionFragment();
@@ -54,6 +54,10 @@ public class SideBarFragment extends Fragment {
                             newFragment = new AccountRegistrationFragment();
                         } else if (tag.equals(getResources().getString(R.string.sidebar_event_info))) {
                             newFragment = new EventRegistrationFragment();
+                        } else if (tag.equals(getResources().getString(R.string.sidebar_services_info))) {
+                            newFragment = new SelectServicesFragment();
+                        } else if (tag.equals("Scan Code")) {
+                            newFragment = new RegistrationScannerFragment();
                         } else if (tag.equals(getResources().getString(R.string.sidebar_confirmation))) {
                             newFragment = new SuccessFragment();
                         }

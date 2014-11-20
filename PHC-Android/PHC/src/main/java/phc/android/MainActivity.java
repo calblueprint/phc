@@ -1,7 +1,12 @@
 package phc.android;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.content.IntentFilter;
 import android.util.Log;
@@ -50,7 +55,7 @@ public class MainActivity extends Activity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        checkConnectivity();
         if (savedInstanceState != null) {
             mProvidedService = savedInstanceState.getString("provided_service");
         }
@@ -85,6 +90,7 @@ public class MainActivity extends Activity{
     @Override
     public void onResume() {
         super.onResume();
+        checkConnectivity();
         if (!initialized) {
             loginSalesforce(true);
         } else {
@@ -160,7 +166,7 @@ public class MainActivity extends Activity{
         if (!initialized) {
             //TODO: TEST THIS WITH AN ACTUAL QUERY!
             // Using filler array right now.
-            services = getResources().getStringArray(R.array.support_services_array);
+            services = getResources().getStringArray(R.array.services_array);
         } else {
             services = getResourceList().values().toArray(new CharSequence[0]);
         }
@@ -399,4 +405,56 @@ public class MainActivity extends Activity{
         columnName = columnName.replace("_", " ");
         return columnName;
     }
+
+    /** Checks to see if internet connection is available.
+     *
+     * @param context: the context of the current activity
+     * @return true iff the app has access to internet connection.
+     */
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null) {
+            NetworkInfo[] info = connectivity.getAllNetworkInfo();
+            if (info != null) {
+                for (int i = 0; i < info.length; i++) {
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Creates an alert dialogue to tell the user that the app is not connected
+     * to the internet.
+     */
+    public void connectivityDialogue() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                checkConnectivity();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                finish();
+            }
+        });
+        builder.setTitle("No internet connection");
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    /**
+     * Checks the internet connection.  If there is none, it will create
+     * an AlertDialogue that will force the user to reconnect.
+     */
+    public void checkConnectivity() {
+        if(!isNetworkAvailable(this.getBaseContext())) {
+            connectivityDialogue();
+        }
+    }
+
 }

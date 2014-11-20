@@ -96,4 +96,5 @@ public class RegisterActivity extends Activity {
         key = key.replaceAll("[\\W\\s]","_") + "__c";
         return key;
     }
+
 }

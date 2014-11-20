@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -17,23 +18,24 @@ import android.widget.Spinner;
 public class OnContinueClickListener
         extends SharedPreferenceEditorListener implements View.OnClickListener{
 
-    /* The next fragment to be opened */
-    Fragment mNextFrag;
+    private final String mFragmentName;
+    private final Fragment mNextFrag;
 
     /**
      * Calls constructor of superclass to create SharedPreference instance
      * and keeps note of the next fragment to be launched.
      */
-    public OnContinueClickListener(Context context, Fragment fragment) {
+    public OnContinueClickListener(Context context, Fragment fragment, String fragmentName) {
         super(context);
         mNextFrag = fragment;
+        mFragmentName = fragmentName;
     }
 
     /**
      * When continue button is clicked, updates SharedPreferences and loads the next fragment.
      */
     public void onClick(View view) {
-        updateSharedPreferences(view);
+        updateSharedPreferences((ViewGroup) view.getParent());
         loadNextFragment();
     }
 
@@ -41,24 +43,27 @@ public class OnContinueClickListener
      * Updates SharedPreferences with (string, boolean) key-value pairs for each checkbox
      * and (string, string) key-value pairs for each spinner and text entry view.
      */
-    private void updateSharedPreferences(View checkboxView){
+    private void updateSharedPreferences(ViewGroup mLayout){
         View v;
         String name;
 
-        mLayout = (ViewGroup) checkboxView.getParent();
         for (int i = 0; i < mLayout.getChildCount(); i++) {
             v = mLayout.getChildAt(i);
-            name = mContext.getResources().getResourceEntryName(v.getId());
 
             if (v instanceof CheckBox) {
+                name = mContext.getResources().getResourceEntryName(v.getId());
                 boolean checked = ((CheckBox) v).isChecked();
                 mUserInfoEditor.putBoolean(name, checked);
             } else if (v instanceof EditText) {
+                name = mContext.getResources().getResourceEntryName(v.getId());
                 String text = ((EditText) v).getText().toString();
                 mUserInfoEditor.putString(name, text);
             } else if (v instanceof Spinner) {
+                name = mContext.getResources().getResourceEntryName(v.getId());
                 String selection = ((Spinner) v).getSelectedItem().toString();
                 mUserInfoEditor.putString(name, selection);
+            } else if (v instanceof ViewGroup) {
+                updateSharedPreferences((ViewGroup) v);
             }
         }
         mUserInfoEditor.commit();
@@ -70,7 +75,7 @@ public class OnContinueClickListener
     private void loadNextFragment(){
         FragmentTransaction transaction =
                 ((Activity) mContext).getFragmentManager().beginTransaction();
-        transaction.replace(R.id.registration_fragment_container, mNextFrag);
+        transaction.replace(R.id.registration_fragment_container, mNextFrag, mFragmentName);
         transaction.addToBackStack(null);
         transaction.commit();
     }

@@ -1,8 +1,6 @@
 package phc.android;
 
-import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -19,9 +17,11 @@ import android.widget.TextView;
  * SearchFragment is launched on successful submission of a client's form data,
  * and allows the user to go back to activity_register another client.
  */
-public class SearchFragment extends Fragment {
-    public static final String SEARCH_PARAMETERS = "SearchParametersFile";
 
+
+public class SearchFragment extends RegistrationFragment {
+
+    public static final String SEARCH_PARAMETERS = "SearchParametersFile";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,4 +64,5 @@ public class SearchFragment extends Fragment {
         }
         super.onResume();
     }
+
 }

@@ -14,12 +14,16 @@
     <string name="sidebar_search">Search</string>
     <string name="sidebar_personal_info">Personal Info</string>
     <string name="sidebar_event_info">Event Info</string>
+    <string name="sidebar_services_info">Services Info</string>
+    <string name="sidebar_scan_code">Scan Code</string>
     <string name="sidebar_confirmation">Confirmation</string>
     <string-array name="sidebar">
         <item>Selection</item>
         <item>Search</item>
         <item>Personal Info</item>
         <item>Event Info</item>
+        <item>Services Info</item>
+        <item>Scan Code</item>
         <item>Confirmation</item>
     </string-array>
 
@@ -99,17 +103,11 @@
 
     <!-- Services Selection -->
     <string name="prompt_services">Which services will you be using today?</string>
-    <string name="medical_services">Medical Services</string>
 
-    <string-array name="medical_services_array">
+    <string-array name="services_array">
         <item>acupuncture</item>
         <item>addiction recovery</item>
         <item>medicine things</item>
-    </string-array>
-
-    <string name="support_services">Support Services</string>
-
-    <string-array name="support_services_array">
         <item>support</item>
         <item>support</item>
         <item>moar support</item>
@@ -117,10 +115,12 @@
 
     <string name="action_submit">Submit</string>
 
+    <!-- Registration Scan Page -->
+    <string name="scan_prompt">Please scan a QR code</string>
+
     <!-- Success Page -->
     <string name="text_success">Success!</string>
     <string name="button_register_another">Register another client</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Service Activity -->
     <string name="change_service">Change Service</string>
