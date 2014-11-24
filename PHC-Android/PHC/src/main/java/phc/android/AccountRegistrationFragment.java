@@ -22,7 +22,7 @@ import android.widget.TextView;
 public class AccountRegistrationFragment extends Fragment{
     private Button mContinueButton;
     private Spinner mGenderSpinner, mEthnicitySpinner, mLanguageSpinner;
-    private EditText mMonth, mDay, mYear, mPhone1, mPhone2, mPhone3, mSSN1, mSSN2, mSSN3;
+    private EditText mMonth, mDay, mYear, mPhone1, mPhone2, mPhone3, mSSN1, mSSN2, mSSN3, mEmail;
 
     /**
      * Set spinner content and continue button functionality.
@@ -57,24 +57,29 @@ public class AccountRegistrationFragment extends Fragment{
     }
 
     private void addEditTextListeners(View view){
+        mSSN1 = (EditText) view.findViewById(R.id.ssn_1);
+        mSSN2 = (EditText) view.findViewById(R.id.ssn_2);
+        mSSN3 = (EditText) view.findViewById(R.id.ssn_3);
         mMonth = (EditText) view.findViewById(R.id.birthday_month);
         mDay = (EditText) view.findViewById(R.id.birthday_day);
         mYear = (EditText) view.findViewById(R.id.birthday_year);
         mPhone1 = (EditText) view.findViewById(R.id.phone_1);
         mPhone2 = (EditText) view.findViewById(R.id.phone_2);
         mPhone3 = (EditText) view.findViewById(R.id.phone_3);
-        mSSN1 = (EditText) view.findViewById(R.id.ssn_1);
-        mSSN2 = (EditText) view.findViewById(R.id.ssn_2);
-        mSSN3 = (EditText) view.findViewById(R.id.ssn_3);
-
-        mMonth.addTextChangedListener(new TextLengthWatcher(2,mDay));
-        mDay.addTextChangedListener(new TextLengthWatcher(2,mYear));
-
-        mPhone1.addTextChangedListener(new TextLengthWatcher(3,mPhone2));
-        mPhone2.addTextChangedListener(new TextLengthWatcher(3,mPhone3));
+        mEmail = (EditText) view.findViewById(R.id.email);
 
         mSSN1.addTextChangedListener(new TextLengthWatcher(3,mSSN2));
         mSSN2.addTextChangedListener(new TextLengthWatcher(2,mSSN3));
+        mSSN3.addTextChangedListener(new TextLengthWatcher(4,mMonth));
+
+        mMonth.addTextChangedListener(new TextLengthWatcher(2,mDay));
+        mDay.addTextChangedListener(new TextLengthWatcher(2,mYear));
+        mYear.addTextChangedListener(new TextLengthWatcher(4,mPhone1));
+
+        mPhone1.addTextChangedListener(new TextLengthWatcher(3,mPhone2));
+        mPhone2.addTextChangedListener(new TextLengthWatcher(3,mPhone3));
+        mPhone3.addTextChangedListener(new TextLengthWatcher(4,mEmail));
+
     }
 
     private void setSpinnerContent(View view){
