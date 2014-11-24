@@ -15,13 +15,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/prompt_services" />
+            android:text="@string/prompt_services"
+            android:textSize="@dimen/text_size"/>
 
         <LinearLayout
             android:id="@+id/services_list"
             android:layout_width="@dimen/input_text_width"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:orientation="vertical" />
 
         <Button
