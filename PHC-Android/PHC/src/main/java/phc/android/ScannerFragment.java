@@ -48,7 +48,11 @@ public class ScannerFragment extends Fragment {
                              Bundle savedInstanceState) {
         /* Inflate the layout for this fragment */
         View view = inflater.inflate(R.layout.fragment_scanner, container, false);
+        setupView(view);
+        return view;
+    }
 
+    protected void setupView(View view) {
         // TODO: move camera open to async task
         /* We should do this as soon as the app starts */
         mResultText = (TextView) view.findViewById(R.id.confirm_scan);
@@ -73,9 +77,8 @@ public class ScannerFragment extends Fragment {
         });
 
         fl.addView(mPreview);
-
-        return view;
     }
+
     /**
      * This is where we interface with the zxing library.
      */
@@ -131,14 +134,11 @@ public class ScannerFragment extends Fragment {
             Reader reader = new MultiFormatReader();
             try{
                 Result result = reader.decode(bitmap);
-                mScanResult = result.getText();
-                mResultText.setTextColor(Color.GREEN);
-                mResultText.setText("SUCCESS! Result: " + mScanResult);
+                handleSuccessfulResult(result.getText());
             } catch (ChecksumException e) {
                 e.printStackTrace();
             } catch (NotFoundException e) {
-                mResultText.setTextColor(Color.RED);
-                mResultText.setText("X TRY AGAIN");
+                handleInvalidResult();
                 e.printStackTrace();
             } catch (FormatException e) {
                 e.printStackTrace();
@@ -147,11 +147,33 @@ public class ScannerFragment extends Fragment {
         }
     };
 
+
+    /**
+     * Called to handle a valid QR code after it has
+     * been scanned and decoded.
+     *
+     * @param result is the decoded string
+     */
+    protected void handleSuccessfulResult(String result) {
+        mScanResult = result;
+        mResultText.setTextColor(Color.GREEN);
+        mResultText.setText("SUCCESS! Result: " + mScanResult);
+    }
+
+    /**
+     * Called when an QR code could not be successfully read
+     */
+    protected void handleInvalidResult() {
+        mResultText.setTextColor(Color.RED);
+        mResultText.setText("X TRY AGAIN");
+    }
+
     /**
      * Lets the calling activity know that a valid
      * QR code was received. This valid code may be
      * overwritten multiple times before it is
      * returned to the calling activity.
+     *
      * @param result is the decoded string
      * @return no return value, uses Intent to communicate
      */
@@ -166,6 +188,7 @@ public class ScannerFragment extends Fragment {
      * Lets the calling activity know that a valid
      * QR code was not received before the user
      * returned using the back button.
+     *
      * @return no return value, uses Intent to communicate
      */
     private void returnCanceledResult() {
@@ -182,6 +205,7 @@ public class ScannerFragment extends Fragment {
     public void onPause() {
         super.onPause();
         releaseBackCamera();
+        mPreview.setVisibility(View.GONE);
     }
 
     /**
@@ -195,6 +219,7 @@ public class ScannerFragment extends Fragment {
         super.onResume();
         acquireBackCamera();
         mPreview.updateCamera(mBackCamera);
+        mPreview.setVisibility(View.VISIBLE);
     }
 
     /**

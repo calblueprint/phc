@@ -34,7 +34,7 @@ public class SelectServicesFragment extends RegistrationFragment {
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
-                transaction.replace(R.id.registration_fragment_container, new ScannerFragment(), getResources().getString(R.string.sidebar_scan));
+                transaction.replace(R.id.registration_fragment_container, new RegistrationScannerFragment(), getResources().getString(R.string.sidebar_scan_code));
                 transaction.addToBackStack(null);
                 transaction.commit();
             }

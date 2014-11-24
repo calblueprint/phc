@@ -14,6 +14,17 @@ class Api::V1::AccountsController < ApplicationController
     end
   end
 
+  def create
+    if request.headers["AuthToken"].eql? ENV["AuthToken"]
+      pa = PersonAccount.new
+      pa.first_name = request.headers["FirstName"]
+      pa.last_name = request.headers["LastName"]
+      pa.sf_id = request.headers["SalesforceID"]
+      pa.save
+    end
+    respond_with []
+  end
+
   def show
     respond_with PersonAccount.find(params[:id])
   end
