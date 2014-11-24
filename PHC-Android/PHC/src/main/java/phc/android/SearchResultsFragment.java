@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -137,6 +138,40 @@ public class SearchResultsFragment extends Fragment implements RecoverySystem.Pr
     @Override
     public void onProgress(int progress) {
         // TODO: implement a progress bar that actually does something
+    }
+
+
+    class SearchResultAdapter extends ArrayAdapter<SearchResult> {
+
+        private SearchResult[] data;
+        private Context context;
+        /**
+         * A Simple Date Formatter to make date strings more readable.
+         */
+        private SimpleDateFormat sdf;
+
+        public DonationAdapter(Context context, SearchResult[] data) {
+            super(context, R.layout.search_result_row, data);
+            sdf = new SimpleDateFormat("EEE, MMM d, ''yy");
+            this.data = data;
+            this.context = context;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            View rowView;
+            if (convertView == null) {
+                LayoutInflater inflater = (LayoutInflater) context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                rowView = inflater.inflate(R.layout.search_result_row, parent, false);
+            } else {
+                rowView = convertView;
+            }
+
+
+            return rowView;
+        }
     }
 
 }
