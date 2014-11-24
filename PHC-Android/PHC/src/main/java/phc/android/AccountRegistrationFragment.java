@@ -1,5 +1,6 @@
 package phc.android;
 
+import android.app.Fragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -15,9 +17,10 @@ import android.widget.TextView;
  * AccountRegistrationFragment is the registration form for all new clients
  * and contains personal account questions that do not change over time.
  */
-public class AccountRegistrationFragment extends RegistrationFragment{
-    Button mContinueButton;
-    Spinner mGenderSpinner, mEthnicitySpinner, mLanguageSpinner, mNeighborhoodSpinner;
+public class AccountRegistrationFragment extends Fragment {
+    private Button mContinueButton;
+    private Spinner mGenderSpinner, mEthnicitySpinner, mLanguageSpinner;
+    private EditText mMonth, mDay, mYear, mPhone1, mPhone2, mPhone3, mSSN1, mSSN2, mSSN3, mEmail;
 
     /**
      * Set spinner content and continue button functionality.
@@ -26,6 +29,7 @@ public class AccountRegistrationFragment extends RegistrationFragment{
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account_registration, container, false);
 
+        addEditTextListeners(view);
         setSpinnerContent(view);
         mContinueButton = (Button) view.findViewById(R.id.button_account_continue);
         mContinueButton.setOnClickListener(new OnContinueClickListener(getActivity(),
@@ -48,6 +52,32 @@ public class AccountRegistrationFragment extends RegistrationFragment{
             }
         }
         super.onResume();
+    }
+
+    private void addEditTextListeners(View view){
+        mSSN1 = (EditText) view.findViewById(R.id.ssn_1);
+        mSSN2 = (EditText) view.findViewById(R.id.ssn_2);
+        mSSN3 = (EditText) view.findViewById(R.id.ssn_3);
+        mMonth = (EditText) view.findViewById(R.id.birthday_month);
+        mDay = (EditText) view.findViewById(R.id.birthday_day);
+        mYear = (EditText) view.findViewById(R.id.birthday_year);
+        mPhone1 = (EditText) view.findViewById(R.id.phone_1);
+        mPhone2 = (EditText) view.findViewById(R.id.phone_2);
+        mPhone3 = (EditText) view.findViewById(R.id.phone_3);
+        mEmail = (EditText) view.findViewById(R.id.email);
+
+        mSSN1.addTextChangedListener(new TextLengthWatcher(3,mSSN2));
+        mSSN2.addTextChangedListener(new TextLengthWatcher(2,mSSN3));
+        mSSN3.addTextChangedListener(new TextLengthWatcher(4,mMonth));
+
+        mMonth.addTextChangedListener(new TextLengthWatcher(2,mDay));
+        mDay.addTextChangedListener(new TextLengthWatcher(2,mYear));
+        mYear.addTextChangedListener(new TextLengthWatcher(4,mPhone1));
+
+        mPhone1.addTextChangedListener(new TextLengthWatcher(3,mPhone2));
+        mPhone2.addTextChangedListener(new TextLengthWatcher(3,mPhone3));
+        mPhone3.addTextChangedListener(new TextLengthWatcher(4,mEmail));
+
     }
 
     private void setSpinnerContent(View view){
