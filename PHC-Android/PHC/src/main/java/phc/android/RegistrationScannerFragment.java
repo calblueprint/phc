@@ -55,6 +55,40 @@ public class RegistrationScannerFragment extends ScannerFragment {
         return view;
     }
 
+    protected class ContinueListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            recordScan();
+            showSuccessToast();
+            FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
+            transaction.replace(R.id.registration_fragment_container, new SuccessFragment(), getResources().getString(R.string.sidebar_confirmation));
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+    }
+    @Override
+    protected void setupView(View view) {
+        mScanConfirmation = (TextView) view.findViewById(R.id.scan_result);
+        mScanButton = (Button) view.findViewById(R.id.start_scan);
+        mScanButton.setOnClickListener(new ScanListener());
+        mConfirmButton = (Button) view.findViewById(R.id.button_services_continue);         mConfirmButton.setOnClickListener(new ContinueListener());
+        mConfirmButton.setEnabled(false);
+    }
+
+    @Override
+    protected void confirmScan() {
+        mScanConfirmation.setText("Last successful scan result was\n: " + mScanResult);
+        mConfirmButton.setEnabled(true);
+        mScanButton.setText("Return");
+        mScanButton.setOnClickListener(new ReturnListener());
+    }
+
+    @Override
+    protected void resetState() {
+        mScanButton.setText("Click to Scan");
+        mScanButton.setOnClickListener(new ScanListener());
+    }
+
     /**
      * Called to handle a valid QR code after it has
      * been scanned and decoded.

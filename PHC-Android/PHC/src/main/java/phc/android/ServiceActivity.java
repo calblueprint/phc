@@ -234,6 +234,7 @@ public class ServiceActivity extends Activity {
      * to use.
      */
     public void releaseBackCamera() {
+        /*
         if (mScannerFragment != null) {
             try {
                 mScannerFragment.releaseBackCamera();
@@ -241,6 +242,7 @@ public class ServiceActivity extends Activity {
                 //TODO: is this too general?
             }
         }
+        */
     }
 
     /**
@@ -249,12 +251,14 @@ public class ServiceActivity extends Activity {
      */
     public void acquireBackCamera() {
         if (mScannerFragment != null) {
+            /*
             try {
 
                 mScannerFragment.acquireBackCamera();
             } catch (Exception e) {
                 System.exit(0);
             }
+            */
         }
     }
 

@@ -115,6 +115,9 @@
 
     <string name="action_submit">Submit</string>
 
+    <!-- Service Scan Page -->
+    <string name="start_scan">Click to scan</string>
+    <string name="confirm_scan">Confirm</string>
     <!-- Registration Scan Page -->
     <string name="scan_prompt">Please scan a QR code</string>
 

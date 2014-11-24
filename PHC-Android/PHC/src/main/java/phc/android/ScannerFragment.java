@@ -1,46 +1,31 @@
 package phc.android;
 
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.hardware.Camera;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.zxing.BinaryBitmap;
-import com.google.zxing.ChecksumException;
-import com.google.zxing.FormatException;
-import com.google.zxing.LuminanceSource;
-import com.google.zxing.MultiFormatReader;
-import com.google.zxing.NotFoundException;
-import com.google.zxing.RGBLuminanceSource;
-import com.google.zxing.Reader;
-import com.google.zxing.Result;
-import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 public class ScannerFragment extends android.app.Fragment {
 
     public final static String TAG = "ScannerFragment";
+    /* holds the result of the scan */
+    protected String mScanResult;
+    /* displays last scan result */
+    protected TextView mScanConfirmation;
+    /* button to go to scanner */
+    protected Button mScanButton;
+    /* button to confirm result */
+    protected Button mConfirmButton;
 
-    public String mScanResult;
-    /* Holds an instance of the back camera on the device */
-    Camera mBackCamera;
-    /* Renders a preview for the user onto a FrameLayout */
-    CameraPreview mPreview;
-    /* Used to display "SUCCESS" or "TRY AGAIN" */
-    // TODO: Change to check and X assets.
-    TextView mResultText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,101 +37,61 @@ public class ScannerFragment extends android.app.Fragment {
     }
 
     protected void setupView(View view) {
-        // TODO: move camera open to async task
-        /* We should do this as soon as the app starts */
-        mResultText = (TextView) view.findViewById(R.id.confirm_scan);
-        FrameLayout fl = (FrameLayout) view.findViewById(R.id.camera_preview);
-        acquireBackCamera();
-        mPreview = new CameraPreview(mBackCamera, getActivity(), fl);
-        mPreview.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                try {
-                    mBackCamera.takePicture(null, null, mPicture);
-                } catch (Exception e) {
-                    //TODO: Find a better way to lock this!
-                    /* This handles the case where the user double
-                     * taps the preview frame, so takePicture() fails
-                     * since the preview has not been started.
-                     */
-                }
-            }
-
-        });
-
-        fl.addView(mPreview);
+        mScanConfirmation = (TextView) view.findViewById(R.id.scan_result);
+        mScanButton = (Button) view.findViewById(R.id.start_scan);
+        mScanButton.setOnClickListener(new ScanListener());
+        mConfirmButton = (Button) view.findViewById(R.id.confirm_scan);
+        mConfirmButton.setOnClickListener(new ConfirmListener());
+        mConfirmButton.setVisibility(View.GONE);
     }
 
-    /**
-     * This is where we interface with the zxing library.
-     */
-    private Camera.PictureCallback mPicture = new Camera.PictureCallback() {
-
-        /**
-         * Once a picture is taken, this callback saves the file
-         * to a local cache. Then, it is converted to a BinaryBitmap
-         * so it can be passed to a MultiFormatReader in the zxing library
-         * to obtain a string result.
-         * @param data is the actual camera information
-         * @param camera is the camera instance
-         */
+    protected class ReturnListener implements View.OnClickListener {
         @Override
-        public void onPictureTaken(byte[] data, Camera camera) {
-            /* Not currently used. May be used in the future */
-            final int MEDIA_TYPE_IMAGE = 1;
-            final int MEDIA_TYPE_VIDEO = 2;
-            File pictureFile;
-            //TODO: catch NPE and delete from cache!
-            File outputDir = getActivity().getCacheDir();
-            try {
-                pictureFile = File.createTempFile("prefix", "extension", outputDir);
-            } catch (IOException e) {
-                Log.d(TAG, "Error creating media file, check storage permissions: " + e.getMessage());
-                return;
-            }
-            try {
-                FileOutputStream fos = new FileOutputStream(pictureFile);
-                fos.write(data);
-                fos.close();
-            } catch (FileNotFoundException e) {
-                Log.d(TAG, "File not found: " + e.getMessage());
-            } catch (IOException e) {
-                Log.d(TAG, "Error accessing file: " + e.getMessage());
-            }
-            Bitmap bmpImage = BitmapFactory.decodeFile(pictureFile.getAbsolutePath());
-            int pixels[] = new int[bmpImage.getHeight()*bmpImage.getWidth()];
-            bmpImage.getPixels(
-                    pixels,
-                    0,
-                    bmpImage.getWidth(),
-                    0,
-                    0,
-                    bmpImage.getWidth() - 1,
-                    bmpImage.getHeight() - 1);
-            LuminanceSource source = new RGBLuminanceSource(
-                    bmpImage.getWidth(),
-                    bmpImage.getHeight(),
-                    pixels);
-            BinaryBitmap bitmap = new BinaryBitmap(
-                    new HybridBinarizer(source));
-            Reader reader = new MultiFormatReader();
-            try{
-                Result result = reader.decode(bitmap);
-                handleSuccessfulResult(result.getText());
-            } catch (ChecksumException e) {
-                e.printStackTrace();
-            } catch (NotFoundException e) {
-                handleInvalidResult();
-                e.printStackTrace();
-            } catch (FormatException e) {
-                e.printStackTrace();
-            }
-            mBackCamera.startPreview();
+        public void onClick(View view) {
+            mScanConfirmation.setText("");
+            resetState();
         }
-    };
+    }
+    protected class ScanListener implements View.OnClickListener{
+        @Override
+        public void onClick(View view) {
+            startScan();
+        }
+    }
+    protected class ConfirmListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            recordScan();
+            showSuccessToast();
+            resetState();
+        }
+    }
 
+    protected void showSuccessToast() {
+        Context c = getActivity().getApplicationContext();
+        CharSequence message = "Scan successfully recorded";
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(c, message, duration);
+        toast.show();
+    }
 
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+
+    }
+
+    protected void startScan() {
+        IntentIntegrator integrator = new IntentIntegrator(this);
+        integrator.initiateScan();
+    }
+
+    @Override
+    public void onActivityResult(int reqCode, int resCode, Intent data) {
+
+        IntentResult result = IntentIntegrator.parseActivityResult(reqCode, resCode, data);
+        mScanResult = result.getContents();
+        confirmScan();
+    }
     /**
      * Called to handle a valid QR code after it has
      * been scanned and decoded.
@@ -154,17 +99,31 @@ public class ScannerFragment extends android.app.Fragment {
      * @param result is the decoded string
      */
     protected void handleSuccessfulResult(String result) {
-        mScanResult = result;
-        mResultText.setTextColor(Color.GREEN);
-        mResultText.setText("SUCCESS! Result: " + mScanResult);
+
     }
 
     /**
      * Called when an QR code could not be successfully read
      */
     protected void handleInvalidResult() {
-        mResultText.setTextColor(Color.RED);
-        mResultText.setText("X TRY AGAIN");
+
+    }
+
+    protected void confirmScan() {
+        mScanConfirmation.setText("Last successful scan result was\n: " + mScanResult);
+        mConfirmButton.setVisibility(View.VISIBLE);
+        mScanButton.setText("Return");
+        mScanButton.setOnClickListener(new ReturnListener());
+    }
+
+    protected void recordScan() {
+
+    }
+
+    protected void resetState() {
+        mConfirmButton.setVisibility(View.GONE);
+        mScanButton.setText("Click to Scan");
+        mScanButton.setOnClickListener(new ScanListener());
     }
 
     /**
@@ -194,74 +153,6 @@ public class ScannerFragment extends android.app.Fragment {
         Intent scanResult = new Intent();
         getActivity().setResult(getActivity().RESULT_CANCELED, scanResult);
         getActivity().finish();
-    }
-
-    /**
-     * Called when phone goes to sleep, user opens
-     * another app, or pressed the home button.
-     */
-    @Override
-    public void onPause() {
-        super.onPause();
-        releaseBackCamera();
-        mPreview.setVisibility(View.GONE);
-    }
-
-    /**
-     * Called when activity is re opened.
-     * Camera must be acquired again, and
-     * the preview's camera handle should
-     * be updated as well.
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        acquireBackCamera();
-        mPreview.updateCamera(mBackCamera);
-        mPreview.setVisibility(View.VISIBLE);
-    }
-
-    /**
-     * Called when activity is finished or terminated by user.
-     * Camera MUST be released so other activities can use it!
-     */
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        releaseBackCamera();
-    }
-
-    /**
-     * Called when activity is paused and destroyed
-     * in order to release resources for other activities
-     * to use.
-     */
-    public void releaseBackCamera() {
-        if (mBackCamera != null) {
-            try {
-                mBackCamera.stopPreview();
-                mBackCamera.release();
-            } catch (Exception e) {
-                //TODO: is this too general?
-            }
-        }
-    }
-
-    /**
-     * Called to initially access camera, and after release()
-     * to reinitialize a handle on the camera instance
-     */
-    public void acquireBackCamera() {
-        try {
-            /* will access an instance of the back camera by default */
-            mBackCamera = Camera.open();
-        }
-        catch (Exception e) {
-            /* Already have camera? If so then continue, else throw error. */
-            if (mBackCamera == null) {
-                System.exit(0);
-            }
-        }
     }
 }
 
