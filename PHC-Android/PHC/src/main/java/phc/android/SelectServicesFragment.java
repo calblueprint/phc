@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class SelectServicesFragment extends Fragment{
+public class SelectServicesFragment extends RegistrationFragment {
     private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
 
     /**
@@ -36,7 +36,7 @@ public class SelectServicesFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
-                transaction.replace(R.id.registration_fragment_container, new SuccessFragment(), getResources().getString(R.string.sidebar_confirmation));
+                transaction.replace(R.id.registration_fragment_container, new RegistrationScannerFragment(), getResources().getString(R.string.sidebar_scan_code));
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
@@ -91,7 +91,7 @@ public class SelectServicesFragment extends Fragment{
     @Override
     public void onResume() {
         LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.sidebar_list);
-        for (int i=0; i < sidebarList.getChildCount(); i++) {
+        for (int i = 0; i < sidebarList.getChildCount(); i++) {
             View v = sidebarList.getChildAt(i);
             Object vTag = v.getTag();
             if ((vTag != null) && (vTag.equals(getResources().getText(R.string.sidebar_services_info)))) {

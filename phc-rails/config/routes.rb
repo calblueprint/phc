@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get "search", to: "accounts#search"
+      get "create", to: "accounts#create"
     end
   end
 end
