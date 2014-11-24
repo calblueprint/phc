@@ -2,10 +2,13 @@ package phc.android;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.RecoverySystem;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +16,36 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.NetworkError;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * SearchFragment is launched on successful submission of a client's form data,
  * and allows the user to go back to activity_register another client.
  */
 public class SearchResultsFragment extends Fragment implements RecoverySystem.ProgressListener {
+    private final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+    private static final String TAG = "Search";
+    public static final String REQUEST_PATH = "/api/v1/search";
+    private static final String AUTH_TOKEN = "phcplusplus";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -42,6 +69,68 @@ public class SearchResultsFragment extends Fragment implements RecoverySystem.Pr
                 tv.setTypeface(null, Typeface.NORMAL);
             }
         }
+
+        SharedPreferences searchPreferences = getActivity().getSharedPreferences(SearchFragment.SEARCH_PARAMETERS, 0);
+        final String firstName = searchPreferences.getString("firstName", null);
+        final String lastName = searchPreferences.getString("lastName", null);
+        final SimpleDateFormat df = new SimpleDateFormat();
+
+        if(firstName != null && lastName != null) {
+            String url = getActivity().getResources().getString(R.string.request_url);
+            JsonArrayRequest searchResultsRequest = new JsonArrayRequest(url + REQUEST_PATH, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray jsonArray) {
+                    SearchResult[] results = new SearchResult[jsonArray.length()];
+                    try {
+                        for (int i=0; i < jsonArray.length(); i++) {
+                            JSONObject json = jsonArray.getJSONObject(i);
+                            SearchResult result = new SearchResult();
+                            result.setFirstName(json.getString("first_name"));
+                            result.setLastName(json.getString("last_name"));
+                            result.setBirthday(df.parse(json.getString("birthday")));
+                            result.setSalesForceId(json.getString("sf_id"));
+                            results[i] = result;
+                        }
+                    } catch (JSONException e1) {
+                        Log.e("Search Results Parse Error", e1.toString());
+                    } catch (ParseException e2) {
+                        Log.e("Birthday Parse Error", e2.toString());
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    Context context = getActivity();
+                    String message;
+                    if (volleyError instanceof NetworkError) {
+                        message = "Network Error. Please try again later.";
+                    } else {
+                        try {
+                            JSONObject response = new JSONObject(new String(volleyError.networkResponse.data));
+                            message = response.toString();
+                            Log.e("Volley Error", message);
+                        } catch (Exception e) {
+                            Log.e("Volley Error", "unknown");
+                            message = "Unknown Error";
+                        }
+                    }
+                    Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+                    toast.show();
+
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    headers.put("FirstName", firstName);
+                    headers.put("LastName", lastName);
+                    headers.put("AuthToken", AUTH_TOKEN);
+                    return headers;
+                }
+            };
+        }
+
+
         super.onResume();
     }
 

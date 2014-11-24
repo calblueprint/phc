@@ -124,4 +124,6 @@
 
     <!-- Service Activity -->
     <string name="change_service">Change Service</string>
+
+    <string name="request_url">phc-test.herokuapp.com</string>
 </resources>
