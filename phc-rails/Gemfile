@@ -25,6 +25,9 @@ gem "databasedotcom-rails"
 
 gem "rails_12factor", group: :production
 
+gem 'salesforce_bulk'
+
+
 
 #Recommended gems
 group :development do
