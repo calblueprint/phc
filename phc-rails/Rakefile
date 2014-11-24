@@ -5,21 +5,24 @@ require File.expand_path('../config/application', __FILE__)
 
 Rails.application.load_tasks
 include Databasedotcom::Rails::Controller
+require 'salesforce_bulk'
 
 task :load_sf => :environment do
   if not LastModified.any?
-    LastModified.create(last_modified_datetime: Time.now)
-    accounts = Account.query("LastModifiedDate > " + @last.last_modified_datetime.to_s + "")
-
+    lm = LastModified.new
+    username = ENV["sf_username"]
+    password = ENV["sf_password"]
+    salesforce = SalesforceBulk::Api.new(username, password,  true)
+    query_str = "SELECT Id, FirstName, LastName, PersonBirthdate, LastModifiedDate from Account ORDER BY LastModifiedDate ASC Limit 100"
+    accounts = salesforce.query("Account", query_str)
   else
     last = LastModified.first
-    #Account.query("LastModifiedDate > " + @last.last_modified_datetime.to_s + "")
     accounts = Account.all #Temporary
     last.update_attributes(last_modified_datetime: Time.now)
   end
-  accounts.each do |a|
-    pa = PersonAccount.find_or_initialize_by(sf_id: a.Id)
-    pa.update(first_name: a.FirstName, last_name: a.LastName, birthday: a.PersonBirthdate)
-    pa.save
+  accounts.result.records.each do |a|
+    a = a.to_hash
+    pa = PersonAccount.find_or_initialize_by(sf_id: a["Id"])
+    pa.update(first_name: a["FirstName"], last_name: a["LastName"], birthday: a["PersonBirthdate"])
   end
 end
