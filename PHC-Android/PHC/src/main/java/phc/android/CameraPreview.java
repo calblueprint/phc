@@ -1,14 +1,18 @@
 package phc.android;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.hardware.Camera;
 import android.util.Log;
+import android.view.Display;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+
+import com.google.zxing.client.android.camera.CameraConfigurationUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,6 +26,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     Camera.Size mPreviewSize;
     /* The XML layout frame that contains this preview */
     FrameLayout mFrame;
+    /* Context for the activity using this view */
+    Context mContext;
     /* tag for error logs */
     public final String TAG = "CameraPreview";
 
@@ -30,6 +36,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         mCamera = camera;
         mHolder = getHolder();
         mHolder.addCallback(this);
+        mContext = context;
         mFrame = frame;
         /* Used in previous Android versions. */
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
@@ -109,23 +116,34 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 portrait = true;
                 break;
         }
-        Camera.Parameters parameters = mCamera.getParameters();
-        //parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
+        Camera.Parameters params = mCamera.getParameters();
+        /* get screen resolution */
+        WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point screenRes = new Point();
+        display.getSize(screenRes);
+        //params.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
         //TODO: fix picture size!
-        int last = parameters.getSupportedPictureSizes().size() -1;
-        Camera.Size picSize = parameters.getSupportedPictureSizes().get(7);//getSmallestPictureSize(w,h);
-        parameters.setPictureSize(picSize.width,picSize.height);
-        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+        int last = params.getSupportedPictureSizes().size() -1;
+        //Camera.Size picSize = params.getSupportedPictureSizes().get(7);//getSmallestPictureSize(w,h);
+        //params.setPictureSize(picSize.width,picSize.height);
+        //params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+        CameraConfigurationUtils.setFocus(params, true, false, false);
+        CameraConfigurationUtils.setFocusArea(params);
+        CameraConfigurationUtils.setBestExposure(params, true);
+        //CameraConfigurationUtils.setBestPreviewFPS(params);
+        Point pSize = CameraConfigurationUtils.findBestPreviewSizeValue(params, screenRes);
+
         ViewGroup.LayoutParams slp = this.getLayoutParams();
         if (!portrait) {
-            slp.width = mPreviewSize.width;
-            slp.height = mPreviewSize.height;
+            slp.width = pSize.x;
+            slp.height = pSize.y;
         } else {
-            slp.height = mPreviewSize.width;
-            slp.width = mPreviewSize.height;
+            slp.height = pSize.x;
+            slp.width = pSize.y;
         }
         this.setLayoutParams(slp);
-        mCamera.setParameters(parameters);
+        mCamera.setParameters(params);
         try {
             mCamera.startPreview();
         } catch (Exception e) {
@@ -183,7 +201,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         setMeasuredDimension(width, height);
         List<Camera.Size> mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
         if (mSupportedPreviewSizes != null) {
-            mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, width, height);
+            // TODO: NEED TO CLEAR
+            //mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, width, height);
         }
     }
 
