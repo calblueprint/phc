@@ -89,7 +89,9 @@
     <string name="prompt_neighborhood">In what neighborhood do you live?</string>
     <string name="prompt_homeless">Are you homeless?</string>
     <string name="prompt_children">Minor Children here today?</string>
+    <string name="prompt_children_age">(Optional) Age (e.g. 8,2,5)</string>
     <string name="prompt_doctor">Do you currently have a primary care doctor?</string>
+    <string name="prompt_doctor_name">(Optional) Doctor name</string>
 
     <string-array name="neighborhood_array">
         <item>Bayview/HP</item>
