@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141105004646) do
+ActiveRecord::Schema.define(version: 20141122233718) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,8 @@ ActiveRecord::Schema.define(version: 20141105004646) do
     t.string   "sf_id"
   end
 
+  add_index "person_accounts", ["first_name"], name: "index_person_accounts_on_first_name", using: :btree
+  add_index "person_accounts", ["last_name"], name: "index_person_accounts_on_last_name", using: :btree
   add_index "person_accounts", ["sf_id"], name: "index_person_accounts_on_sf_id", unique: true, using: :btree
 
 end
