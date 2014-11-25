@@ -36,6 +36,11 @@ public class ScannerFragment extends android.app.Fragment {
         return view;
     }
 
+    /**
+     * Separate method for setting up view so that this
+     * functionality can be overriden by a subclass.
+     * @param view is passed in by onCreateView()
+     */
     protected void setupView(View view) {
         mScanConfirmation = (TextView) view.findViewById(R.id.scan_result);
         mScanButton = (Button) view.findViewById(R.id.start_scan);
@@ -45,6 +50,9 @@ public class ScannerFragment extends android.app.Fragment {
         mConfirmButton.setVisibility(View.GONE);
     }
 
+    /**
+     * Used for button click to return to starting state
+     */
     protected class ReturnListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -52,63 +60,86 @@ public class ScannerFragment extends android.app.Fragment {
             resetState();
         }
     }
+
+    /**
+     * Used when the user wants to send an intent
+     * to the scanner app.
+     */
     protected class ScanListener implements View.OnClickListener{
         @Override
         public void onClick(View view) {
             startScan();
         }
     }
+
+    /**
+     * Used to confirm the scan result.
+     */
     protected class ConfirmListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
+            /* shows success toast */
             recordScan();
-            showSuccessToast();
             resetState();
         }
     }
 
+    /**
+     * Displays a success message at the bottom of
+     * the screen.
+     */
     protected void showSuccessToast() {
         Context c = getActivity().getApplicationContext();
-        CharSequence message = "Scan successfully recorded";
+        CharSequence message = getResources().getString(R.string.scan_success);
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(c, message, duration);
         toast.show();
     }
 
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
-
+    /**
+     * Displays a failure message at the bottom
+     * of the screen.
+     */
+    protected void showFailureToast() {
+        Context c = getActivity().getApplicationContext();
+        CharSequence message = getResources().getString(R.string.scan_failure);
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(c, message, duration);
+        toast.show();
     }
 
+    /**
+     * Starts the BarcodeScanner app.
+     */
     protected void startScan() {
         IntentIntegrator integrator = new IntentIntegrator(this);
         integrator.initiateScan();
     }
 
+    /**
+     * Used to retrieve the result from the
+     * BarcodeScanner app.
+     * @param reqCode int request code
+     * @param resCode int result code
+     * @param data Intent containing the result data
+     */
     @Override
     public void onActivityResult(int reqCode, int resCode, Intent data) {
 
         IntentResult result = IntentIntegrator.parseActivityResult(reqCode, resCode, data);
         mScanResult = result.getContents();
-        confirmScan();
-    }
-    /**
-     * Called to handle a valid QR code after it has
-     * been scanned and decoded.
-     *
-     * @param result is the decoded string
-     */
-    protected void handleSuccessfulResult(String result) {
-
+        if (mScanResult == null) {
+            showFailureToast();
+            resetState();
+        } else {
+            confirmScan();
+        }
     }
 
     /**
-     * Called when an QR code could not be successfully read
+     * Sets up the view for the user to confirm
+     * the scanned code.
      */
-    protected void handleInvalidResult() {
-
-    }
-
     protected void confirmScan() {
         mScanConfirmation.setText("Last successful scan result was\n: " + mScanResult);
         mConfirmButton.setVisibility(View.VISIBLE);
@@ -116,10 +147,19 @@ public class ScannerFragment extends android.app.Fragment {
         mScanButton.setOnClickListener(new ReturnListener());
     }
 
+    /**
+     * Records the scan result in shared preferences
+     * and displays a success toast.
+     */
     protected void recordScan() {
-
+        ServiceActivity activity = (ServiceActivity) getActivity();
+        activity.storeScanResult(mScanResult);
+        showSuccessToast();
     }
 
+    /**
+     * Resets state of view to what the user first saw.
+     */
     protected void resetState() {
         mConfirmButton.setVisibility(View.GONE);
         mScanButton.setText("Click to Scan");

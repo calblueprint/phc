@@ -3,6 +3,7 @@ package phc.android;
 
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,9 +13,13 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 public class RegistrationScannerFragment extends ScannerFragment {
 
     private Button mContinueButton;
+    private String mScanResult;
     private PreferenceEditor mPreferenceEditor;
     private final String mName = "qr_code";
 
@@ -55,6 +60,10 @@ public class RegistrationScannerFragment extends ScannerFragment {
         return view;
     }
 
+    /**
+     * Used when the user confirms the scan result
+     * and chooses to continue
+     */
     protected class ContinueListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
@@ -66,6 +75,7 @@ public class RegistrationScannerFragment extends ScannerFragment {
             transaction.commit();
         }
     }
+
     @Override
     protected void setupView(View view) {
         mScanConfirmation = (TextView) view.findViewById(R.id.scan_result);
@@ -89,25 +99,23 @@ public class RegistrationScannerFragment extends ScannerFragment {
         mScanButton.setOnClickListener(new ScanListener());
     }
 
-    /**
-     * Called to handle a valid QR code after it has
-     * been scanned and decoded.
-     *
-     * @param result is the decoded string
-     */
     @Override
-    protected void handleSuccessfulResult(String result) {
-        mContinueButton.setEnabled(true);
-        mPreferenceEditor.storeScanResult(result);
-        super.handleSuccessfulResult(result);
+    protected void recordScan() {
+        mPreferenceEditor.storeScanResult(mScanResult);
+        showSuccessToast();
     }
 
-    /**
-     * Called when an QR code could not be successfully read
-     */
     @Override
-    protected void handleInvalidResult() {
-        super.handleInvalidResult();
+    public void onActivityResult(int reqCode, int resCode, Intent data) {
+
+        IntentResult result = IntentIntegrator.parseActivityResult(reqCode, resCode, data);
+        mScanResult = result.getContents();
+        if (mScanResult == null) {
+            showFailureToast();
+            resetState();
+        } else {
+            confirmScan();
+        }
     }
 
     /**

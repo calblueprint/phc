@@ -5,10 +5,15 @@ import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /* Call with resultCode of 0 if providing a service
  * Call with resultCode of 1 if scanning for registration
@@ -32,6 +37,12 @@ public class ServiceActivity extends Activity {
 
     /* Holds the menu item generated in onPrepareOptionsMenu() */
     private MenuItem mServiceMenuItem;
+
+    /* Used to hold scan results */
+    private SharedPreferences mSharedPreferences;
+
+    /* String tag for scanned codes in shared preferences */
+    private final String ALL_CODES = "scanned_codes";
 
     private CharSequence[] services;
 
@@ -59,6 +70,8 @@ public class ServiceActivity extends Activity {
             if (savedInstanceState != null) {
                 return;
             }
+
+            mSharedPreferences = getPreferences(MODE_PRIVATE);
 
             mScannerFragment = new ScannerFragment();
             mScannerFragment.setArguments(getIntent().getExtras());
@@ -120,6 +133,40 @@ public class ServiceActivity extends Activity {
         mServiceDialog = builder.create();
         mServiceDialog.setCanceledOnTouchOutside(false);
         mServiceDialog.show();
+    }
+
+
+    /**
+     * Can be called by other activities or
+     * fragments to store scan results
+     * @param result String scan result
+     */
+    public void storeScanResult(String result) {
+        Set<String> defaults = null;
+        SharedPreferences prefs = getSharedPreferences(TAG, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        Set<String> codes = prefs.getStringSet(ALL_CODES, defaults);
+        if (codes == null) {
+            Log.e(TAG, "codes are empty, creating new");
+            codes = new HashSet<String>();
+        }
+        codes.add(result);
+        editor.putStringSet(ALL_CODES, codes);
+        editor.apply();
+    }
+
+    /**
+     * Retrieves all scan results obtained thus far.
+     * @return a Set<String> of all results obtained
+     */
+    public Set<String> getAllScanResults() {
+        Set<String> defaults = null;
+        SharedPreferences prefs = getSharedPreferences(TAG, MODE_PRIVATE);
+        Set<String> codes = prefs.getStringSet(ALL_CODES, defaults);
+        if (codes == null) {
+            Log.e(TAG, "Could not access scanned codes");
+        }
+        return codes;
     }
 
     /**
