@@ -76,6 +76,11 @@ public class RegistrationScannerFragment extends ScannerFragment {
         }
     }
 
+    /**
+     * Separate method for setting up view so that this
+     * functionality can be overriden by a subclass.
+     * @param view is passed in by onCreateView()
+     */
     @Override
     protected void setupView(View view) {
         mScanConfirmation = (TextView) view.findViewById(R.id.scan_result);
@@ -85,6 +90,10 @@ public class RegistrationScannerFragment extends ScannerFragment {
         mConfirmButton.setEnabled(false);
     }
 
+    /**
+     * Sets up the view for the user to confirm
+     * the scanned code.
+     */
     @Override
     protected void confirmScan() {
         mScanConfirmation.setText("Last successful scan result was\n: " + mScanResult);
@@ -93,18 +102,32 @@ public class RegistrationScannerFragment extends ScannerFragment {
         mScanButton.setOnClickListener(new ReturnListener());
     }
 
+    /**
+     * Resets state of view to what the user first saw.
+     */
     @Override
     protected void resetState() {
         mScanButton.setText("Click to Scan");
         mScanButton.setOnClickListener(new ScanListener());
     }
 
+    /**
+     * Records the scan result in shared preferences
+     * and displays a success toast.
+     */
     @Override
     protected void recordScan() {
         mPreferenceEditor.storeScanResult(mScanResult);
         showSuccessToast();
     }
 
+    /**
+     * Used to retrieve the result from the
+     * BarcodeScanner app.
+     * @param reqCode int request code
+     * @param resCode int result code
+     * @param data Intent containing the result data
+     */
     @Override
     public void onActivityResult(int reqCode, int resCode, Intent data) {
 
