@@ -1,0 +1,3 @@
+inherit_from: ./phc-rails/.rubocop.yml
+
+ShowCopNames: true
