@@ -3,6 +3,7 @@ package phc.android;
 
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,9 +13,13 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 public class RegistrationScannerFragment extends ScannerFragment {
 
     private Button mContinueButton;
+    private String mScanResult;
     private PreferenceEditor mPreferenceEditor;
     private final String mName = "qr_code";
 
@@ -56,24 +61,84 @@ public class RegistrationScannerFragment extends ScannerFragment {
     }
 
     /**
-     * Called to handle a valid QR code after it has
-     * been scanned and decoded.
-     *
-     * @param result is the decoded string
+     * Used when the user confirms the scan result
+     * and chooses to continue
      */
-    @Override
-    protected void handleSuccessfulResult(String result) {
-        mContinueButton.setEnabled(true);
-        mPreferenceEditor.storeScanResult(result);
-        super.handleSuccessfulResult(result);
+    protected class ContinueListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            recordScan();
+            showSuccessToast();
+            FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
+            transaction.replace(R.id.registration_fragment_container, new SuccessFragment(), getResources().getString(R.string.sidebar_confirmation));
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
     }
 
     /**
-     * Called when an QR code could not be successfully read
+     * Separate method for setting up view so that this
+     * functionality can be overriden by a subclass.
+     * @param view is passed in by onCreateView()
      */
     @Override
-    protected void handleInvalidResult() {
-        super.handleInvalidResult();
+    protected void setupView(View view) {
+        mScanConfirmation = (TextView) view.findViewById(R.id.scan_result);
+        mScanButton = (Button) view.findViewById(R.id.start_scan);
+        mScanButton.setOnClickListener(new ScanListener());
+        mConfirmButton = (Button) view.findViewById(R.id.button_services_continue);         mConfirmButton.setOnClickListener(new ContinueListener());
+        mConfirmButton.setEnabled(false);
+    }
+
+    /**
+     * Sets up the view for the user to confirm
+     * the scanned code.
+     */
+    @Override
+    protected void confirmScan() {
+        mScanConfirmation.setText("Last successful scan result was\n: " + mScanResult);
+        mConfirmButton.setEnabled(true);
+        mScanButton.setText("Return");
+        mScanButton.setOnClickListener(new ReturnListener());
+    }
+
+    /**
+     * Resets state of view to what the user first saw.
+     */
+    @Override
+    protected void resetState() {
+        mScanButton.setText("Click to Scan");
+        mScanButton.setOnClickListener(new ScanListener());
+    }
+
+    /**
+     * Records the scan result in shared preferences
+     * and displays a success toast.
+     */
+    @Override
+    protected void recordScan() {
+        mPreferenceEditor.storeScanResult(mScanResult);
+        showSuccessToast();
+    }
+
+    /**
+     * Used to retrieve the result from the
+     * BarcodeScanner app.
+     * @param reqCode int request code
+     * @param resCode int result code
+     * @param data Intent containing the result data
+     */
+    @Override
+    public void onActivityResult(int reqCode, int resCode, Intent data) {
+
+        IntentResult result = IntentIntegrator.parseActivityResult(reqCode, resCode, data);
+        mScanResult = result.getContents();
+        if (mScanResult == null) {
+            showFailureToast();
+            resetState();
+        } else {
+            confirmScan();
+        }
     }
 
     /**

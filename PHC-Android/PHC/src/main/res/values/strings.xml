@@ -121,6 +121,13 @@
 
     <string name="action_submit">Submit</string>
 
+    <!-- Service Scan Page -->
+    <string name="start_scan">Click to scan</string>
+    <string name="confirm_scan">Confirm</string>
+
+    <!-- Toast messages -->
+    <string name="scan_success">Scan successfully recorded</string>
+    <string name="scan_failure">No scan recorded, please try again</string>
     <!-- Registration Scan Page -->
     <string name="scan_prompt">Please scan a QR code</string>
 

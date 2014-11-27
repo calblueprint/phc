@@ -13,14 +13,21 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:orientation="vertical">
-        <FrameLayout
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:id="@+id/camera_preview"/>
+
         <TextView
-            android:id="@+id/confirm_scan"
+            android:id="@+id/scan_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/start_scan"
+            android:text="@string/start_scan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="30dp"/>
+        <Button
+            android:id="@+id/confirm_scan"
+            android:text="@string/confirm_scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </RelativeLayout>
