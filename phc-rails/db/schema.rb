@@ -11,16 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141122233718) do
+ActiveRecord::Schema.define(version: 20141127031723) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_trgm"
 
   create_table "last_modifieds", force: true do |t|
-    t.datetime "last_modified_datetime"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "last_modified"
   end
 
   create_table "person_accounts", force: true do |t|

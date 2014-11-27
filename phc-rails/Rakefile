@@ -8,21 +8,35 @@ include Databasedotcom::Rails::Controller
 require 'salesforce_bulk'
 
 task :load_sf => :environment do
+
+  def save_accounts(accounts)
+    accounts.result.records.each do |a|
+      a = a.to_hash
+      pa = PersonAccount.find_or_initialize_by(sf_id: a["Id"])
+      pa.update(first_name: a["FirstName"], last_name: a["LastName"], birthday: a["PersonBirthdate"])
+    end
+  end
+
+  order_str = "ORDER BY LastModifiedDate ASC Limit 100"
+  field_str = "SELECT Id, FirstName, LastName, PersonBirthdate, LastModifiedDate from Account "
+  username = ENV["sf_username"]
+  password = ENV["sf_password"]
+  salesforce = SalesforceBulk::Api.new(username, password,  true)
   if not LastModified.any?
     lm = LastModified.new
-    username = ENV["sf_username"]
-    password = ENV["sf_password"]
-    salesforce = SalesforceBulk::Api.new(username, password,  true)
-    query_str = "SELECT Id, FirstName, LastName, PersonBirthdate, LastModifiedDate from Account ORDER BY LastModifiedDate ASC Limit 100"
-    accounts = salesforce.query("Account", query_str)
+    query_str = field_str + order_str
   else
-    last = LastModified.first
-    accounts = Account.all #Temporary
-    last.update_attributes(last_modified_datetime: Time.now)
+    lm = LastModified.first
+    lm_str = "WHERE LastModifiedDate > "
+    lm_str += lm.last_modified + " "
+    query_str = field_str + lm_str + order_str
   end
-  accounts.result.records.each do |a|
-    a = a.to_hash
-    pa = PersonAccount.find_or_initialize_by(sf_id: a["Id"])
-    pa.update(first_name: a["FirstName"], last_name: a["LastName"], birthday: a["PersonBirthdate"])
+  accounts = salesforce.query("Account", query_str)
+  if accounts.result.records.length != 0
+    lm.last_modified = accounts.result.records.last["LastModifiedDate"]
+    lm.save
+    save_accounts accounts
+    Rake::Task[:load_sf].reenable
+    Rake::Task[:load_sf].invoke
   end
 end
