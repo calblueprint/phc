@@ -8,19 +8,20 @@
 
     <LinearLayout
         android:id="@+id/services_page"
-        android:layout_width="fill_parent"
+        android:layout_width="@dimen/input_text_width"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/prompt_services" />
 
         <LinearLayout
             android:id="@+id/services_list"
-            android:layout_width="@dimen/input_text_width"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="vertical" />
@@ -28,7 +29,7 @@
         <Button
             android:id="@+id/button_services_continue"
             style="?android:textAppearanceSmall"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/action_continue"

@@ -1,11 +1,7 @@
 package phc.android;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.res.Resources;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +11,7 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class SelectServicesFragment extends RegistrationFragment {
-    private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
-
     /**
      * On creation of the fragment, grabs list of all services offered for
      * the current event from Salesforce DB and dynamically populates layout
@@ -36,7 +28,8 @@ public class SelectServicesFragment extends RegistrationFragment {
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
-                transaction.replace(R.id.registration_fragment_container, new RegistrationScannerFragment(), getResources().getString(R.string.sidebar_scan_code));
+                transaction.replace(R.id.registration_fragment_container,
+                        new RegistrationScannerFragment(), getResources().getString(R.string.sidebar_scan_code));
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
@@ -47,44 +40,24 @@ public class SelectServicesFragment extends RegistrationFragment {
 
     /**
      * Dynamically populates layout with checkboxes for each service.
+     * Note: the current ID assignment method is rather hacky, but it's the only way that seems to
+     * work. Android is not able to save/load dynamically created views even when their ID is
+     * set, unless the views are created again with the same previous Id.
      * TODO: CHANGE TO ACTUALLY GRAB FROM SALESFORCE.
      */
     protected void dynamicSetCheckboxes(View view){
-        Resources res = getResources();
-        String[] services = res.getStringArray(R.array.services_array);
+        String[] services = getResources().getStringArray(R.array.services_array);
         LinearLayout layout = (LinearLayout) view.findViewById(R.id.services_list);
 
-        for(String s: services){
+        for(int i = 0; i < services.length; i++){
             CheckBox cb = new CheckBox(getActivity());
             cb.setLayoutParams(new LinearLayout.LayoutParams(
-                    R.dimen.input_text_width,
+                    LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT));
-            //assigns Id to checkbox. if build version is level 17 or higher, uses built-in method.
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                cb.setId(generateViewId());
-            } else {
-                cb.setId(View.generateViewId());
-            }
-            cb.setText(s);
-            cb.setOnClickListener(new OnDynamicCheckboxClickListener(getActivity(), s));
+            cb.setId(i);
+            cb.setText(services[i]);
+            cb.setOnClickListener(new OnDynamicCheckboxClickListener(getActivity(), services[i]));
             layout.addView(cb);
-        }
-    }
-
-    /**
-     * Generate a unique ID for each checkbox view.
-     * This value will not collide with ID values generated at build time by aapt for R.id.
-     * @return a generated ID value
-     */
-    public static int generateViewId() {
-        for (;;) {
-            final int result = sNextGeneratedId.get();
-            // aapt-generated IDs have the high byte nonzero; clamp to the range under that.
-            int newValue = result + 1;
-            if (newValue > 0x00FFFFFF) newValue = 1; // Roll over to 1, not 0.
-            if (sNextGeneratedId.compareAndSet(result, newValue)) {
-                return result;
-            }
         }
     }
 
