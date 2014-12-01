@@ -3,7 +3,9 @@ package phc.android;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Created by Byronium on 11/23/14.
+ * Utility methods for use in multiple fragments and activities. Currently contains:
+ * 1. generateViewId(): generate unique integer ID for programmatically created view.
+ * 2. keyToKeyConverter(): converts a view's string ID into SalesForce format.
  */
 public class Utils {
     private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
