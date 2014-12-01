@@ -20,7 +20,7 @@
 
         <EditText
             android:id="@+id/first_name"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/prompt_first"
             android:inputType="textCapWords"
@@ -28,7 +28,7 @@
 
         <EditText
             android:id="@+id/last_name"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/prompt_last"
             android:inputType="textCapWords"

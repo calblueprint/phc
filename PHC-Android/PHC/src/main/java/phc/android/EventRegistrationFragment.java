@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-
 /**
  * EventRegistrationFragment is the event registration form for all clients
  * and includes fields that might have changed since the last event.
