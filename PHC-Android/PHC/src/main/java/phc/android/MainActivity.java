@@ -2,13 +2,15 @@ package phc.android;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.content.IntentFilter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,7 +34,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends Activity{
+public class MainActivity extends Activity
+                          implements SecurityKeyDialogFragment.SecurityKeyDialogListener{
 
     private PasscodeManager passcodeManager;
     private String apiVersion;
@@ -41,6 +44,14 @@ public class MainActivity extends Activity{
     private Map<String, String> resources = new HashMap<String, String>();
     private boolean initialized = false;
 
+    /* SharedPreference file name for Security Key. */
+    private static final String SECURITY_PREFS_NAME = "SecurityKeyFile";
+    /* SharedPreference object. */
+    private SharedPreferences mSecurityKeyPreferences;
+    /* SharedPreference editor object. */
+    private SharedPreferences.Editor mSecurityKeyPreferencesEditor;
+    /* Current stored Security Key. */
+    private String mSecurityKey;
 
     /* Use to set resultCode
      * when calling ServiceActivity
@@ -71,7 +82,40 @@ public class MainActivity extends Activity{
         userSwitchReceiver = new PHCUserSwitchReceiver();
         registerReceiver(userSwitchReceiver, new IntentFilter(UserAccountManager.USER_SWITCH_INTENT_ACTION));
 
+        // Security Key AlertDialog
+        mSecurityKeyPreferences = this.getSharedPreferences(SECURITY_PREFS_NAME,
+                Context.MODE_PRIVATE);
+        mSecurityKeyPreferencesEditor = mSecurityKeyPreferences.edit();
+        mSecurityKey = mSecurityKeyPreferences.getString("security_key", null);
+
+        // TODO: replace SecurityKeyDialogFragment.SECURITY_KEY with actual SF security key
+        if (mSecurityKey == null || !mSecurityKey.equals(SecurityKeyDialogFragment.SECURITY_KEY)){
+            showSecurityKeyDialog();
+        }
+        else{
+            setContentView(R.layout.activity_main);
+        }
         super.onCreate(savedInstanceState);
+    }
+
+    /**
+     * Creates and shows the security key dialog.
+     */
+    public void showSecurityKeyDialog(){
+        DialogFragment dialog = new SecurityKeyDialogFragment();
+        dialog.show(getFragmentManager(), "SecurityKeyDialogFragment");
+    }
+
+    /** When correct security key is entered, writes security key to SharedPreferences,
+     * dismisses the alert dialog, and sets the main activity layout.
+     * @param dialog: the AlertDialog
+     */
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        mSecurityKeyPreferencesEditor.putString("security_key",
+                ((SecurityKeyDialogFragment)dialog).mInputString);
+        mSecurityKeyPreferencesEditor.commit();
+        dialog.dismiss();
         setContentView(R.layout.activity_main);
     }
 
@@ -226,7 +270,6 @@ public class MainActivity extends Activity{
     private void refreshIfUserSwitched() {
        loginSalesforce();
     }
-
 
     /**
      * Acts on the user switch event.

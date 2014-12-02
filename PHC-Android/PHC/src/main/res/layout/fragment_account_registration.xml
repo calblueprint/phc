@@ -13,13 +13,14 @@
     <LinearLayout
         android:id="@+id/form_fields"
         android:orientation="vertical"
-        android:layout_width="fill_parent"
+        android:layout_width="@dimen/input_text_width"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal">
 
         <EditText
             android:id="@+id/first_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/prompt_first"
             android:inputType="textCapWords"
@@ -27,7 +28,7 @@
 
         <EditText
             android:id="@+id/last_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/prompt_last"
             android:inputType="textCapWords"
@@ -36,7 +37,7 @@
         <LinearLayout
             android:id="@+id/form_ssn"
             android:orientation="horizontal"
-            android:layout_width="@dimen/input_text_width"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
@@ -93,7 +94,7 @@
         <LinearLayout
             android:id="@+id/form_birthday"
             android:orientation="horizontal"
-            android:layout_width="@dimen/input_text_width"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
@@ -153,7 +154,7 @@
         <LinearLayout
             android:id="@+id/form_phone"
             android:orientation="horizontal"
-            android:layout_width="@dimen/input_text_width"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
@@ -211,7 +212,7 @@
 
         <EditText
             android:id="@+id/email"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/prompt_email"
             android:inputType="textEmailAddress"
@@ -219,44 +220,44 @@
 
         <Spinner
             android:id="@+id/spinner_gender"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <Spinner
             android:id="@+id/spinner_ethnicity"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <Spinner
             android:id="@+id/spinner_language"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <LinearLayout
             android:id="@+id/account_checkboxes"
             android:layout_marginTop="@dimen/checkboxes_margin"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-                <CheckBox android:id="@+id/checkbox_foster"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/prompt_foster"
-                    android:onClick="onCheckboxClicked"/>
+            <CheckBox android:id="@+id/checkbox_foster"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/prompt_foster"
+                android:onClick="onCheckboxClicked"/>
 
-                <CheckBox android:id="@+id/checkbox_military"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/prompt_military"
-                    android:onClick="onCheckboxClicked"/>
+            <CheckBox android:id="@+id/checkbox_military"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/prompt_military"
+                android:onClick="onCheckboxClicked"/>
 
-            </LinearLayout>
+        </LinearLayout>
 
         <Button
             android:id="@+id/button_account_continue"
             style="?android:textAppearanceSmall"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/action_continue"
