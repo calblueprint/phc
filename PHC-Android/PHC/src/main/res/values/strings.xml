@@ -43,8 +43,11 @@
     <!-- Splash Page -->
     <string name="button_register">Register</string>
     <string name="button_services">Services</string>
+    <string name="button_exit">Exit</string>
     <string name="title_activity_register">Register Client</string>
     <string name="title_activity_services">Manage Services</string>
+    <string name="title_activity_exit">Exit Form</string>
+
     <string name="button_search_submit">Search</string>
 
     <!-- Account Registration -->
