@@ -149,6 +149,9 @@
 
     <!-- Service Activity -->
     <string name="change_service">Change Service</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- Exit Activity -->
+    <string name="exit_qr_scanner">Scan QR Code and Submit</string>
 
 </resources>
