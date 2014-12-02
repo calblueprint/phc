@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,7 +46,7 @@ import java.util.Map;
  * and allows the user to go back to activity_register another client.
  */
 public class SearchResultsFragment extends Fragment implements RecoverySystem.ProgressListener {
-    private final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+    private static RequestQueue requestQueue;
     private static final String TAG = "Search";
     public static final String REQUEST_PATH = "/api/v1/search";
     private static final String AUTH_TOKEN = "phcplusplus";
@@ -54,8 +56,11 @@ public class SearchResultsFragment extends Fragment implements RecoverySystem.Pr
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_results, container, false);
         return view;
+    }
 
-
+    public void onActivityCreated (Bundle savedInstanceState) {
+        requestQueue = Volley.newRequestQueue(getActivity());
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -80,6 +85,8 @@ public class SearchResultsFragment extends Fragment implements RecoverySystem.Pr
 
         if(firstName != null && lastName != null) {
             String url = getActivity().getResources().getString(R.string.request_url);
+            final ListView listView = (ListView) getView().findViewById(R.id.search_result_list);
+
             JsonArrayRequest searchResultsRequest = new JsonArrayRequest(url + REQUEST_PATH, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray jsonArray) {
@@ -90,7 +97,11 @@ public class SearchResultsFragment extends Fragment implements RecoverySystem.Pr
                             SearchResult result = new SearchResult();
                             result.setFirstName(json.getString("first_name"));
                             result.setLastName(json.getString("last_name"));
-                            result.setBirthday(df.parse(json.getString("birthday")));
+
+                            if (!json.getString("birthday").equals("null")) {
+                                result.setBirthday(df.parse(json.getString("birthday")));
+                            }
+
                             result.setSalesForceId(json.getString("sf_id"));
                             results[i] = result;
                         }
@@ -101,6 +112,8 @@ public class SearchResultsFragment extends Fragment implements RecoverySystem.Pr
                     }
 
                     SearchResultAdapter adapter = new SearchResultAdapter(SearchResultsFragment.this.getActivity(), results);
+                    Log.d("Adapter", "adapter created")
+;                   listView.setAdapter(adapter);
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -130,9 +143,12 @@ public class SearchResultsFragment extends Fragment implements RecoverySystem.Pr
                     headers.put("FirstName", firstName);
                     headers.put("LastName", lastName);
                     headers.put("AuthToken", AUTH_TOKEN);
+                    headers.put("Accept", "*/*");
                     return headers;
                 }
             };
+
+            requestQueue.add(searchResultsRequest);
         }
 
 
@@ -156,7 +172,7 @@ public class SearchResultsFragment extends Fragment implements RecoverySystem.Pr
 
         public SearchResultAdapter(Context context, SearchResult[] data) {
             super(context, R.layout.row_search_result, data);
-            sdf = new SimpleDateFormat("EEE, MMM d, ''yy");
+            sdf = new SimpleDateFormat("MMM d, ''yy");
             this.data = data;
             this.context = context;
         }
@@ -178,9 +194,12 @@ public class SearchResultsFragment extends Fragment implements RecoverySystem.Pr
             ((TextView)rowView.findViewById(R.id.first_name)).setText(searchResult.getFirstName());
             ((TextView)rowView.findViewById(R.id.last_name)).setText(searchResult.getLastName());
 
-            String birthday = sdf.format(searchResult.getBirthday());
-            ((TextView)rowView.findViewById(R.id.birthday)).setText(birthday);
-
+            if (searchResult.getBirthday() != null) {
+                String birthday = sdf.format(searchResult.getBirthday());
+                ((TextView)rowView.findViewById(R.id.birthday)).setText(birthday);
+            } else {
+                ((TextView)rowView.findViewById(R.id.birthday)).setText("None");
+            }
 
             return rowView;
         }

@@ -39,7 +39,7 @@
 
     <!-- Search -->
     <string name="search_results_title">Results</string>
-    <string name="request_url">phc-test.herokuapp.com</string>
+    <string name="request_url">http://phc-test.herokuapp.com</string>
 
     <!-- Splash Page -->
     <string name="button_register">Register</string>
