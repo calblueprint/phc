@@ -56,7 +56,7 @@ public class SideBarFragment extends RegistrationFragment {
                             newFragment = new EventRegistrationFragment();
                         } else if (tag.equals(getResources().getString(R.string.sidebar_services_info))) {
                             newFragment = new SelectServicesFragment();
-                        } else if (tag.equals("Scan Code")) {
+                        } else if (tag.equals(getResources().getString(R.string.sidebar_scan_code))) {
                             newFragment = new RegistrationScannerFragment();
                         } else if (tag.equals(getResources().getString(R.string.sidebar_confirmation))) {
                             newFragment = new SuccessFragment();
