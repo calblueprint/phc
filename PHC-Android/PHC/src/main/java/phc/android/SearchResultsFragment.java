@@ -99,6 +99,8 @@ public class SearchResultsFragment extends Fragment implements RecoverySystem.Pr
                     } catch (ParseException e2) {
                         Log.e("Birthday Parse Error", e2.toString());
                     }
+
+                    SearchResultAdapter adapter = new SearchResultAdapter(SearchResultsFragment.this.getActivity(), results);
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -152,8 +154,8 @@ public class SearchResultsFragment extends Fragment implements RecoverySystem.Pr
          */
         private SimpleDateFormat sdf;
 
-        public DonationAdapter(Context context, SearchResult[] data) {
-            super(context, R.layout.search_result_row, data);
+        public SearchResultAdapter(Context context, SearchResult[] data) {
+            super(context, R.layout.row_search_result, data);
             sdf = new SimpleDateFormat("EEE, MMM d, ''yy");
             this.data = data;
             this.context = context;
@@ -166,10 +168,18 @@ public class SearchResultsFragment extends Fragment implements RecoverySystem.Pr
             if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) context
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                rowView = inflater.inflate(R.layout.search_result_row, parent, false);
+                rowView = inflater.inflate(R.layout.row_search_result, parent, false);
             } else {
                 rowView = convertView;
             }
+
+            SearchResult searchResult = data[position];
+
+            ((TextView)rowView.findViewById(R.id.first_name)).setText(searchResult.getFirstName());
+            ((TextView)rowView.findViewById(R.id.last_name)).setText(searchResult.getLastName());
+
+            String birthday = sdf.format(searchResult.getBirthday());
+            ((TextView)rowView.findViewById(R.id.birthday)).setText(birthday);
 
 
             return rowView;
