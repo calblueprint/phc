@@ -243,14 +243,12 @@
             <CheckBox android:id="@+id/checkbox_foster"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/prompt_foster"
-                android:onClick="onCheckboxClicked"/>
+                android:text="@string/prompt_foster"/>
 
             <CheckBox android:id="@+id/checkbox_military"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/prompt_military"
-                android:onClick="onCheckboxClicked"/>
+                android:text="@string/prompt_military"/>
 
         </LinearLayout>
 
