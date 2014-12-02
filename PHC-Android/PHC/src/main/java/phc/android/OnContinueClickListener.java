@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -41,7 +40,8 @@ public class OnContinueClickListener
 
     /**
      * Updates SharedPreferences with (string, boolean) key-value pairs for each checkbox
-     * and (string, string) key-value pairs for each spinner and text entry view.
+     * and (string, string) key-value pairs for each spinner and EditText view.
+     * Ignores TextView objects.
      */
     private void updateSharedPreferences(ViewGroup mLayout){
         View v;

@@ -9,7 +9,16 @@
     <string name="logout_yes">Logout</string>
     <string name="logout_cancel">Cancel</string>
 
-    <!-- Sidebar-->
+    <!-- Security Key AlertDialog -->
+    <string name="title_security">Security Key</string>
+    <string name="title_error">Error</string>
+    <string name="prompt_security">Please enter the security key.</string>
+    <string name = "text_incorrect_security">
+        The security key you have entered is incorrect. Please try again.</string>
+    <string name="button_submit">Submit</string>
+    <string name="button_retry">Retry</string>
+
+    <!-- Sidebar -->
     <string name="sidebar_selection">Selection</string>
     <string name="sidebar_search">Search</string>
     <string name="sidebar_personal_info">Personal Info</string>
@@ -17,6 +26,7 @@
     <string name="sidebar_services_info">Services Info</string>
     <string name="sidebar_scan_code">Scan Code</string>
     <string name="sidebar_confirmation">Confirmation</string>
+
     <string-array name="sidebar">
         <item>Selection</item>
         <item>Search</item>
@@ -27,11 +37,9 @@
         <item>Confirmation</item>
     </string-array>
 
-
     <!-- Search -->
     <string name="search_results_title">Results</string>
-
-
+    <string name="request_url">phc-test.herokuapp.com</string>
 
     <!-- Splash Page -->
     <string name="button_register">Register</string>
@@ -44,7 +52,13 @@
     <string name="prompt_first">First Name</string>
     <string name="prompt_last">Last Name</string>
     <string name="prompt_ssn">SSN</string>
+    <string name="prompt_ssn_1">XXX</string>
+    <string name="prompt_ssn_2">XX</string>
+    <string name="prompt_ssn_3">XXXX</string>
     <string name="prompt_birthday">Birthday</string>
+    <string name="prompt_birthday_month">MM</string>
+    <string name="prompt_birthday_day">DD</string>
+    <string name="prompt_birthday_year">YYYY</string>
     <string name="prompt_phone">Phone</string>
     <string name="prompt_email">E-mail</string>
     <string name="prompt_gender">Gender Identity</string>
@@ -89,7 +103,9 @@
     <string name="prompt_neighborhood">In what neighborhood do you live?</string>
     <string name="prompt_homeless">Are you homeless?</string>
     <string name="prompt_children">Minor Children here today?</string>
+    <string name="prompt_children_age">(Optional) Age (e.g. 8,2,5)</string>
     <string name="prompt_doctor">Do you currently have a primary care doctor?</string>
+    <string name="prompt_doctor_name">(Optional) Doctor name</string>
 
     <string-array name="neighborhood_array">
         <item>Bayview/HP</item>
@@ -115,6 +131,13 @@
 
     <string name="action_submit">Submit</string>
 
+    <!-- Service Scan Page -->
+    <string name="start_scan">Click to scan</string>
+    <string name="confirm_scan">Confirm</string>
+
+    <!-- Toast messages -->
+    <string name="scan_success">Scan successfully recorded</string>
+    <string name="scan_failure">No scan recorded, please try again</string>
     <!-- Registration Scan Page -->
     <string name="scan_prompt">Please scan a QR code</string>
 
@@ -124,6 +147,6 @@
 
     <!-- Service Activity -->
     <string name="change_service">Change Service</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="request_url">phc-test.herokuapp.com</string>
 </resources>

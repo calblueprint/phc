@@ -2,12 +2,8 @@ package phc.android;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.CheckBox;
 
 /**
  * RegisterActivity is the main activity for registering a client.
@@ -45,56 +41,8 @@ public class RegisterActivity extends Activity {
 
             // Add the fragment to the 'fragment_container' FrameLayout
             FragmentTransaction t = getFragmentManager().beginTransaction();
-            t.add(R.id.registration_fragment_container, (Fragment) firstFragment, getResources().getString(R.string.sidebar_selection));
+            t.add(R.id.registration_fragment_container, firstFragment, getResources().getString(R.string.sidebar_selection));
             t.commit();
         }
     }
-
-
-    public void onCheckboxClicked(View view) {
-        // Is the view now checked?
-        boolean checked = ((CheckBox) view).isChecked();
-
-        // Check which checkbox was clicked
-        switch(view.getId()) {
-            case R.id.checkbox_foster:
-                if (checked){}
-                break;
-            case R.id.checkbox_military:
-                if (checked){}
-                break;
-            case R.id.checkbox_doctor:
-                if (checked){}
-                break;
-            case R.id.checkbox_children:
-                if (checked){}
-                break;
-            case R.id.checkbox_homeless:
-                if (checked){}
-                break;
-        }
-    }
-
-    //Responding to user selections for a Spinner object
-    public void onItemSelected(AdapterView<?> parent, View view,
-                               int pos, long id) {
-        // An item was selected. You can retrieve the selected item using
-        // parent.getItemAtPosition(pos)
-    }
-
-    public void onNothingSelected(AdapterView<?> parent) {
-        // Another interface callback
-    }
-
-    /**
-     * Takes in a string ID and converts it to key format
-     * used in the SalesForce database via the following changes:
-     *   - add "__c" to the end of the field
-     *   - replace nonalphanumeric characters (e.g. "/" and "-") with "_".
-     */
-    public String keyToKeyConverter(String key){
-        key = key.replaceAll("[\\W\\s]","_") + "__c";
-        return key;
-    }
-
 }
