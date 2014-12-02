@@ -67,7 +67,7 @@ public class SuccessFragment extends RegistrationFragment {
      */
     protected void setSuccessName(View view) {
         TextView mSuccessText = (TextView) view.findViewById(R.id.text_success);
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(SharedPreferenceEditorListener.USER_PREFS_NAME, Context.MODE_PRIVATE);
         String firstName = sharedPref.getString("first_name", "");
         String lastName = sharedPref.getString("last_name", "");
         mSuccessText.setText("Success! " + firstName + " " + lastName + " is now registered.");
