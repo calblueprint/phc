@@ -38,8 +38,8 @@ public class AccountRegistrationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_account_registration, container, false);
 
         initializeLocalVariables(view);
-        addEditTextListeners(view);
-        setSpinnerContent(view);
+        addEditTextListeners();
+        setSpinnerContent();
         prepopulateForm();
         mContinueButton = (Button) view.findViewById(R.id.button_account_continue);
         mContinueButton.setOnClickListener(new OnContinueClickListener(getActivity(),
@@ -64,6 +64,12 @@ public class AccountRegistrationFragment extends Fragment {
         super.onResume();
     }
 
+    /**
+     * Assign local variables to their respective views.
+     *
+     * @param view: The fragment's view, containing all of the necessary
+     *            sub-views
+     */
     private void initializeLocalVariables(View view) {
 
         mFirstName = (EditText) view.findViewById(R.id.first_name);
@@ -88,7 +94,10 @@ public class AccountRegistrationFragment extends Fragment {
         mLanguageSpinner = (Spinner) view.findViewById(R.id.spinner_language);
     }
 
-    private void addEditTextListeners(View view){
+    /**
+     * Adds TextChangedListeners to the phone and ssn fieilds
+     */
+    private void addEditTextListeners(){
         mSSN1.addTextChangedListener(new TextLengthWatcher(3,mSSN2));
         mSSN2.addTextChangedListener(new TextLengthWatcher(2,mSSN3));
         mSSN3.addTextChangedListener(new TextLengthWatcher(4,mMonth));
@@ -103,7 +112,10 @@ public class AccountRegistrationFragment extends Fragment {
 
     }
 
-    private void setSpinnerContent(View view){
+    /**
+     * initializes spinners with hints.
+     */
+    private void setSpinnerContent(){
         String[] genders = getResources().getStringArray(R.array.gender_array);
         ArrayAdapter<String> genderAdapter = new HintAdapter(
                 getActivity(), android.R.layout.simple_spinner_item, genders);
@@ -123,6 +135,9 @@ public class AccountRegistrationFragment extends Fragment {
         mLanguageSpinner.setSelection(languageAdapter.getCount());
     }
 
+    /**
+     * Prepopulates the form if there is a search result in shared preferences.
+     */
     private void prepopulateForm() {
         String preferencesFile = SearchResultsFragment.SEARCH_RESULT_PREFERENCES;
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(preferencesFile, 0);

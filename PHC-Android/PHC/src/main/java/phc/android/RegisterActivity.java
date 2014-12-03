@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.salesforce.androidsdk.app.SalesforceSDKManager;
 import com.salesforce.androidsdk.rest.ClientManager;
@@ -31,6 +32,10 @@ public class RegisterActivity extends Activity {
         ActionBar actionbar = getActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
 
+        // Passcode manager
+        Log.d("Passcode Manager", "new");
+        passcodeManager = SalesforceSDKManager.getInstance().getPasscodeManager();
+
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
         if (findViewById(R.id.registration_fragment_container) != null) {
@@ -52,11 +57,12 @@ public class RegisterActivity extends Activity {
             t.add(R.id.registration_fragment_container, firstFragment, getResources().getString(R.string.sidebar_selection));
             t.commit();
         }
-
-        // Passcode manager
-        passcodeManager = SalesforceSDKManager.getInstance().getPasscodeManager();
     }
 
+    /**
+     * Handles the setup of the Salesforce RestClient, allowing fragments in this activity to
+     * make requests to the backend.
+     */
     @Override
     public void onResume() {
         super.onResume();

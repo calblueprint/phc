@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 
 import android.graphics.Typeface;
@@ -16,8 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageButton;
 
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -29,9 +26,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.salesforce.androidsdk.rest.RestClient;
 import com.salesforce.androidsdk.rest.RestClient.AsyncRequestCallback;
 import com.salesforce.androidsdk.rest.RestRequest;
 import com.salesforce.androidsdk.rest.RestResponse;
@@ -45,7 +40,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +51,7 @@ import java.util.Map;
 public class SearchResultsFragment extends Fragment implements RecoverySystem.ProgressListener, ListView.OnItemClickListener {
     private static RequestQueue requestQueue;
     private static final String TAG = "Search";
-    public static final String REQUEST_PATH = "/api/v1/search";
+    private static final String SEARCH_PATH = "/api/v1/search";
     private static final String AUTH_TOKEN = "phcplusplus";
     public static final String SEARCH_RESULT_PREFERENCES = "SEARCH_RESULT_PREFERENCES";
 
@@ -88,23 +82,27 @@ public class SearchResultsFragment extends Fragment implements RecoverySystem.Pr
             }
         }
 
+        //Get the search parameters
         SharedPreferences searchPreferences = getActivity().getSharedPreferences(SearchFragment.SEARCH_PARAMETERS, 0);
         final String firstName = searchPreferences.getString("firstName", null);
         final String lastName = searchPreferences.getString("lastName", null);
         final SimpleDateFormat df = new SimpleDateFormat();
 
+        //If there are search parameters,
         if(firstName != null && lastName != null) {
             String url = getActivity().getResources().getString(R.string.request_url);
             final ListView listView = (ListView) getView().findViewById(R.id.search_result_list);
             listView.setOnItemClickListener(this);
+
+            //Clear the previous search
             searchPreferences.edit().clear().commit();
 
-            JsonArrayRequest searchResultsRequest = new JsonArrayRequest(url + REQUEST_PATH, new Response.Listener<JSONArray>() {
+            JsonArrayRequest searchResultsRequest = new JsonArrayRequest(url + SEARCH_PATH, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray jsonArray) {
                     SearchResult[] results = new SearchResult[jsonArray.length()];
                     try {
-                        for (int i=0; i < jsonArray.length(); i++) {
+                        for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject json = jsonArray.getJSONObject(i);
                             SearchResult result = new SearchResult();
                             result.setFirstName(json.getString("first_name"));

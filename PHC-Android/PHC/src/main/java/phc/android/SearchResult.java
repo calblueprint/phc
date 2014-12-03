@@ -3,6 +3,8 @@ package phc.android;
 import java.util.Date;
 
 /**
+ * Java class to encapsulate the responses received from the rails server for search results.
+ *
  * Created by Nishant on 11/23/14.
  */
 public class SearchResult {
