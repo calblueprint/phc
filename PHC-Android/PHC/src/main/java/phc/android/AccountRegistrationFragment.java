@@ -29,6 +29,7 @@ public class AccountRegistrationFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account_registration, container, false);
 
+        initializeLocalVariables(view);
         addEditTextListeners(view);
         setSpinnerContent(view);
         mContinueButton = (Button) view.findViewById(R.id.button_account_continue);
@@ -54,17 +55,28 @@ public class AccountRegistrationFragment extends Fragment {
         super.onResume();
     }
 
-    private void addEditTextListeners(View view){
+    private void initializeLocalVariables(View view) {
         mSSN1 = (EditText) view.findViewById(R.id.ssn_1);
         mSSN2 = (EditText) view.findViewById(R.id.ssn_2);
         mSSN3 = (EditText) view.findViewById(R.id.ssn_3);
+
         mMonth = (EditText) view.findViewById(R.id.birthday_month);
         mDay = (EditText) view.findViewById(R.id.birthday_day);
         mYear = (EditText) view.findViewById(R.id.birthday_year);
+
         mPhone1 = (EditText) view.findViewById(R.id.phone_1);
         mPhone2 = (EditText) view.findViewById(R.id.phone_2);
         mPhone3 = (EditText) view.findViewById(R.id.phone_3);
+
         mEmail = (EditText) view.findViewById(R.id.email);
+
+        mGenderSpinner = (Spinner) view.findViewById(R.id.spinner_gender);
+        mEthnicitySpinner = (Spinner) view.findViewById(R.id.spinner_ethnicity);
+        mLanguageSpinner = (Spinner) view.findViewById(R.id.spinner_language);
+    }
+
+    private void addEditTextListeners(View view){
+
 
         mSSN1.addTextChangedListener(new TextLengthWatcher(3,mSSN2));
         mSSN2.addTextChangedListener(new TextLengthWatcher(2,mSSN3));
@@ -81,21 +93,19 @@ public class AccountRegistrationFragment extends Fragment {
     }
 
     private void setSpinnerContent(View view){
-        mGenderSpinner = (Spinner) view.findViewById(R.id.spinner_gender);
+
         String[] genders = getResources().getStringArray(R.array.gender_array);
         ArrayAdapter<String> genderAdapter = new HintAdapter(
                 getActivity(), android.R.layout.simple_spinner_item, genders);
         mGenderSpinner.setAdapter(genderAdapter);
         mGenderSpinner.setSelection(genderAdapter.getCount());
 
-        mEthnicitySpinner = (Spinner) view.findViewById(R.id.spinner_ethnicity);
         String[] ethnicities = getResources().getStringArray(R.array.ethnicity_array);
         ArrayAdapter<String> ethnicityAdapter = new HintAdapter(
                 getActivity(), android.R.layout.simple_spinner_item, ethnicities);
         mEthnicitySpinner.setAdapter(ethnicityAdapter);
         mEthnicitySpinner.setSelection(ethnicityAdapter.getCount());
 
-        mLanguageSpinner = (Spinner) view.findViewById(R.id.spinner_language);
         String[] languages = getResources().getStringArray(R.array.language_array);
         ArrayAdapter<String> languageAdapter = new HintAdapter(
                 getActivity(), android.R.layout.simple_spinner_item, languages);
