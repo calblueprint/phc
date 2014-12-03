@@ -1,5 +1,6 @@
 package phc.android;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +15,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 
-public class ScannerFragment extends android.app.Fragment {
+public class ScannerFragment extends Fragment {
 
     public final static String TAG = "ScannerFragment";
     /* holds the result of the scan */

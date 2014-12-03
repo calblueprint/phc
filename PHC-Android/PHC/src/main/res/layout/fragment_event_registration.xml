@@ -36,8 +36,7 @@
                 <CheckBox android:id="@+id/checkbox_homeless"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/prompt_homeless"
-                    android:onClick="onCheckboxClicked"/>
+                    android:text="@string/prompt_homeless"/>
 
                 <LinearLayout
                     android:id="@+id/children_layout"
@@ -49,8 +48,7 @@
                     <CheckBox android:id="@+id/checkbox_children"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/prompt_children"
-                        android:onClick="onCheckboxClicked"/>
+                        android:text="@string/prompt_children"/>
 
                 </LinearLayout>
 
@@ -64,8 +62,7 @@
                     <CheckBox android:id="@+id/checkbox_doctor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/prompt_doctor"
-                        android:onClick="onCheckboxClicked"/>
+                        android:text="@string/prompt_doctor"/>
 
                 </LinearLayout>
 
