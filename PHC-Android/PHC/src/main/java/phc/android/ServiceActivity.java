@@ -1,5 +1,6 @@
 package phc.android;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
@@ -62,6 +63,9 @@ public class ServiceActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.service);
+        ActionBar actionbar = getActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+
         if (findViewById(R.id.service_fragment_container) != null) {
             /* However, if we're being restored from a previous state,
              * then we don't need to do anything and should return or else
