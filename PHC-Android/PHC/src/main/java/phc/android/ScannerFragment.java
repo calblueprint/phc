@@ -25,6 +25,8 @@ public class ScannerFragment extends android.app.Fragment {
     protected Button mScanButton;
     /* button to confirm result */
     protected Button mConfirmButton;
+    /* confirm button on sidebar */
+    protected Button mSideBarConfirmButton;
 
 
     @Override
@@ -33,6 +35,11 @@ public class ScannerFragment extends android.app.Fragment {
         /* Inflate the layout for this fragment */
         View view = inflater.inflate(R.layout.fragment_scanner, container, false);
         setupView(view);
+        /* Grab the last scan result */
+        if (savedInstanceState != null) {
+            CharSequence confText = savedInstanceState.getCharSequence("scanConfirmation");
+            mScanConfirmation.setText(confText);
+        }
         return view;
     }
 
@@ -42,12 +49,19 @@ public class ScannerFragment extends android.app.Fragment {
      * @param view is passed in by onCreateView()
      */
     protected void setupView(View view) {
+
         mScanConfirmation = (TextView) view.findViewById(R.id.scan_result);
+        //setSidebarConfirmButton(false);
         mScanButton = (Button) view.findViewById(R.id.start_scan);
         mScanButton.setOnClickListener(new ScanListener());
         mConfirmButton = (Button) view.findViewById(R.id.confirm_scan);
         mConfirmButton.setOnClickListener(new ConfirmListener());
         mConfirmButton.setVisibility(View.GONE);
+    }
+
+
+    private void setSidebarConfirmButton(boolean state) {
+        ((ServiceActivity) getActivity()).setSidebarConfirmButtonEnabled(state);
     }
 
     /**
@@ -143,6 +157,7 @@ public class ScannerFragment extends android.app.Fragment {
     protected void confirmScan() {
         mScanConfirmation.setText("Last successful scan result was\n: " + mScanResult);
         mConfirmButton.setVisibility(View.VISIBLE);
+        //setSidebarConfirmButton(true);
         mScanButton.setText("Return");
         mScanButton.setOnClickListener(new ReturnListener());
     }
@@ -163,9 +178,14 @@ public class ScannerFragment extends android.app.Fragment {
     protected void resetState() {
         mConfirmButton.setVisibility(View.GONE);
         mScanButton.setText("Click to Scan");
+        //setSidebarConfirmButton(false);
         mScanButton.setOnClickListener(new ScanListener());
     }
 
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putCharSequence("scanConfirmation", mScanConfirmation.getText());
+    }
     /**
      * Lets the calling activity know that a valid
      * QR code was received. This valid code may be

@@ -7,11 +7,11 @@
     tools:context="phc.android.ServiceActivity">
 
     <fragment
-        android:id="@+id/sidebar"
+        android:id="@+id/service_sidebar"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        class="phc.android.SideBarFragment" />
+        class="phc.android.ServiceSideBarFragment" />
 
     <!-- Login progress -->
     <ProgressBar

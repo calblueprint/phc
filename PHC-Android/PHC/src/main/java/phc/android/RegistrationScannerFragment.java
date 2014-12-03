@@ -44,17 +44,9 @@ public class RegistrationScannerFragment extends ScannerFragment {
 
         mPreferenceEditor = new PreferenceEditor(getActivity().getApplicationContext());
 
-        mContinueButton = (Button) view.findViewById(R.id.button_services_continue);
+        mContinueButton = (Button) view.findViewById(R.id.button_services_submit);
         mContinueButton.setEnabled(false);
-        mContinueButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
-                transaction.replace(R.id.registration_fragment_container, new SuccessFragment(), getResources().getString(R.string.sidebar_confirmation));
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
+        mContinueButton.setOnClickListener(new OnSubmitClickListener(view.getContext()));
         setupView(view);
 
         return view;
@@ -86,7 +78,8 @@ public class RegistrationScannerFragment extends ScannerFragment {
         mScanConfirmation = (TextView) view.findViewById(R.id.scan_result);
         mScanButton = (Button) view.findViewById(R.id.start_scan);
         mScanButton.setOnClickListener(new ScanListener());
-        mConfirmButton = (Button) view.findViewById(R.id.button_services_continue);         mConfirmButton.setOnClickListener(new ContinueListener());
+        mConfirmButton = (Button) view.findViewById(R.id.button_services_continue);
+        mConfirmButton.setOnClickListener(new ContinueListener());
         mConfirmButton.setEnabled(false);
     }
 

@@ -37,6 +37,17 @@
         <item>Confirmation</item>
     </string-array>
 
+    <!-- Services sidebar -->
+    <string name="sidebar_scan">Scan</string>
+    <string name="sidebar_confirm">Confirm</string>
+
+    <string-array name="services_sidebar">
+        <item>@string/sidebar_scan</item>
+        <item>@string/sidebar_confirm</item>
+    </string-array>
+
+
+
     <!-- Search -->
     <string name="search_results_title">Results</string>
 
