@@ -5,11 +5,19 @@ import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 
+import com.salesforce.androidsdk.app.SalesforceSDKManager;
+import com.salesforce.androidsdk.rest.ClientManager;
+import com.salesforce.androidsdk.rest.RestClient;
+import com.salesforce.androidsdk.security.PasscodeManager;
+
 /**
  * RegisterActivity is the main activity for registering a client.
  * It calls all FormFragments.
  */
 public class RegisterActivity extends Activity {
+
+    protected RestClient client;
+    private PasscodeManager passcodeManager;
 
     /**
      * On creation of the activity, launches the first fragment,
@@ -43,6 +51,33 @@ public class RegisterActivity extends Activity {
             FragmentTransaction t = getFragmentManager().beginTransaction();
             t.add(R.id.registration_fragment_container, firstFragment, getResources().getString(R.string.sidebar_selection));
             t.commit();
+        }
+
+        // Passcode manager
+        passcodeManager = SalesforceSDKManager.getInstance().getPasscodeManager();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Bring up passcode screen if needed
+        if (passcodeManager.onResume(this)) {
+            // Login options
+            String accountType = SalesforceSDKManager.getInstance().getAccountType();
+
+            // Get a rest client
+            new ClientManager(this, accountType, SalesforceSDKManager.getInstance().getLoginOptions(),
+                    SalesforceSDKManager.getInstance().shouldLogoutWhenTokenRevoked()).getRestClient(this, new ClientManager.RestClientCallback() {
+
+                @Override
+                public void authenticatedRestClient(RestClient client) {
+                    if (client == null) {
+                        SalesforceSDKManager.getInstance().logout(RegisterActivity.this);
+                        return;
+                    }
+                    RegisterActivity.this.client = client;
+                }
+            });
         }
     }
 }

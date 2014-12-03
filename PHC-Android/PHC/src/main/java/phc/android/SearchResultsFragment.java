@@ -1,5 +1,6 @@
 package phc.android;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -29,13 +31,20 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.salesforce.androidsdk.rest.RestClient;
+import com.salesforce.androidsdk.rest.RestClient.AsyncRequestCallback;
+import com.salesforce.androidsdk.rest.RestRequest;
+import com.salesforce.androidsdk.rest.RestResponse;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -45,11 +54,12 @@ import java.util.Map;
  * SearchFragment is launched on successful submission of a client's form data,
  * and allows the user to go back to activity_register another client.
  */
-public class SearchResultsFragment extends Fragment implements RecoverySystem.ProgressListener {
+public class SearchResultsFragment extends Fragment implements RecoverySystem.ProgressListener, ListView.OnItemClickListener {
     private static RequestQueue requestQueue;
     private static final String TAG = "Search";
     public static final String REQUEST_PATH = "/api/v1/search";
     private static final String AUTH_TOKEN = "phcplusplus";
+    public static final String SEARCH_RESULT_PREFERENCES = "SEARCH_RESULT_PREFERENCES";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,6 +96,8 @@ public class SearchResultsFragment extends Fragment implements RecoverySystem.Pr
         if(firstName != null && lastName != null) {
             String url = getActivity().getResources().getString(R.string.request_url);
             final ListView listView = (ListView) getView().findViewById(R.id.search_result_list);
+            listView.setOnItemClickListener(this);
+            searchPreferences.edit().clear().commit();
 
             JsonArrayRequest searchResultsRequest = new JsonArrayRequest(url + REQUEST_PATH, new Response.Listener<JSONArray>() {
                 @Override
@@ -112,8 +124,7 @@ public class SearchResultsFragment extends Fragment implements RecoverySystem.Pr
                     }
 
                     SearchResultAdapter adapter = new SearchResultAdapter(SearchResultsFragment.this.getActivity(), results);
-                    Log.d("Adapter", "adapter created")
-;                   listView.setAdapter(adapter);
+                    listView.setAdapter(adapter);
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -158,6 +169,84 @@ public class SearchResultsFragment extends Fragment implements RecoverySystem.Pr
     @Override
     public void onProgress(int progress) {
         // TODO: implement a progress bar that actually does something
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+        SearchResult searchResult = (SearchResult) parent.getItemAtPosition(position);
+        String apiVersion = getString(R.string.api_version);
+        String objectId = searchResult.getSalesForceId();
+        String objectName = "Account";
+        List<String> fields = new ArrayList<String>(Arrays.asList("SS_Num__c", "FirstName", "LastName", "Phone",
+                                                                  "Birthdate__c", "PersonEmail", "Gender__c",
+                                                                  "Ethnicity__pc", "Primary_Language__c"));
+
+        try {
+            RestRequest request = RestRequest.getRequestForRetrieve(apiVersion, objectName, objectId, fields);
+            AsyncRequestCallback callback = new AsyncRequestCallback() {
+                @Override
+                public void onSuccess(RestRequest request, RestResponse response) {
+                    Activity activity = SearchResultsFragment.this.getActivity();
+                    SharedPreferences sharedPreferences = activity.getSharedPreferences(SEARCH_RESULT_PREFERENCES, 0);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    try {
+                        JSONObject jsonResponse = response.asJSONObject();
+                        editor.putString("SS_Num", jsonResponse.getString("SS_Num__c"));
+                        editor.putString("FirstName", jsonResponse.getString("FirstName"));
+                        editor.putString("LastName", jsonResponse.getString("LastName"));
+                        editor.putString("Phone", jsonResponse.getString("Phone"));
+                        editor.putString("Birthdate", jsonResponse.getString("Birthdate__c"));
+                        editor.putString("Email", jsonResponse.getString("PersonEmail"));
+                        editor.putString("Gender", jsonResponse.getString("Gender__c"));
+                        editor.putString("Ethnicity", jsonResponse.getString("Ethnicity__pc"));
+                        editor.putString("Language", jsonResponse.getString("Primary_Language__c"));
+                        editor.putString("SFID", jsonResponse.getString("Id"));
+
+                    } catch (IOException e1) {
+                        Log.e("Result Response Error", e1.toString());
+                    } catch (JSONException e2) {
+                        Log.e("Search Result JSON Error", e2.toString());
+                    } finally {
+                        editor.putBoolean("Searched", true);
+                        editor.commit();
+                    }
+
+                    AccountRegistrationFragment newFragment = new AccountRegistrationFragment();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.registration_fragment_container, newFragment, getResources().getString(R.string.sidebar_personal_info));
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+
+                }
+
+                @Override
+                public void onError(Exception exception) {
+
+                }
+            };
+            sendRequest(request, callback);
+        } catch (Exception e) {
+            Log.e("Search Select Error", e.toString());
+        }
+
+    }
+
+    /**
+     * Helper that sends request to server and print result in text field.
+     *
+     * @param request - The request object that gets executed by the SF SDK
+     * @param callback - The functions that get called when yhe response comes back
+     *                   Modify UI elements here.
+     */
+    private void sendRequest(RestRequest request, AsyncRequestCallback callback) {
+
+        try {
+
+            ((RegisterActivity) getActivity()).client.sendAsync(request, callback);
+
+        } catch (Exception error) {
+            Log.e("SF Request", error.toString());
+        }
     }
 
 
