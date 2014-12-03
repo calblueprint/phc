@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:layout_marginTop="@dimen/top_bottom_margins"
     android:layout_marginBottom="@dimen/top_bottom_margins">
-
     <LinearLayout
         android:id="@+id/services_page"
         android:layout_width="@dimen/input_text_width"
@@ -24,6 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:orientation="vertical" />
 
         <Button
