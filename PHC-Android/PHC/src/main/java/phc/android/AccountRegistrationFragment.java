@@ -127,6 +127,10 @@ public class AccountRegistrationFragment extends Fragment {
         String preferencesFile = SearchResultsFragment.SEARCH_RESULT_PREFERENCES;
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(preferencesFile, 0);
 
+        if (!sharedPreferences.getBoolean("Searched", false)) {
+            return;
+        }
+
         String ssNum = sharedPreferences.getString("SS_Num", null);
         String firstName = sharedPreferences.getString("FirstName", null);
         String lastName = sharedPreferences.getString("LastName", null);
