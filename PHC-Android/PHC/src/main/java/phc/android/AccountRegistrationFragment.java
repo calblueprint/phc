@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * AccountRegistrationFragment is the registration form for all new clients
@@ -124,24 +131,64 @@ public class AccountRegistrationFragment extends Fragment {
         String firstName = sharedPreferences.getString("FirstName", null);
         String lastName = sharedPreferences.getString("LastName", null);
         String phone = sharedPreferences.getString("Phone", null);
-        String birthdate = sharedPreferences.getString("Birthdate", null);
+        String birthdateString = sharedPreferences.getString("Birthdate", null);
         String email = sharedPreferences.getString("Email", null);
         String gender = sharedPreferences.getString("Gender", null);
         String ethnicity = sharedPreferences.getString("Ethnicity", null);
         String language = sharedPreferences.getString("Language", null);
 
-        if(firstName != null) mFirstName.setText(firstName);
-        if(lastName != null) mLastName.setText(lastName);
-        if(email != null) mEmail.setText(email);
+        if(!firstName.equals("null")) mFirstName.setText(firstName);
+        if(!lastName.equals("null")) mLastName.setText(lastName);
+        if(!email.equals("null")) mEmail.setText(email);
         if(ssNum != null && ssNum.length() == 9) {
             mSSN1.setText(ssNum.substring(0, 3));
             mSSN2.setText(ssNum.substring(3, 5));
             mSSN3.setText(ssNum.substring(5));
         }
-        if(phone != null && phone.length() == 10) {
-            mPhone1.setText(ssNum.substring(0, 3));
-            mPhone2.setText(ssNum.substring(3, 6));
-            mPhone3.setText(ssNum.substring(6));
+        if(!phone.equals("null") && phone.length() == 10) {
+            mPhone1.setText(phone.substring(0, 3));
+            mPhone2.setText(phone.substring(3, 6));
+            mPhone3.setText(phone.substring(6));
         }
+        if (!birthdateString.equals("null")) {
+            Log.d("Date", birthdateString);
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                Date birthdateDate = df.parse(birthdateString);
+                GregorianCalendar calendar = new GregorianCalendar();
+                calendar.setTime(birthdateDate);
+                mDay.setText(Integer.toString(calendar.get(Calendar.DAY_OF_MONTH)));
+                mMonth.setText(Integer.toString(calendar.get(Calendar.MONTH)+1));
+                mYear.setText(Integer.toString(calendar.get(Calendar.YEAR)));
+
+            } catch (ParseException e) {
+                Log.e("Birthday Format Error", e.toString());
+            }
+        }
+
+        if (!gender.equals("null")) {
+            ArrayAdapter<String> adapter = (ArrayAdapter<String>) mGenderSpinner.getAdapter();
+            int position = adapter.getPosition(gender);
+            if (position != -1) {
+                mGenderSpinner.setSelection(position);
+            }
+        }
+
+        if (!ethnicity.equals("null")) {
+            ArrayAdapter<String> adapter = (ArrayAdapter<String>) mEthnicitySpinner.getAdapter();
+            int position = adapter.getPosition(ethnicity);
+            if (position != -1) {
+                mEthnicitySpinner.setSelection(position);
+            }
+        }
+
+        if (!language.equals("null")) {
+            ArrayAdapter<String> adapter = (ArrayAdapter<String>) mLanguageSpinner.getAdapter();
+            int position = adapter.getPosition(language);
+            if (position != -1) {
+                mLanguageSpinner.setSelection(position);
+            }
+        }
+
     }
 }
