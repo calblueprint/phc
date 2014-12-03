@@ -1,6 +1,7 @@
 package phc.android;
 
 import android.app.Fragment;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,7 +21,7 @@ import android.widget.TextView;
 public class AccountRegistrationFragment extends Fragment {
     private Button mContinueButton;
     private Spinner mGenderSpinner, mEthnicitySpinner, mLanguageSpinner;
-    private EditText mMonth, mDay, mYear, mPhone1, mPhone2, mPhone3, mSSN1, mSSN2, mSSN3, mEmail;
+    private EditText mMonth, mDay, mYear, mPhone1, mPhone2, mPhone3, mSSN1, mSSN2, mSSN3, mEmail, mFirstName, mLastName;
 
     /**
      * Set spinner content and continue button functionality.
@@ -32,6 +33,7 @@ public class AccountRegistrationFragment extends Fragment {
         initializeLocalVariables(view);
         addEditTextListeners(view);
         setSpinnerContent(view);
+        prepopulateForm();
         mContinueButton = (Button) view.findViewById(R.id.button_account_continue);
         mContinueButton.setOnClickListener(new OnContinueClickListener(getActivity(),
                 new EventRegistrationFragment(), getResources().getString(R.string.sidebar_event_info)));
@@ -56,6 +58,10 @@ public class AccountRegistrationFragment extends Fragment {
     }
 
     private void initializeLocalVariables(View view) {
+
+        mFirstName = (EditText) view.findViewById(R.id.first_name);
+        mLastName = (EditText) view.findViewById(R.id.last_name);
+
         mSSN1 = (EditText) view.findViewById(R.id.ssn_1);
         mSSN2 = (EditText) view.findViewById(R.id.ssn_2);
         mSSN3 = (EditText) view.findViewById(R.id.ssn_3);
@@ -76,8 +82,6 @@ public class AccountRegistrationFragment extends Fragment {
     }
 
     private void addEditTextListeners(View view){
-
-
         mSSN1.addTextChangedListener(new TextLengthWatcher(3,mSSN2));
         mSSN2.addTextChangedListener(new TextLengthWatcher(2,mSSN3));
         mSSN3.addTextChangedListener(new TextLengthWatcher(4,mMonth));
@@ -93,7 +97,6 @@ public class AccountRegistrationFragment extends Fragment {
     }
 
     private void setSpinnerContent(View view){
-
         String[] genders = getResources().getStringArray(R.array.gender_array);
         ArrayAdapter<String> genderAdapter = new HintAdapter(
                 getActivity(), android.R.layout.simple_spinner_item, genders);
@@ -111,5 +114,34 @@ public class AccountRegistrationFragment extends Fragment {
                 getActivity(), android.R.layout.simple_spinner_item, languages);
         mLanguageSpinner.setAdapter(languageAdapter);
         mLanguageSpinner.setSelection(languageAdapter.getCount());
+    }
+
+    private void prepopulateForm() {
+        String preferencesFile = SearchResultsFragment.SEARCH_RESULT_PREFERENCES;
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(preferencesFile, 0);
+
+        String ssNum = sharedPreferences.getString("SS_Num", null);
+        String firstName = sharedPreferences.getString("FirstName", null);
+        String lastName = sharedPreferences.getString("LastName", null);
+        String phone = sharedPreferences.getString("Phone", null);
+        String birthdate = sharedPreferences.getString("Birthdate", null);
+        String email = sharedPreferences.getString("Email", null);
+        String gender = sharedPreferences.getString("Gender", null);
+        String ethnicity = sharedPreferences.getString("Ethnicity", null);
+        String language = sharedPreferences.getString("Language", null);
+
+        if(firstName != null) mFirstName.setText(firstName);
+        if(lastName != null) mLastName.setText(lastName);
+        if(email != null) mEmail.setText(email);
+        if(ssNum != null && ssNum.length() == 9) {
+            mSSN1.setText(ssNum.substring(0, 3));
+            mSSN2.setText(ssNum.substring(3, 5));
+            mSSN3.setText(ssNum.substring(5));
+        }
+        if(phone != null && phone.length() == 10) {
+            mPhone1.setText(ssNum.substring(0, 3));
+            mPhone2.setText(ssNum.substring(3, 6));
+            mPhone3.setText(ssNum.substring(6));
+        }
     }
 }
