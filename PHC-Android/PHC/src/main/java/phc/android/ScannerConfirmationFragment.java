@@ -1,6 +1,5 @@
 package phc.android;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -15,21 +14,22 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-
-import java.util.zip.Inflater;
-
 
 public class ScannerConfirmationFragment extends android.app.Fragment {
 
+    /* Name for logs and fragment transaction code */
     public final static String TAG = "ScannerConfirmationFragment";
-    /* displays last scan result */
+
+    /* Displays last scan result */
     protected TextView mScanResultView;
+
+    /* Holds last scan result */
     protected CharSequence mScanResult;
-    /* button to go back to scanner fragment */
+
+    /* Button to go back to scanner fragment */
     protected Button mRetryButton;
-    /* button to confirm result */
+
+    /* Button to confirm result */
     protected Button mConfirmButton;
 
     @Override
@@ -37,6 +37,7 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
                              Bundle savedInstanceState) {
         /* Inflate the layout for this fragment and set up view*/
         View view = setupView(inflater, container);
+
         /* Grab the last scan result from this fragment or the previous */
         if (savedInstanceState != null) {
             mScanResult = savedInstanceState.getCharSequence("scan_result");
@@ -89,6 +90,12 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
         }
     }
 
+    /**
+     * Brings up another fragment when this fragment
+     * is complete
+     * @param nextFrag Fragment to display next
+     * @param fragName String fragment name
+     */
     protected void displayNextFragment(Fragment nextFrag, String fragName) {
         FragmentTransaction transaction =
                 getActivity().getFragmentManager().beginTransaction();
@@ -139,6 +146,11 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
         showSuccessToast();
     }
 
+    /**
+     * Save the scan result when this fragment is
+     * paused
+     * @param outState Bundle passed in by Android
+     */
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putCharSequence("scan_result", mScanResult);
@@ -150,6 +162,11 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
         super.onResume();
     }
 
+    /**
+     * Used so that a subclass can implement their own
+     * resumeHelper() so method calls to onResume() will
+     * execute this class's super.onResume()
+     */
     protected void resumeHelper() {
         LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.services_sidebar_list);
         for (int i = 0; i < sidebarList.getChildCount(); i++) {
@@ -170,6 +187,7 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
      * QR code was received. This valid code may be
      * overwritten multiple times before it is
      * returned to the calling activity.
+     * Not currently used.
      *
      * @param result is the decoded string
      * @return no return value, uses Intent to communicate
@@ -185,6 +203,7 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
      * Lets the calling activity know that a valid
      * QR code was not received before the user
      * returned using the back button.
+     * Not currently used.
      *
      * @return no return value, uses Intent to communicate
      */

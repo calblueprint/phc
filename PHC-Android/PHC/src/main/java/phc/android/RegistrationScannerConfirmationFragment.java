@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +14,13 @@ import android.widget.TextView;
 
 public class RegistrationScannerConfirmationFragment extends ScannerConfirmationFragment {
 
+    /* Tag for logs and fragment code */
     public final static String TAG = "RegistrationScannerConfirmationFragment";
+
     /* Name to store code in saved preferences */
     private final String mName = "qr_code";
+
+    /* Preference editor for saved preferences */
     private PreferenceEditor mPreferenceEditor;
 
     /**
@@ -34,22 +37,17 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        mPreferenceEditor = new PreferenceEditor(getActivity().getApplicationContext());
-        return super.onCreateView(inflater,container,savedInstanceState);
-    }
-
     /**
      * Separate method for setting up view so that this
      * functionality can be overriden by a subclass.
+     * Override to setup mPreferenceEditor
      * @param view is passed in by onCreateView()
      */
     @Override
     protected View setupView(LayoutInflater inflater, ViewGroup container) {
 
         View view = inflater.inflate(R.layout.fragment_registration_scanner_confirmation, container, false);
+        mPreferenceEditor = new PreferenceEditor(getActivity().getApplicationContext());
 
         mScanResultView = (TextView) view.findViewById(R.id.scan_result);
         mScanResultView.setText(mScanResult);
@@ -101,6 +99,11 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
         showSuccessToast();
     }
 
+    /**
+     * Override to replace registration_fragment_container
+     * @param nextFrag Fragment to display next
+     * @param fragName String fragment name
+     */
     @Override
     protected void displayNextFragment(Fragment nextFrag, String fragName) {
         FragmentTransaction transaction =
@@ -108,11 +111,6 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
         transaction.replace(R.id.registration_fragment_container, nextFrag, fragName);
         transaction.addToBackStack(null);
         transaction.commit();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     @Override

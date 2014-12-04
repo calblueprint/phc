@@ -3,8 +3,6 @@ package phc.android;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,10 +12,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-
 public class RegistrationScannerFragment extends ScannerFragment {
+
+
+    /* Tag for logs and fragment code */
+    public final static String TAG = "RegistrationScannerFragment";
 
     /**
      * Sets up the view for the user to confirm
@@ -47,6 +46,13 @@ public class RegistrationScannerFragment extends ScannerFragment {
 
 
 
+    /**
+     * Brings up another fragment when this fragment
+     * is complete. Override to use
+     * registration_fragment_container
+     * @param nextFrag Fragment to display next
+     * @param fragName String fragment name
+     */
     @Override
     protected void displayNextFragment(Fragment nextFrag, String fragName) {
         FragmentTransaction transaction =
@@ -57,16 +63,8 @@ public class RegistrationScannerFragment extends ScannerFragment {
     }
 
     /**
-     * Called when activity is re opened.
-     * Camera must be acquired again, and
-     * the preview's camera handle should
-     * be updated as well.
+     * Override to use sidebar view and string ids
      */
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     @Override
     protected void resumeHelper() {
         LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.sidebar_list);

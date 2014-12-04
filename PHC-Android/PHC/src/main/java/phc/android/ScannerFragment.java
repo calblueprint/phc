@@ -35,7 +35,8 @@ public class ScannerFragment extends Fragment {
     /**
      * Separate method for setting up view so that this
      * functionality can be overriden by a subclass.
-     * @param view is passed in by onCreateView()
+     * @param inflater LayoutInflater passed in from onCreateView()
+     * @param container ViewGroup passed in from onCreateView()
      */
     protected View setupView(LayoutInflater inflater, ViewGroup container) {
         View view = inflater.inflate(R.layout.fragment_scanner, container, false);
@@ -119,6 +120,12 @@ public class ScannerFragment extends Fragment {
         displayNextFragment(confFrag, ScannerConfirmationFragment.TAG);
     }
 
+    /**
+     * Brings up another fragment when this fragment
+     * is complete
+     * @param nextFrag Fragment to display next
+     * @param fragName String fragment name
+     */
     protected void displayNextFragment(Fragment nextFrag, String fragName) {
         FragmentTransaction transaction =
                 getActivity().getFragmentManager().beginTransaction();
@@ -133,6 +140,11 @@ public class ScannerFragment extends Fragment {
         super.onResume();
     }
 
+    /**
+     * Used so that a subclass can implement their own
+     * resumeHelper() so method calls to onResume() will
+     * execute this class's super.onResume()
+     */
     protected void resumeHelper() {
         LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.services_sidebar_list);
         for (int i = 0; i < sidebarList.getChildCount(); i++) {
@@ -146,35 +158,6 @@ public class ScannerFragment extends Fragment {
                 tv.setTypeface(null, Typeface.NORMAL);
             }
         }
-    }
-
-    /**
-     * Lets the calling activity know that a valid
-     * QR code was received. This valid code may be
-     * overwritten multiple times before it is
-     * returned to the calling activity.
-     *
-     * @param result is the decoded string
-     * @return no return value, uses Intent to communicate
-     */
-    private void returnSuccessfulResult(String result) {
-        Intent scanResult = new Intent();
-        scanResult.putExtra("scan_result", result);
-        getActivity().setResult(getActivity().RESULT_OK, scanResult);
-        getActivity().finish();
-    }
-
-    /**
-     * Lets the calling activity know that a valid
-     * QR code was not received before the user
-     * returned using the back button.
-     *
-     * @return no return value, uses Intent to communicate
-     */
-    private void returnCanceledResult() {
-        Intent scanResult = new Intent();
-        getActivity().setResult(getActivity().RESULT_CANCELED, scanResult);
-        getActivity().finish();
     }
 }
 
