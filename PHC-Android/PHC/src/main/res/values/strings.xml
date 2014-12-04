@@ -144,6 +144,7 @@
     <!-- Service Scan Page -->
     <string name="start_scan">Click to scan</string>
     <string name="confirm_scan">Confirm</string>
+    <string name="retry_scan">Retry</string>
 
     <!-- Toast messages -->
     <string name="scan_success">Scan successfully recorded</string>

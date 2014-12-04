@@ -23,6 +23,10 @@ public class RegistrationScannerFragment extends ScannerFragment {
     private PreferenceEditor mPreferenceEditor;
     private final String mName = "qr_code";
 
+    // TODO: DELETE ME
+    private TextView mScanConfirmation;
+    private Button mConfirmButton;
+
     /**
      * Used to store a scan result in Shared Preferences
      */
@@ -87,18 +91,18 @@ public class RegistrationScannerFragment extends ScannerFragment {
      * Sets up the view for the user to confirm
      * the scanned code.
      */
-    @Override
+    //@Override
     protected void confirmScan() {
         mScanConfirmation.setText("Last successful scan result was\n: " + mScanResult);
         mConfirmButton.setEnabled(true);
         mScanButton.setText("Return");
-        mScanButton.setOnClickListener(new ReturnListener());
+        //mScanButton.setOnClickListener(new ReturnListener());
     }
 
     /**
      * Resets state of view to what the user first saw.
      */
-    @Override
+    //@Override
     protected void resetState() {
         mScanButton.setText("Click to Scan");
         mScanButton.setOnClickListener(new ScanListener());
@@ -108,7 +112,7 @@ public class RegistrationScannerFragment extends ScannerFragment {
      * Records the scan result in shared preferences
      * and displays a success toast.
      */
-    @Override
+    //@Override
     protected void recordScan() {
         mPreferenceEditor.storeScanResult(mScanResult);
         showSuccessToast();
@@ -146,7 +150,7 @@ public class RegistrationScannerFragment extends ScannerFragment {
         for (int i = 0; i < sidebarList.getChildCount(); i++) {
             View v = sidebarList.getChildAt(i);
             Object vTag = v.getTag();
-            if ((vTag != null) && (vTag.equals(getResources().getText(R.string.sidebar_scan_code)))) {
+            if ((vTag != null) && (vTag.equals(""))) {
                 TextView tv = (TextView) v;
                 tv.setTypeface(null, Typeface.BOLD);
             } else if (v instanceof TextView) {
