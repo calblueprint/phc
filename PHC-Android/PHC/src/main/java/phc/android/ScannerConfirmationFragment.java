@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.util.zip.Inflater;
+
 
 public class ScannerConfirmationFragment extends android.app.Fragment {
 
@@ -33,9 +35,8 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        /* Inflate the layout for this fragment */
-        View view = inflater.inflate(R.layout.fragment_scanner_confirmation, container, false);
-        setupView(view);
+        /* Inflate the layout for this fragment and set up view*/
+        View view = setupView(inflater, container);
         /* Grab the last scan result from this fragment or the previous */
         if (savedInstanceState != null) {
             mScanResult = savedInstanceState.getCharSequence("scan_result");
@@ -51,8 +52,9 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
      * functionality can be overriden by a subclass.
      * @param view is passed in by onCreateView()
      */
-    protected void setupView(View view) {
+    protected View setupView(LayoutInflater inflater, ViewGroup container) {
 
+        View view = inflater.inflate(R.layout.fragment_scanner_confirmation, container, false);
         mScanResultView = (TextView) view.findViewById(R.id.scan_result);
         mScanResultView.setText(mScanResult);
 
@@ -61,6 +63,7 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
 
         mConfirmButton = (Button) view.findViewById(R.id.confirm_scan);
         mConfirmButton.setOnClickListener(new ConfirmListener());
+        return view;
     }
 
     /**
@@ -143,6 +146,11 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
 
     @Override
     public void onResume() {
+        resumeHelper();
+        super.onResume();
+    }
+
+    protected void resumeHelper() {
         LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.services_sidebar_list);
         for (int i = 0; i < sidebarList.getChildCount(); i++) {
             View v = sidebarList.getChildAt(i);
@@ -155,7 +163,6 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
                 tv.setTypeface(null, Typeface.NORMAL);
             }
         }
-        super.onResume();
     }
 
     /**

@@ -27,9 +27,8 @@ public class ScannerFragment extends android.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        /* Inflate the layout for this fragment */
-        View view = inflater.inflate(R.layout.fragment_scanner, container, false);
-        setupView(view);
+        /* Inflate the layout for this fragment and set up view*/
+        View view = setupView(inflater, container);
         return view;
     }
 
@@ -38,9 +37,12 @@ public class ScannerFragment extends android.app.Fragment {
      * functionality can be overriden by a subclass.
      * @param view is passed in by onCreateView()
      */
-    protected void setupView(View view) {
+    protected View setupView(LayoutInflater inflater, ViewGroup container) {
+        View view = inflater.inflate(R.layout.fragment_scanner, container, false);
+
         mScanButton = (Button) view.findViewById(R.id.start_scan);
         mScanButton.setOnClickListener(new ScanListener());
+        return view;
     }
 
     /**
@@ -117,13 +119,6 @@ public class ScannerFragment extends android.app.Fragment {
         displayNextFragment(confFrag, ScannerConfirmationFragment.TAG);
     }
 
-    /*
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putCharSequence("scanConfirmation", mScanConfirmation.getText());
-    }
-    */
-
     protected void displayNextFragment(Fragment nextFrag, String fragName) {
         FragmentTransaction transaction =
                 getActivity().getFragmentManager().beginTransaction();
@@ -134,6 +129,11 @@ public class ScannerFragment extends android.app.Fragment {
 
     @Override
     public void onResume() {
+        resumeHelper();
+        super.onResume();
+    }
+
+    protected void resumeHelper() {
         LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.services_sidebar_list);
         for (int i = 0; i < sidebarList.getChildCount(); i++) {
             View v = sidebarList.getChildAt(i);
@@ -146,7 +146,6 @@ public class ScannerFragment extends android.app.Fragment {
                 tv.setTypeface(null, Typeface.NORMAL);
             }
         }
-        super.onResume();
     }
 
     /**
