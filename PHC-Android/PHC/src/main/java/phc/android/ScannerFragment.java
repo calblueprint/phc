@@ -18,7 +18,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 
-public class ScannerFragment extends android.app.Fragment {
+public class ScannerFragment extends Fragment {
 
     public final static String TAG = "ScannerFragment";
     /* button to go to scanner */

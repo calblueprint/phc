@@ -31,7 +31,7 @@ public class SideBarFragment extends RegistrationFragment {
 
             Button button = new Button(getActivity());
             button.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT));
             button.setBackgroundColor(Color.TRANSPARENT);
             button.setText(tag);
@@ -45,28 +45,12 @@ public class SideBarFragment extends RegistrationFragment {
                     FragmentManager fragMan = getFragmentManager();
                     Fragment newFragment = fragMan.findFragmentByTag(tag);
 
-                    if (newFragment == null) {
-                        if (tag.equals(getResources().getString(R.string.sidebar_selection))) {
-                            newFragment = new SelectionFragment();
-                        } else if (tag.equals(getResources().getString(R.string.sidebar_search))) {
-                            newFragment = new SearchFragment();
-                        } else if (tag.equals(getResources().getString(R.string.sidebar_personal_info))) {
-                            newFragment = new AccountRegistrationFragment();
-                        } else if (tag.equals(getResources().getString(R.string.sidebar_event_info))) {
-                            newFragment = new EventRegistrationFragment();
-                        } else if (tag.equals(getResources().getString(R.string.sidebar_services_info))) {
-                            newFragment = new SelectServicesFragment();
-                        } else if (tag.equals("Scan Code")) {
-                            newFragment = new RegistrationScannerFragment();
-                        } else if (tag.equals(getResources().getString(R.string.sidebar_confirmation))) {
-                            newFragment = new SuccessFragment();
-                        }
+                    if (newFragment != null) {
+                        FragmentTransaction transaction = fragMan.beginTransaction();
+                        transaction.replace(R.id.registration_fragment_container, newFragment, tag);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
                     }
-
-                    FragmentTransaction transaction = fragMan.beginTransaction();
-                    transaction.replace(R.id.registration_fragment_container, newFragment, tag);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
                 }
             });
             sidebarList.addView(button);

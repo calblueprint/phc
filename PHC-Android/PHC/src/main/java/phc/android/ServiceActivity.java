@@ -1,5 +1,6 @@
 package phc.android;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -18,33 +19,33 @@ import android.widget.TextView;
 import java.util.HashSet;
 import java.util.Set;
 
-/* Call with resultCode of 0 if providing a service
- * Call with resultCode of 1 if scanning for registration
+/** Call with resultCode of 0 if providing a service.
+ * Call with resultCode of 1 if scanning for registration.
  */
 public class ServiceActivity extends Activity {
 
-    /* Used to hold which service this user is scanning for */
+    /** Used to hold which service this user is scanning for. */
     public String mServiceSelected;
 
-    /* Created when selecting the provided service */
+    /** Created when selecting the provided service */
     public AlertDialog mServiceDialog;
 
-    /* Used in error logs to identify this activity. */
+    /** Used in error logs to identify this activity. */
     public static final String TAG = "ServiceActivity";
 
-    /* The result returned to the calling activity through an Intent. */
+    /** The result returned to the calling activity through an Intent. */
     public static String mScanResult;
 
-    /* A handle on the fragment that holds the camera to open and release it. */
+    /** A handle on the fragment that holds the camera to open and release it. */
     public ScannerFragment mScannerFragment;
 
-    /* Holds the menu item generated in onPrepareOptionsMenu() */
+    /** Holds the menu item generated in onPrepareOptionsMenu() */
     private MenuItem mServiceMenuItem;
 
-    /* Used to hold scan results */
+    /** Used to hold scan results. */
     private SharedPreferences mSharedPreferences;
 
-    /* String tag for scanned codes in shared preferences */
+    /** String tag for scanned codes in shared preferences */
     private final String ALL_CODES = "scanned_codes";
 
     private CharSequence[] services;
@@ -67,6 +68,9 @@ public class ServiceActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.service);
+        ActionBar actionbar = getActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+
         if (findViewById(R.id.service_fragment_container) != null) {
             /* However, if we're being restored from a previous state,
              * then we don't need to do anything and should return or else
