@@ -8,6 +8,7 @@
         <item name="android:spinnerStyle">@style/PHCSpinner</item>
         <item name="android:spinnerItemStyle">@style/PHCSpinnerItem</item>
         <item name="android:checkboxStyle">@style/PHCCheckBox</item>
+        <item name="android:buttonStyle">@style/PHCButton</item>
     </style>
 
     <style name="PHCActionBar"
@@ -20,7 +21,7 @@
 
         <!-- WARNING! This item sets the size, more or less, of the actual EditText-->
         <!-- TODO: Adjust rectangular_text_edit to make it better fit whatever textSize we choose to use.  Will have to adjust padding, etc as well.-->
-        <item name="android:background">@drawable/rectangular_text_edit</item>
+        <item name="android:background">@drawable/edit_text_bg</item>
         <item name="android:textColor">@color/text_color</item>
         <item name="android:textColorHint">@color/hint_color</item>
         <item name="android:textSize">@dimen/text_size</item>
@@ -52,6 +53,15 @@
         <item name="android:drawablePadding">@dimen/checkbox_left_padding</item>
         <item name="android:textColor">@color/text_color</item>
         <item name="android:textSize">@dimen/text_size</item>
+    </style>
+
+    <style name="PHCButton"
+        parent="@android:style/Widget.Holo.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/button</item>
+        <item name="android:textColor">@color/text_color</item>
+        <!--<item name="android:textStyle">bold</item>-->
     </style>
 
 </resources>
