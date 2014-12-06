@@ -3,6 +3,7 @@ package phc.android;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +12,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.HashSet;
@@ -47,6 +50,8 @@ public class ServiceActivity extends Activity {
 
     private CharSequence[] services;
 
+    private View mServiceSidebar;
+
     /* Used to display "SUCCESS" or "TRY AGAIN" */
     // TODO: Change to check and X assets.
     /* Not used right now, but we will take this out after moving to assets */
@@ -76,7 +81,7 @@ public class ServiceActivity extends Activity {
             }
 
             mSharedPreferences = getPreferences(MODE_PRIVATE);
-
+            mServiceSidebar = findViewById(R.id.service_sidebar);
             mScannerFragment = new ScannerFragment();
             mScannerFragment.setArguments(getIntent().getExtras());
             FragmentTransaction t = getFragmentManager().beginTransaction();
@@ -95,6 +100,13 @@ public class ServiceActivity extends Activity {
         }
     }
 
+
+    protected void setSidebarConfirmButtonEnabled(boolean state) {
+        String confirmString = getResources().getString(R.string.sidebar_confirm);
+        int confirmButtonId = Math.abs(confirmString.hashCode());
+        Button confirmButton = (Button) mServiceSidebar.findViewById(confirmButtonId);
+        confirmButton.setEnabled(state);
+    }
 
     /**
      * Displays a dialog box that prompts the user to select the service
