@@ -150,6 +150,11 @@ public class ServiceActivity extends Activity {
      * @param result String scan result
      */
     public void storeScanResult(String result) {
+        /* TODO: Need a function that updates the
+         * Salesforce object
+         *
+         * updateRegistration(result, mSelectedService)
+         */
         Set<String> defaults = null;
         SharedPreferences prefs = getSharedPreferences(TAG, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -161,14 +166,6 @@ public class ServiceActivity extends Activity {
         codes.add(result);
         editor.putStringSet(ALL_CODES, codes);
         editor.apply();
-    }
-
-    public void sendScanResult(String result) {
-        /* Need a function that updates the
-         * Salesforce object
-         *
-         * updateRegistration(result, mSelectedService)
-         */
     }
 
     /**
