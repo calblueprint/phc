@@ -108,7 +108,6 @@ public class ServiceActivity extends Activity {
      * @param mustSelect is True if the user has not already selected a service.
      */
     private void showSelectServiceDialog(String previousService, final boolean mustSelect) {
-        final CharSequence[] services = getResources().getStringArray(R.array.services_array);
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select Provided Service");
         /* if service is already selected, pre select a button. */

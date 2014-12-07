@@ -162,6 +162,7 @@
 
     <!-- Service Activity -->
     <string name="change_service">Change Service</string>
+    <string name="retry_services">Retrieving data, please try again in a few seconds.</string>
 
 
     <!-- Exit Activity -->

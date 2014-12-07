@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.salesforce.androidsdk.accounts.UserAccountManager;
 import com.salesforce.androidsdk.app.SalesforceSDKManager;
@@ -207,20 +208,35 @@ public class MainActivity extends Activity
         Intent intent = new Intent(this, ServiceActivity.class);
         intent.putExtra("provided_service", mProvidedService);
         intent.putExtra("request_code", FOR_SERVICE);
-        CharSequence[] services;
+        CharSequence[] services = null;
         if (!initialized) {
-            //TODO: TEST THIS WITH AN ACTUAL QUERY!
-            // Using filler array right now.
-            services = getResources().getStringArray(R.array.services_array);
+            Log.d("MainActivity", "Resources list not initialized");
         } else {
             services = getResourceList().values().toArray(new CharSequence[0]);
         }
-        intent.putExtra("services_list", services);
-        /* Called with forResult so we can record the provided service if
-         * the user goes back to the MainActivity.
-         */
-        startActivityForResult(intent, FOR_SERVICE);
+        if (services != null) {
+            intent.putExtra("services_list", services);
+            /* Called with forResult so we can record the provided service if
+             * the user goes back to the MainActivity.
+             */
+            startActivityForResult(intent, FOR_SERVICE);
+        } else {
+            displayRetryToast();
+        }
     }
+
+    /**
+     * Tells the user that the Salesforce query
+     * to get the service resources list has
+     * not been completed.
+     */
+    private void displayRetryToast() {
+        CharSequence message = getResources().getString(R.string.retry_services);
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(this, message, duration);
+        toast.show();
+    }
+
     /** Handles the "Register" Button on the splash page. */
     public void openRegister(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
