@@ -100,14 +100,6 @@ public class ServiceActivity extends Activity {
         }
     }
 
-
-    protected void setSidebarConfirmButtonEnabled(boolean state) {
-        String confirmString = getResources().getString(R.string.sidebar_confirm);
-        int confirmButtonId = Math.abs(confirmString.hashCode());
-        Button confirmButton = (Button) mServiceSidebar.findViewById(confirmButtonId);
-        confirmButton.setEnabled(state);
-    }
-
     /**
      * Displays a dialog box that prompts the user to select the service
      * that they provide.
@@ -169,6 +161,14 @@ public class ServiceActivity extends Activity {
         codes.add(result);
         editor.putStringSet(ALL_CODES, codes);
         editor.apply();
+    }
+
+    public void sendScanResult(String result) {
+        /* Need a function that updates the
+         * Salesforce object
+         *
+         * updateRegistration(result, mSelectedService)
+         */
     }
 
     /**
@@ -241,16 +241,6 @@ public class ServiceActivity extends Activity {
     }
 
     /**
-     * Called when phone goes to sleep, user opens
-     * another app, or pressed the home button.
-     */
-    @Override
-    public void onPause() {
-        super.onPause();
-        releaseBackCamera();
-    }
-
-    /**
      * onBackPressed() overrides the default back button
      * functionality. It ensures that the calling activity
      * will receive the appropriate result if the user
@@ -265,66 +255,6 @@ public class ServiceActivity extends Activity {
         }
         super.onBackPressed();
     }
-
-    /**
-     * Called when activity is re opened.
-     * Camera must be acquired again, and
-     * the preview's camera handle should
-     * be updated as well.
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        acquireBackCamera();
-        //TODO: make sure this doesn't need to be updated!
-        /* taken care of in fragment's lifecycle right now. */
-        //mPreview.updateCamera(mBackCamera);
-    }
-
-    /**
-     * Called when activity is finished or terminated by user.
-     * Camera MUST be released so other activities can use it!
-     */
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        releaseBackCamera();
-    }
-
-    /**
-     * Called when activity is paused and destroyed
-     * in order to release resources for other activities
-     * to use.
-     */
-    public void releaseBackCamera() {
-        /*
-        if (mScannerFragment != null) {
-            try {
-                mScannerFragment.releaseBackCamera();
-            } catch (Exception e) {
-                //TODO: is this too general?
-            }
-        }
-        */
-    }
-
-    /**
-     * Called to initially access camera, and after release()
-     * to reinitialize a handle on the camera instance
-     */
-    public void acquireBackCamera() {
-        if (mScannerFragment != null) {
-            /*
-            try {
-
-                mScannerFragment.acquireBackCamera();
-            } catch (Exception e) {
-                System.exit(0);
-            }
-            */
-        }
-    }
-
 
     /**
      * Handles item selection in the menu.

@@ -129,14 +129,6 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     }
 
     /**
-     * Sets up the view for the user to confirm
-     * the scanned code.
-     */
-    protected void confirmScan() {
-        mScanResultView.setText("Last successful scan result was\n: " + mScanResult);
-    }
-
-    /**
      * Records the scan result in shared preferences
      * and displays a success toast.
      */
