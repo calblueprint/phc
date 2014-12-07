@@ -45,7 +45,7 @@ public class MainActivity extends Activity
     private boolean initialized = false;
 
     /* SharedPreference file name for Security Key. */
-    private static final String SECURITY_PREFS_NAME = "SecurityKeyFile";
+    private static final String SECURITY_PREFS_NAME = "SecurityKey";
     /* SharedPreference object. */
     private SharedPreferences mSecurityKeyPreferences;
     /* SharedPreference editor object. */
