@@ -3,6 +3,7 @@ package phc.android;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -48,17 +49,27 @@ import java.util.Map;
  * SearchFragment is launched on successful submission of a client's form data,
  * and allows the user to go back to activity_register another client.
  */
-public class SearchResultsFragment extends Fragment implements RecoverySystem.ProgressListener, ListView.OnItemClickListener {
+public class SearchResultsFragment extends Fragment implements ListView.OnItemClickListener {
     private static RequestQueue requestQueue;
     private static final String TAG = "Search";
     private static final String SEARCH_PATH = "/api/v1/search";
     private static final String AUTH_TOKEN = "phcplusplus";
     public static final String SEARCH_RESULT_PREFERENCES = "SEARCH_RESULT_PREFERENCES";
+    private ProgressDialog progressDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_results, container, false);
+
+        // Create a new progress dialog
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setTitle("Search Results");
+        progressDialog.setMessage("Loading...");
+        progressDialog.setCancelable(false);
+        progressDialog.setIndeterminate(false);
+        progressDialog.show();
+
         return view;
     }
 
@@ -69,18 +80,6 @@ public class SearchResultsFragment extends Fragment implements RecoverySystem.Pr
 
     @Override
     public void onResume() {
-        LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.sidebar_list);
-        for (int i = 0; i < sidebarList.getChildCount(); i++) {
-            View v = sidebarList.getChildAt(i);
-            Object vTag = v.getTag();
-            if ((vTag != null) && (vTag.equals(getResources().getText(R.string.sidebar_search)))) {
-                TextView tv = (TextView) v;
-                tv.setTypeface(null, Typeface.BOLD);
-            } else if (v instanceof TextView) {
-                TextView tv = (TextView) v;
-                tv.setTypeface(null, Typeface.NORMAL);
-            }
-        }
 
         //Get the search parameters
         SharedPreferences searchPreferences = getActivity().getSharedPreferences(SearchFragment.SEARCH_PARAMETERS, 0);
@@ -123,6 +122,7 @@ public class SearchResultsFragment extends Fragment implements RecoverySystem.Pr
 
                     SearchResultAdapter adapter = new SearchResultAdapter(SearchResultsFragment.this.getActivity(), results);
                     listView.setAdapter(adapter);
+                    progressDialog.dismiss();
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -162,11 +162,6 @@ public class SearchResultsFragment extends Fragment implements RecoverySystem.Pr
 
 
         super.onResume();
-    }
-
-    @Override
-    public void onProgress(int progress) {
-        // TODO: implement a progress bar that actually does something
     }
 
     @Override
