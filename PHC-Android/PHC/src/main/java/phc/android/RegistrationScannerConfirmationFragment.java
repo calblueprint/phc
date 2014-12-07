@@ -3,6 +3,7 @@ package phc.android;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,9 +84,35 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
 
         @Override
         public void onClick(View view) {
+            boolean result = registerPerson();
             /* shows success toast */
-            recordScan();
-            super.onClick(view);
+            if (result) {
+                recordScan();
+                super.onClick(view);
+            }
+
+        }
+
+        private boolean registerPerson() {
+            boolean result = true;
+            SharedPreferences searchResult;
+            searchResult = getActivity().getSharedPreferences(SearchResultsFragment.SEARCH_RESULT, 0);
+            if(!searchResult.getBoolean("Searched", false)) {
+                result = newPerson();
+            } else {
+                result = updatePerson(searchResult.getString("SFID", null));
+                searchResult.edit().clear().commit();
+            }
+            return result;
+        }
+
+
+        private boolean newPerson() {
+            return true;
+        }
+
+        private boolean updatePerson(String Id) {
+            return true;
         }
     }
 

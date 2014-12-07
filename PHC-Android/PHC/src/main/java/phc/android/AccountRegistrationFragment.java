@@ -139,7 +139,7 @@ public class AccountRegistrationFragment extends Fragment {
      * Prepopulates the form if there is a search result in shared preferences.
      */
     private void prepopulateForm() {
-        String preferencesFile = SearchResultsFragment.SEARCH_RESULT_PREFERENCES;
+        String preferencesFile = SearchResultsFragment.SEARCH_RESULT;
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(preferencesFile, 0);
 
         if (!sharedPreferences.getBoolean("Searched", false)) {

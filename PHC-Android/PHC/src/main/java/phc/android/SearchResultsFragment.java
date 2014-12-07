@@ -53,7 +53,7 @@ public class SearchResultsFragment extends Fragment implements RecoverySystem.Pr
     private static final String TAG = "Search";
     private static final String SEARCH_PATH = "/api/v1/search";
     private static final String AUTH_TOKEN = "phcplusplus";
-    public static final String SEARCH_RESULT_PREFERENCES = "SEARCH_RESULT_PREFERENCES";
+    public static final String SEARCH_RESULT = "SEARCH_RESULT";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -185,7 +185,7 @@ public class SearchResultsFragment extends Fragment implements RecoverySystem.Pr
                 @Override
                 public void onSuccess(RestRequest request, RestResponse response) {
                     Activity activity = SearchResultsFragment.this.getActivity();
-                    SharedPreferences sharedPreferences = activity.getSharedPreferences(SEARCH_RESULT_PREFERENCES, 0);
+                    SharedPreferences sharedPreferences = activity.getSharedPreferences(SEARCH_RESULT, 0);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     try {
                         JSONObject jsonResponse = response.asJSONObject();
