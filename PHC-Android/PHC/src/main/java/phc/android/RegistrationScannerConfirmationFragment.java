@@ -1,16 +1,29 @@
 package phc.android;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.salesforce.androidsdk.rest.RestClient;
+import com.salesforce.androidsdk.rest.RestRequest;
+import com.salesforce.androidsdk.rest.RestResponse;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class RegistrationScannerConfirmationFragment extends ScannerConfirmationFragment {
@@ -97,6 +110,7 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
             boolean result = true;
             SharedPreferences searchResult;
             searchResult = getActivity().getSharedPreferences(SearchResultsFragment.SEARCH_RESULT, 0);
+
             if(!searchResult.getBoolean("Searched", false)) {
                 result = newPerson();
             } else {
@@ -108,13 +122,84 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
 
 
         private boolean newPerson() {
+            String apiVersion = getActivity().getResources().getString(R.string.api_version);
+            String objectName = "Account";
+            Map<String, Object> fields = getFields();
+
+            try {
+                RestRequest request = RestRequest.getRequestForCreate(apiVersion, objectName, fields);
+                RestClient.AsyncRequestCallback callback = new RestClient.AsyncRequestCallback() {
+                    @Override
+                    public void onSuccess(RestRequest request, RestResponse response) {
+
+                    }
+
+                    @Override
+                    public void onError(Exception exception) {
+                        Log.e("Insert Response Error", exception.getLocalizedMessage());
+                    }
+                };
+                sendRequest(request, callback);
+            } catch (Exception e) {
+                Log.e("Person Insert Error", e.toString());
+            }
+
             return true;
         }
 
         private boolean updatePerson(String Id) {
+            String apiVersion = getActivity().getResources().getString(R.string.api_version);
+            String objectName = "Account";
+            Map<String, Object> fields = getFields();
+
+            try {
+                RestRequest request = RestRequest.getRequestForUpdate(apiVersion, objectName, Id, fields);
+                RestClient.AsyncRequestCallback callback = new RestClient.AsyncRequestCallback() {
+                    @Override
+                    public void onSuccess(RestRequest request, RestResponse response) {
+
+                    }
+
+                    @Override
+                    public void onError(Exception exception) {
+                        Log.e("Update Response Error", exception.getLocalizedMessage());
+                    }
+                };
+                sendRequest(request, callback);
+            } catch (Exception e) {
+                Log.e("Person Update Error", e.toString());
+            }
+
             return true;
         }
+
+        private Map<String, Object> getFields() {
+            HashMap<String, Object> fields = new HashMap<String, Object>();
+
+            
+
+            return fields;
+        }
+
+        /**
+         * Helper that sends request to server and print result in text field.
+         *
+         * @param request - The request object that gets executed by the SF SDK
+         * @param callback - The functions that get called when yhe response comes back
+         *                   Modify UI elements here.
+         */
+        private void sendRequest(RestRequest request, RestClient.AsyncRequestCallback callback) {
+
+            try {
+
+                ((RegisterActivity) getActivity()).client.sendAsync(request, callback);
+
+            } catch (Exception error) {
+                Log.e("SF Request", error.toString());
+            }
+        }
     }
+
 
     /**
      * Records the scan result in shared preferences

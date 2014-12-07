@@ -219,7 +219,7 @@ public class SearchResultsFragment extends Fragment implements RecoverySystem.Pr
 
                 @Override
                 public void onError(Exception exception) {
-
+                    Log.e("Search Response Error", exception.toString());
                 }
             };
             sendRequest(request, callback);
