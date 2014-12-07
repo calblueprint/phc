@@ -35,6 +35,11 @@
             android:label="@string/title_activity_services"
             android:parentActivityName=".MainActivity">
         </activity>
+
+        <activity
+            android:name=".ExitActivity"
+            android:label="@string/title_activity_exit" >
+        </activity>
     </application>
 
 </manifest>

@@ -3,6 +3,7 @@ package phc.android;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,41 +12,45 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.HashSet;
 import java.util.Set;
 
-/* Call with resultCode of 0 if providing a service
- * Call with resultCode of 1 if scanning for registration
+/** Call with resultCode of 0 if providing a service.
+ * Call with resultCode of 1 if scanning for registration.
  */
 public class ServiceActivity extends Activity {
 
-    /* Used to hold which service this user is scanning for */
+    /** Used to hold which service this user is scanning for. */
     public String mServiceSelected;
 
-    /* Created when selecting the provided service */
+    /** Created when selecting the provided service */
     public AlertDialog mServiceDialog;
 
-    /* Used in error logs to identify this activity. */
+    /** Used in error logs to identify this activity. */
     public static final String TAG = "ServiceActivity";
 
-    /* The result returned to the calling activity through an Intent. */
+    /** The result returned to the calling activity through an Intent. */
     public static String mScanResult;
 
-    /* A handle on the fragment that holds the camera to open and release it. */
+    /** A handle on the fragment that holds the camera to open and release it. */
     public ScannerFragment mScannerFragment;
 
-    /* Holds the menu item generated in onPrepareOptionsMenu() */
+    /** Holds the menu item generated in onPrepareOptionsMenu() */
     private MenuItem mServiceMenuItem;
 
-    /* Used to hold scan results */
+    /** Used to hold scan results. */
     private SharedPreferences mSharedPreferences;
 
-    /* String tag for scanned codes in shared preferences */
+    /** String tag for scanned codes in shared preferences */
     private final String ALL_CODES = "scanned_codes";
 
     private CharSequence[] services;
+
+    private View mServiceSidebar;
 
     /* Used to display "SUCCESS" or "TRY AGAIN" */
     // TODO: Change to check and X assets.
@@ -76,7 +81,7 @@ public class ServiceActivity extends Activity {
             }
 
             mSharedPreferences = getPreferences(MODE_PRIVATE);
-
+            mServiceSidebar = findViewById(R.id.service_sidebar);
             mScannerFragment = new ScannerFragment();
             mScannerFragment.setArguments(getIntent().getExtras());
             FragmentTransaction t = getFragmentManager().beginTransaction();
@@ -95,6 +100,13 @@ public class ServiceActivity extends Activity {
         }
     }
 
+
+    protected void setSidebarConfirmButtonEnabled(boolean state) {
+        String confirmString = getResources().getString(R.string.sidebar_confirm);
+        int confirmButtonId = Math.abs(confirmString.hashCode());
+        Button confirmButton = (Button) mServiceSidebar.findViewById(confirmButtonId);
+        confirmButton.setEnabled(state);
+    }
 
     /**
      * Displays a dialog box that prompts the user to select the service

@@ -37,14 +37,29 @@
         <item>Confirmation</item>
     </string-array>
 
+    <!-- Services sidebar -->
+    <string name="sidebar_scan">Scan</string>
+    <string name="sidebar_confirm">Confirm</string>
+
+    <string-array name="services_sidebar">
+        <item>@string/sidebar_scan</item>
+        <item>@string/sidebar_confirm</item>
+    </string-array>
+
+
+
     <!-- Search -->
     <string name="search_results_title">Results</string>
+    <string name="request_url">http://phc-test.herokuapp.com</string>
 
     <!-- Splash Page -->
     <string name="button_register">Register</string>
     <string name="button_services">Services</string>
+    <string name="button_exit">Exit</string>
     <string name="title_activity_register">Register Client</string>
     <string name="title_activity_services">Manage Services</string>
+    <string name="title_activity_exit">Exit Form</string>
+
     <string name="button_search_submit">Search</string>
 
     <!-- Account Registration -->
@@ -133,6 +148,7 @@
     <!-- Service Scan Page -->
     <string name="start_scan">Click to scan</string>
     <string name="confirm_scan">Confirm</string>
+    <string name="retry_scan">Retry</string>
 
     <!-- Toast messages -->
     <string name="scan_success">Scan successfully recorded</string>
@@ -146,6 +162,9 @@
 
     <!-- Service Activity -->
     <string name="change_service">Change Service</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- Exit Activity -->
+    <string name="exit_qr_scanner">Scan QR Code and Submit</string>
 
 </resources>

@@ -195,13 +195,14 @@ public class MainActivity extends Activity
         return super.onOptionsItemSelected(item);
     }
 
-    //Calls Salesforce SDK to log out client.
-    //Should be used when the session is over.
+    /** Calls Salesforce SDK to log out client.
+     * Should be used when the session is over.
+     */
     public void onLogoutClick() {
         SalesforceSDKManager.getInstance().logout(this);
     }
 
-    //Handles the "Services" Button on the splash page
+    /** Handles the "Services" Button on the splash page. */
     public void openServices(View view) {
         Intent intent = new Intent(this, ServiceActivity.class);
         intent.putExtra("provided_service", mProvidedService);
@@ -220,9 +221,14 @@ public class MainActivity extends Activity
          */
         startActivityForResult(intent, FOR_SERVICE);
     }
-    //Handles the "Register" Button on the splash page
+    /** Handles the "Register" Button on the splash page. */
     public void openRegister(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
+        startActivity(intent);
+    }
+
+    public  void openExit(View view) {
+        Intent intent = new Intent(this, ExitActivity.class);
         startActivity(intent);
     }
 
