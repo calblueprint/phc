@@ -56,15 +56,11 @@ public class MainActivity extends Activity
     /** Current stored Security Key. */
     private String mSecurityKey;
 
-    /* Use to set resultCode
-     * when calling ServiceActivity
-     * to specify intention.
-     */
+    /** Use to set resultCode when calling ServiceActivity to specify intention. */
     public static final int FOR_SERVICE = 0;
     public static final int FOR_REGISTRATION = 0;
 
-    // Holds the service provided by the user, selected in the
-    // ServiceActivity alert dialog.
+    /** Holds the service provided by the user, selected in the ServiceActivity alert dialog.*/
     private String mProvidedService;
 
     @Override
@@ -109,7 +105,8 @@ public class MainActivity extends Activity
         dialog.show(getFragmentManager(), "SecurityKeyDialogFragment");
     }
 
-    /** When correct security key is entered, writes security key to SharedPreferences,
+    /**
+     * When correct security key is entered, writes security key to SharedPreferences,
      * dismisses the alert dialog, and sets the main activity layout.
      * @param dialog: the AlertDialog
      */
@@ -177,16 +174,18 @@ public class MainActivity extends Activity
     }
 
     @Override
-    // Inflate the menu; this adds items to the action bar if it is present.
+    /** Inflate the menu; this adds items to the action bar if it is present. */
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
-    // Handle action bar item clicks here. The action bar will
-    // automatically handle clicks on the Home/Up button, so long
-    // as you specify a parent activity in AndroidManifest.xml.
+    /**
+     * Handle action bar item clicks here. The action bar will
+     * automatically handle clicks on the Home/Up button, so long
+     * as you specify a parent activity in AndroidManifest.xml.
+     */
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
@@ -198,13 +197,14 @@ public class MainActivity extends Activity
         return super.onOptionsItemSelected(item);
     }
 
-    //Calls Salesforce SDK to log out client.
-    //Should be used when the session is over.
+    /** Calls Salesforce SDK to log out client.
+     * Should be used when the session is over.
+     */
     public void onLogoutClick() {
         SalesforceSDKManager.getInstance().logout(this);
     }
 
-    //Handles the "Services" Button on the splash page
+    /** Handles the "Services" Button on the splash page */
     public void openServices(View view) {
         Intent intent = new Intent(this, ServiceActivity.class);
         intent.putExtra("provided_service", mProvidedService);
@@ -218,14 +218,15 @@ public class MainActivity extends Activity
             services = getResourceList().values().toArray(new CharSequence[0]);
         }
         intent.putExtra("services_list", services);
-        /* Called with forResult so we can record the provided service if
-         * the user goes back to the MainActivity.
-         */
+        // Called with forResult so we can record the provided service if
+        // the user goes back to the MainActivity. */
         startActivityForResult(intent, FOR_SERVICE);
     }
-    //Handles the "Register" Button on the splash page
+
+    /** Handles the "Register" Button on the splash page */
     public void openRegister(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
+        intent.putExtra("services_hashmap", (HashMap) getResourceList());
         startActivity(intent);
     }
 
