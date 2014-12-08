@@ -56,7 +56,6 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
      * Separate method for setting up view so that this
      * functionality can be overriden by a subclass.
      * Override to setup mPreferenceEditor
-     * @param view is passed in by onCreateView()
      */
     @Override
     protected View setupView(LayoutInflater inflater, ViewGroup container) {
@@ -99,7 +98,7 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
         @Override
         public void onClick(View view) {
             Log.d("Submit", "clicked");
-//            registerPerson();
+            registerPerson();
             /* shows success toast */
             recordScan();
             super.onClick(view);
@@ -206,8 +205,29 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
 
             fields.put("SS_Num__c", ssn);
 
+            String year = userPreferences.getString("birthday_year", "");
+            String month = userPreferences.getString("birthday_month", "");
+            String day = userPreferences.getString("birthday_day", "");
+            String birthday = year + "-" + month + "-" + day;
 
+            fields.put("Birthdate__c", birthday);
 
+            String phone = "";
+            phone = phone + userPreferences.getString("phone_1", "");
+            phone = phone + userPreferences.getString("phone_2", "");
+            phone = phone + userPreferences.getString("phone_3", "");
+
+            fields.put("Phone", phone);
+
+            fields.put("PersonEmail", userPreferences.getString("email", ""));
+
+            fields.put("Gender__c", userPreferences.getString("spinner_gender", ""));
+            fields.put("Ethnicity__pc", userPreferences.getString("spinner_ethnicity", ""));
+            fields.put("Primary_Language__c", userPreferences.getString("spinner_language", ""));
+            fields.put("Foster_Care__c", userPreferences.getBoolean("checkbox_foster", false));
+            fields.put("Veteran__c", userPreferences.getBoolean("checkbox__military", false));
+            fields.put("Veteran__c", userPreferences.getBoolean("checkbox__military", false));
+            fields.put("Minor_Children__c", userPreferences.getBoolean("checkbox_children", false));
 
 
             return fields;

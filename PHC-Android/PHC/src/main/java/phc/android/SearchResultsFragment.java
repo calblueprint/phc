@@ -85,7 +85,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
         SharedPreferences searchPreferences = getActivity().getSharedPreferences(SearchFragment.SEARCH_PARAMETERS, 0);
         final String firstName = searchPreferences.getString("firstName", null);
         final String lastName = searchPreferences.getString("lastName", null);
-        final SimpleDateFormat df = new SimpleDateFormat();
+        final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
         //If there are search parameters,
         if(firstName != null && lastName != null) {
