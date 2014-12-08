@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -53,8 +52,14 @@ public class ServiceActivity extends Activity {
      */
     private TextView mServicePrompt;
 
+    /** Fragment that holds the service prompt across
+     * transactions.
+     */
     private ServicePromptFragment mServicePromptFragment;
 
+    /** List of services, initialized when this activity
+     * is called by the MainActivity.
+     */
     private static CharSequence[] services;
 
     /**
