@@ -87,6 +87,7 @@ public class ServiceActivity extends Activity {
             } else {
                 services = savedInstanceState.getCharSequenceArray("services_list");
                 mServiceSelected = (String) savedInstanceState.getCharSequence("provided_service");
+                return;
             }
 
             mSharedPreferences = getPreferences(MODE_PRIVATE);
