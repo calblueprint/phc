@@ -21,6 +21,7 @@ public class AccountRegistrationFragment extends Fragment {
     private Button mContinueButton;
     private Spinner mGenderSpinner, mEthnicitySpinner, mLanguageSpinner;
     private EditText mMonth, mDay, mYear, mPhone1, mPhone2, mPhone3, mSSN1, mSSN2, mSSN3, mEmail;
+    private ViewGroup mLayout;
 
     /**
      * Set spinner content and continue button functionality.
@@ -28,12 +29,13 @@ public class AccountRegistrationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account_registration, container, false);
+        mLayout = (LinearLayout) view.findViewById(R.id.form_fields);
 
         addEditTextListeners(view);
         setSpinnerContent(view);
         mContinueButton = (Button) view.findViewById(R.id.button_account_continue);
         mContinueButton.setOnClickListener(new OnContinueClickListener(getActivity(),
-                new EventRegistrationFragment(), getResources().getString(R.string.sidebar_event_info)));
+                this, mLayout, new EventRegistrationFragment(), getResources().getString(R.string.sidebar_event_info)));
         return view;
     }
 
