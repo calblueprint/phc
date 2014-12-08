@@ -259,6 +259,10 @@ public class ServiceActivity extends Activity {
         setServicePromptText();
     }
 
+    /**
+     * Updates the service prompt text view for the current
+     * service selected.
+     */
     private void setServicePromptText() {
         mServicePrompt = (TextView) findViewById(R.id.service_prompt_text);
         mServicePrompt.setText(getString(R.string.service_prompt) + "\n" + mServiceSelected);
