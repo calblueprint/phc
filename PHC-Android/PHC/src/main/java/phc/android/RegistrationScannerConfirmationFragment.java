@@ -22,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -97,46 +98,55 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
 
         @Override
         public void onClick(View view) {
-            boolean result = registerPerson();
+            Log.d("Submit", "clicked");
+//            registerPerson();
             /* shows success toast */
-            if (result) {
-                recordScan();
-                super.onClick(view);
-            }
+            recordScan();
+            super.onClick(view);
 
         }
 
-        private boolean registerPerson() {
-            boolean result = true;
+        private void registerPerson() {
             SharedPreferences searchResult;
             searchResult = getActivity().getSharedPreferences(SearchResultsFragment.SEARCH_RESULT, 0);
 
             if(!searchResult.getBoolean("Searched", false)) {
-                result = newPerson();
+                newPerson();
             } else {
-                result = updatePerson(searchResult.getString("SFID", null));
+                updatePerson(searchResult.getString("SFID", null));
                 searchResult.edit().clear().commit();
             }
-            return result;
+            mUserInfo.edit().clear();
         }
 
 
-        private boolean newPerson() {
+        private void newPerson() {
             String apiVersion = getActivity().getResources().getString(R.string.api_version);
             String objectName = "Account";
             Map<String, Object> fields = getFields();
+
+            //@TODO: Add error handling
 
             try {
                 RestRequest request = RestRequest.getRequestForCreate(apiVersion, objectName, fields);
                 RestClient.AsyncRequestCallback callback = new RestClient.AsyncRequestCallback() {
                     @Override
                     public void onSuccess(RestRequest request, RestResponse response) {
+                        try {
+                            JSONObject json = response.asJSONObject();
+                            boolean success = json.getBoolean("success");
+                            //@TODO: Send registration request from here
+                        } catch (IOException e1) {
 
+                        } catch (JSONException e2) {
+
+                        }
                     }
 
                     @Override
                     public void onError(Exception exception) {
-                        Log.e("Insert Response Error", exception.getLocalizedMessage());
+
+                        Log.e("Insert Response Error", exception.toString());
                     }
                 };
                 sendRequest(request, callback);
@@ -144,24 +154,34 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
                 Log.e("Person Insert Error", e.toString());
             }
 
-            return true;
         }
 
-        private boolean updatePerson(String Id) {
+        private void updatePerson(String Id) {
             String apiVersion = getActivity().getResources().getString(R.string.api_version);
             String objectName = "Account";
             Map<String, Object> fields = getFields();
+
+            //@TODO: Add error handling
 
             try {
                 RestRequest request = RestRequest.getRequestForUpdate(apiVersion, objectName, Id, fields);
                 RestClient.AsyncRequestCallback callback = new RestClient.AsyncRequestCallback() {
                     @Override
                     public void onSuccess(RestRequest request, RestResponse response) {
+                        try {
+                            JSONObject json = response.asJSONObject();
+                            boolean success = json.getBoolean("success");
+                            //@TODO: Send registration request from here
+                        } catch (IOException e1) {
 
+                        } catch (JSONException e2) {
+
+                        }
                     }
 
                     @Override
                     public void onError(Exception exception) {
+
                         Log.e("Update Response Error", exception.getLocalizedMessage());
                     }
                 };
@@ -169,14 +189,26 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
             } catch (Exception e) {
                 Log.e("Person Update Error", e.toString());
             }
-
-            return true;
         }
 
         private Map<String, Object> getFields() {
             HashMap<String, Object> fields = new HashMap<String, Object>();
+            SharedPreferences userPreferences;
+            userPreferences = getActivity().getSharedPreferences(OnContinueClickListener.USER_PREFS_NAME, 0);
 
-            
+            fields.put("FirstName", userPreferences.getString("first_name", null));
+            fields.put("LastName", userPreferences.getString("last_name", null));
+
+            String ssn = "";
+            ssn = ssn + userPreferences.getString("ssn_1", "");
+            ssn = ssn + userPreferences.getString("ssn_2", "");
+            ssn = ssn + userPreferences.getString("ssn_3", "");
+
+            fields.put("SS_Num__c", ssn);
+
+
+
+
 
             return fields;
         }
