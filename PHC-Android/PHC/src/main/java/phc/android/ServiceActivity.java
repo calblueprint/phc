@@ -101,10 +101,21 @@ public class ServiceActivity extends Activity {
         }
     }
 
+    /**
+     * Uses a DialogFragment to display an AlertDialog to the user.
+     * The newInstance() method must be used to create a new instance.
+     */
     public static class ServiceAlertDialogFragment extends DialogFragment {
 
         static boolean mustSelect = false;
 
+        /**
+         * Used to create a new instance of this fragment. Only one instance
+         * should be used at any given time as this is a static class.
+         * @param mustSelect is True if the user has not already selected a service,
+         * False otherwise
+         * @return
+         */
         public static ServiceAlertDialogFragment newInstance(final boolean mustSelect) {
             ServiceAlertDialogFragment frag = new ServiceAlertDialogFragment();
             ServiceAlertDialogFragment.mustSelect = mustSelect;
