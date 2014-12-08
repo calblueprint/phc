@@ -98,7 +98,6 @@ public class ServiceActivity extends Activity {
             FragmentTransaction t = getFragmentManager().beginTransaction();
             t.add(R.id.service_fragment_container, mScannerFragment);
             t.commit();
-
         }
     }
 
@@ -165,6 +164,7 @@ public class ServiceActivity extends Activity {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int item) {
                     mServiceSelected = services[item].toString();
+                    ((ServiceActivity) getActivity()).setServicePromptText();
                     mServiceDialog.dismiss();
                 }
             });
@@ -256,6 +256,10 @@ public class ServiceActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
+        setServicePromptText();
+    }
+
+    private void setServicePromptText() {
         mServicePrompt = (TextView) findViewById(R.id.service_prompt_text);
         mServicePrompt.setText(getString(R.string.service_prompt) + "\n" + mServiceSelected);
     }
