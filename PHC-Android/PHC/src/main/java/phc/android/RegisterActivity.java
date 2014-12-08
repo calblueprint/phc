@@ -3,18 +3,25 @@ package phc.android;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * RegisterActivity is the main activity for registering a client.
- * It calls all FormFragments.
  */
 public class RegisterActivity extends Activity {
+    /** Hashmap of all services being offered at the event. */
+    private HashMap<String,String> mServices;
+    /** Sorted array of all service salesforce names (keys of the hashmap). */
+    private String[] mServiceSFNames;
 
     /**
-     * On creation of the activity, launches the first fragment,
-     * creates SharedPreferences file to store input data, and
-     * initializes checkbox fields to false.
+     * On creation of the activity, gets name of services from MainActivity,
+     * launches the first fragment, and creates SharedPreferences file to store input data.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +29,11 @@ public class RegisterActivity extends Activity {
         setContentView(R.layout.activity_register);
         ActionBar actionbar = getActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
+
+        Intent intent = getIntent();
+        mServices = (HashMap<String,String>) intent.getSerializableExtra("services_hashmap");
+        mServiceSFNames = mServices.keySet().toArray(new String[0]);
+        Arrays.sort(mServiceSFNames);
 
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
@@ -45,4 +57,15 @@ public class RegisterActivity extends Activity {
             t.commit();
         }
     }
+
+    /**
+     * Static method that returns a map with all of the resources for the most recent event.
+     * @return HashMap of resources. Key = Salesforce Field name; Value = Display Name. ;
+     */
+    public HashMap<String, String> getServices() {
+        return this.mServices;
+    }
+
+    /** Static method that returns a string array of salesforce names for all services. */
+    public String[] getServiceSFNames() { return this.mServiceSFNames; }
 }
