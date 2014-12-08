@@ -65,6 +65,11 @@ public class MainActivity extends Activity
     // ServiceActivity alert dialog.
     private String mProvidedService;
 
+    /* Holds a toast that shows the data retrieval
+     * incomplete message.
+     */
+    private Toast[] mDataFetchToast = { null };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         checkConnectivity();
@@ -232,10 +237,23 @@ public class MainActivity extends Activity
      */
     private void displayRetryToast() {
         CharSequence message = getResources().getString(R.string.retry_services);
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(this, message, duration);
-        toast.show();
+        maybeShowToast(message, mDataFetchToast, Toast.LENGTH_SHORT);
     }
+
+    /**
+     * Only shows a toast if it is not already being
+     * shown.
+     * @param toast
+     */
+    private void maybeShowToast(CharSequence message, Toast[] toast, int duration) {
+        if (toast[0] == null || toast[0].getView() == null) {
+            toast[0] = Toast.makeText(this, message, duration);
+        } else {
+            toast[0].setText(message);
+        }
+        toast[0].show();
+    }
+
 
     /** Handles the "Register" Button on the splash page. */
     public void openRegister(View view) {

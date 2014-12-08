@@ -52,6 +52,8 @@ public class ServiceActivity extends Activity {
      */
     private TextView mServicePrompt;
 
+    private ServicePromptFragment mServicePromptFragment;
+
     private static CharSequence[] services;
 
     /**
@@ -67,7 +69,6 @@ public class ServiceActivity extends Activity {
         setContentView(R.layout.service);
         ActionBar actionbar = getActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
-        mServicePrompt = (TextView) findViewById(R.id.service_provided_hint);
 
         if (findViewById(R.id.service_fragment_container) != null) {
             /* However, if we're being restored from a previous state,
@@ -92,11 +93,11 @@ public class ServiceActivity extends Activity {
 
             mSharedPreferences = getPreferences(MODE_PRIVATE);
             mScannerFragment = new ScannerFragment();
+            mServicePromptFragment = new ServicePromptFragment();
             mScannerFragment.setArguments(getIntent().getExtras());
             FragmentTransaction t = getFragmentManager().beginTransaction();
             t.add(R.id.service_fragment_container, mScannerFragment);
             t.commit();
-
 
         }
     }
@@ -255,9 +256,8 @@ public class ServiceActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        /* Will be extended later to show
-         * mServicePrompt
-         */
+        mServicePrompt = (TextView) findViewById(R.id.service_prompt_text);
+        mServicePrompt.setText(getString(R.string.service_prompt) + "\n" + mServiceSelected);
     }
 
     /**
