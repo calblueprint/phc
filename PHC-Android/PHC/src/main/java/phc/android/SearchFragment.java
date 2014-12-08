@@ -40,7 +40,7 @@ public class SearchFragment extends RegistrationFragment {
 
                 SearchResultsFragment newFragment = new SearchResultsFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.registration_fragment_container, newFragment, getResources().getString(R.string.sidebar_search));
+                transaction.replace(R.id.registration_fragment_container, newFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
             }

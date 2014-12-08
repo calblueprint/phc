@@ -33,7 +33,7 @@ public class SelectionFragment extends RegistrationFragment {
             public void onClick(View v) {
                 SearchFragment newFragment = new SearchFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.registration_fragment_container, newFragment, getResources().getString(R.string.sidebar_personal_info));
+                transaction.replace(R.id.registration_fragment_container, newFragment, getResources().getString(R.string.sidebar_search));
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
