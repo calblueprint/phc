@@ -1,6 +1,7 @@
 package phc.android;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -66,8 +67,7 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
     protected class RetryListener implements View.OnClickListener{
         @Override
         public void onClick(View view) {
-            showFailureToast();
-            displayNextFragment(new RegistrationScannerFragment(), RegistrationScannerFragment.TAG);
+            retry();
         }
     }
 
@@ -100,11 +100,21 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
     }
 
     /**
+     * Returns to scanner fragment and displays a
+     * failure toast
+     */
+    @Override
+    protected void retry() {
+        showFailureToast();
+        FragmentManager manager = getFragmentManager();
+        manager.popBackStack(RegistrationScannerConfirmationFragment.TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
+
+    /**
      * Override to replace registration_fragment_container
      * @param nextFrag Fragment to display next
      * @param fragName String fragment name
      */
-    @Override
     protected void displayNextFragment(Fragment nextFrag, String fragName) {
         FragmentTransaction transaction =
                 getActivity().getFragmentManager().beginTransaction();

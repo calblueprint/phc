@@ -130,7 +130,7 @@ public class ScannerFragment extends Fragment {
         FragmentTransaction transaction =
                 getActivity().getFragmentManager().beginTransaction();
         transaction.replace(R.id.service_fragment_container, nextFrag, fragName);
-        transaction.addToBackStack(null);
+        transaction.addToBackStack(fragName);
         transaction.commit();
     }
 

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -302,10 +303,16 @@ public class ServiceActivity extends Activity {
      */
     @Override
     public void onBackPressed() {
-        if (mScanResult == null) {
-            returnCanceledResult();
+        ScannerConfirmationFragment frag = (ScannerConfirmationFragment) getFragmentManager().
+                findFragmentByTag(ScannerConfirmationFragment.TAG);
+        if (frag != null && frag.isVisible()) {
+            frag.whenBackPressed();
         } else {
-            returnSuccessfulResult(mScanResult);
+            if (mScanResult == null) {
+                returnCanceledResult();
+            } else {
+                returnSuccessfulResult(mScanResult);
+            }
         }
         super.onBackPressed();
     }

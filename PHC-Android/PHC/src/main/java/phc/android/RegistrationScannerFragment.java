@@ -58,7 +58,7 @@ public class RegistrationScannerFragment extends ScannerFragment {
         FragmentTransaction transaction =
                 getActivity().getFragmentManager().beginTransaction();
         transaction.replace(R.id.registration_fragment_container, nextFrag, fragName);
-        transaction.addToBackStack(null);
+        transaction.addToBackStack(fragName);
         transaction.commit();
     }
 

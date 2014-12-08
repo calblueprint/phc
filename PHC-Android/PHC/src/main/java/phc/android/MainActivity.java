@@ -270,7 +270,14 @@ public class MainActivity extends Activity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         /* These are currently only used after calling the ServiceActivity. Make
          * sure result codes are distinct if returning from another activity!
+         *
+         * Not currently used as scan results are recorded from the service activity.
+         * May be used in the future.
+         *
+         * TODO: remove later if necessary.
          */
+
+        /*
         if (requestCode == FOR_SERVICE) {
             if (resultCode == RESULT_CANCELED) {
                 mProvidedService = data.getStringExtra("new_provided_service");
@@ -279,6 +286,7 @@ public class MainActivity extends Activity
                 mProvidedService = data.getStringExtra("new_provided_service");
             }
         }
+        */
     }
 
     @Override

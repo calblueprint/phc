@@ -1,6 +1,7 @@
 package phc.android;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
@@ -73,8 +74,7 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     protected class RetryListener implements View.OnClickListener{
         @Override
         public void onClick(View view) {
-            showFailureToast();
-            displayNextFragment(new ScannerFragment(), ScannerFragment.TAG);
+            retry();
         }
     }
 
@@ -84,24 +84,28 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     protected class ConfirmListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            /* shows success toast */
-            recordScan();
-            displayNextFragment(new ScannerFragment(), ScannerFragment.TAG);
+            confirm();
         }
     }
 
     /**
-     * Brings up another fragment when this fragment
-     * is complete
-     * @param nextFrag Fragment to display next
-     * @param fragName String fragment name
+     * Returns to scanner fragment and displays a
+     * failure toast
      */
-    protected void displayNextFragment(Fragment nextFrag, String fragName) {
-        FragmentTransaction transaction =
-                getActivity().getFragmentManager().beginTransaction();
-        transaction.replace(R.id.service_fragment_container, nextFrag, fragName);
-        transaction.addToBackStack(null);
-        transaction.commit();
+    protected void retry() {
+        showFailureToast();
+        FragmentManager manager = getFragmentManager();
+        manager.popBackStack(ScannerConfirmationFragment.TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
+
+    /**
+     * Records the scan, returns to scanner fragment,
+     * and displays a success toast
+     */
+    protected void confirm() {
+        recordScan();
+        FragmentManager manager = getFragmentManager();
+        manager.popBackStack(ScannerConfirmationFragment.TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
     /**
@@ -172,6 +176,15 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
                 tv.setTypeface(null, Typeface.NORMAL);
             }
         }
+    }
+
+    /**
+     * Called by the service activity's onBackPressed()
+     * method. This method just calls retry(), everything
+     * else is handled by the activity.
+     */
+    public void whenBackPressed() {
+        retry();
     }
 
     /**
