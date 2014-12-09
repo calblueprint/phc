@@ -161,6 +161,11 @@ public class MainActivity extends Activity
      */
     private void setServicesEnabled(boolean enabled) {
         Button servicesButton = (Button) findViewById(R.id.button_services);
+        /* This could be null if not logged in,
+         * in which case we just fail silently.
+         */
+        if (servicesButton == null) { return; }
+
         if (enabled) {
             servicesButton.setTextColor(getResources().getColor(R.color.button_text_color));
         } else {

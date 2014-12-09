@@ -158,6 +158,7 @@
 
     <!-- Registration Scan Page -->
     <string name="scan_prompt">Please scan a QR code</string>
+    <string name="form_submit">Submit Form</string>
 
     <!-- Success Page -->
     <string name="text_success">Success!</string>

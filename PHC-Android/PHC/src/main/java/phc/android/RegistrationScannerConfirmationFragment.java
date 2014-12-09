@@ -56,6 +56,7 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
         mRetryButton.setOnClickListener(new RetryListener());
 
         mConfirmButton = (Button) view.findViewById(R.id.confirm_scan);
+        mConfirmButton.setText(getString(R.string.form_submit));
         mConfirmButton.setOnClickListener(new SubmitListener(getActivity()));
         return view;
     }
