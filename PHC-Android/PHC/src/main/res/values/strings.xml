@@ -151,8 +151,8 @@
     <string name="retry_scan">Retry</string>
 
     <!-- Toast messages -->
-    <string name="scan_success">Scan successfully recorded</string>
-    <string name="scan_failure">No scan recorded, please try again</string>
+    <string name="scan_success">Result successfully recorded</string>
+    <string name="scan_failure">No result recorded, please try again</string>
     <string name="invalid_input_toast">Invalid entry, code must contain numbers only</string>
     <string name="retry_services_toast">Retrieving data, please try again in a few seconds.</string>
 
