@@ -26,12 +26,19 @@ import com.google.zxing.integration.android.IntentResult;
 public class ScannerFragment extends Fragment {
 
     public final static String TAG = "ScannerFragment";
-    /* button to go to scanner */
+
+    /* Button to start BarcodeScanner app */
     protected Button mScanButton;
 
+    /* Field and submit button for manual code input */
     protected EditText mCodeInput;
     protected Button mCodeInputSubmitButton;
 
+    /** Toast that tells the user when input is
+     *  invalid. An array is used to simulate a
+     *  pointer and pass by reference instead
+     *  of by value.
+     */
     protected Toast[] mInvalidInputToast = { null };
 
     @Override
@@ -61,40 +68,58 @@ public class ScannerFragment extends Fragment {
 
     protected void setupButtons(View view) {
         mCodeInput = (EditText) view.findViewById(R.id.code_input);
-        mCodeInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                setInputSubmitButton();
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                setInputSubmitButton();
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                setInputSubmitButton();
-            }
-        });
+        mCodeInput.addTextChangedListener(new InputTextWatcher());
 
         mCodeInputSubmitButton = (Button) view.findViewById(R.id.submit_input);
-        mCodeInputSubmitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CharSequence result = mCodeInput.getText();
-                if (isValidInput(mCodeInput.getText())) {
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(mCodeInput.getWindowToken(), 0);
-                    confirmScan(result, true);
-                } else {
-                    displayInvalidInputToast();
-                }
-            }
-        });
+        mCodeInputSubmitButton.setOnClickListener(new InputSubmitListener());
         setInputSubmitButton();
     }
 
+    /**
+     * This class is used by the input submit button to
+     * pass the correct arguments to the next fragment,
+     * as well as validate the input.
+     */
+    protected class InputSubmitListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            CharSequence result = mCodeInput.getText();
+            if (isValidInput(mCodeInput.getText())) {
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(mCodeInput.getWindowToken(), 0);
+                confirmScan(result, true);
+            } else {
+                displayInvalidInputToast();
+            }
+        }
+    }
+
+    /**
+     * Used to watch for input and update the submit button
+     * when the user enters or removes text.
+     */
+    protected class InputTextWatcher implements TextWatcher {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            setInputSubmitButton();
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            setInputSubmitButton();
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            setInputSubmitButton();
+        }
+    }
+
+    /**
+     * Updates the input submit button state and
+     * changes the text color depending on whether
+     * the user has entered text or not.
+     */
     protected void setInputSubmitButton() {
         if (inputBoxEmpty()) {
             mCodeInputSubmitButton.setEnabled(false);
@@ -106,13 +131,6 @@ public class ScannerFragment extends Fragment {
         }
     }
 
-    protected class InputSubmitListener implements View.OnClickListener{
-        @Override
-        public void onClick(View view) {
-            //if (mCodeInput.getText())
-            //confirmScan();
-        }
-    }
     /**
      * Used when the user wants to send an intent
      * to the scanner app.
@@ -123,7 +141,6 @@ public class ScannerFragment extends Fragment {
             startScan();
         }
     }
-
 
     /**
      * Validates EditText input to make sure only
@@ -162,18 +179,6 @@ public class ScannerFragment extends Fragment {
     protected void displayInvalidInputToast() {
         MainActivity.maybeShowToast(getString(R.string.invalid_input_toast),
                 mInvalidInputToast, Toast.LENGTH_SHORT, getActivity());
-    }
-
-    /**
-     * Displays a success message at the bottom of
-     * the screen.
-     */
-    protected void showSuccessToast() {
-        Context c = getActivity().getApplicationContext();
-        CharSequence message = getResources().getString(R.string.scan_success);
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(c, message, duration);
-        toast.show();
     }
 
     /**

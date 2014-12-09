@@ -236,7 +236,7 @@ public class MainActivity extends Activity
      * not been completed.
      */
     private void displayRetryToast() {
-        CharSequence message = getResources().getString(R.string.retry_services);
+        CharSequence message = getResources().getString(R.string.retry_services_toast);
         maybeShowToast(message, mDataFetchToast, Toast.LENGTH_SHORT, getApplication());
     }
 

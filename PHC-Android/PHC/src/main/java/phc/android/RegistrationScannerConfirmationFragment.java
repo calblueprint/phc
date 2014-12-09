@@ -1,8 +1,6 @@
 package phc.android;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -108,19 +106,6 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
         showFailureToast();
         FragmentManager manager = getFragmentManager();
         manager.popBackStack(RegistrationScannerConfirmationFragment.TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-    }
-
-    /**
-     * Override to replace registration_fragment_container
-     * @param nextFrag Fragment to display next
-     * @param fragName String fragment name
-     */
-    protected void displayNextFragment(Fragment nextFrag, String fragName) {
-        FragmentTransaction transaction =
-                getActivity().getFragmentManager().beginTransaction();
-        transaction.replace(R.id.registration_fragment_container, nextFrag, fragName);
-        transaction.addToBackStack(null);
-        transaction.commit();
     }
 
     @Override

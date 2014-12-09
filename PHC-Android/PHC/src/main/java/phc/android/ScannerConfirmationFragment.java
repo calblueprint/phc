@@ -31,12 +31,16 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     /* Button to confirm result */
     protected Button mConfirmButton;
 
+    /** Keeps track of whether the user
+     * scanned a code or input it
+     * manually from the ScannerFragment
+     */
     protected boolean mManualInput;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        /* Inflate the layout for this fragment and set up view*/
+        /* Inflate the layofut for this fragment and set up view*/
         View view = setupView(inflater, container);
 
         /* Grab the last scan result from this fragment or the previous */
