@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -48,11 +47,10 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
             mScanResult = getArguments().getCharSequence("scan_result");
             mManualInput = getArguments().getBoolean("manual_input");
         }
-        // TODO: don't hardcode these!
         if (mManualInput) {
-            mScanResultView.setText("The code you entered was:\n" + mScanResult);
+            mScanResultView.setText(getString(R.string.input_confirmation_text) + "\n" + mScanResult);
         } else {
-            mScanResultView.setText("Last successful scan result was:\n " + mScanResult);
+            mScanResultView.setText(getString(R.string.scan_confirmation_text) + "\n " + mScanResult);
         }
         return view;
     }
@@ -159,6 +157,7 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putCharSequence("scan_result", mScanResult);
+        outState.putBoolean("manual_input", mManualInput);
     }
 
     @Override

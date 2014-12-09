@@ -161,8 +161,7 @@ public class ScannerFragment extends Fragment {
     }
 
     protected void displayInvalidInputToast() {
-        //TODO: don't hardcode this!
-        MainActivity.maybeShowToast("Invalid entry, code must contain numbers only",
+        MainActivity.maybeShowToast(getString(R.string.invalid_input_toast),
                 mInvalidInputToast, Toast.LENGTH_SHORT, getActivity());
     }
 

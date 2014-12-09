@@ -47,15 +47,8 @@ public class ServiceActivity extends Activity {
     /** String tag for scanned codes in shared preferences */
     private final String ALL_CODES = "scanned_codes";
 
-    /** TextView that shows the user the service they provide
-     * TODO: complete the implementation.
-     */
+    /** TextView that shows the user the service they provide */
     private TextView mServicePrompt;
-
-    /** Fragment that holds the service prompt across
-     * transactions.
-     */
-    private ServicePromptFragment mServicePromptFragment;
 
     /** List of services, initialized when this activity
      * is called by the MainActivity.
@@ -99,7 +92,6 @@ public class ServiceActivity extends Activity {
 
             mSharedPreferences = getPreferences(MODE_PRIVATE);
             mScannerFragment = new ScannerFragment();
-            mServicePromptFragment = new ServicePromptFragment();
             mScannerFragment.setArguments(getIntent().getExtras());
             FragmentTransaction t = getFragmentManager().beginTransaction();
             t.add(R.id.service_fragment_container, mScannerFragment);
