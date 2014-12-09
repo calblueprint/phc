@@ -8,7 +8,7 @@ import android.content.SharedPreferences;
  */
 public class SharedPreferenceEditorListener {
     /* SharedPreference file name. */
-    protected static final String USER_PREFS_NAME = "UserInputFile";
+    public static final String USER_PREFS_NAME = "UserInputFile";
     /* SharedPreference object. */
     protected SharedPreferences mUserInfo;
     /* SharedPreference editor object. */

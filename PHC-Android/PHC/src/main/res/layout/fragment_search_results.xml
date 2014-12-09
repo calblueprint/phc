@@ -14,19 +14,11 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/search_results_title"/>
 
-    <ProgressBar
-        android:id="@+id/search_results_progressbar"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
-    <LinearLayout
-        android:id="@+id/search_results_list"
-        android:orientation="vertical"
-        android:layout_width="0dp"
+    <ListView
+        android:id="@+id/search_result_list"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/selection_top_margin"
-        android:visibility="gone">
-     </LinearLayout>
+        android:layout_marginTop="@dimen/selection_top_margin"/>
 
 </LinearLayout>

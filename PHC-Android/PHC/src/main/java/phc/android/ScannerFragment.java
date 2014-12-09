@@ -1,12 +1,16 @@
 package phc.android;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,51 +18,32 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 
-public class ScannerFragment extends android.app.Fragment {
+public class ScannerFragment extends Fragment {
 
     public final static String TAG = "ScannerFragment";
-    /* holds the result of the scan */
-    protected String mScanResult;
-    /* displays last scan result */
-    protected TextView mScanConfirmation;
     /* button to go to scanner */
     protected Button mScanButton;
-    /* button to confirm result */
-    protected Button mConfirmButton;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        /* Inflate the layout for this fragment */
-        View view = inflater.inflate(R.layout.fragment_scanner, container, false);
-        setupView(view);
+        /* Inflate the layout for this fragment and set up view*/
+        View view = setupView(inflater, container);
         return view;
     }
 
     /**
      * Separate method for setting up view so that this
      * functionality can be overriden by a subclass.
-     * @param view is passed in by onCreateView()
+     * @param inflater LayoutInflater passed in from onCreateView()
+     * @param container ViewGroup passed in from onCreateView()
      */
-    protected void setupView(View view) {
-        mScanConfirmation = (TextView) view.findViewById(R.id.scan_result);
+    protected View setupView(LayoutInflater inflater, ViewGroup container) {
+        View view = inflater.inflate(R.layout.fragment_scanner, container, false);
+
         mScanButton = (Button) view.findViewById(R.id.start_scan);
         mScanButton.setOnClickListener(new ScanListener());
-        mConfirmButton = (Button) view.findViewById(R.id.confirm_scan);
-        mConfirmButton.setOnClickListener(new ConfirmListener());
-        mConfirmButton.setVisibility(View.GONE);
-    }
-
-    /**
-     * Used for button click to return to starting state
-     */
-    protected class ReturnListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            mScanConfirmation.setText("");
-            resetState();
-        }
+        return view;
     }
 
     /**
@@ -69,18 +54,6 @@ public class ScannerFragment extends android.app.Fragment {
         @Override
         public void onClick(View view) {
             startScan();
-        }
-    }
-
-    /**
-     * Used to confirm the scan result.
-     */
-    protected class ConfirmListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            /* shows success toast */
-            recordScan();
-            resetState();
         }
     }
 
@@ -127,12 +100,11 @@ public class ScannerFragment extends android.app.Fragment {
     public void onActivityResult(int reqCode, int resCode, Intent data) {
 
         IntentResult result = IntentIntegrator.parseActivityResult(reqCode, resCode, data);
-        mScanResult = result.getContents();
-        if (mScanResult == null) {
+        CharSequence scanResult = result.getContents();
+        if (scanResult == null) {
             showFailureToast();
-            resetState();
         } else {
-            confirmScan();
+            confirmScan(scanResult);
         }
     }
 
@@ -140,59 +112,52 @@ public class ScannerFragment extends android.app.Fragment {
      * Sets up the view for the user to confirm
      * the scanned code.
      */
-    protected void confirmScan() {
-        mScanConfirmation.setText("Last successful scan result was\n: " + mScanResult);
-        mConfirmButton.setVisibility(View.VISIBLE);
-        mScanButton.setText("Return");
-        mScanButton.setOnClickListener(new ReturnListener());
+    protected void confirmScan(CharSequence scanResult) {
+        Bundle args = new Bundle();
+        args.putCharSequence("scan_result", scanResult);
+        ScannerConfirmationFragment confFrag = new ScannerConfirmationFragment();
+        confFrag.setArguments(args);
+        displayNextFragment(confFrag, ScannerConfirmationFragment.TAG);
     }
 
     /**
-     * Records the scan result in shared preferences
-     * and displays a success toast.
+     * Brings up another fragment when this fragment
+     * is complete
+     * @param nextFrag Fragment to display next
+     * @param fragName String fragment name
      */
-    protected void recordScan() {
-        ServiceActivity activity = (ServiceActivity) getActivity();
-        activity.storeScanResult(mScanResult);
-        showSuccessToast();
+    protected void displayNextFragment(Fragment nextFrag, String fragName) {
+        FragmentTransaction transaction =
+                getActivity().getFragmentManager().beginTransaction();
+        transaction.replace(R.id.service_fragment_container, nextFrag, fragName);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    @Override
+    public void onResume() {
+        resumeHelper();
+        super.onResume();
     }
 
     /**
-     * Resets state of view to what the user first saw.
+     * Used so that a subclass can implement their own
+     * resumeHelper() so method calls to onResume() will
+     * execute this class's super.onResume()
      */
-    protected void resetState() {
-        mConfirmButton.setVisibility(View.GONE);
-        mScanButton.setText("Click to Scan");
-        mScanButton.setOnClickListener(new ScanListener());
-    }
-
-    /**
-     * Lets the calling activity know that a valid
-     * QR code was received. This valid code may be
-     * overwritten multiple times before it is
-     * returned to the calling activity.
-     *
-     * @param result is the decoded string
-     * @return no return value, uses Intent to communicate
-     */
-    private void returnSuccessfulResult(String result) {
-        Intent scanResult = new Intent();
-        scanResult.putExtra("scan_result", result);
-        getActivity().setResult(getActivity().RESULT_OK, scanResult);
-        getActivity().finish();
-    }
-
-    /**
-     * Lets the calling activity know that a valid
-     * QR code was not received before the user
-     * returned using the back button.
-     *
-     * @return no return value, uses Intent to communicate
-     */
-    private void returnCanceledResult() {
-        Intent scanResult = new Intent();
-        getActivity().setResult(getActivity().RESULT_CANCELED, scanResult);
-        getActivity().finish();
+    protected void resumeHelper() {
+        LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.services_sidebar_list);
+        for (int i = 0; i < sidebarList.getChildCount(); i++) {
+            View v = sidebarList.getChildAt(i);
+            Object vTag = v.getTag();
+            if ((vTag != null) && (vTag.equals(getResources().getString(R.string.sidebar_scan)))) {
+                TextView tv = (TextView) v;
+                tv.setTypeface(null, Typeface.BOLD);
+            } else if (v instanceof TextView) {
+                TextView tv = (TextView) v;
+                tv.setTypeface(null, Typeface.NORMAL);
+            }
+        }
     }
 }
 

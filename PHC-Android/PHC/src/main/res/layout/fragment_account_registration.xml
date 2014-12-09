@@ -38,10 +38,11 @@
             android:id="@+id/form_ssn"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal">
 
             <TextView
-                android:layout_width="40dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_marginRight="17dp"
@@ -49,13 +50,14 @@
 
             <EditText
                 android:id="@+id/ssn_1"
-                android:layout_width="50dp"
+                android:layout_width="@dimen/ssn1"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/connector_width"
                 android:gravity="center"
                 android:maxLines="1"
                 android:inputType="number"
-                android:maxLength="3"/>
+                android:maxLength="3"
+                android:background="@drawable/smallest_edit_text_bg"/>
 
             <TextView
                 android:layout_width="10dp"
@@ -66,13 +68,14 @@
 
             <EditText
                 android:id="@+id/ssn_2"
-                android:layout_width="40dp"
+                android:layout_width="@dimen/ssn2"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/connector_width"
                 android:gravity="center"
                 android:maxLines="1"
                 android:inputType="number"
-                android:maxLength="2"/>
+                android:maxLength="2"
+                android:background="@drawable/smallest_edit_text_bg"/>
 
             <TextView
                 android:layout_width="10dp"
@@ -83,22 +86,24 @@
 
             <EditText
                 android:id="@+id/ssn_3"
-                android:layout_width="80dp"
+                android:layout_width="@dimen/ssn3"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:maxLines="1"
                 android:inputType="number"
-                android:maxLength="4"/>
+                android:maxLength="4"
+                android:background="@drawable/small_edit_text_bg"/>
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/form_birthday"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal">
 
             <TextView
-                android:layout_width="60dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_marginRight="7dp"
@@ -106,14 +111,15 @@
 
             <EditText
                 android:id="@+id/birthday_month"
-                android:layout_width="40dp"
+                android:layout_width="@dimen/birthday1"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/connector_width"
                 android:gravity="center"
                 android:hint="@string/prompt_birthday_month"
                 android:maxLines="1"
                 android:inputType="number"
-                android:maxLength="2"/>
+                android:maxLength="2"
+                android:background="@drawable/smallest_edit_text_bg"/>
 
             <TextView
                 android:layout_width="10dp"
@@ -124,14 +130,15 @@
 
             <EditText
                 android:id="@+id/birthday_day"
-                android:layout_width="40dp"
+                android:layout_width="@dimen/birthday2"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/connector_width"
                 android:gravity="center"
                 android:hint="@string/prompt_birthday_day"
                 android:maxLines="1"
                 android:inputType="number"
-                android:maxLength="2"/>
+                android:maxLength="2"
+                android:background="@drawable/smallest_edit_text_bg"/>
 
             <TextView
                 android:layout_width="10dp"
@@ -142,23 +149,25 @@
 
             <EditText
                 android:id="@+id/birthday_year"
-                android:layout_width="80dp"
+                android:layout_width="@dimen/birthday3"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:hint="@string/prompt_birthday_year"
                 android:maxLines="1"
                 android:inputType="number"
-                android:maxLength="4"/>
+                android:maxLength="4"
+                android:background="@drawable/small_edit_text_bg"/>
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/form_phone"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal">
 
             <TextView
-                android:layout_width="50dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/prompt_phone"/>
@@ -171,27 +180,30 @@
 
             <EditText
                 android:id="@+id/phone_1"
-                android:layout_width="50dp"
+                android:layout_width="@dimen/phone1"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
                 android:inputType="number"
-                android:maxLength="3"/>
+                android:maxLength="3"
+                android:background="@drawable/smallest_edit_text_bg"/>
 
             <TextView
                 android:layout_width="10dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/connector_width"
                 android:gravity="center"
-                android:text=")"/>
+                android:text=")" />
+
 
             <EditText
                 android:id="@+id/phone_2"
-                android:layout_width="50dp"
+                android:layout_width="@dimen/phone2"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/connector_width"
                 android:maxLines="1"
                 android:inputType="number"
-                android:maxLength="3"/>
+                android:maxLength="3"
+                android:background="@drawable/smallest_edit_text_bg"/>
 
             <TextView
                 android:layout_width="10dp"
@@ -202,12 +214,13 @@
 
             <EditText
                 android:id="@+id/phone_3"
-                android:layout_width="70dp"
+                android:layout_width="@dimen/phone3"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:maxLines="1"
                 android:inputType="number"
-                android:maxLength="4"/>
+                android:maxLength="4"
+                android:background="@drawable/small_edit_text_bg"/>
         </LinearLayout>
 
         <EditText
@@ -254,12 +267,10 @@
 
         <Button
             android:id="@+id/button_account_continue"
-            style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/action_continue"
-            android:textStyle="bold"/>
+            android:text="@string/action_continue"/>
 
     </LinearLayout>
 

@@ -1,6 +1,8 @@
 package phc.android;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,6 +26,7 @@ public class SuccessFragment extends RegistrationFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_success, container, false);
+        setSuccessName(view);
         setOnRegisterAnotherClickListener(view);
         return view;
     }
@@ -62,5 +65,16 @@ public class SuccessFragment extends RegistrationFragment {
                         getActivity().startActivity(intent);
                     }
         });
+    }
+
+    /**
+     * Grabs the person's name from SharedPreferences, and adds it after the Success text
+     */
+    protected void setSuccessName(View view) {
+        TextView mSuccessText = (TextView) view.findViewById(R.id.text_success);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(SharedPreferenceEditorListener.USER_PREFS_NAME, Context.MODE_PRIVATE);
+        String firstName = sharedPref.getString("first_name", "");
+        String lastName = sharedPref.getString("last_name", "");
+        mSuccessText.setText("Success! " + firstName + " " + lastName + " is now registered.");
     }
 }
