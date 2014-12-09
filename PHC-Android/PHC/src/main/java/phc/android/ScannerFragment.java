@@ -4,15 +4,20 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -23,6 +28,11 @@ public class ScannerFragment extends Fragment {
     public final static String TAG = "ScannerFragment";
     /* button to go to scanner */
     protected Button mScanButton;
+
+    protected EditText mCodeInput;
+    protected Button mCodeInputSubmitButton;
+
+    protected Toast[] mInvalidInputToast = { null };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,9 +53,59 @@ public class ScannerFragment extends Fragment {
 
         mScanButton = (Button) view.findViewById(R.id.start_scan);
         mScanButton.setOnClickListener(new ScanListener());
+
+        mCodeInput = (EditText) view.findViewById(R.id.code_input);
+        mCodeInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                setInputSubmitButton();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                setInputSubmitButton();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                setInputSubmitButton();
+            }
+        });
+
+        mCodeInputSubmitButton = (Button) view.findViewById(R.id.submit_input);
+        mCodeInputSubmitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isValidInput(mCodeInput.getText())) {
+                    showSuccessToast();
+                } else {
+                    displayInvalidInputToast();
+                }
+            }
+        });
+        setInputSubmitButton();
+
         return view;
     }
 
+    protected void setInputSubmitButton() {
+        if (inputBoxEmpty()) {
+            mCodeInputSubmitButton.setEnabled(false);
+            mCodeInputSubmitButton.setTextColor(Color.GRAY);
+        } else {
+            mCodeInputSubmitButton.setEnabled(true);
+            mCodeInputSubmitButton.setTextColor(Color.BLACK);
+
+        }
+    }
+
+    protected class InputSubmitListener implements View.OnClickListener{
+        @Override
+        public void onClick(View view) {
+            //if (mCodeInput.getText())
+            //confirmScan();
+        }
+    }
     /**
      * Used when the user wants to send an intent
      * to the scanner app.
@@ -55,6 +115,47 @@ public class ScannerFragment extends Fragment {
         public void onClick(View view) {
             startScan();
         }
+    }
+
+
+    /**
+     * Validates EditText input to make sure only
+     * numbers and/or spaces are present.
+     * Does not validate for empty input. Spaces
+     * may be removed later, but this method
+     * does not remove them
+     * @param input CharSequence input to validate
+     * @return True if valid input, False otherwise
+     */
+    protected boolean isValidInput(CharSequence input) {
+        input = input.toString().trim();
+        for (int i = 0; i < input.length(); i++) {
+            if (!"0123456789 ".contains(String.valueOf(input.charAt(i)))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Validates mCodeInput to make sure
+     * at least a single character is present.
+     * Does not validate for content.
+     * @return True if mCodeInput is empty,
+     * False otherwise
+     */
+    protected boolean inputBoxEmpty() {
+        String text = mCodeInput.getText().toString();
+        if (text.trim().equals("")) {
+            return true;
+        }
+        return false;
+    }
+
+    protected void displayInvalidInputToast() {
+        //TODO: don't hardcode this!
+        MainActivity.maybeShowToast("Invalid entry, code must contain numbers only",
+                mInvalidInputToast, Toast.LENGTH_SHORT, getActivity());
     }
 
     /**
@@ -115,6 +216,7 @@ public class ScannerFragment extends Fragment {
     protected void confirmScan(CharSequence scanResult) {
         Bundle args = new Bundle();
         args.putCharSequence("scan_result", scanResult);
+        //args.putBoolean("manual_input", manualInput);
         ScannerConfirmationFragment confFrag = new ScannerConfirmationFragment();
         confFrag.setArguments(args);
         displayNextFragment(confFrag, ScannerConfirmationFragment.TAG);

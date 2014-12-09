@@ -237,7 +237,7 @@ public class MainActivity extends Activity
      */
     private void displayRetryToast() {
         CharSequence message = getResources().getString(R.string.retry_services);
-        maybeShowToast(message, mDataFetchToast, Toast.LENGTH_SHORT);
+        maybeShowToast(message, mDataFetchToast, Toast.LENGTH_SHORT, getApplication());
     }
 
     /**
@@ -245,9 +245,9 @@ public class MainActivity extends Activity
      * shown.
      * @param toast
      */
-    private void maybeShowToast(CharSequence message, Toast[] toast, int duration) {
+    public static void maybeShowToast(CharSequence message, Toast[] toast, int duration, Context context) {
         if (toast[0] == null || toast[0].getView() == null) {
-            toast[0] = Toast.makeText(this, message, duration);
+            toast[0] = Toast.makeText(context, message, duration);
         } else {
             toast[0].setText(message);
         }
