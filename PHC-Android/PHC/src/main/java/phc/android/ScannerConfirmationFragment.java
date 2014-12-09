@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,11 +52,13 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
             mScanResult = getArguments().getCharSequence("scan_result");
             mManualInput = getArguments().getBoolean("manual_input");
         }
+        String prompt;
         if (mManualInput) {
-            mScanResultView.setText(getString(R.string.input_confirmation_text) + "\n" + mScanResult);
+            prompt = getString(R.string.input_confirmation_text);
         } else {
-            mScanResultView.setText(getString(R.string.scan_confirmation_text) + "\n " + mScanResult);
+            prompt = getString(R.string.scan_confirmation_text);
         }
+        mScanResultView.setText(Html.fromHtml(prompt + "<br /><br />" + "<b><big><big>" + mScanResult + "</b></big></big><br />"));
         return view;
     }
 

@@ -20,7 +20,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center"
             android:id="@+id/service_prompt_text"
+            android:textSize="20sp"
             android:layout_alignParentTop="true"
             />
         <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"

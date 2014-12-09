@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -263,7 +264,8 @@ public class ServiceActivity extends Activity {
      */
     private void setServicePromptText() {
         mServicePrompt = (TextView) findViewById(R.id.service_prompt_text);
-        mServicePrompt.setText(getString(R.string.service_prompt) + "\n" + mServiceSelected);
+        String prompt = getString(R.string.service_prompt);
+        mServicePrompt.setText(Html.fromHtml(prompt + "<br />" + "<b>" + mServiceSelected + "<b>"));
     }
 
     /**
@@ -303,12 +305,12 @@ public class ServiceActivity extends Activity {
         ScannerConfirmationFragment frag = (ScannerConfirmationFragment) getFragmentManager().
                 findFragmentByTag(ScannerConfirmationFragment.TAG);
         if (frag != null && frag.isVisible()) {
-            /* Return a canceled result because the user
-             * should never be in this fragment after they
-             * have confirmed a result.
+            /* Return to the scanner fragment if
+             * back button is pressed in confirmation
+             * fragment
              */
             frag.whenBackPressed();
-            returnCanceledResult();
+            return;
         } else {
             if (mScanResult == null) {
                 returnCanceledResult();

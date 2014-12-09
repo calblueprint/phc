@@ -13,8 +13,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/enter_code"
         android:text="@string/enter_code_prompt"
+        android:textSize="20sp"
         android:layout_centerHorizontal="true"
         android:paddingBottom="10dp"
+        android:paddingTop="20dp"
         android:layout_alignParentTop="true"/>
     <EditText
         android:id="@+id/code_input"
@@ -22,6 +24,7 @@
         android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"
         android:inputType="phone"
+        android:gravity="center_horizontal"
         android:layout_below="@id/enter_code"
         android:textSize="20sp"
         android:maxLength="10"
@@ -33,13 +36,14 @@
         android:layout_centerHorizontal="true"
         android:text="@string/button_submit"
         android:layout_below="@+id/code_input"
-        android:textSize="20dp"/>
+        android:textSize="30dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/scan_code"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/submit_input"
+        android:textSize="20sp"
         android:paddingTop="30dp"
         android:paddingBottom="10dp"
         android:text="@string/scan_code_prompt"
