@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -54,6 +55,12 @@ public class ScannerFragment extends Fragment {
         mScanButton = (Button) view.findViewById(R.id.start_scan);
         mScanButton.setOnClickListener(new ScanListener());
 
+        setupButtons(view);
+
+        return view;
+    }
+
+    protected void setupButtons(View view) {
         mCodeInput = (EditText) view.findViewById(R.id.code_input);
         mCodeInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -76,16 +83,17 @@ public class ScannerFragment extends Fragment {
         mCodeInputSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CharSequence result = mCodeInput.getText();
                 if (isValidInput(mCodeInput.getText())) {
-                    showSuccessToast();
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(mCodeInput.getWindowToken(), 0);
+                    confirmScan(result, true);
                 } else {
                     displayInvalidInputToast();
                 }
             }
         });
         setInputSubmitButton();
-
-        return view;
     }
 
     protected void setInputSubmitButton() {
@@ -205,7 +213,7 @@ public class ScannerFragment extends Fragment {
         if (scanResult == null) {
             showFailureToast();
         } else {
-            confirmScan(scanResult);
+            confirmScan(scanResult, false);
         }
     }
 
@@ -213,10 +221,10 @@ public class ScannerFragment extends Fragment {
      * Sets up the view for the user to confirm
      * the scanned code.
      */
-    protected void confirmScan(CharSequence scanResult) {
+    protected void confirmScan(CharSequence scanResult, boolean manualInput) {
         Bundle args = new Bundle();
         args.putCharSequence("scan_result", scanResult);
-        //args.putBoolean("manual_input", manualInput);
+        args.putBoolean("manual_input", manualInput);
         ScannerConfirmationFragment confFrag = new ScannerConfirmationFragment();
         confFrag.setArguments(args);
         displayNextFragment(confFrag, ScannerConfirmationFragment.TAG);

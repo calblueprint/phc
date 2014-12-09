@@ -22,9 +22,11 @@ public class RegistrationScannerFragment extends ScannerFragment {
      * Sets up the view for the user to confirm
      * the scanned code.
      */
-    protected void confirmScan(CharSequence scanResult) {
+    @Override
+    protected void confirmScan(CharSequence scanResult, boolean manualInput) {
         Bundle args = new Bundle();
         args.putCharSequence("scan_result", scanResult);
+        args.putBoolean("manual_input", manualInput);
         ScannerConfirmationFragment confFrag = new RegistrationScannerConfirmationFragment();
         confFrag.setArguments(args);
         displayNextFragment(confFrag, RegistrationScannerConfirmationFragment.TAG);
@@ -33,7 +35,8 @@ public class RegistrationScannerFragment extends ScannerFragment {
     /**
      * Separate method for setting up view so that this
      * functionality can be overriden by a subclass.
-     * @param view is passed in by onCreateView()
+     * @param inflater instantiates the XML layout
+     * @param container is the view group this view belongs to
      */
     @Override
     protected View setupView(LayoutInflater inflater, ViewGroup container) {
@@ -41,6 +44,9 @@ public class RegistrationScannerFragment extends ScannerFragment {
 
         mScanButton = (Button) view.findViewById(R.id.start_scan);
         mScanButton.setOnClickListener(new ScanListener());
+
+        setupButtons(view);
+
         return view;
     }
 

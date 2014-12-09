@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,6 +32,8 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     /* Button to confirm result */
     protected Button mConfirmButton;
 
+    protected boolean mManualInput;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -40,17 +43,25 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
         /* Grab the last scan result from this fragment or the previous */
         if (savedInstanceState != null) {
             mScanResult = savedInstanceState.getCharSequence("scan_result");
+            mManualInput = savedInstanceState.getBoolean("manual_input");
         } else {
             mScanResult = getArguments().getCharSequence("scan_result");
+            mManualInput = getArguments().getBoolean("manual_input");
         }
-        mScanResultView.setText("Last successful scan result was\n: " + mScanResult);
+        // TODO: don't hardcode these!
+        if (mManualInput) {
+            mScanResultView.setText("The code you entered was:\n" + mScanResult);
+        } else {
+            mScanResultView.setText("Last successful scan result was:\n " + mScanResult);
+        }
         return view;
     }
 
     /**
      * Separate method for setting up view so that this
      * functionality can be overriden by a subclass.
-     * @param view is passed in by onCreateView()
+     * @param inflater instantiates the XML layout
+     * @param container is the view group this view belongs to
      */
     protected View setupView(LayoutInflater inflater, ViewGroup container) {
 
