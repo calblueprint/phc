@@ -33,26 +33,6 @@ public class RegistrationScannerFragment extends ScannerFragment {
     }
 
     /**
-     * Separate method for setting up view so that this
-     * functionality can be overriden by a subclass.
-     * @param inflater instantiates the XML layout
-     * @param container is the view group this view belongs to
-     */
-    @Override
-    protected View setupView(LayoutInflater inflater, ViewGroup container) {
-        View view = inflater.inflate(R.layout.fragment_registration_scanner, container, false);
-
-        mScanButton = (Button) view.findViewById(R.id.start_scan);
-        mScanButton.setOnClickListener(new ScanListener());
-
-        setupButtons(view);
-
-        return view;
-    }
-
-
-
-    /**
      * Brings up another fragment when this fragment
      * is complete. Override to use
      * registration_fragment_container

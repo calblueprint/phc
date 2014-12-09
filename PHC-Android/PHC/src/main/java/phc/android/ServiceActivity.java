@@ -303,7 +303,12 @@ public class ServiceActivity extends Activity {
         ScannerConfirmationFragment frag = (ScannerConfirmationFragment) getFragmentManager().
                 findFragmentByTag(ScannerConfirmationFragment.TAG);
         if (frag != null && frag.isVisible()) {
+            /* Return a canceled result because the user
+             * should never be in this fragment after they
+             * have confirmed a result.
+             */
             frag.whenBackPressed();
+            returnCanceledResult();
         } else {
             if (mScanResult == null) {
                 returnCanceledResult();

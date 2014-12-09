@@ -40,12 +40,13 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
      * Separate method for setting up view so that this
      * functionality can be overriden by a subclass.
      * Override to setup mPreferenceEditor
-     * @param view is passed in by onCreateView()
+     * @param inflater instantiates the XML layout
+     * @param container is the view group this view belongs to
      */
     @Override
     protected View setupView(LayoutInflater inflater, ViewGroup container) {
 
-        View view = inflater.inflate(R.layout.fragment_registration_scanner_confirmation, container, false);
+        View view = inflater.inflate(R.layout.fragment_scanner_confirmation, container, false);
         mPreferenceEditor = new PreferenceEditor(getActivity().getApplicationContext());
 
         mScanResultView = (TextView) view.findViewById(R.id.scan_result);

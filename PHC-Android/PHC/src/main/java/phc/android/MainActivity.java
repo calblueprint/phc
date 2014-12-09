@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.salesforce.androidsdk.accounts.UserAccountManager;
@@ -141,12 +143,29 @@ public class MainActivity extends Activity
     public void onResume() {
         super.onResume();
         checkConnectivity();
+        setServicesEnabled(initialized);
         if (!initialized) {
             loginSalesforce(true);
         } else {
             loginSalesforce();
         }
 
+    }
+
+    /**
+     * Used to let the user know if the services list has
+     * been initialized or not. Button presses are still
+     * enabled and will display a toast rather than opening
+     * services
+     * @param enabled is True if initialized, False otherwise.
+     */
+    private void setServicesEnabled(boolean enabled) {
+        Button servicesButton = (Button) findViewById(R.id.button_services);
+        if (enabled) {
+            servicesButton.setTextColor(getResources().getColor(R.color.button_text_color));
+        } else {
+            servicesButton.setTextColor(Color.GRAY);
+        }
     }
 
     private void loginSalesforce() {
@@ -244,6 +263,7 @@ public class MainActivity extends Activity
      * Only shows a toast if it is not already being
      * shown.
      * @param toast
+     * @param toast
      */
     public static void maybeShowToast(CharSequence message, Toast[] toast, int duration, Context context) {
         if (toast[0] == null || toast[0].getView() == null) {
@@ -270,14 +290,8 @@ public class MainActivity extends Activity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         /* These are currently only used after calling the ServiceActivity. Make
          * sure result codes are distinct if returning from another activity!
-         *
-         * Not currently used as scan results are recorded from the service activity.
-         * May be used in the future.
-         *
-         * TODO: remove later if necessary.
          */
 
-        /*
         if (requestCode == FOR_SERVICE) {
             if (resultCode == RESULT_CANCELED) {
                 mProvidedService = data.getStringExtra("new_provided_service");
@@ -286,7 +300,6 @@ public class MainActivity extends Activity
                 mProvidedService = data.getStringExtra("new_provided_service");
             }
         }
-        */
     }
 
     @Override
@@ -464,6 +477,7 @@ public class MainActivity extends Activity
                             }
                         }
                         MainActivity.this.initialized = true;
+                        setServicesEnabled(initialized);
 
                     } catch (Exception e) {
                         Log.e("Value Response Error 2", e.toString());

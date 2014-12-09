@@ -126,7 +126,7 @@ public class ScannerFragment extends Fragment {
             mCodeInputSubmitButton.setTextColor(Color.GRAY);
         } else {
             mCodeInputSubmitButton.setEnabled(true);
-            mCodeInputSubmitButton.setTextColor(Color.BLACK);
+            mCodeInputSubmitButton.setTextColor(getResources().getColor(R.color.button_text_color));
 
         }
     }
