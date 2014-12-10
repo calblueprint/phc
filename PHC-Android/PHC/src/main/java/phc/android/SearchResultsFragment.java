@@ -66,7 +66,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setTitle("Search Results");
         progressDialog.setMessage("Loading...");
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(true);
         progressDialog.setIndeterminate(false);
         progressDialog.show();
 
