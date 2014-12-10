@@ -151,10 +151,14 @@
     <string name="retry_scan">Retry</string>
 
     <!-- Toast messages -->
-    <string name="scan_success">Scan successfully recorded</string>
-    <string name="scan_failure">No scan recorded, please try again</string>
+    <string name="scan_success">Result successfully recorded</string>
+    <string name="scan_failure">No result recorded, please try again</string>
+    <string name="invalid_input_toast">Invalid entry, code must contain numbers only</string>
+    <string name="retry_services_toast">Retrieving data, please try again in a few seconds.</string>
+
     <!-- Registration Scan Page -->
     <string name="scan_prompt">Please scan a QR code</string>
+    <string name="form_submit">Submit Form</string>
 
     <!-- Success Page -->
     <string name="text_success">Success!</string>
@@ -162,8 +166,12 @@
 
     <!-- Service Activity -->
     <string name="change_service">Change Service</string>
-    <string name="retry_services">Retrieving data, please try again in a few seconds.</string>
-    <string name="service_prompt">The service you provide is: </string>
+    <string name="service_prompt">Welcome! Your service is: </string>
+    <string name="enter_code_prompt">Enter a code here: </string>
+    <string name="scan_code_prompt">Or, scan a QR code: </string>
+    <string name="input_confirmation_text">The code you entered was: </string>
+    <string name="scan_confirmation_text">The scan result was: </string>
+
 
 
     <!-- Exit Activity -->
