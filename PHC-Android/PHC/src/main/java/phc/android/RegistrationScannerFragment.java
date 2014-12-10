@@ -1,9 +1,8 @@
 package phc.android;
 
 
+import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,67 +12,22 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-
 public class RegistrationScannerFragment extends ScannerFragment {
 
-    private Button mContinueButton;
-    private String mScanResult;
-    private PreferenceEditor mPreferenceEditor;
-    private final String mName = "qr_code";
+
+    /* Tag for logs and fragment code */
+    public final static String TAG = "RegistrationScannerFragment";
 
     /**
-     * Used to store a scan result in Shared Preferences
+     * Sets up the view for the user to confirm
+     * the scanned code.
      */
-    private class PreferenceEditor extends SharedPreferenceEditorListener {
-        public PreferenceEditor(Context context) {
-            super(context);
-        }
-
-        public void storeScanResult(String result) {
-            mUserInfoEditor.putString(mName, result);
-            mUserInfoEditor.commit();
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_registration_scanner, container, false);
-
-        mPreferenceEditor = new PreferenceEditor(getActivity().getApplicationContext());
-
-        mContinueButton = (Button) view.findViewById(R.id.button_services_continue);
-        mContinueButton.setEnabled(false);
-        mContinueButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
-                transaction.replace(R.id.registration_fragment_container, new SuccessFragment(), getResources().getString(R.string.sidebar_confirmation));
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
-        setupView(view);
-
-        return view;
-    }
-
-    /**
-     * Used when the user confirms the scan result
-     * and chooses to continue
-     */
-    protected class ContinueListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            recordScan();
-            showSuccessToast();
-            FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
-            transaction.replace(R.id.registration_fragment_container, new SuccessFragment(), getResources().getString(R.string.sidebar_confirmation));
-            transaction.addToBackStack(null);
-            transaction.commit();
-        }
+    protected void confirmScan(CharSequence scanResult) {
+        Bundle args = new Bundle();
+        args.putCharSequence("scan_result", scanResult);
+        ScannerConfirmationFragment confFrag = new RegistrationScannerConfirmationFragment();
+        confFrag.setArguments(args);
+        displayNextFragment(confFrag, RegistrationScannerConfirmationFragment.TAG);
     }
 
     /**
@@ -82,78 +36,42 @@ public class RegistrationScannerFragment extends ScannerFragment {
      * @param view is passed in by onCreateView()
      */
     @Override
-    protected void setupView(View view) {
-        mScanConfirmation = (TextView) view.findViewById(R.id.scan_result);
+    protected View setupView(LayoutInflater inflater, ViewGroup container) {
+        View view = inflater.inflate(R.layout.fragment_registration_scanner, container, false);
+
         mScanButton = (Button) view.findViewById(R.id.start_scan);
         mScanButton.setOnClickListener(new ScanListener());
-        mConfirmButton = (Button) view.findViewById(R.id.button_services_continue);         mConfirmButton.setOnClickListener(new ContinueListener());
-        mConfirmButton.setEnabled(false);
+        return view;
+    }
+
+
+
+    /**
+     * Brings up another fragment when this fragment
+     * is complete. Override to use
+     * registration_fragment_container
+     * @param nextFrag Fragment to display next
+     * @param fragName String fragment name
+     */
+    @Override
+    protected void displayNextFragment(Fragment nextFrag, String fragName) {
+        FragmentTransaction transaction =
+                getActivity().getFragmentManager().beginTransaction();
+        transaction.replace(R.id.registration_fragment_container, nextFrag, fragName);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     /**
-     * Sets up the view for the user to confirm
-     * the scanned code.
+     * Override to use sidebar view and string ids
      */
     @Override
-    protected void confirmScan() {
-        mScanConfirmation.setText("Last successful scan result was\n: " + mScanResult);
-        mConfirmButton.setEnabled(true);
-        mScanButton.setText("Return");
-        mScanButton.setOnClickListener(new ReturnListener());
-    }
-
-    /**
-     * Resets state of view to what the user first saw.
-     */
-    @Override
-    protected void resetState() {
-        mScanButton.setText("Click to Scan");
-        mScanButton.setOnClickListener(new ScanListener());
-    }
-
-    /**
-     * Records the scan result in shared preferences
-     * and displays a success toast.
-     */
-    @Override
-    protected void recordScan() {
-        mPreferenceEditor.storeScanResult(mScanResult);
-        showSuccessToast();
-    }
-
-    /**
-     * Used to retrieve the result from the
-     * BarcodeScanner app.
-     * @param reqCode int request code
-     * @param resCode int result code
-     * @param data Intent containing the result data
-     */
-    @Override
-    public void onActivityResult(int reqCode, int resCode, Intent data) {
-
-        IntentResult result = IntentIntegrator.parseActivityResult(reqCode, resCode, data);
-        mScanResult = result.getContents();
-        if (mScanResult == null) {
-            showFailureToast();
-            resetState();
-        } else {
-            confirmScan();
-        }
-    }
-
-    /**
-     * Called when activity is re opened.
-     * Camera must be acquired again, and
-     * the preview's camera handle should
-     * be updated as well.
-     */
-    @Override
-    public void onResume() {
+    protected void resumeHelper() {
         LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.sidebar_list);
         for (int i = 0; i < sidebarList.getChildCount(); i++) {
             View v = sidebarList.getChildAt(i);
             Object vTag = v.getTag();
-            if ((vTag != null) && (vTag.equals(getResources().getText(R.string.sidebar_scan_code)))) {
+            if ((vTag != null) && (vTag.equals(getResources().getString(R.string.sidebar_scan_code)))) {
                 TextView tv = (TextView) v;
                 tv.setTypeface(null, Typeface.BOLD);
             } else if (v instanceof TextView) {
@@ -161,7 +79,6 @@ public class RegistrationScannerFragment extends ScannerFragment {
                 tv.setTypeface(null, Typeface.NORMAL);
             }
         }
-        super.onResume();
     }
 
 }

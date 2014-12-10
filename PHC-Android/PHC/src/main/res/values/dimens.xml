@@ -4,16 +4,29 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="input_text_width">260dp</dimen>
+    <dimen name="input_text_width">300dp</dimen>
     <dimen name="connector_width">3dp</dimen>
     <dimen name="actionbar_gap">40dp</dimen>
     <dimen name="horizontal_rule_height">1dp</dimen>
-    <dimen name="button_text_size">8dp</dimen>
+    <dimen name="button_text_size">10dp</dimen>
     <dimen name="top_bottom_margins">30dp</dimen>
-    <dimen name="text_size">14sp</dimen>
+    <dimen name="text_size">18sp</dimen>
     <dimen name="checkboxes_margin">10dp</dimen>
     <dimen name="checkbox_left_padding">6dp</dimen>
     <dimen name="selection_top_margin">60dp</dimen>
     <dimen name="selection_new_returning_margin">40dp</dimen>
+
+    <dimen name="ssn1">64dp</dimen>
+    <dimen name="ssn2">48dp</dimen>
+    <dimen name="ssn3">80dp</dimen>
+
+    <dimen name="birthday1">60dp</dimen>
+    <dimen name="birthday2">56dp</dimen>
+    <dimen name="birthday3">80dp</dimen>
+
+    <dimen name="phone1">64dp</dimen>
+    <dimen name="phone2">64dp</dimen>
+    <dimen name="phone3">80dp</dimen>
+
 
 </resources>

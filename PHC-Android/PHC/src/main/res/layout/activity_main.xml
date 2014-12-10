@@ -25,4 +25,13 @@
         android:layout_centerInParent="true"
         android:onClick="openRegister"/>
 
+    <Button
+        android:id="@+id/button_exit"
+        android:text="@string/button_exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_register"
+        android:layout_centerInParent="true"
+        android:onClick="openExit"/>
+
 </RelativeLayout>

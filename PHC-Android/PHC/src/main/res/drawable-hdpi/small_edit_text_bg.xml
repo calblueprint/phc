@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:state_focused="true"
+        android:drawable="@drawable/small_edit_text_focused"
+        />
+
+    <item
+        android:state_enabled="true"
+        android:drawable="@drawable/small_rectangular_text_edit"
+        />
+
+</selector>
