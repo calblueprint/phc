@@ -27,10 +27,10 @@ public class ScannerFragment extends Fragment {
 
     public final static String TAG = "ScannerFragment";
 
-    /* Button to start BarcodeScanner app */
+    /** Button to start BarcodeScanner app. **/
     protected Button mScanButton;
 
-    /* Field and submit button for manual code input */
+    /** Field and submit button for manual code input. **/
     protected EditText mCodeInput;
     protected Button mCodeInputSubmitButton;
 
@@ -147,16 +147,17 @@ public class ScannerFragment extends Fragment {
      * numbers and/or spaces are present.
      * Does not validate for empty input. Spaces
      * may be removed later, but this method
-     * does not remove them
+     * does not remove them.
      * @param input CharSequence input to validate
      * @return True if valid input, False otherwise
      */
     protected boolean isValidInput(CharSequence input) {
-        input = input.toString().trim();
-        for (int i = 0; i < input.length(); i++) {
-            if (!"0123456789 ".contains(String.valueOf(input.charAt(i)))) {
-                return false;
-            }
+        /** Will not remove whitespace between digits! **/
+        String inputStr = input.toString().trim();
+        try {
+            Integer.parseInt(inputStr);
+        } catch (NumberFormatException e) {
+            return false;
         }
         return true;
     }

@@ -41,7 +41,7 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        /* Inflate the layofut for this fragment and set up view*/
+        /** Inflate the layout for this fragment and set up view. **/
         View view = setupView(inflater, container);
 
         /* Grab the last scan result from this fragment or the previous */
@@ -83,7 +83,7 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     }
 
     /**
-     * Used when the user wants to return to scan
+     * Used when the user wants to return to scanner fragment.
      */
     protected class RetryListener implements View.OnClickListener{
         @Override
@@ -104,7 +104,7 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
 
     /**
      * Returns to scanner fragment and displays a
-     * failure toast
+     * failure toast.
      */
     protected void retry() {
         showFailureToast();
@@ -114,7 +114,7 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
 
     /**
      * Records the scan, returns to scanner fragment,
-     * and displays a success toast
+     * and displays a success toast.
      */
     protected void confirm() {
         recordScan();
