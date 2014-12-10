@@ -42,9 +42,10 @@ public class MainActivity extends Activity
     private String apiVersion;
     private RestClient client;
     private UserSwitchReceiver userSwitchReceiver;
+
     /** Hashmap of all services being offered at the event, where the Key is the Salesforce name
     of the service (e.g. "acupuncture__c") and the value is the converted name of the service (e.g.
-    "accupuncture") */
+    "accupuncture"). */
     private Map<String, String> resources = new HashMap<String, String>();
     private boolean initialized = false;
 
@@ -61,7 +62,7 @@ public class MainActivity extends Activity
     public static final int FOR_SERVICE = 0;
     public static final int FOR_REGISTRATION = 0;
 
-    /** Holds the service provided by the user, selected in the ServiceActivity alert dialog.*/
+    /** Holds the service provided by the user, selected in the ServiceActivity alert dialog. */
     private String mProvidedService;
 
     @Override
