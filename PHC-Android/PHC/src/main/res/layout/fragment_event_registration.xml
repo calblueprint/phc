@@ -68,23 +68,17 @@
 
             </LinearLayout>
 
+            <Button
+                android:id="@+id/button_event_continue"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/action_continue"
+                android:textStyle="bold"/>
+
         </LinearLayout>
 
     </ScrollView>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="@dimen/input_text_width"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal">
-
-        <Button
-            android:id="@+id/button_event_continue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/action_continue"/>
-
-    </LinearLayout>
 
 </LinearLayout>

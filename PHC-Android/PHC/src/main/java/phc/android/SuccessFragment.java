@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
 /**
  * SuccessFragment is launched on successful submission of a client's form data,
  * and allows the user to go back to activity_register another client.
@@ -57,6 +59,9 @@ public class SuccessFragment extends RegistrationFragment {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(getActivity(), RegisterActivity.class);
+                        HashMap<String, String> services = ((RegisterActivity)getActivity())
+                                .getServices();
+                        intent.putExtra("services_hashmap", services);
                         getActivity().startActivity(intent);
                     }
         });

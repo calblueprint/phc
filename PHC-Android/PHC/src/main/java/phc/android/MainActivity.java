@@ -42,27 +42,27 @@ public class MainActivity extends Activity
     private String apiVersion;
     private RestClient client;
     private UserSwitchReceiver userSwitchReceiver;
+
+    /** Hashmap of all services being offered at the event, where the Key is the Salesforce name
+    of the service (e.g. "acupuncture__c") and the value is the converted name of the service (e.g.
+    "accupuncture"). */
     private Map<String, String> resources = new HashMap<String, String>();
     private boolean initialized = false;
 
-    /* SharedPreference file name for Security Key. */
-    private static final String SECURITY_PREFS_NAME = "SecurityKeyFile";
-    /* SharedPreference object. */
+    /** SharedPreference file name for Security Key. */
+    private static final String SECURITY_PREFS_NAME = "SecurityKey";
+    /** SharedPreference object. */
     private SharedPreferences mSecurityKeyPreferences;
-    /* SharedPreference editor object. */
+    /** SharedPreference editor object. */
     private SharedPreferences.Editor mSecurityKeyPreferencesEditor;
-    /* Current stored Security Key. */
+    /** Current stored Security Key. */
     private String mSecurityKey;
 
-    /* Use to set resultCode
-     * when calling ServiceActivity
-     * to specify intention.
-     */
+    /** Use to set resultCode when calling ServiceActivity to specify intention. */
     public static final int FOR_SERVICE = 0;
     public static final int FOR_REGISTRATION = 0;
 
-    // Holds the service provided by the user, selected in the
-    // ServiceActivity alert dialog.
+    /** Holds the service provided by the user, selected in the ServiceActivity alert dialog. */
     private String mProvidedService;
 
     @Override
@@ -107,7 +107,8 @@ public class MainActivity extends Activity
         dialog.show(getFragmentManager(), "SecurityKeyDialogFragment");
     }
 
-    /** When correct security key is entered, writes security key to SharedPreferences,
+    /**
+     * When correct security key is entered, writes security key to SharedPreferences,
      * dismisses the alert dialog, and sets the main activity layout.
      * @param dialog: the AlertDialog
      */
@@ -175,16 +176,18 @@ public class MainActivity extends Activity
     }
 
     @Override
-    // Inflate the menu; this adds items to the action bar if it is present.
+    /** Inflate the menu; this adds items to the action bar if it is present. */
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
-    // Handle action bar item clicks here. The action bar will
-    // automatically handle clicks on the Home/Up button, so long
-    // as you specify a parent activity in AndroidManifest.xml.
+    /**
+     * Handle action bar item clicks here. The action bar will
+     * automatically handle clicks on the Home/Up button, so long
+     * as you specify a parent activity in AndroidManifest.xml.
+     */
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
@@ -240,6 +243,7 @@ public class MainActivity extends Activity
     /** Handles the "Register" Button on the splash page. */
     public void openRegister(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
+        intent.putExtra("services_hashmap", (HashMap) getResourceList());
         startActivity(intent);
     }
 

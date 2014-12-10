@@ -18,21 +18,23 @@ import android.widget.TextView;
  * and includes fields that might have changed since the last event.
  */
 public class EventRegistrationFragment extends RegistrationFragment{
-    /* Neighborhood spinner. */
+    /** Parent layout for all views. */
+    private ViewGroup mLayout;
+    /** Neighborhood spinner. */
     private Spinner mNeighborhoodSpinner;
-    /* Doctor checkbox. */
+    /** Doctor checkbox. */
     private CheckBox mDoctorCheckbox;
-    /* Doctor name editText. */
+    /** Doctor name editText. */
     private EditText mDoctorName;
-    /* Linear layout for doctor information.*/
+    /** Linear layout for doctor information. */
     private ViewGroup mDoctorLayout;
-    /* Children checkbox. */
+    /** Children checkbox. */
     private CheckBox mChildrenCheckbox;
-    /* Children age editText. */
+    /** Children age editText. */
     private EditText mChildrenAge;
-    /* Linear layout for doctor information.*/
+    /** Linear layout for doctor information. */
     private ViewGroup mChildrenLayout;
-    /* Continue button. */
+    /** Continue button. */
     private Button mContinueButton;
 
     /**
@@ -44,6 +46,8 @@ public class EventRegistrationFragment extends RegistrationFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_event_registration, container, false);
+        mLayout = (LinearLayout) view.findViewById(R.id.event_fields);
+
         mDoctorCheckbox = (CheckBox) view.findViewById(R.id.checkbox_doctor);
         mDoctorLayout = (LinearLayout) view.findViewById(R.id.doctor_layout);
         mChildrenCheckbox = (CheckBox) view.findViewById(R.id.checkbox_children);
@@ -94,7 +98,7 @@ public class EventRegistrationFragment extends RegistrationFragment{
             }
         });
         mContinueButton.setOnClickListener(new OnContinueClickListener(
-                getActivity(), new SelectServicesFragment(),
+                getActivity(), this, mLayout, new SelectServicesFragment(),
                 getResources().getString(R.string.sidebar_services_info)));
     }
 
