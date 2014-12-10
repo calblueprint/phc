@@ -38,7 +38,8 @@ public class OnSubmitClickListener
 
         //write to SF database.
         for (Map.Entry<String, ?> entry : keys.entrySet()) {
-            Log.d(entry.toString(), entry.getValue().toString());
+//            Log.d(entry.toString(), entry.getValue().toString());
+//            Log.d("","");
             //(convertToSalesForceKey(entry.toString()), entry.getValue().toString());
         }
 

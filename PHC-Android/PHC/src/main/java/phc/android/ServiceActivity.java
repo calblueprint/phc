@@ -3,17 +3,17 @@ package phc.android;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.HashSet;
@@ -25,10 +25,10 @@ import java.util.Set;
 public class ServiceActivity extends Activity {
 
     /** Used to hold which service this user is scanning for. */
-    public String mServiceSelected;
+    public static String mServiceSelected;
 
     /** Created when selecting the provided service */
-    public AlertDialog mServiceDialog;
+    public static AlertDialog mServiceDialog;
 
     /** Used in error logs to identify this activity. */
     public static final String TAG = "ServiceActivity";
@@ -48,14 +48,13 @@ public class ServiceActivity extends Activity {
     /** String tag for scanned codes in shared preferences */
     private final String ALL_CODES = "scanned_codes";
 
-    private CharSequence[] services;
+    /** TextView that shows the user the service they provide */
+    private TextView mServicePrompt;
 
-    private View mServiceSidebar;
-
-    /* Used to display "SUCCESS" or "TRY AGAIN" */
-    // TODO: Change to check and X assets.
-    /* Not used right now, but we will take this out after moving to assets */
-    TextView mResultText;
+    /** List of services, initialized when this activity
+     * is called by the MainActivity.
+     */
+    private static CharSequence[] services;
 
     /**
      * As soon as the activity starts, this sets up
@@ -67,7 +66,7 @@ public class ServiceActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.service);
+        setContentView(R.layout.activity_service);
         ActionBar actionbar = getActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
 
@@ -76,81 +75,115 @@ public class ServiceActivity extends Activity {
              * then we don't need to do anything and should return or else
              * we could end up with overlapping fragments.
              */
-            if (savedInstanceState != null) {
+            if (savedInstanceState == null) {
+                Bundle bundle = getIntent().getExtras();
+                int intention = (Integer) bundle.get("request_code");
+                /* This cannot be null! */
+                services = bundle.getCharSequenceArray("services_list");
+                if (bundle.get("provided_service") == null && intention == MainActivity.FOR_SERVICE) {
+                    showSelectServiceDialog(true);
+                } else {
+                    mServiceSelected = (String) bundle.get("provided_service");
+                }
+            } else {
+                services = savedInstanceState.getCharSequenceArray("services_list");
+                mServiceSelected = (String) savedInstanceState.getCharSequence("provided_service");
                 return;
             }
 
             mSharedPreferences = getPreferences(MODE_PRIVATE);
-            mServiceSidebar = findViewById(R.id.service_sidebar);
             mScannerFragment = new ScannerFragment();
             mScannerFragment.setArguments(getIntent().getExtras());
             FragmentTransaction t = getFragmentManager().beginTransaction();
             t.add(R.id.service_fragment_container, mScannerFragment);
             t.commit();
-
-            Bundle bundle = getIntent().getExtras();
-            int intention = (Integer) bundle.get("request_code");
-            /* This cannot be null! */
-            services = bundle.getCharSequenceArray("services_list");
-            if (bundle.get("provided_service") == null && intention == MainActivity.FOR_SERVICE) {
-                showSelectServiceDialog(null, true);
-            } else {
-                mServiceSelected = (String) bundle.get("provided_service");
-            }
         }
     }
 
+    /**
+     * Uses a DialogFragment to display an AlertDialog to the user.
+     * The newInstance() method must be used to create a new instance.
+     */
+    public static class ServiceAlertDialogFragment extends DialogFragment {
 
-    protected void setSidebarConfirmButtonEnabled(boolean state) {
-        String confirmString = getResources().getString(R.string.sidebar_confirm);
-        int confirmButtonId = Math.abs(confirmString.hashCode());
-        Button confirmButton = (Button) mServiceSidebar.findViewById(confirmButtonId);
-        confirmButton.setEnabled(state);
+        static boolean mustSelect = false;
+
+        /**
+         * Used to create a new instance of this fragment. Only one instance
+         * should be used at any given time as this is a static class.
+         * @param mustSelect is True if the user has not already selected a service,
+         * False otherwise
+         * @return
+         */
+        public static ServiceAlertDialogFragment newInstance(final boolean mustSelect) {
+            ServiceAlertDialogFragment frag = new ServiceAlertDialogFragment();
+            ServiceAlertDialogFragment.mustSelect = mustSelect;
+            return frag;
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            return createSelectServiceDialog(mustSelect);
+        }
+
+        /**
+         * Override the onCancel method in the DialogFragment
+         * to prevent cancellation when service has not been
+         * set.
+         * @param dialogInterface
+         */
+        @Override
+        public void onCancel(DialogInterface dialogInterface) {
+            if (mustSelect) {
+                getActivity().onBackPressed();
+            } else {
+                dialogInterface.dismiss();
+            }
+        }
+
+        /**
+         *
+         * @param mustSelect is True if the user has not already selected a service,
+         * False otherwise
+         * @return a Dialog that will be shown to the user.
+         */
+        private Dialog createSelectServiceDialog(final boolean mustSelect) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Select Provided Service");
+            /* if service is already selected, pre select a button. */
+            int prevIndex = -1;
+            if (mServiceSelected != null) {
+                for (int i = 0; i < services.length; i++) {
+                    if (mServiceSelected.equals(services[i])) {
+                        prevIndex = i;
+                    }
+                }
+            }
+            builder.setSingleChoiceItems(services, prevIndex, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int item) {
+                    mServiceSelected = services[item].toString();
+                    ((ServiceActivity) getActivity()).setServicePromptText();
+                    mServiceDialog.dismiss();
+                }
+            });
+            /* handle back button press */
+            mServiceDialog = builder.create();
+            mServiceDialog.setCanceledOnTouchOutside(false);
+            return mServiceDialog;
+        }
     }
+
 
     /**
      * Displays a dialog box that prompts the user to select the service
      * that they provide.
-     * @param previousService is null if a service has not been
-     * selected, the service name otherwise
      * @param mustSelect is True if the user has not already selected a service.
      */
-    private void showSelectServiceDialog(String previousService, final boolean mustSelect) {
-        final CharSequence[] services = getResources().getStringArray(R.array.services_array);
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Select Provided Service");
-        /* if service is already selected, pre select a button. */
-        int prevIndex = -1;
-        if (previousService != null) {
-            for (int i = 0; i < services.length; i++) {
-                if (previousService.equals(services[i])) {
-                    prevIndex = i;
-                }
-            }
-        }
-        builder.setSingleChoiceItems(services, prevIndex, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int item) {
-                mServiceSelected = services[item].toString();
-                mServiceDialog.dismiss();
-            }
-        });
-        /* handle back button press */
-        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialogInterface) {
-                if (mustSelect) {
-                    onBackPressed();
-                } else {
-                    dialogInterface.dismiss();
-                }
-            }
-        });
-        mServiceDialog = builder.create();
-        mServiceDialog.setCanceledOnTouchOutside(false);
-        mServiceDialog.show();
+    private void showSelectServiceDialog(final boolean mustSelect) {
+        DialogFragment newFrag = ServiceAlertDialogFragment.newInstance(mustSelect);
+        newFrag.show(getFragmentManager(), "ServiceDialog");
     }
-
 
     /**
      * Can be called by other activities or
@@ -158,6 +191,11 @@ public class ServiceActivity extends Activity {
      * @param result String scan result
      */
     public void storeScanResult(String result) {
+        /* TODO: Need a function that updates the
+         * Salesforce object
+         *
+         * updateRegistration(result, mSelectedService)
+         */
         Set<String> defaults = null;
         SharedPreferences prefs = getSharedPreferences(TAG, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -214,6 +252,22 @@ public class ServiceActivity extends Activity {
         finish();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setServicePromptText();
+    }
+
+    /**
+     * Updates the service prompt text view for the current
+     * service selected.
+     */
+    private void setServicePromptText() {
+        mServicePrompt = (TextView) findViewById(R.id.service_prompt_text);
+        String prompt = getString(R.string.service_prompt);
+        mServicePrompt.setText(Html.fromHtml(prompt + "<br />" + "<b>" + mServiceSelected + "<b>"));
+    }
+
     /**
      * Dynamically clears the options menu and adds the option to
      * change a service.
@@ -241,16 +295,6 @@ public class ServiceActivity extends Activity {
     }
 
     /**
-     * Called when phone goes to sleep, user opens
-     * another app, or pressed the home button.
-     */
-    @Override
-    public void onPause() {
-        super.onPause();
-        releaseBackCamera();
-    }
-
-    /**
      * onBackPressed() overrides the default back button
      * functionality. It ensures that the calling activity
      * will receive the appropriate result if the user
@@ -258,73 +302,31 @@ public class ServiceActivity extends Activity {
      */
     @Override
     public void onBackPressed() {
-        if (mScanResult == null) {
-            returnCanceledResult();
+        ScannerConfirmationFragment frag = (ScannerConfirmationFragment) getFragmentManager().
+                findFragmentByTag(ScannerConfirmationFragment.TAG);
+        if (frag != null && frag.isVisible()) {
+            /* Return to the scanner fragment if
+             * back button is pressed in confirmation
+             * fragment
+             */
+            frag.whenBackPressed();
+            return;
         } else {
-            returnSuccessfulResult(mScanResult);
+            if (mScanResult == null) {
+                returnCanceledResult();
+            } else {
+                returnSuccessfulResult(mScanResult);
+            }
         }
         super.onBackPressed();
     }
 
-    /**
-     * Called when activity is re opened.
-     * Camera must be acquired again, and
-     * the preview's camera handle should
-     * be updated as well.
-     */
     @Override
-    public void onResume() {
-        super.onResume();
-        acquireBackCamera();
-        //TODO: make sure this doesn't need to be updated!
-        /* taken care of in fragment's lifecycle right now. */
-        //mPreview.updateCamera(mBackCamera);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putCharSequenceArray("services_list", services);
+        outState.putCharSequence("provided_service", mServiceSelected);
     }
-
-    /**
-     * Called when activity is finished or terminated by user.
-     * Camera MUST be released so other activities can use it!
-     */
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        releaseBackCamera();
-    }
-
-    /**
-     * Called when activity is paused and destroyed
-     * in order to release resources for other activities
-     * to use.
-     */
-    public void releaseBackCamera() {
-        /*
-        if (mScannerFragment != null) {
-            try {
-                mScannerFragment.releaseBackCamera();
-            } catch (Exception e) {
-                //TODO: is this too general?
-            }
-        }
-        */
-    }
-
-    /**
-     * Called to initially access camera, and after release()
-     * to reinitialize a handle on the camera instance
-     */
-    public void acquireBackCamera() {
-        if (mScannerFragment != null) {
-            /*
-            try {
-
-                mScannerFragment.acquireBackCamera();
-            } catch (Exception e) {
-                System.exit(0);
-            }
-            */
-        }
-    }
-
 
     /**
      * Handles item selection in the menu.
@@ -344,7 +346,7 @@ public class ServiceActivity extends Activity {
         }
         if (id == mServiceMenuItem.getItemId()) {
             /* User does not have to select another service option */
-            showSelectServiceDialog(mServiceSelected, false);
+            showSelectServiceDialog(false);
         }
         return super.onOptionsItemSelected(item);
     }

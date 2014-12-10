@@ -1,11 +1,11 @@
 package phc.android;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,26 +32,41 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     /* Button to confirm result */
     protected Button mConfirmButton;
 
+    /** Keeps track of whether the user
+     * scanned a code or input it
+     * manually from the ScannerFragment
+     */
+    protected boolean mManualInput;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        /* Inflate the layout for this fragment and set up view*/
+        /** Inflate the layout for this fragment and set up view. **/
         View view = setupView(inflater, container);
 
         /* Grab the last scan result from this fragment or the previous */
         if (savedInstanceState != null) {
             mScanResult = savedInstanceState.getCharSequence("scan_result");
+            mManualInput = savedInstanceState.getBoolean("manual_input");
         } else {
             mScanResult = getArguments().getCharSequence("scan_result");
+            mManualInput = getArguments().getBoolean("manual_input");
         }
-        mScanResultView.setText("Last successful scan result was\n: " + mScanResult);
+        String prompt;
+        if (mManualInput) {
+            prompt = getString(R.string.input_confirmation_text);
+        } else {
+            prompt = getString(R.string.scan_confirmation_text);
+        }
+        mScanResultView.setText(Html.fromHtml(prompt + "<br /><br />" + "<b><big><big>" + mScanResult + "</b></big></big><br />"));
         return view;
     }
 
     /**
      * Separate method for setting up view so that this
      * functionality can be overriden by a subclass.
-     * @param view is passed in by onCreateView()
+     * @param inflater instantiates the XML layout
+     * @param container is the view group this view belongs to
      */
     protected View setupView(LayoutInflater inflater, ViewGroup container) {
 
@@ -68,13 +83,12 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     }
 
     /**
-     * Used when the user wants to return to scan
+     * Used when the user wants to return to scanner fragment.
      */
     protected class RetryListener implements View.OnClickListener{
         @Override
         public void onClick(View view) {
-            showFailureToast();
-            displayNextFragment(new ScannerFragment(), ScannerFragment.TAG);
+            retry();
         }
     }
 
@@ -84,24 +98,28 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     protected class ConfirmListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            /* shows success toast */
-            recordScan();
-            displayNextFragment(new ScannerFragment(), ScannerFragment.TAG);
+            confirm();
         }
     }
 
     /**
-     * Brings up another fragment when this fragment
-     * is complete
-     * @param nextFrag Fragment to display next
-     * @param fragName String fragment name
+     * Returns to scanner fragment and displays a
+     * failure toast.
      */
-    protected void displayNextFragment(Fragment nextFrag, String fragName) {
-        FragmentTransaction transaction =
-                getActivity().getFragmentManager().beginTransaction();
-        transaction.replace(R.id.service_fragment_container, nextFrag, fragName);
-        transaction.addToBackStack(null);
-        transaction.commit();
+    protected void retry() {
+        showFailureToast();
+        FragmentManager manager = getFragmentManager();
+        manager.popBackStack(ScannerConfirmationFragment.TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
+
+    /**
+     * Records the scan, returns to scanner fragment,
+     * and displays a success toast.
+     */
+    protected void confirm() {
+        recordScan();
+        FragmentManager manager = getFragmentManager();
+        manager.popBackStack(ScannerConfirmationFragment.TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
     /**
@@ -129,14 +147,6 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     }
 
     /**
-     * Sets up the view for the user to confirm
-     * the scanned code.
-     */
-    protected void confirmScan() {
-        mScanResultView.setText("Last successful scan result was\n: " + mScanResult);
-    }
-
-    /**
      * Records the scan result in shared preferences
      * and displays a success toast.
      */
@@ -154,6 +164,7 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putCharSequence("scan_result", mScanResult);
+        outState.putBoolean("manual_input", mManualInput);
     }
 
     @Override
@@ -180,6 +191,15 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
                 tv.setTypeface(null, Typeface.NORMAL);
             }
         }
+    }
+
+    /**
+     * Called by the service activity's onBackPressed()
+     * method. This method just calls retry(), everything
+     * else is handled by the activity.
+     */
+    public void whenBackPressed() {
+        retry();
     }
 
     /**
