@@ -40,6 +40,7 @@ public class RegisterActivity extends Activity {
         actionbar.setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
+
         mServices = (HashMap<String,String>) intent.getSerializableExtra("services_hashmap");
         mServiceSFNames = mServices.keySet().toArray(new String[0]);
         Arrays.sort(mServiceSFNames);

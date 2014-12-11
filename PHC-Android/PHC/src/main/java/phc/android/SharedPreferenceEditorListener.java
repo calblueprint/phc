@@ -7,11 +7,11 @@ import android.content.SharedPreferences;
  * Superclass for all Listeners that edit SharedPreferences.
  */
 public class SharedPreferenceEditorListener {
-    /* SharedPreference file name. */
+    /* User Input SharedPreferences file name. */
     public static final String USER_PREFS_NAME = "UserInputFile";
-    /* SharedPreference object. */
+    /* User Input SharedPreferences object. */
     protected SharedPreferences mUserInfo;
-    /* SharedPreference editor object. */
+    /* User Input SharedPreferences editor object. */
     protected SharedPreferences.Editor mUserInfoEditor;
     /* Context of the listener (i.e. the Activity using it)*/
     protected Context mContext;

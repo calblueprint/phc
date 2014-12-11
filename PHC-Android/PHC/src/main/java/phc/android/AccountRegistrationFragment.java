@@ -26,15 +26,15 @@ import java.util.GregorianCalendar;
  * and contains personal account questions that do not change over time.
  */
 public class AccountRegistrationFragment extends Fragment {
-    /** Parent layout for all views */
+    /** Parent layout for all views. */
     private ViewGroup mLayout;
-    /** Continue button. */
-    private Button mContinueButton;
     /** Spinners. */
     private Spinner mGenderSpinner, mEthnicitySpinner, mLanguageSpinner;
     /** EditTexts. */
     private EditText mMonth, mDay, mYear, mPhone1, mPhone2, mPhone3,
             mSSN1, mSSN2, mSSN3, mEmail, mFirstName, mLastName;
+    /** Continue button. */
+    private Button mContinueButton;
 
     /**
      * Set spinner content and continue button functionality.

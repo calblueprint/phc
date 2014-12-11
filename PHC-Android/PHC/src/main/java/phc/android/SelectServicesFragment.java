@@ -58,9 +58,10 @@ public class SelectServicesFragment extends RegistrationFragment {
 
         for(int i = 0; i < mServiceSFNames.length; i++){
             CheckBox cb = new CheckBox(getActivity());
-            cb.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            cb.setLayoutParams(params);
             cb.setId(i);
             cb.setText(service_map.get(mServiceSFNames[i]));
             mLayout.addView(cb);

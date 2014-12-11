@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.salesforce.androidsdk.accounts.UserAccountManager;
@@ -42,9 +44,10 @@ public class MainActivity extends Activity
     private String apiVersion;
     private RestClient client;
     private UserSwitchReceiver userSwitchReceiver;
+
     /** Hashmap of all services being offered at the event, where the Key is the Salesforce name
     of the service (e.g. "acupuncture__c") and the value is the converted name of the service (e.g.
-    "accupuncture") */
+    "accupuncture"). */
     private Map<String, String> resources = new HashMap<String, String>();
     private boolean initialized = false;
 
@@ -61,8 +64,13 @@ public class MainActivity extends Activity
     public static final int FOR_SERVICE = 0;
     public static final int FOR_REGISTRATION = 0;
 
-    /** Holds the service provided by the user, selected in the ServiceActivity alert dialog.*/
+    /** Holds the service provided by the user, selected in the ServiceActivity alert dialog. */
     private String mProvidedService;
+
+    /* Holds a toast that shows the data retrieval
+     * incomplete message.
+     */
+    private Toast[] mDataFetchToast = { null };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,12 +144,34 @@ public class MainActivity extends Activity
     public void onResume() {
         super.onResume();
         checkConnectivity();
+        setServicesEnabled(initialized);
         if (!initialized) {
             loginSalesforce(true);
         } else {
             loginSalesforce();
         }
 
+    }
+
+    /**
+     * Used to let the user know if the services list has
+     * been initialized or not. Button presses are still
+     * enabled and will display a toast rather than opening
+     * services
+     * @param enabled is True if initialized, False otherwise.
+     */
+    private void setServicesEnabled(boolean enabled) {
+        Button servicesButton = (Button) findViewById(R.id.button_services);
+        /* This could be null if not logged in,
+         * in which case we just fail silently.
+         */
+        if (servicesButton == null) { return; }
+
+        if (enabled) {
+            servicesButton.setTextColor(getResources().getColor(R.color.button_text_color));
+        } else {
+            servicesButton.setTextColor(Color.GRAY);
+        }
     }
 
     private void loginSalesforce() {
@@ -233,10 +263,23 @@ public class MainActivity extends Activity
      * not been completed.
      */
     private void displayRetryToast() {
-        CharSequence message = getResources().getString(R.string.retry_services);
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(this, message, duration);
-        toast.show();
+        CharSequence message = getResources().getString(R.string.retry_services_toast);
+        maybeShowToast(message, mDataFetchToast, Toast.LENGTH_SHORT, getApplication());
+    }
+
+    /**
+     * Only shows a toast if it is not already being
+     * shown.
+     * @param toast
+     * @param toast
+     */
+    public static void maybeShowToast(CharSequence message, Toast[] toast, int duration, Context context) {
+        if (toast[0] == null || toast[0].getView() == null) {
+            toast[0] = Toast.makeText(context, message, duration);
+        } else {
+            toast[0].setText(message);
+        }
+        toast[0].show();
     }
 
     /** Handles the "Register" Button on the splash page. */
@@ -256,6 +299,7 @@ public class MainActivity extends Activity
         /* These are currently only used after calling the ServiceActivity. Make
          * sure result codes are distinct if returning from another activity!
          */
+
         if (requestCode == FOR_SERVICE) {
             if (resultCode == RESULT_CANCELED) {
                 mProvidedService = data.getStringExtra("new_provided_service");
@@ -441,6 +485,7 @@ public class MainActivity extends Activity
                             }
                         }
                         MainActivity.this.initialized = true;
+                        setServicesEnabled(initialized);
 
                     } catch (Exception e) {
                         Log.e("Value Response Error 2", e.toString());

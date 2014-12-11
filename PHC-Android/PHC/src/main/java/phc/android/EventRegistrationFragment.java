@@ -26,13 +26,13 @@ public class EventRegistrationFragment extends RegistrationFragment{
     private CheckBox mDoctorCheckbox;
     /** Doctor name editText. */
     private EditText mDoctorName;
-    /** Linear layout for doctor information.*/
+    /** Linear layout for doctor information. */
     private ViewGroup mDoctorLayout;
     /** Children checkbox. */
     private CheckBox mChildrenCheckbox;
     /** Children age editText. */
     private EditText mChildrenAge;
-    /** Linear layout for doctor information.*/
+    /** Linear layout for doctor information. */
     private ViewGroup mChildrenLayout;
     /** Continue button. */
     private Button mContinueButton;

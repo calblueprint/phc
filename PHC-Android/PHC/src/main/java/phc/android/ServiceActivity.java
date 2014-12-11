@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,11 +48,12 @@ public class ServiceActivity extends Activity {
     /** String tag for scanned codes in shared preferences */
     private final String ALL_CODES = "scanned_codes";
 
-    /** TextView that shows the user the service they provide
-     * TODO: complete the implementation.
-     */
+    /** TextView that shows the user the service they provide */
     private TextView mServicePrompt;
 
+    /** List of services, initialized when this activity
+     * is called by the MainActivity.
+     */
     private static CharSequence[] services;
 
     /**
@@ -64,10 +66,9 @@ public class ServiceActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.service);
+        setContentView(R.layout.activity_service);
         ActionBar actionbar = getActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
-        mServicePrompt = (TextView) findViewById(R.id.service_provided_hint);
 
         if (findViewById(R.id.service_fragment_container) != null) {
             /* However, if we're being restored from a previous state,
@@ -96,8 +97,6 @@ public class ServiceActivity extends Activity {
             FragmentTransaction t = getFragmentManager().beginTransaction();
             t.add(R.id.service_fragment_container, mScannerFragment);
             t.commit();
-
-
         }
     }
 
@@ -164,6 +163,7 @@ public class ServiceActivity extends Activity {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int item) {
                     mServiceSelected = services[item].toString();
+                    ((ServiceActivity) getActivity()).setServicePromptText();
                     mServiceDialog.dismiss();
                 }
             });
@@ -255,9 +255,17 @@ public class ServiceActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        /* Will be extended later to show
-         * mServicePrompt
-         */
+        setServicePromptText();
+    }
+
+    /**
+     * Updates the service prompt text view for the current
+     * service selected.
+     */
+    private void setServicePromptText() {
+        mServicePrompt = (TextView) findViewById(R.id.service_prompt_text);
+        String prompt = getString(R.string.service_prompt);
+        mServicePrompt.setText(Html.fromHtml(prompt + "<br />" + "<b>" + mServiceSelected + "<b>"));
     }
 
     /**
@@ -294,10 +302,21 @@ public class ServiceActivity extends Activity {
      */
     @Override
     public void onBackPressed() {
-        if (mScanResult == null) {
-            returnCanceledResult();
+        ScannerConfirmationFragment frag = (ScannerConfirmationFragment) getFragmentManager().
+                findFragmentByTag(ScannerConfirmationFragment.TAG);
+        if (frag != null && frag.isVisible()) {
+            /* Return to the scanner fragment if
+             * back button is pressed in confirmation
+             * fragment
+             */
+            frag.whenBackPressed();
+            return;
         } else {
-            returnSuccessfulResult(mScanResult);
+            if (mScanResult == null) {
+                returnCanceledResult();
+            } else {
+                returnSuccessfulResult(mScanResult);
+            }
         }
         super.onBackPressed();
     }
