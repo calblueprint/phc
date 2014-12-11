@@ -18,7 +18,7 @@ import android.widget.TextView;
  * and includes fields that might have changed since the last event.
  */
 public class EventRegistrationFragment extends RegistrationFragment{
-    /** Parent layout for all views */
+    /** Parent layout for all views. */
     private ViewGroup mLayout;
     /** Neighborhood spinner. */
     private Spinner mNeighborhoodSpinner;
