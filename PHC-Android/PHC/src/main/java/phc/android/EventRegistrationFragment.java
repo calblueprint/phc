@@ -24,15 +24,19 @@ public class EventRegistrationFragment extends RegistrationFragment{
     private Spinner mNeighborhoodSpinner;
     /** Doctor checkbox. */
     private CheckBox mDoctorCheckbox;
+    /** Whether the Doctor checkbox has been checked. */
+    private Boolean mDoctorChecked = false;
     /** Doctor name editText. */
     private EditText mDoctorName;
-    /** Linear layout for doctor information. */
+    /** Doctor name editText input. */
     private ViewGroup mDoctorLayout;
     /** Children checkbox. */
     private CheckBox mChildrenCheckbox;
+    /** Whether the Children checkbox has been checked. */
+    private Boolean mChildrenChecked = false;
     /** Children age editText. */
     private EditText mChildrenAge;
-    /** Linear layout for doctor information. */
+    /** Children age editText input. */
     private ViewGroup mChildrenLayout;
     /** Continue button. */
     private Button mContinueButton;
@@ -41,7 +45,6 @@ public class EventRegistrationFragment extends RegistrationFragment{
      * On creation of the fragment for the first time, sets onClickListeners for checkboxes with
      * optional open-ended EditTexts, sets content for spinners, and sets an onClickListener for the
      * continue button.
-     * If the bundle contains information, loads the optional EditTexts along with their state.
      */
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -57,6 +60,7 @@ public class EventRegistrationFragment extends RegistrationFragment{
         setSpinnerContent(view);
         setOnClickListeners(view);
 
+        // If the bundle contains information, loads the optional EditTexts along with their state.
         if (savedInstanceState != null){
             if (savedInstanceState.getBoolean("doctor_check")){
                 addDoctorName();
@@ -67,6 +71,19 @@ public class EventRegistrationFragment extends RegistrationFragment{
                 mChildrenAge.setText(savedInstanceState.getString("children_age"));
             }
         }
+        // Alternatively, if we are returning to this fragment on the backstack,
+        // onSaveInstanceState is never called and we cannot rely on the bundle to store the
+        // information. For this case, we rely on the two instance vars mDoctorChecked and
+        // mChildrenChecked to recreate the state.
+        else{
+            if (mDoctorChecked){
+                addDoctorName();
+            }
+            if (mChildrenChecked){
+                addChildrenAge();
+            }
+        }
+
         return view;
     }
 
@@ -78,8 +95,8 @@ public class EventRegistrationFragment extends RegistrationFragment{
         mDoctorCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean checked = mDoctorCheckbox.isChecked();
-                if (checked == true) {
+                mDoctorChecked = mDoctorCheckbox.isChecked();
+                if (mDoctorChecked == true) {
                     addDoctorName();
                 } else {
                     removeDoctorName();
@@ -89,8 +106,8 @@ public class EventRegistrationFragment extends RegistrationFragment{
         mChildrenCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean checked = mChildrenCheckbox.isChecked();
-                if (checked == true) {
+                mChildrenChecked = mChildrenCheckbox.isChecked();
+                if (mChildrenChecked == true) {
                     addChildrenAge();
                 } else {
                     removeChildrenAge();
@@ -172,6 +189,7 @@ public class EventRegistrationFragment extends RegistrationFragment{
     /**
      *  Explicitly stores state of the children and doctor checkboxes,
      *  along with their optional EditText inputs, into bundle.
+     *  Handles orientation rotations.
      */
     @Override
     public void onSaveInstanceState(Bundle outState) {
