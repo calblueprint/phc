@@ -25,7 +25,7 @@ class Api::V1::AccountsController < ApplicationController
     respond_with []
   end
 
-  def show
-    respond_with PersonAccount.find(params[:id])
+  def check
+    respond_with request.headers["AuthToken"].eql? ENV["AuthToken"]
   end
 end
