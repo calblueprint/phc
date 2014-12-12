@@ -211,7 +211,7 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
 
             fieldValues.put("PHC_Event__c", eventId);
             fieldValues.put("Account__c", PersonId);
-
+            fieldValues.put("Number__c", servicePreferences.getString(mName, "0"));
 
             try {
                 RestRequest request = RestRequest.getRequestForCreate(apiVersion, objectName, fieldValues);
