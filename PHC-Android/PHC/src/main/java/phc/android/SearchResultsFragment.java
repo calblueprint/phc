@@ -66,6 +66,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
         progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                requestQueue.cancelAll(TAG);
                 dialog.dismiss();
             }
         });
@@ -159,6 +160,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                 }
             };
 
+            searchResultsRequest.setTag(TAG);
             requestQueue.add(searchResultsRequest);
         }
 
