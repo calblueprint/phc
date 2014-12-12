@@ -38,6 +38,7 @@ public class RegisterActivity extends Activity {
         setContentView(R.layout.activity_register);
         ActionBar actionbar = getActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
+
         Intent intent = getIntent();
 
         mServices = (HashMap<String,String>) intent.getSerializableExtra("services_hashmap");

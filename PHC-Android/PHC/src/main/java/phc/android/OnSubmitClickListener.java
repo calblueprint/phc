@@ -3,6 +3,7 @@ package phc.android;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
 
@@ -43,9 +44,14 @@ public class OnSubmitClickListener
             //(convertToSalesForceKey(entry.toString()), entry.getValue().toString());
         }
 
-        //clear SharedPreferences.
+        //clear "UserInfo" and "SEARCH_RESULT_PREFERENCES" Shared Preferences files.
         mUserInfoEditor.clear();
         mUserInfoEditor.commit();
+
+        SharedPreferences.Editor searchResultsEditor = mContext.getSharedPreferences(
+                SearchResultsFragment.SEARCH_RESULT_PREFERENCES,Context.MODE_PRIVATE).edit();
+        searchResultsEditor.clear();
+        searchResultsEditor.commit();
     }
 
     /**

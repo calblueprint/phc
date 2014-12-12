@@ -282,7 +282,6 @@ public class MainActivity extends Activity
         toast[0].show();
     }
 
-
     /** Handles the "Register" Button on the splash page. */
     public void openRegister(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
