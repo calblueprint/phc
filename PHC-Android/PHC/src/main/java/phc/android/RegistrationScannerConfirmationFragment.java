@@ -101,7 +101,6 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
 
         @Override
         public void onClick(View view) {
-            Log.d("Submit", "clicked");
             registerPerson();
             /* shows success toast */
             recordScan();
@@ -119,7 +118,6 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
                 updatePerson(searchResult.getString("SFID", null));
                 searchResult.edit().clear().commit();
             }
-            mUserInfo.edit().clear();
         }
 
 
@@ -163,7 +161,6 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
             String apiVersion = getActivity().getResources().getString(R.string.api_version);
             String objectName = "Account";
             Map<String, Object> fields = getFields();
-
             //@TODO: Add error handling
 
             try {
@@ -171,15 +168,7 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
                 RestClient.AsyncRequestCallback callback = new RestClient.AsyncRequestCallback() {
                     @Override
                     public void onSuccess(RestRequest request, RestResponse response) {
-                        try {
-                            JSONObject json = response.asJSONObject();
-                            boolean success = json.getBoolean("success");
-                            if (success) {registration(Id);}
-                        } catch (IOException e1) {
-
-                        } catch (JSONException e2) {
-
-                        }
+                       registration(Id);
                     }
 
                     @Override
@@ -201,14 +190,14 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
             String[] fields = ((RegisterActivity) getActivity()).getServiceSFNames();
             Map<String, Object> fieldValues = new HashMap<String, Object>();
 
-            SharedPreferences servicePreferences = getActivity().getSharedPreferences(USER_PREFS_NAME, 0);
+            SharedPreferences servicePreferences = mUserInfo;
             for (String field : fields) {
                 boolean fieldValue = servicePreferences.getBoolean(field, false);
                 if (fieldValue) {
                     fieldValues.put(field, "Applied");
                 }
             }
-
+            Log.d("Event", eventId);
             fieldValues.put("PHC_Event__c", eventId);
             fieldValues.put("Account__c", PersonId);
             fieldValues.put("Number__c", servicePreferences.getString(mName, "0"));
@@ -221,6 +210,7 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
                         try {
                             JSONObject json = response.asJSONObject();
                             boolean success = json.getBoolean("success");
+                            mUserInfo.edit().clear().commit();
                         } catch (IOException e1) {
 
                         } catch (JSONException e2) {
@@ -231,10 +221,11 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
                     @Override
                     public void onError(Exception exception) {
 
-                        Log.e("Update Response Error", exception.getLocalizedMessage());
+                        Log.e("Update Response Error", exception.toString());
                     }
                 };
                 sendRequest(request, callback);
+
             } catch (Exception e) {
                 Log.e("Person Update Error", e.toString());
             }
@@ -243,7 +234,7 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
         private Map<String, Object> getFields() {
             HashMap<String, Object> fields = new HashMap<String, Object>();
             SharedPreferences userPreferences;
-            userPreferences = getActivity().getSharedPreferences(OnContinueClickListener.USER_PREFS_NAME, 0);
+            userPreferences = mUserInfo;
 
             fields.put("FirstName", userPreferences.getString("first_name", null));
             fields.put("LastName", userPreferences.getString("last_name", null));

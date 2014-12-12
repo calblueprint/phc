@@ -289,6 +289,7 @@ public class MainActivity extends Activity
     public void openRegister(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
         intent.putExtra("services_hashmap", (HashMap) getResourceList());
+        Log.d("Id", mEventId);
         intent.putExtra("event_id", mEventId);
         startActivity(intent);
     }

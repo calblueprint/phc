@@ -43,7 +43,7 @@ public class RegisterActivity extends Activity {
         Intent intent = getIntent();
 
         mServices = (HashMap<String,String>) intent.getSerializableExtra("services_hashmap");
-        mEventId = intent.getStringExtra("evend_id");
+        mEventId = intent.getStringExtra("event_id");
         mServiceSFNames = mServices.keySet().toArray(new String[0]);
         Arrays.sort(mServiceSFNames);
 

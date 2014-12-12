@@ -44,8 +44,8 @@ public class OnSubmitClickListener
         }
 
         //clear SharedPreferences.
-        mUserInfoEditor.clear();
-        mUserInfoEditor.commit();
+//        mUserInfoEditor.clear();
+//        mUserInfoEditor.commit();
     }
 
     /**
