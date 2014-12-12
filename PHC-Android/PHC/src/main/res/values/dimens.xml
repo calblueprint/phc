@@ -17,11 +17,11 @@
     <dimen name="selection_new_returning_margin">40dp</dimen>
 
     <dimen name="ssn1">64dp</dimen>
-    <dimen name="ssn2">48dp</dimen>
+    <dimen name="ssn2">58dp</dimen>
     <dimen name="ssn3">80dp</dimen>
 
-    <dimen name="birthday1">60dp</dimen>
-    <dimen name="birthday2">56dp</dimen>
+    <dimen name="birthday1">58dp</dimen>
+    <dimen name="birthday2">58dp</dimen>
     <dimen name="birthday3">80dp</dimen>
 
     <dimen name="phone1">64dp</dimen>

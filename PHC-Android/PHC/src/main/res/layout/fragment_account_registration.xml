@@ -15,7 +15,7 @@
         android:orientation="vertical"
         android:layout_width="@dimen/input_text_width"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:gravity="left"
         android:layout_gravity="center_horizontal">
 
         <EditText
@@ -45,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_marginRight="17dp"
+                android:layout_marginRight="25dp"
                 android:text="@string/prompt_ssn"/>
 
             <EditText
@@ -100,13 +100,13 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal">
+            android:gravity="left">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_marginRight="7dp"
+                android:layout_marginRight="2dp"
                 android:text="@string/prompt_birthday"/>
 
             <EditText
@@ -164,7 +164,7 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal">
+            android:gravity="left">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -256,6 +256,7 @@
             <CheckBox android:id="@+id/checkbox_foster"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/checkboxes_margin"
                 android:text="@string/prompt_foster"/>
 
             <CheckBox android:id="@+id/checkbox_military"
