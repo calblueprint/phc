@@ -19,14 +19,14 @@ import android.widget.LinearLayout;
  * the dialog will trigger a cycle of new dialogs until the right key is entered.
  */
 public class SecurityKeyDialogFragment extends DialogFragment {
-    /* The Security Key */
+    /** The Security Key. */
     //TODO: change to real security key
     public static final String SECURITY_KEY = "PHC++";
-    /* Current activity that the fragment is in. */
+    /** Current activity that the fragment is in. */
     private Context mContext;
-    /* Current activity that the fragment is in, typecasted into a Listener. */
+    /** Current activity that the fragment is in, typecasted into a Listener. */
     private SecurityKeyDialogListener mListener;
-    /* String input into the alert dialog.*/
+    /** String input into the alert dialog. */
     String mInputString;
 
     /** Define interface that MainActivity must implement to receive event callbacks. */

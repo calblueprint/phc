@@ -22,29 +22,15 @@ public class RegistrationScannerFragment extends ScannerFragment {
      * Sets up the view for the user to confirm
      * the scanned code.
      */
-    protected void confirmScan(CharSequence scanResult) {
+    @Override
+    protected void confirmScan(CharSequence scanResult, boolean manualInput) {
         Bundle args = new Bundle();
         args.putCharSequence("scan_result", scanResult);
+        args.putBoolean("manual_input", manualInput);
         ScannerConfirmationFragment confFrag = new RegistrationScannerConfirmationFragment();
         confFrag.setArguments(args);
         displayNextFragment(confFrag, RegistrationScannerConfirmationFragment.TAG);
     }
-
-    /**
-     * Separate method for setting up view so that this
-     * functionality can be overriden by a subclass.
-     * @param view is passed in by onCreateView()
-     */
-    @Override
-    protected View setupView(LayoutInflater inflater, ViewGroup container) {
-        View view = inflater.inflate(R.layout.fragment_registration_scanner, container, false);
-
-        mScanButton = (Button) view.findViewById(R.id.start_scan);
-        mScanButton.setOnClickListener(new ScanListener());
-        return view;
-    }
-
-
 
     /**
      * Brings up another fragment when this fragment
@@ -58,7 +44,7 @@ public class RegistrationScannerFragment extends ScannerFragment {
         FragmentTransaction transaction =
                 getActivity().getFragmentManager().beginTransaction();
         transaction.replace(R.id.registration_fragment_container, nextFrag, fragName);
-        transaction.addToBackStack(null);
+        transaction.addToBackStack(fragName);
         transaction.commit();
     }
 

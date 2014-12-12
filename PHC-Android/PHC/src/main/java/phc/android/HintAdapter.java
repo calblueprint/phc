@@ -14,7 +14,7 @@ public class HintAdapter extends ArrayAdapter<String> {
 
 
     /**
-     * Adds items into the ArrayAdapter for you upon construction
+     * Adds items into the ArrayAdapter for you upon construction.
      */
     public HintAdapter(Context context, int textViewResourceId, String[] items) {
         super(context, textViewResourceId);

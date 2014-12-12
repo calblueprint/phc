@@ -3,6 +3,7 @@ package phc.android;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -56,11 +57,13 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
      * Separate method for setting up view so that this
      * functionality can be overriden by a subclass.
      * Override to setup mPreferenceEditor
+     * @param inflater instantiates the XML layout
+     * @param container is the view group this view belongs to
      */
     @Override
     protected View setupView(LayoutInflater inflater, ViewGroup container) {
 
-        View view = inflater.inflate(R.layout.fragment_registration_scanner_confirmation, container, false);
+        View view = inflater.inflate(R.layout.fragment_scanner_confirmation, container, false);
         mPreferenceEditor = new PreferenceEditor(getActivity().getApplicationContext());
 
         mScanResultView = (TextView) view.findViewById(R.id.scan_result);
@@ -70,6 +73,7 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
         mRetryButton.setOnClickListener(new RetryListener());
 
         mConfirmButton = (Button) view.findViewById(R.id.confirm_scan);
+        mConfirmButton.setText(getString(R.string.form_submit));
         mConfirmButton.setOnClickListener(new SubmitListener(getActivity()));
         return view;
     }
@@ -80,8 +84,7 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
     protected class RetryListener implements View.OnClickListener{
         @Override
         public void onClick(View view) {
-            showFailureToast();
-            displayNextFragment(new RegistrationScannerFragment(), RegistrationScannerFragment.TAG);
+            retry();
         }
     }
 
@@ -264,17 +267,14 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
     }
 
     /**
-     * Override to replace registration_fragment_container
-     * @param nextFrag Fragment to display next
-     * @param fragName String fragment name
+     * Returns to scanner fragment and displays a
+     * failure toast
      */
     @Override
-    protected void displayNextFragment(Fragment nextFrag, String fragName) {
-        FragmentTransaction transaction =
-                getActivity().getFragmentManager().beginTransaction();
-        transaction.replace(R.id.registration_fragment_container, nextFrag, fragName);
-        transaction.addToBackStack(null);
-        transaction.commit();
+    protected void retry() {
+        showFailureToast();
+        FragmentManager manager = getFragmentManager();
+        manager.popBackStack(RegistrationScannerConfirmationFragment.TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
     @Override

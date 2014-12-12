@@ -20,7 +20,7 @@ import com.google.zxing.integration.android.IntentResult;
  */
 public class ExitActivity extends Activity {
 
-    /** Holds the result of the scan */
+    /** Holds the result of the scan. */
     protected String mScanResult;
     /** The textview that holds the comment. */
     private EditText mComment;

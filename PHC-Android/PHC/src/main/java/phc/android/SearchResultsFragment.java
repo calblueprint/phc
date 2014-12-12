@@ -5,19 +5,15 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
-
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.RecoverySystem;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,7 +62,13 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setTitle("Search Results");
         progressDialog.setMessage("Loading...");
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(true);
+        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
         progressDialog.setIndeterminate(false);
         progressDialog.show();
 
