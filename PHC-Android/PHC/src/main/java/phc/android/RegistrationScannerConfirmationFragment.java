@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 
 public class RegistrationScannerConfirmationFragment extends ScannerConfirmationFragment {
@@ -137,7 +138,7 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
                         try {
                             JSONObject json = response.asJSONObject();
                             boolean success = json.getBoolean("success");
-                            //@TODO: Send registration request from here
+                            if (success) {registration(json.getString("id"));}
                         } catch (IOException e1) {
 
                         } catch (JSONException e2) {
@@ -158,7 +159,7 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
 
         }
 
-        private void updatePerson(String Id) {
+        private void updatePerson(final String Id) {
             String apiVersion = getActivity().getResources().getString(R.string.api_version);
             String objectName = "Account";
             Map<String, Object> fields = getFields();
@@ -173,7 +174,53 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
                         try {
                             JSONObject json = response.asJSONObject();
                             boolean success = json.getBoolean("success");
-                            //@TODO: Send registration request from here
+                            if (success) {registration(Id);}
+                        } catch (IOException e1) {
+
+                        } catch (JSONException e2) {
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(Exception exception) {
+
+                        Log.e("Update Response Error", exception.getLocalizedMessage());
+                    }
+                };
+                sendRequest(request, callback);
+            } catch (Exception e) {
+                Log.e("Person Update Error", e.toString());
+            }
+        }
+
+        private void registration(String PersonId) {
+            String eventId = ((RegisterActivity) getActivity()).getmEventId();
+            String apiVersion = getActivity().getResources().getString(R.string.api_version);
+            String objectName = "Event_Registration__c";
+            String[] fields = ((RegisterActivity) getActivity()).getServiceSFNames();
+            Map<String, Object> fieldValues = new HashMap<String, Object>();
+
+            SharedPreferences servicePreferences = getActivity().getSharedPreferences(USER_PREFS_NAME, 0);
+            for (String field : fields) {
+                boolean fieldValue = servicePreferences.getBoolean(field, false);
+                if (fieldValue) {
+                    fieldValues.put(field, "Applied");
+                }
+            }
+
+            fieldValues.put("PHC_Event__c", eventId);
+            fieldValues.put("Account__c", PersonId);
+
+
+            try {
+                RestRequest request = RestRequest.getRequestForCreate(apiVersion, objectName, fieldValues);
+                RestClient.AsyncRequestCallback callback = new RestClient.AsyncRequestCallback() {
+                    @Override
+                    public void onSuccess(RestRequest request, RestResponse response) {
+                        try {
+                            JSONObject json = response.asJSONObject();
+                            boolean success = json.getBoolean("success");
                         } catch (IOException e1) {
 
                         } catch (JSONException e2) {

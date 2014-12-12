@@ -67,6 +67,8 @@ public class MainActivity extends Activity
     /** Holds the service provided by the user, selected in the ServiceActivity alert dialog. */
     private String mProvidedService;
 
+    private String mEventId = "";
+
     /* Holds a toast that shows the data retrieval
      * incomplete message.
      */
@@ -287,6 +289,7 @@ public class MainActivity extends Activity
     public void openRegister(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
         intent.putExtra("services_hashmap", (HashMap) getResourceList());
+        intent.putExtra("event_id", mEventId);
         startActivity(intent);
     }
 
@@ -381,6 +384,7 @@ public class MainActivity extends Activity
                         JSONObject json = response.asJSONObject();
                         JSONObject item = (JSONObject) ((JSONArray)json.get("records")).get(0);
                         String id = item.getString("Id");
+                        MainActivity.this.mEventId = id;
                         MainActivity.this.describeResources(id);
                     } catch (Exception e) {
                         Log.e("Id Response Error", e.getLocalizedMessage());

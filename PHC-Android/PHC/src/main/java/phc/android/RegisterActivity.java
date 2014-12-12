@@ -25,6 +25,8 @@ public class RegisterActivity extends Activity {
     /** Sorted array of all service salesforce names (keys of the hashmap). */
     private String[] mServiceSFNames;
 
+    private String mEventId;
+
     protected RestClient client;
     private PasscodeManager passcodeManager;
 
@@ -41,6 +43,7 @@ public class RegisterActivity extends Activity {
         Intent intent = getIntent();
 
         mServices = (HashMap<String,String>) intent.getSerializableExtra("services_hashmap");
+        mEventId = intent.getStringExtra("evend_id");
         mServiceSFNames = mServices.keySet().toArray(new String[0]);
         Arrays.sort(mServiceSFNames);
 
@@ -109,4 +112,8 @@ public class RegisterActivity extends Activity {
 
     /** Static method that returns a string array of salesforce names for all services. */
     public String[] getServiceSFNames() { return this.mServiceSFNames; }
+
+    public String getmEventId() {
+        return mEventId;
+    }
 }
