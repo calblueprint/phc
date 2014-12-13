@@ -67,6 +67,8 @@ public class MainActivity extends Activity
     /** Holds the service provided by the user, selected in the ServiceActivity alert dialog. */
     private String mProvidedService;
 
+    /** Holds the event Id of the most recently created PHC Event, treated in the app as the current
+     * event. */
     private String mEventId = "";
 
     /* Holds a toast that shows the data retrieval

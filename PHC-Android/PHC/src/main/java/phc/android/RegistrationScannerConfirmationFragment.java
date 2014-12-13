@@ -108,6 +108,12 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
 
         }
 
+        /**
+         * Registers the current person to Salesforce using the information stored in sharedpreferences.
+         * If the person is returning (i.e. if search was used), then the function will call updatePerson()
+         * with the Id returned from search. Otherwise, it inserts a new person. In both cases, it will also
+         * create a new Event Registration object that reflects the user's preferred services.
+         */
         private void registerPerson() {
             SharedPreferences searchResult;
             searchResult = getActivity().getSharedPreferences(SearchResultsFragment.SEARCH_RESULT, 0);
@@ -120,7 +126,9 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
             }
         }
 
-
+        /**
+         * Inserts a new Account object using the information from the form if search was not used.
+         */
         private void newPerson() {
             String apiVersion = getActivity().getResources().getString(R.string.api_version);
             String objectName = "Account";
@@ -157,6 +165,10 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
 
         }
 
+        /**
+         * Updated a known Account object if search was used to arrive at submit page.
+         * @param Id: The id of the returning client.
+         */
         private void updatePerson(final String Id) {
             String apiVersion = getActivity().getResources().getString(R.string.api_version);
             String objectName = "Account";
@@ -183,6 +195,12 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
             }
         }
 
+        /**
+         * After an Account is sucessfully inserted/updated, this method will create a new registration
+         * object using the current PHC Event and the rest of the information from the filled out forms.
+         *
+         * @param PersonId: The id of the person to whom the registration refers
+         */
         private void registration(String PersonId) {
             String eventId = ((RegisterActivity) getActivity()).getmEventId();
             String apiVersion = getActivity().getResources().getString(R.string.api_version);
@@ -231,6 +249,12 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
             }
         }
 
+        /**
+         * A helper function for getting the relevant information to post to the new Account on Salesforce.
+         *
+         * @return a Map containing key value pairs of Account information. The keys are field names,
+         * and the values are their associated values.
+         */
         private Map<String, Object> getFields() {
             HashMap<String, Object> fields = new HashMap<String, Object>();
             SharedPreferences userPreferences;

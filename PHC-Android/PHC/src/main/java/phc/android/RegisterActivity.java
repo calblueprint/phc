@@ -25,6 +25,7 @@ public class RegisterActivity extends Activity {
     /** Sorted array of all service salesforce names (keys of the hashmap). */
     private String[] mServiceSFNames;
 
+    /** The id of the current PHC Event. Should be passed in with intent from MainActivity.*/
     private String mEventId;
 
     protected RestClient client;
@@ -113,6 +114,7 @@ public class RegisterActivity extends Activity {
     /** Static method that returns a string array of salesforce names for all services. */
     public String[] getServiceSFNames() { return this.mServiceSFNames; }
 
+    /** Method that returns the id of the current PHC Event, passed in through an intent from MainActivity.*/
     public String getmEventId() {
         return mEventId;
     }
