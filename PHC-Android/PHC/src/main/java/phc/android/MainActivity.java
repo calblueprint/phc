@@ -393,7 +393,7 @@ public class MainActivity extends Activity
                         MainActivity.this.mEventId = id;
                         MainActivity.this.describeResources(id);
                     } catch (Exception e) {
-                        Log.e("Id Response Error", e.getLocalizedMessage());
+                        Log.e("Id Response Error", e.toString());
                     }
 
 
@@ -402,7 +402,7 @@ public class MainActivity extends Activity
                 @Override
                 public void onError(Exception exception) {
                     if (exception.getLocalizedMessage() != null) {
-                        Log.e("Id Response Error 2", exception.getLocalizedMessage());
+                        Log.e("Id Response Error 2", exception.toString());
                     }
                 }
             };
@@ -411,7 +411,7 @@ public class MainActivity extends Activity
 
 
         } catch (Exception e) {
-            Log.e("Id Request Error", e.getLocalizedMessage());
+            Log.e("Id Request Error", e.toString());
         }
     }
 
@@ -446,20 +446,20 @@ public class MainActivity extends Activity
                         MainActivity.this.getResourceValues(eventId, fields);
 
                     } catch (Exception e) {
-                        Log.e("Field Response Error", e.getLocalizedMessage());
+                        Log.e("Field Response Error", e.toString());
                     }
                 }
 
                 @Override
                 public void onError(Exception exception) {
-                    Log.e("Field Response Error 2", exception.getLocalizedMessage());
+                    Log.e("Field Response Error 2", exception.toString());
                 }
             };
 
             sendRequest(fieldRequest, callback);
 
         } catch (Exception e) {
-            Log.e("Field Request Exception", e.getLocalizedMessage());
+            Log.e("Field Request Exception", e.toString());
         }
     }
 
