@@ -122,24 +122,36 @@ public class AccountRegistrationFragment extends Fragment {
     /**
      * initializes spinners with hints.
      */
-    private void setSpinnerContent(){
-        String[] genders = getResources().getStringArray(R.array.gender_array);
-        ArrayAdapter<String> genderAdapter = new HintAdapter(
-                getActivity(), android.R.layout.simple_spinner_item, genders);
-        mGenderSpinner.setAdapter(genderAdapter);
-        mGenderSpinner.setSelection(genderAdapter.getCount());
+    private void setSpinnerContent() {
+        ArrayAdapter<CharSequence> genderAdapter =
+                ArrayAdapter.createFromResource(getActivity(),
+                                                R.array.gender_array,
+                                                android.R.layout.simple_spinner_item);
+        mGenderSpinner.setAdapter(
+                new NothingSelectedSpinnerAdapter(
+                        genderAdapter,
+                        R.layout.gender_spinner_row_nothing_selected,
+                        getActivity()));
 
-        String[] ethnicities = getResources().getStringArray(R.array.ethnicity_array);
-        ArrayAdapter<String> ethnicityAdapter = new HintAdapter(
-                getActivity(), android.R.layout.simple_spinner_item, ethnicities);
-        mEthnicitySpinner.setAdapter(ethnicityAdapter);
-        mEthnicitySpinner.setSelection(ethnicityAdapter.getCount());
+        ArrayAdapter<CharSequence> ethnicityAdapter =
+                ArrayAdapter.createFromResource(getActivity(),
+                                                R.array.ethnicity_array,
+                                                android.R.layout.simple_spinner_item);
+        mEthnicitySpinner.setAdapter(
+                new NothingSelectedSpinnerAdapter(
+                        ethnicityAdapter,
+                        R.layout.ethnicity_spinner_row_nothing_selected,
+                        getActivity()));
 
-        String[] languages = getResources().getStringArray(R.array.language_array);
-        ArrayAdapter<String> languageAdapter = new HintAdapter(
-                getActivity(), android.R.layout.simple_spinner_item, languages);
-        mLanguageSpinner.setAdapter(languageAdapter);
-        mLanguageSpinner.setSelection(languageAdapter.getCount());
+        ArrayAdapter<CharSequence> languageAdapter =
+                ArrayAdapter.createFromResource(getActivity(),
+                                                R.array.language_array,
+                                                android.R.layout.simple_spinner_item);
+        mLanguageSpinner.setAdapter(
+                new NothingSelectedSpinnerAdapter(
+                        languageAdapter,
+                        R.layout.language_spinner_row_nothing_selected,
+                        getActivity()));
     }
 
     /**

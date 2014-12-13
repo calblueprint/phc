@@ -56,8 +56,9 @@ public class EventRegistrationFragment extends RegistrationFragment{
         mChildrenCheckbox = (CheckBox) view.findViewById(R.id.checkbox_children);
         mChildrenLayout = (LinearLayout) view.findViewById(R.id.children_layout);
         mContinueButton = (Button) view.findViewById(R.id.button_event_continue);
+        mNeighborhoodSpinner = (Spinner) view.findViewById(R.id.spinner_neighborhood);
 
-        setSpinnerContent(view);
+        setSpinnerContent();
         setOnClickListeners(view);
 
         // If the bundle contains information, loads the optional EditTexts along with their state.
@@ -122,13 +123,16 @@ public class EventRegistrationFragment extends RegistrationFragment{
     /**
      * Sets multiple choice options for the neighborhood spinner.
      */
-    private void setSpinnerContent(View view){
-        mNeighborhoodSpinner = (Spinner) view.findViewById(R.id.spinner_neighborhood);
-        String[] neighborhoods = getResources().getStringArray(R.array.neighborhood_array);
-        ArrayAdapter<String> neighborhoodAdapter = new HintAdapter(
-                getActivity(), android.R.layout.simple_spinner_item, neighborhoods);
-        mNeighborhoodSpinner.setAdapter(neighborhoodAdapter);
-        mNeighborhoodSpinner.setSelection(neighborhoodAdapter.getCount());
+    private void setSpinnerContent(){
+        ArrayAdapter<CharSequence> neighborhoodAdapter =
+                ArrayAdapter.createFromResource(getActivity(),
+                                                R.array.neighborhood_array,
+                                                android.R.layout.simple_spinner_item);
+        mNeighborhoodSpinner.setAdapter(
+                new NothingSelectedSpinnerAdapter(
+                        neighborhoodAdapter,
+                        R.layout.neighborhood_spinner_row_nothing_selected,
+                        getActivity()));
     }
 
     /**
