@@ -186,7 +186,7 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
                     @Override
                     public void onError(Exception exception) {
 
-                        Log.e("Update Response Error", exception.getLocalizedMessage());
+                        Log.e("Update Response Error", exception.toString());
                     }
                 };
                 sendRequest(request, callback);
@@ -273,9 +273,12 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
             String year = userPreferences.getString("birthday_year", "");
             String month = userPreferences.getString("birthday_month", "");
             String day = userPreferences.getString("birthday_day", "");
-            String birthday = year + "-" + month + "-" + day;
 
-            fields.put("Birthdate__c", birthday);
+            if(!year.equals("") && !month.equals("") && !day.equals("")) {
+                String birthday = year + "-" + month + "-" + day;
+                fields.put("Birthdate__c", birthday);
+            }
+
 
             String phone = "";
             phone = phone + userPreferences.getString("phone_1", "");
