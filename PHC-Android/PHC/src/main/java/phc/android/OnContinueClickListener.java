@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.text.Layout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -81,9 +80,14 @@ public class OnContinueClickListener
                 mUserInfoEditor.putString(name, text);
             } else if (v instanceof Spinner) {
                 name = mContext.getResources().getResourceEntryName(v.getId());
-                String selection = ((Spinner) v).getSelectedItem().toString();
-                if (!Arrays.asList(this.sSpinnerNames).contains(selection)) {
-                    mUserInfoEditor.putString(name, selection);
+                Object item = ((Spinner) v).getSelectedItem();
+                if (item != null) {
+                    String selection = item.toString();
+                    if (!Arrays.asList(sSpinnerNames).contains(selection)) {
+                        mUserInfoEditor.putString(name, selection);
+                    }
+                } else {
+                    mUserInfoEditor.putString(name, null);
                 }
             } else if (v instanceof ViewGroup) {
                 updateSharedPreferences((ViewGroup) v);

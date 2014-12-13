@@ -75,9 +75,9 @@
     <string name="prompt_birthday_year">YYYY</string>
     <string name="prompt_phone">Phone</string>
     <string name="prompt_email">E-mail</string>
-    <string name="prompt_gender">Gender Identity</string>
-    <string name="prompt_ethnicity">Ethnicity</string>
-    <string name="prompt_language">Primary Language</string>
+    <string name="prompt_gender">Gender Identity...</string>
+    <string name="prompt_ethnicity">Ethnicity...</string>
+    <string name="prompt_language">Primary Language...</string>
     <string name="prompt_military">Served in the military?</string>
     <string name="prompt_foster">Been in Foster Care?</string>
 
@@ -85,7 +85,6 @@
         <item>Male</item>
         <item>Female</item>
         <item>Transgender</item>
-        <item>Gender Identity...</item>
     </string-array>
     <string-array name="ethnicity_array">
         <item>African American</item>
@@ -94,7 +93,6 @@
         <item>Caucasian</item>
         <item>Native American</item>
         <item>Other</item>
-        <item>Ethnicity...</item>
     </string-array>
     <string-array name="language_array">
         <item>English</item>
@@ -103,7 +101,6 @@
         <item>Vietnamese</item>
         <item>Russian</item>
         <item>Other</item>
-        <item>Primary Language...</item>
     </string-array>
 
     <string name="error_field_required">This field is required</string>
@@ -128,7 +125,6 @@
         <item>Tenderloin</item>
         <item>Mission</item>
         <item>Other</item>
-        <item>Neighborhood of Residence...</item>
     </string-array>
 
     <!-- Services Selection -->
