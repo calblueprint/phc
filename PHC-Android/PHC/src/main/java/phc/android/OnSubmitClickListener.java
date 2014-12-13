@@ -3,6 +3,7 @@ package phc.android;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
 
@@ -26,26 +27,7 @@ public class OnSubmitClickListener
      * clears SharedPreferences, and loads next fragment.
      */
     public void onClick(View view) {
-        writeToSalesforce();
         loadNextFragmentNew();
-    }
-
-    /**
-     * Writes each entry in SharedPreferences to Salesforce and clears all entries when done.
-     */
-    private void writeToSalesforce(){
-        Map<String, ?> keys = mUserInfo.getAll();
-
-        //write to SF database.
-        for (Map.Entry<String, ?> entry : keys.entrySet()) {
-//            Log.d(entry.toString(), entry.getValue().toString());
-//            Log.d("","");
-            //(convertToSalesForceKey(entry.toString()), entry.getValue().toString());
-        }
-
-        //clear SharedPreferences.
-//        mUserInfoEditor.clear();
-//        mUserInfoEditor.commit();
     }
 
     /**
