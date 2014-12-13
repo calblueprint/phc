@@ -149,6 +149,8 @@ public class MainActivity extends Activity
         super.onResume();
         checkConnectivity();
         setServicesEnabled(initialized);
+        setRegisterEnabled(initialized);
+        setExitEnabled(initialized);
         if (!initialized) {
             loginSalesforce(true);
         } else {
@@ -175,6 +177,48 @@ public class MainActivity extends Activity
             servicesButton.setTextColor(getResources().getColor(R.color.button_text_color));
         } else {
             servicesButton.setTextColor(Color.GRAY);
+        }
+    }
+
+    /**
+     * Used to let the user know if the services list has
+     * been initialized or not. Button presses are still
+     * enabled and will display a toast rather than opening
+     * services
+     * @param enabled is True if initialized, False otherwise.
+     */
+    private void setRegisterEnabled(boolean enabled) {
+        Button registerButton = (Button) findViewById(R.id.button_register);
+        /* This could be null if not logged in,
+         * in which case we just fail silently.
+         */
+        if (registerButton == null) { return; }
+
+        if (enabled) {
+            registerButton.setTextColor(getResources().getColor(R.color.button_text_color));
+        } else {
+            registerButton.setTextColor(Color.GRAY);
+        }
+    }
+
+    /**
+     * Used to let the user know if the services list has
+     * been initialized or not. Button presses are still
+     * enabled and will display a toast rather than opening
+     * services
+     * @param enabled is True if initialized, False otherwise.
+     */
+    private void setExitEnabled(boolean enabled) {
+        Button exitButton = (Button) findViewById(R.id.button_exit);
+        /* This could be null if not logged in,
+         * in which case we just fail silently.
+         */
+        if (exitButton == null) { return; }
+
+        if (enabled) {
+            exitButton.setTextColor(getResources().getColor(R.color.button_text_color));
+        } else {
+            exitButton.setTextColor(Color.GRAY);
         }
     }
 
@@ -493,6 +537,8 @@ public class MainActivity extends Activity
                         }
                         MainActivity.this.initialized = true;
                         setServicesEnabled(initialized);
+                        setRegisterEnabled(initialized);
+                        setExitEnabled(initialized);
 
                     } catch (Exception e) {
                         Log.e("Value Response Error 2", e.toString());
