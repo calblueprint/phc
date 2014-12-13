@@ -29,10 +29,14 @@ import com.salesforce.androidsdk.rest.RestResponse;
 import com.salesforce.androidsdk.security.PasscodeManager;
 import com.salesforce.androidsdk.util.UserSwitchReceiver;
 
+import org.apache.james.mime4j.field.datetime.DateTime;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -621,6 +625,120 @@ public class MainActivity extends Activity
         if(!isNetworkAvailable(this.getBaseContext())) {
             connectivityDialogue();
         }
+    }
+
+    /**
+     * Gets the status of a given service for a person with a specified qr code number.
+     * Requires the current event id.
+     *
+     * @param serviceName: the SalesForce field name of the required service.
+     * @param personNumber: the QR number of the person whose registration is needed.
+     */
+    private void getServiceStatus(final String serviceName, String personNumber) {
+        RestRequest serviceRequest = null;
+        String soql = "SELECT " + serviceName + " FROM Event_Registration__c ";
+        soql = soql + "WHERE PHC_Event__c = '" + mEventId + "' AND ";
+        soql = soql + "Number__c = '" + personNumber + "'";
+        try {
+            serviceRequest = RestRequest.getRequestForQuery(apiVersion, soql);
+
+            AsyncRequestCallback callback = new AsyncRequestCallback() {
+                @Override
+                public void onSuccess(RestRequest request, RestResponse response) {
+                    try {
+                        JSONObject json = response.asJSONObject();
+                        JSONObject item = (JSONObject) ((JSONArray)json.get("records")).get(0);
+                        String serviceValue = item.getString(serviceName);
+                        String registrationId = item.getString("id");
+                        //@TODO: Put logic using serviceValue here.
+                        //@TODO: Save this id and serviceValue. We'll need it for the next step.
+
+                    } catch (Exception e) {
+                        Log.e("Service Value Response Error", e.getLocalizedMessage());
+                    }
+
+                }
+
+                @Override
+                public void onError(Exception exception) {
+                    if (exception.getLocalizedMessage() != null) {
+                        Log.e("Service Value Response Error 2", exception.getLocalizedMessage());
+                    }
+                }
+            };
+
+            sendRequest(serviceRequest, callback);
+
+
+        } catch (Exception e) {
+            Log.e("Service Value Request Error", e.getLocalizedMessage());
+        }
+    }
+
+    /**
+     * Checks in a person to a given service by updating the service and its time field on the
+     * associated Event Registration object.
+     *
+     * @param serviceName: The SalesForce field name of the service being updated.
+     * @param currentStatus: The current value of the service being updated.
+     * @param Id: The Id of the Event Registration object to be updated.
+     */
+    private void checkinService(String serviceName,
+                                String currentStatus,
+                                String Id) {
+
+        RestRequest serviceRequest = null;
+        HashMap<String, Object> fields = new HashMap<String, Object>();
+
+        String newStatus;
+        if (currentStatus.equals("Applied")) {
+            newStatus = "Received";
+        } else {
+            newStatus = "Drop In";
+        }
+
+        fields.put(serviceName, newStatus);
+        Date date = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd\'T\'hh:mm:ss\'Z\'");
+        String formattedDate = df.format(date);
+        fields.put(serviceNameTimeHelper(serviceName), formattedDate);
+
+        try {
+            serviceRequest = RestRequest.getRequestForUpdate(apiVersion, "Event_Registration__c", Id, fields);
+
+            AsyncRequestCallback callback = new AsyncRequestCallback() {
+                @Override
+                public void onSuccess(RestRequest request, RestResponse response) {
+                        //@TODO: Display success message here.
+                }
+
+                @Override
+                public void onError(Exception exception) {
+                    if (exception.getLocalizedMessage() != null) {
+                        Log.e("Service Update Response Error", exception.toString());
+                    }
+                }
+            };
+
+            sendRequest(serviceRequest, callback);
+
+
+        } catch (Exception e) {
+            Log.e("Service Update Request Error", e.toString());
+        }
+    }
+
+    /**
+     * Helper to convert a SF Resource field name into its time field.
+     *
+     * @param serviceName: The field name of a given service
+     * @return: The field name with "_Time" appended to it
+     *          (e.g. Showers__c -> Showers_Time__c)
+     */
+    private String serviceNameTimeHelper(String serviceName) {
+        String timeString = serviceName.substring(0, serviceName.length()-3);
+        timeString = timeString + "_Time__c";
+        return timeString;
     }
 
 }
