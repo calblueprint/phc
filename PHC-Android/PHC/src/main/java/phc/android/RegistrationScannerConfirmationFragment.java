@@ -210,12 +210,12 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
 
             SharedPreferences servicePreferences = mUserInfo;
             for (String field : fields) {
+                Log.d("Field", field);
                 boolean fieldValue = servicePreferences.getBoolean(field, false);
                 if (fieldValue) {
                     fieldValues.put(field, "Applied");
                 }
             }
-            Log.d("Event", eventId);
             fieldValues.put("PHC_Event__c", eventId);
             fieldValues.put("Account__c", PersonId);
             fieldValues.put("Number__c", servicePreferences.getString(mName, "0"));
@@ -239,7 +239,7 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
                     @Override
                     public void onError(Exception exception) {
 
-                        Log.e("Update Response Error", exception.toString());
+                        Log.e("Register Response Error", exception.toString());
                     }
                 };
                 sendRequest(request, callback);
