@@ -27,31 +27,7 @@ public class OnSubmitClickListener
      * clears SharedPreferences, and loads next fragment.
      */
     public void onClick(View view) {
-        writeToSalesforce();
         loadNextFragmentNew();
-    }
-
-    /**
-     * Writes each entry in SharedPreferences to Salesforce and clears all entries when done.
-     */
-    private void writeToSalesforce(){
-        Map<String, ?> keys = mUserInfo.getAll();
-
-        //write to SF database.
-        for (Map.Entry<String, ?> entry : keys.entrySet()) {
-//            Log.d(entry.toString(), entry.getValue().toString());
-//            Log.d("","");
-            //(convertToSalesForceKey(entry.toString()), entry.getValue().toString());
-        }
-
-        //clear "UserInfo" and "SEARCH_RESULT_PREFERENCES" Shared Preferences files.
-        mUserInfoEditor.clear();
-        mUserInfoEditor.commit();
-
-        SharedPreferences.Editor searchResultsEditor = mContext.getSharedPreferences(
-                SearchResultsFragment.SEARCH_RESULT_PREFERENCES,Context.MODE_PRIVATE).edit();
-        searchResultsEditor.clear();
-        searchResultsEditor.commit();
     }
 
     /**

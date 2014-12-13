@@ -50,7 +50,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
     private static final String TAG = "Search";
     private static final String SEARCH_PATH = "/api/v1/search";
     private static final String AUTH_TOKEN = "phcplusplus";
-    public static final String SEARCH_RESULT_PREFERENCES = "SEARCH_RESULT_PREFERENCES";
+    public static final String SEARCH_RESULT = "SEARCH_RESULT";
     private ProgressDialog progressDialog;
 
     @Override
@@ -66,6 +66,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
         progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                requestQueue.cancelAll(TAG);
                 dialog.dismiss();
             }
         });
@@ -87,7 +88,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
         SharedPreferences searchPreferences = getActivity().getSharedPreferences(SearchFragment.SEARCH_PARAMETERS, 0);
         final String firstName = searchPreferences.getString("firstName", null);
         final String lastName = searchPreferences.getString("lastName", null);
-        final SimpleDateFormat df = new SimpleDateFormat();
+        final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
         //If there are search parameters,
         if(firstName != null && lastName != null) {
@@ -159,6 +160,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                 }
             };
 
+            searchResultsRequest.setTag(TAG);
             requestQueue.add(searchResultsRequest);
         }
 
@@ -182,7 +184,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                 @Override
                 public void onSuccess(RestRequest request, RestResponse response) {
                     Activity activity = SearchResultsFragment.this.getActivity();
-                    SharedPreferences sharedPreferences = activity.getSharedPreferences(SEARCH_RESULT_PREFERENCES, 0);
+                    SharedPreferences sharedPreferences = activity.getSharedPreferences(SEARCH_RESULT, 0);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     try {
                         JSONObject jsonResponse = response.asJSONObject();
@@ -216,7 +218,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
 
                 @Override
                 public void onError(Exception exception) {
-
+                    Log.e("Search Response Error", exception.toString());
                 }
             };
             sendRequest(request, callback);

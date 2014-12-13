@@ -28,6 +28,9 @@ public class RegisterActivity extends Activity {
     /** ArrayList of spinner descriptions. */
     private static ArrayList<String> sSpinnerNames;
 
+    /** The id of the current PHC Event. Should be passed in with intent from MainActivity.*/
+    private String mEventId;
+
     protected RestClient client;
     private PasscodeManager passcodeManager;
 
@@ -41,7 +44,6 @@ public class RegisterActivity extends Activity {
         setContentView(R.layout.activity_register);
         ActionBar actionbar = getActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
-
         setServices();
 
         // Passcode manager
@@ -79,6 +81,7 @@ public class RegisterActivity extends Activity {
         mServices = (HashMap<String,String>) intent.getSerializableExtra("services_hashmap");
         mServiceSFNames = mServices.keySet().toArray(new String[0]);
         Arrays.sort(mServiceSFNames);
+        mEventId = intent.getStringExtra("event_id");
     }
 
     /**
@@ -119,4 +122,9 @@ public class RegisterActivity extends Activity {
 
     /** Static method that returns a string array of salesforce names for all services. */
     public String[] getServiceSFNames() { return this.mServiceSFNames; }
+
+    /** Method that returns the id of the current PHC Event, passed in through an intent from MainActivity.*/
+    public String getmEventId() {
+        return mEventId;
+    }
 }

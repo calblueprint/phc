@@ -67,6 +67,10 @@ public class MainActivity extends Activity
     /** Holds the service provided by the user, selected in the ServiceActivity alert dialog. */
     private String mProvidedService;
 
+    /** Holds the event Id of the most recently created PHC Event, treated in the app as the current
+     * event. */
+    private String mEventId = "";
+
     /* Holds a toast that shows the data retrieval
      * incomplete message.
      */
@@ -145,6 +149,8 @@ public class MainActivity extends Activity
         super.onResume();
         checkConnectivity();
         setServicesEnabled(initialized);
+        setRegisterEnabled(initialized);
+        setExitEnabled(initialized);
         if (!initialized) {
             loginSalesforce(true);
         } else {
@@ -171,6 +177,48 @@ public class MainActivity extends Activity
             servicesButton.setTextColor(getResources().getColor(R.color.button_text_color));
         } else {
             servicesButton.setTextColor(Color.GRAY);
+        }
+    }
+
+    /**
+     * Used to let the user know if the services list has
+     * been initialized or not. Button presses are still
+     * enabled and will display a toast rather than opening
+     * services
+     * @param enabled is True if initialized, False otherwise.
+     */
+    private void setRegisterEnabled(boolean enabled) {
+        Button registerButton = (Button) findViewById(R.id.button_register);
+        /* This could be null if not logged in,
+         * in which case we just fail silently.
+         */
+        if (registerButton == null) { return; }
+
+        if (enabled) {
+            registerButton.setTextColor(getResources().getColor(R.color.button_text_color));
+        } else {
+            registerButton.setTextColor(Color.GRAY);
+        }
+    }
+
+    /**
+     * Used to let the user know if the services list has
+     * been initialized or not. Button presses are still
+     * enabled and will display a toast rather than opening
+     * services
+     * @param enabled is True if initialized, False otherwise.
+     */
+    private void setExitEnabled(boolean enabled) {
+        Button exitButton = (Button) findViewById(R.id.button_exit);
+        /* This could be null if not logged in,
+         * in which case we just fail silently.
+         */
+        if (exitButton == null) { return; }
+
+        if (enabled) {
+            exitButton.setTextColor(getResources().getColor(R.color.button_text_color));
+        } else {
+            exitButton.setTextColor(Color.GRAY);
         }
     }
 
@@ -286,6 +334,8 @@ public class MainActivity extends Activity
     public void openRegister(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
         intent.putExtra("services_hashmap", (HashMap) getResourceList());
+        Log.d("Id", mEventId);
+        intent.putExtra("event_id", mEventId);
         startActivity(intent);
     }
 
@@ -380,9 +430,10 @@ public class MainActivity extends Activity
                         JSONObject json = response.asJSONObject();
                         JSONObject item = (JSONObject) ((JSONArray)json.get("records")).get(0);
                         String id = item.getString("Id");
+                        MainActivity.this.mEventId = id;
                         MainActivity.this.describeResources(id);
                     } catch (Exception e) {
-                        Log.e("Id Response Error", e.getLocalizedMessage());
+                        Log.e("Id Response Error", e.toString());
                     }
 
 
@@ -391,7 +442,7 @@ public class MainActivity extends Activity
                 @Override
                 public void onError(Exception exception) {
                     if (exception.getLocalizedMessage() != null) {
-                        Log.e("Id Response Error 2", exception.getLocalizedMessage());
+                        Log.e("Id Response Error 2", exception.toString());
                     }
                 }
             };
@@ -400,7 +451,7 @@ public class MainActivity extends Activity
 
 
         } catch (Exception e) {
-            Log.e("Id Request Error", e.getLocalizedMessage());
+            Log.e("Id Request Error", e.toString());
         }
     }
 
@@ -435,20 +486,20 @@ public class MainActivity extends Activity
                         MainActivity.this.getResourceValues(eventId, fields);
 
                     } catch (Exception e) {
-                        Log.e("Field Response Error", e.getLocalizedMessage());
+                        Log.e("Field Response Error", e.toString());
                     }
                 }
 
                 @Override
                 public void onError(Exception exception) {
-                    Log.e("Field Response Error 2", exception.getLocalizedMessage());
+                    Log.e("Field Response Error 2", exception.toString());
                 }
             };
 
             sendRequest(fieldRequest, callback);
 
         } catch (Exception e) {
-            Log.e("Field Request Exception", e.getLocalizedMessage());
+            Log.e("Field Request Exception", e.toString());
         }
     }
 
@@ -486,6 +537,8 @@ public class MainActivity extends Activity
                         }
                         MainActivity.this.initialized = true;
                         setServicesEnabled(initialized);
+                        setRegisterEnabled(initialized);
+                        setExitEnabled(initialized);
 
                     } catch (Exception e) {
                         Log.e("Value Response Error 2", e.toString());
