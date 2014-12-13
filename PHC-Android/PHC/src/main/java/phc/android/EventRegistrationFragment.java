@@ -124,7 +124,10 @@ public class EventRegistrationFragment extends RegistrationFragment{
      * Sets multiple choice options for the neighborhood spinner.
      */
     private void setSpinnerContent(){
-        ArrayAdapter<CharSequence> neighborhoodAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.neighborhood_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> neighborhoodAdapter =
+                ArrayAdapter.createFromResource(getActivity(),
+                                                R.array.neighborhood_array,
+                                                android.R.layout.simple_spinner_item);
         mNeighborhoodSpinner.setAdapter(
                 new NothingSelectedSpinnerAdapter(
                         neighborhoodAdapter,

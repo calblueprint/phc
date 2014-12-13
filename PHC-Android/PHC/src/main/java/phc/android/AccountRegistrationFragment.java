@@ -123,21 +123,30 @@ public class AccountRegistrationFragment extends Fragment {
      * initializes spinners with hints.
      */
     private void setSpinnerContent() {
-        ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.gender_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> genderAdapter =
+                ArrayAdapter.createFromResource(getActivity(),
+                                                R.array.gender_array,
+                                                android.R.layout.simple_spinner_item);
         mGenderSpinner.setAdapter(
                 new NothingSelectedSpinnerAdapter(
                         genderAdapter,
                         R.layout.gender_spinner_row_nothing_selected,
                         getActivity()));
 
-        ArrayAdapter<CharSequence> ethnicityAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.ethnicity_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> ethnicityAdapter =
+                ArrayAdapter.createFromResource(getActivity(),
+                                                R.array.ethnicity_array,
+                                                android.R.layout.simple_spinner_item);
         mEthnicitySpinner.setAdapter(
                 new NothingSelectedSpinnerAdapter(
                         ethnicityAdapter,
                         R.layout.ethnicity_spinner_row_nothing_selected,
                         getActivity()));
 
-        ArrayAdapter<CharSequence> languageAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.language_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> languageAdapter =
+                ArrayAdapter.createFromResource(getActivity(),
+                                                R.array.language_array,
+                                                android.R.layout.simple_spinner_item);
         mLanguageSpinner.setAdapter(
                 new NothingSelectedSpinnerAdapter(
                         languageAdapter,
