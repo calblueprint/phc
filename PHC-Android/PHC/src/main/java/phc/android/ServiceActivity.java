@@ -94,6 +94,9 @@ public class ServiceActivity extends Activity {
         setContentView(R.layout.activity_service);
         ActionBar actionbar = getActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
+        mMainActivity = (MainActivity) MainActivity.getContext();
+        mEventID = mMainActivity.getEventID();
+        mApiVersion = mMainActivity.getApiVersion();
 
         if (findViewById(R.id.service_fragment_container) != null) {
             /* However, if we're being restored from a previous state,
@@ -123,9 +126,6 @@ public class ServiceActivity extends Activity {
             t.add(R.id.service_fragment_container, mScannerFragment);
             t.commit();
         }
-        mMainActivity = (MainActivity) MainActivity.getContext();
-        mEventID = mMainActivity.getEventID();
-        mApiVersion = mMainActivity.getApiVersion();
     }
 
     /**
