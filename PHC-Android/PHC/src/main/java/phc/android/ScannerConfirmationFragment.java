@@ -152,8 +152,9 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
      */
     protected void recordScan() {
         ServiceActivity activity = (ServiceActivity) getActivity();
-        activity.storeScanResult(mScanResult.toString());
-        showSuccessToast();
+        activity.recordResult((String) mScanResult);
+        //activity.storeScanResult(mScanResult.toString());
+        //showSuccessToast();
     }
 
     /**

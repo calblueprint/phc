@@ -87,7 +87,8 @@ public class ScannerFragment extends Fragment {
             if (isValidInput(mCodeInput.getText())) {
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(mCodeInput.getWindowToken(), 0);
-                confirmScan(result, true);
+                CharSequence trimmedResult = (result.toString()).trim();
+                confirmScan(trimmedResult, true);
             } else {
                 displayInvalidInputToast();
             }
