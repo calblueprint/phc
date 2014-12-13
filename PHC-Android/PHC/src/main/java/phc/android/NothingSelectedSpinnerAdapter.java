@@ -1,8 +1,5 @@
 package phc.android;
 
-/**
- * Created by jason on 12/12/14.
- */
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.view.LayoutInflater;
@@ -14,6 +11,8 @@ import android.widget.SpinnerAdapter;
 /**
  * Decorator Adapter to allow a Spinner to show a 'Nothing Selected...' initially
  * displayed instead of the first choice in the Adapter.
+ *
+ * Kudos to @aaronvargas on S.O. (https://stackoverflow.com/questions/867518/how-to-make-an-android-spinner-with-initial-text-select-one/23005376#23005376)
  */
 public class NothingSelectedSpinnerAdapter implements SpinnerAdapter, ListAdapter {
 

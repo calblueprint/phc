@@ -56,7 +56,6 @@ public class AccountRegistrationFragment extends Fragment {
 
     @Override
     public void onResume() {
-        Log.v("in onResume", "hello");
         LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.sidebar_list);
         for (int i = 0; i < sidebarList.getChildCount(); i++) {
             View v = sidebarList.getChildAt(i);
