@@ -728,6 +728,13 @@ public class MainActivity extends Activity
         }
     }
 
+    /**
+     * Helper to convert a SF Resource field name into its time field.
+     *
+     * @param serviceName: The field name of a given service
+     * @return: The field name with "_Time" appended to it
+     *          (e.g. Showers__c -> Showers_Time__c)
+     */
     private String serviceNameTimeHelper(String serviceName) {
         String timeString = serviceName.substring(0, serviceName.length()-3);
         timeString = timeString + "_Time__c";
