@@ -548,11 +548,12 @@ public class ServiceActivity extends Activity {
                 public void onError(Exception exception) {
                     if (exception.getLocalizedMessage() != null) {
                         Log.e("Service Update Response Error", exception.toString());
-                        showFailureAlertDialog("Your code is valid but there was an error updating the data. Please try again or contact support.");
-                    } else {
-                        /** This is a Volley unexpected response code, most likely 400 **/
-                        showFailureAlertDialog("The code you submitted does not exist on the server. Please check to make sure it is correct and retry.");
+                        if (exception.getCause() instanceof HttpAccess.NoNetworkException) {
+                            showFailureAlertDialog("No network connection found. Please check the connection and try again.");
+                            return;
+                        }
                     }
+                    showFailureAlertDialog("Your code is valid but there was an error updating the data. Please try again or contact support.");
                 }
             };
 
