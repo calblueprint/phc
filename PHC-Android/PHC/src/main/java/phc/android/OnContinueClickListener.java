@@ -11,6 +11,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.util.Arrays;
+
 /**
  * OnContinueClickListener stores all view inputs into SharedPreferences
  * when the continue button is clicked.
@@ -25,6 +27,9 @@ public class OnContinueClickListener
     private Fragment mNextFrag;
     /** Name of next fragment to navigate to. */
     private String mNextFragName;
+    /** List of spinner descriptions. */
+    private static String[] sSpinnerNames = {"Gender Identity...", "Ethnicity...",
+                "Primary Language...", "Neighborhood of Residence..."};
 
     /**
      * Calls constructor of superclass to create SharedPreference instance
@@ -77,7 +82,9 @@ public class OnContinueClickListener
             } else if (v instanceof Spinner) {
                 name = mContext.getResources().getResourceEntryName(v.getId());
                 String selection = ((Spinner) v).getSelectedItem().toString();
-                mUserInfoEditor.putString(name, selection);
+                if (!Arrays.asList(this.sSpinnerNames).contains(selection)) {
+                    mUserInfoEditor.putString(name, selection);
+                }
             } else if (v instanceof ViewGroup) {
                 updateSharedPreferences((ViewGroup) v);
             }

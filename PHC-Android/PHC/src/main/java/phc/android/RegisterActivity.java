@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import com.salesforce.androidsdk.app.SalesforceSDKManager;
 import com.salesforce.androidsdk.rest.ClientManager;
@@ -24,6 +25,8 @@ public class RegisterActivity extends Activity {
     private HashMap<String,String> mServices;
     /** Sorted array of all service salesforce names (keys of the hashmap). */
     private String[] mServiceSFNames;
+    /** ArrayList of spinner descriptions. */
+    private static ArrayList<String> sSpinnerNames;
 
     protected RestClient client;
     private PasscodeManager passcodeManager;
@@ -39,11 +42,7 @@ public class RegisterActivity extends Activity {
         ActionBar actionbar = getActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
 
-        Intent intent = getIntent();
-
-        mServices = (HashMap<String,String>) intent.getSerializableExtra("services_hashmap");
-        mServiceSFNames = mServices.keySet().toArray(new String[0]);
-        Arrays.sort(mServiceSFNames);
+        setServices();
 
         // Passcode manager
         Log.d("Passcode Manager", "new");
@@ -70,6 +69,16 @@ public class RegisterActivity extends Activity {
             t.add(R.id.registration_fragment_container, firstFragment, getResources().getString(R.string.sidebar_selection));
             t.commit();
         }
+    }
+
+    /**
+     * Grabs services from MainActivity and creates sorted array of service names.
+     */
+    protected void setServices(){
+        Intent intent = getIntent();
+        mServices = (HashMap<String,String>) intent.getSerializableExtra("services_hashmap");
+        mServiceSFNames = mServices.keySet().toArray(new String[0]);
+        Arrays.sort(mServiceSFNames);
     }
 
     /**
