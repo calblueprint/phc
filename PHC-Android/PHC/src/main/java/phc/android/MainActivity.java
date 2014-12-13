@@ -581,7 +581,13 @@ public class MainActivity extends Activity
         }
     }
 
-
+    /**
+     * Gets the status of a given service for a person with a specified qr code number.
+     * Requires the current event id.
+     *
+     * @param serviceName: the SalesForce field name of the required service.
+     * @param personNumber: the QR number of the person whose registration is needed.
+     */
     private void getServiceStatus(final String serviceName, String personNumber) {
         RestRequest serviceRequest = null;
         String soql = "SELECT " + serviceName + " FROM Event_Registration__c ";
@@ -623,6 +629,14 @@ public class MainActivity extends Activity
         }
     }
 
+    /**
+     * Checks in a person to a given service by updating the service and its time field on the
+     * associated Event Registration object.
+     *
+     * @param serviceName: The SalesForce field name of the service being updated.
+     * @param currentStatus: The current value of the service being updated.
+     * @param Id: The Id of the Event Registration object to be updated.
+     */
     private void checkinService(String serviceName,
                                 String currentStatus,
                                 String Id) {
