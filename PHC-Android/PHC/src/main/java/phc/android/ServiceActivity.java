@@ -534,8 +534,16 @@ public class ServiceActivity extends Activity {
         String newStatus;
         if (currentStatus.equals("Applied")) {
             newStatus = "Received";
+            showPreviousState("This is their first time", mServiceSelected);
+        } else if (currentStatus.equals("Received")) {
+            newStatus = "Received";
+            showPreviousState("They have already received this service", mServiceSelected);
+        } else if (currentStatus.equals("None")) {
+            newStatus = "Drop In";
+            showPreviousState("They are a drop in", mServiceSelected);
         } else {
             newStatus = "Drop In";
+            showPreviousState("They already dropped in prior", mServiceSelected);
         }
 
         fields.put(serviceName, newStatus);
@@ -616,4 +624,13 @@ public class ServiceActivity extends Activity {
         toast.show();
     }
 
+    /** Shows the previous registration status through
+     * a MESSAGE for the service TITLE. */
+    private void showPreviousState(String message, String title) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message)
+                .setTitle(title);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 }
