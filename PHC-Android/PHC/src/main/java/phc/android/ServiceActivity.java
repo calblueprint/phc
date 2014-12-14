@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,8 +16,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.salesforce.androidsdk.auth.HttpAccess;
+import com.salesforce.androidsdk.rest.RestClient;
+import com.salesforce.androidsdk.rest.RestRequest;
+import com.salesforce.androidsdk.rest.RestResponse;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /** Call with resultCode of 0 if providing a service.
@@ -29,6 +43,9 @@ public class ServiceActivity extends Activity {
 
     /** Created when selecting the provided service */
     public static AlertDialog mServiceDialog;
+
+    /** Created to tell the user they submitted an invalid code */
+    public static AlertDialog mFailureDialog;
 
     /** Used in error logs to identify this activity. */
     public static final String TAG = "ServiceActivity";
@@ -56,6 +73,20 @@ public class ServiceActivity extends Activity {
      */
     private static CharSequence[] services;
 
+    /** Contains both service keys and values to do
+     * REST requests.
+     */
+    private static HashMap<String, String> servicesHashMap;
+
+    /** MainActivity's event id */
+    private String mEventID;
+
+    /** MainActivity's api version */
+    private String mApiVersion;
+
+    /** Used to hold an instance of the MainActivity */
+    private MainActivity mMainActivity;
+
     /**
      * As soon as the activity starts, this sets up
      * the camera preview and the listener for the camera
@@ -69,6 +100,9 @@ public class ServiceActivity extends Activity {
         setContentView(R.layout.activity_service);
         ActionBar actionbar = getActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
+        mMainActivity = (MainActivity) MainActivity.getContext();
+        mEventID = mMainActivity.getEventID();
+        mApiVersion = mMainActivity.getApiVersion();
 
         if (findViewById(R.id.service_fragment_container) != null) {
             /* However, if we're being restored from a previous state,
@@ -80,6 +114,7 @@ public class ServiceActivity extends Activity {
                 int intention = (Integer) bundle.get("request_code");
                 /* This cannot be null! */
                 services = bundle.getCharSequenceArray("services_list");
+                servicesHashMap = (HashMap<String, String>) bundle.getSerializable("services_hash");
                 if (bundle.get("provided_service") == null && intention == MainActivity.FOR_SERVICE) {
                     showSelectServiceDialog(true);
                 } else {
@@ -87,6 +122,7 @@ public class ServiceActivity extends Activity {
                 }
             } else {
                 services = savedInstanceState.getCharSequenceArray("services_list");
+                servicesHashMap = (HashMap<String, String>) savedInstanceState.getSerializable("services_hash");
                 mServiceSelected = (String) savedInstanceState.getCharSequence("provided_service");
                 return;
             }
@@ -174,6 +210,69 @@ public class ServiceActivity extends Activity {
         }
     }
 
+    /**
+     * Uses a DialogFragment to display an AlertDialog to the user.
+     * The newInstance() method must be used to create a new instance.
+     */
+    public static class FailureAlertDialogFragment extends DialogFragment {
+
+        static String message;
+
+        /**
+         * Used to create a new instance of this fragment. Only one instance
+         * should be used at any given time as this is a static class.
+         * @param message is the message to show the user
+         * False otherwise
+         * @return
+         */
+        public static FailureAlertDialogFragment newInstance(String message) {
+            FailureAlertDialogFragment frag = new FailureAlertDialogFragment();
+            FailureAlertDialogFragment.message = message;
+            return frag;
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            return createFailureAlertDialog(message);
+        }
+
+        /**
+         * Override the onCancel method in the DialogFragment
+         * to prevent cancellation when service has not been
+         * set.
+         * @param dialogInterface
+         */
+        @Override
+        public void onCancel(DialogInterface dialogInterface) {
+            /** Do nothing for now, we may want to change this later */
+        }
+
+        /**
+         *
+         * @param message is the message to show the user.
+         * @return a Dialog that will be shown to the user.
+         */
+        private Dialog createFailureAlertDialog(String message) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+            builder.setTitle("Error Notice");
+            builder.setMessage(message);
+            builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    mFailureDialog.dismiss();
+                }
+            });
+            mFailureDialog = builder.create();
+            mFailureDialog.setCanceledOnTouchOutside(false);
+            return mFailureDialog;
+        }
+    }
+
+    private void showFailureAlertDialog(String message) {
+        DialogFragment newFrag = FailureAlertDialogFragment.newInstance(message);
+        newFrag.show(getFragmentManager(), "FailureDialog");
+
+    }
 
     /**
      * Displays a dialog box that prompts the user to select the service
@@ -187,7 +286,9 @@ public class ServiceActivity extends Activity {
 
     /**
      * Can be called by other activities or
-     * fragments to store scan results
+     * fragments to store scan results.
+     * Not currently used, but may be
+     * useful later.
      * @param result String scan result
      */
     public void storeScanResult(String result) {
@@ -325,6 +426,7 @@ public class ServiceActivity extends Activity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putCharSequenceArray("services_list", services);
+        outState.putSerializable("services_hash", servicesHashMap);
         outState.putCharSequence("provided_service", mServiceSelected);
     }
 
@@ -350,4 +452,168 @@ public class ServiceActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    protected void recordResult(String code) {
+        getServiceStatus(getKeyByValue(servicesHashMap, mServiceSelected), code);
+    }
+
+    /**
+     * Gets the status of a given service for a person with a specified qr code number.
+     * Requires the current event id.
+     *
+     * @param serviceName: the SalesForce field name of the required service.
+     * @param personNumber: the QR number of the person whose registration is needed.
+     */
+    private void getServiceStatus(final String serviceName, String personNumber) {
+        RestRequest serviceRequest = null;
+        String soql = "SELECT " + serviceName + " FROM Event_Registration__c ";
+        soql = soql + "WHERE PHC_Event__c = '" + mEventID + "' AND ";
+        soql = soql + "Number__c = '" + personNumber + "'";
+        try {
+            serviceRequest = RestRequest.getRequestForQuery(mApiVersion, soql);
+
+            RestClient.AsyncRequestCallback callback = new RestClient.AsyncRequestCallback() {
+                @Override
+                public void onSuccess(RestRequest request, RestResponse response) {
+                    try {
+                        JSONObject json = response.asJSONObject();
+                        JSONObject item = (JSONObject) ((JSONArray)json.get("records")).get(0);
+                        String serviceValue = item.getString(serviceName);
+                        String registrationId = item.getString("id");
+                        //@TODO: Put logic using serviceValue here.
+                        //@TODO: Save this id and serviceValue. We'll need it for the next step.
+                        // May want to save this rather than calling checkinService
+                        checkinService(mServiceSelected, serviceValue, registrationId);
+
+                    } catch (Exception e) {
+                        Log.e("Service Value Response Error", e.getLocalizedMessage());
+                        showFailureAlertDialog("The given code is invalid. Please enter a valid code and try again.");
+                    }
+                }
+
+                @Override
+                public void onError(Exception exception) {
+                    if (exception.getLocalizedMessage() != null) {
+                        Log.e("Service Value Response Error 2", exception.getLocalizedMessage());
+                        if (exception.getCause() instanceof HttpAccess.NoNetworkException) {
+                            showFailureAlertDialog("No network connection found. Please check the connection and try again.");
+                        }
+                    } else {
+                        /** This is a Volley unexpected response code, most likely 400 **/
+                        showFailureAlertDialog("The code you submitted does not exist on the server. Please check to make sure it is correct and retry.");
+                    }
+                }
+            };
+
+            mMainActivity.sendRequest(serviceRequest, callback);
+
+
+        } catch (Exception e) {
+            if (e.getLocalizedMessage() != null) {
+                Log.e("Service Value Request Error", e.getLocalizedMessage());
+            }
+            showFailureAlertDialog("An unexpected error occurred while processing your request. Please contact technical support.");
+        }
+    }
+
+    /**
+     * Checks in a person to a given service by updating the service and its time field on the
+     * associated Event Registration object.
+     *
+     * @param serviceName: The SalesForce field name of the service being updated.
+     * @param currentStatus: The current value of the service being updated.
+     * @param Id: The Id of the Event Registration object to be updated.
+     */
+    private void checkinService(String serviceName,
+                                String currentStatus,
+                                String Id) {
+
+        RestRequest serviceRequest = null;
+        HashMap<String, Object> fields = new HashMap<String, Object>();
+
+        String newStatus;
+        if (currentStatus.equals("Applied")) {
+            newStatus = "Received";
+        } else {
+            newStatus = "Drop In";
+        }
+
+        fields.put(serviceName, newStatus);
+        Date date = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd\'T\'hh:mm:ss\'Z\'");
+        String formattedDate = df.format(date);
+        fields.put(serviceNameTimeHelper(serviceName), formattedDate);
+
+        try {
+            serviceRequest = RestRequest.getRequestForUpdate(mApiVersion, "Event_Registration__c", Id, fields);
+
+            RestClient.AsyncRequestCallback callback = new RestClient.AsyncRequestCallback() {
+                @Override
+                public void onSuccess(RestRequest request, RestResponse response) {
+                    showSuccessToast();
+                }
+
+                @Override
+                public void onError(Exception exception) {
+                    if (exception.getLocalizedMessage() != null) {
+                        Log.e("Service Update Response Error", exception.toString());
+                        if (exception.getCause() instanceof HttpAccess.NoNetworkException) {
+                            showFailureAlertDialog("No network connection found. Please check the connection and try again.");
+                            return;
+                        }
+                    }
+                    showFailureAlertDialog("Your code is valid but there was an error updating the data. Please try again or contact support.");
+                }
+            };
+
+            mMainActivity.sendRequest(serviceRequest, callback);
+
+
+        } catch (Exception e) {
+            Log.e("Service Update Request Error", e.toString());
+            showFailureAlertDialog("An unexpected error occurred while processing your request. Please contact technical support.");
+        }
+    }
+
+    /**
+     * Helper for finding the appropriate key in the
+     * services HashMap for a given value.
+     * @param map should be the services HashMap
+     * @param value is the value to get the key with
+     * @return String key corresponding to value
+     */
+    public static String getKeyByValue(HashMap<String, String> map, String value) {
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            if (value.equals(entry.getValue())) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Helper to convert a SF Resource field name into its time field.
+     *
+     * @param serviceName: The field name of a given service
+     * @return: The field name with "_Time" appended to it
+     *          (e.g. Showers__c -> Showers_Time__c)
+     */
+    private String serviceNameTimeHelper(String serviceName) {
+        String timeString = serviceName.substring(0, serviceName.length()-3);
+        timeString = timeString + "_Time__c";
+        return timeString;
+    }
+
+    /**
+     * Displays a success message at the bottom of
+     * the screen.
+     */
+    protected void showSuccessToast() {
+        Context c = getApplicationContext();
+        CharSequence message = getResources().getString(R.string.scan_success);
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(c, message, duration);
+        toast.show();
+    }
+
 }

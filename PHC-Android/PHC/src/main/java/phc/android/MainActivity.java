@@ -48,6 +48,8 @@ public class MainActivity extends Activity
     private String apiVersion;
     private RestClient client;
     private UserSwitchReceiver userSwitchReceiver;
+    /** Used by ServiceActivity to perform REST requests */
+    private static Context mContext;
 
     /** Hashmap of all services being offered at the event, where the Key is the Salesforce name
     of the service (e.g. "acupuncture__c") and the value is the converted name of the service (e.g.
@@ -111,6 +113,7 @@ public class MainActivity extends Activity
         else{
             setContentView(R.layout.activity_main);
         }
+        mContext = this;
         super.onCreate(savedInstanceState);
     }
 
@@ -293,13 +296,16 @@ public class MainActivity extends Activity
         intent.putExtra("provided_service", mProvidedService);
         intent.putExtra("request_code", FOR_SERVICE);
         CharSequence[] services = null;
+        HashMap<String, String> servicesHashMap = null;
         if (!initialized) {
             Log.d("MainActivity", "Resources list not initialized");
         } else {
-            services = getResourceList().values().toArray(new CharSequence[0]);
+            servicesHashMap = (HashMap<String, String>) getResourceList();
+            services = servicesHashMap.values().toArray(new CharSequence[0]);
         }
         if (services != null) {
             intent.putExtra("services_list", services);
+            intent.putExtra("services_hash", servicesHashMap);
             /* Called with forResult so we can record the provided service if
              * the user goes back to the MainActivity.
              */
@@ -376,7 +382,7 @@ public class MainActivity extends Activity
      * @param callback - The functions that get called when yhe response comes back
      *                   Modify UI elements here.
      */
-    private void sendRequest(RestRequest request, AsyncRequestCallback callback) {
+    protected void sendRequest(RestRequest request, AsyncRequestCallback callback) {
 
         try {
 
@@ -628,117 +634,30 @@ public class MainActivity extends Activity
     }
 
     /**
-     * Gets the status of a given service for a person with a specified qr code number.
-     * Requires the current event id.
-     *
-     * @param serviceName: the SalesForce field name of the required service.
-     * @param personNumber: the QR number of the person whose registration is needed.
+     * Used by ServiceActivity to access
+     * event ID
+     * @return event id
      */
-    private void getServiceStatus(final String serviceName, String personNumber) {
-        RestRequest serviceRequest = null;
-        String soql = "SELECT " + serviceName + " FROM Event_Registration__c ";
-        soql = soql + "WHERE PHC_Event__c = '" + mEventId + "' AND ";
-        soql = soql + "Number__c = '" + personNumber + "'";
-        try {
-            serviceRequest = RestRequest.getRequestForQuery(apiVersion, soql);
-
-            AsyncRequestCallback callback = new AsyncRequestCallback() {
-                @Override
-                public void onSuccess(RestRequest request, RestResponse response) {
-                    try {
-                        JSONObject json = response.asJSONObject();
-                        JSONObject item = (JSONObject) ((JSONArray)json.get("records")).get(0);
-                        String serviceValue = item.getString(serviceName);
-                        String registrationId = item.getString("id");
-                        //@TODO: Put logic using serviceValue here.
-                        //@TODO: Save this id and serviceValue. We'll need it for the next step.
-
-                    } catch (Exception e) {
-                        Log.e("Service Value Response Error", e.getLocalizedMessage());
-                    }
-
-                }
-
-                @Override
-                public void onError(Exception exception) {
-                    if (exception.getLocalizedMessage() != null) {
-                        Log.e("Service Value Response Error 2", exception.getLocalizedMessage());
-                    }
-                }
-            };
-
-            sendRequest(serviceRequest, callback);
-
-
-        } catch (Exception e) {
-            Log.e("Service Value Request Error", e.getLocalizedMessage());
-        }
+    protected String getEventID() {
+        return mEventId;
     }
 
     /**
-     * Checks in a person to a given service by updating the service and its time field on the
-     * associated Event Registration object.
-     *
-     * @param serviceName: The SalesForce field name of the service being updated.
-     * @param currentStatus: The current value of the service being updated.
-     * @param Id: The Id of the Event Registration object to be updated.
+     * Used by ServiceActivity to access
+     * api version
+     * @return api version
      */
-    private void checkinService(String serviceName,
-                                String currentStatus,
-                                String Id) {
-
-        RestRequest serviceRequest = null;
-        HashMap<String, Object> fields = new HashMap<String, Object>();
-
-        String newStatus;
-        if (currentStatus.equals("Applied")) {
-            newStatus = "Received";
-        } else {
-            newStatus = "Drop In";
-        }
-
-        fields.put(serviceName, newStatus);
-        Date date = new Date();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd\'T\'hh:mm:ss\'Z\'");
-        String formattedDate = df.format(date);
-        fields.put(serviceNameTimeHelper(serviceName), formattedDate);
-
-        try {
-            serviceRequest = RestRequest.getRequestForUpdate(apiVersion, "Event_Registration__c", Id, fields);
-
-            AsyncRequestCallback callback = new AsyncRequestCallback() {
-                @Override
-                public void onSuccess(RestRequest request, RestResponse response) {
-                        //@TODO: Display success message here.
-                }
-
-                @Override
-                public void onError(Exception exception) {
-                    if (exception.getLocalizedMessage() != null) {
-                        Log.e("Service Update Response Error", exception.toString());
-                    }
-                }
-            };
-
-            sendRequest(serviceRequest, callback);
-
-
-        } catch (Exception e) {
-            Log.e("Service Update Request Error", e.toString());
-        }
+    protected String getApiVersion() {
+        return apiVersion;
     }
 
-    /**
-     * Helper to convert a SF Resource field name into its time field.
-     *
-     * @param serviceName: The field name of a given service
-     * @return: The field name with "_Time" appended to it
-     *          (e.g. Showers__c -> Showers_Time__c)
-     */
-    private String serviceNameTimeHelper(String serviceName) {
-        String timeString = serviceName.substring(0, serviceName.length()-3);
-        timeString = timeString + "_Time__c";
-        return timeString;
+   /**
+    * Used by ServiceActivity to access
+    * this activity's context
+    * @return Context
+    */
+    protected static Context getContext() {
+        return mContext;
     }
 
 }
