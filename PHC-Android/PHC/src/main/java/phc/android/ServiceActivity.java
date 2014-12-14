@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -466,7 +467,7 @@ public class ServiceActivity extends Activity {
      */
     private void getServiceStatus(final String serviceName, String personNumber) {
         RestRequest serviceRequest = null;
-        String soql = "SELECT " + serviceName + " FROM Event_Registration__c ";
+        String soql = "SELECT Id, " + serviceName + " FROM Event_Registration__c ";
         soql = soql + "WHERE PHC_Event__c = '" + mEventID + "' AND ";
         soql = soql + "Number__c = '" + personNumber + "'";
         try {
@@ -479,11 +480,11 @@ public class ServiceActivity extends Activity {
                         JSONObject json = response.asJSONObject();
                         JSONObject item = (JSONObject) ((JSONArray)json.get("records")).get(0);
                         String serviceValue = item.getString(serviceName);
-                        String registrationId = item.getString("id");
+                        String registrationId = item.getString("Id");
                         //@TODO: Put logic using serviceValue here.
                         //@TODO: Save this id and serviceValue. We'll need it for the next step.
                         // May want to save this rather than calling checkinService
-                        checkinService(mServiceSelected, serviceValue, registrationId);
+                        checkinService(serviceName, serviceValue, registrationId);
 
                     } catch (Exception e) {
                         Log.e("Service Value Response Error", e.getLocalizedMessage());
