@@ -4,10 +4,10 @@ Project Homless Connect <br> Android Application
 What is Project Homeless Connect?
 ----
 ![Banner](http://www.projecthomelessconnect.com/servlet/servlet.ImageServer?oid=00DA0000000BrJLMA0&id=015A0000001b2QaIAI "PHC Banner") <br>
-**[Project Homeless Connect](http://www.projecthomelessconnect.com/)** is a nonprofit organization based in San Francisco that provides necessary services for the homeless and those at risk of being homeless.  Since its creation by the SF Department of Public Health in 2004, 49,729 volunteers have provided 75,625 clients with services such as employment counseling, addiction recovery, HIV/STI testing, wheelchair repair, and mental health services. Its model has been replicated in over 260 cities across the United States as well as Canada and Australia.
+**[Project Homeless Connect](http://www.projecthomelessconnect.com/)** is a nonprofit organization based in San Francisco that provides necessary aid for the homeless and those at high risk of being homeless.  Since its creation by the SF Department of Public Health in 2004, 49,729 volunteers have provided 75,625 clients with services such as employment counseling, addiction recovery, HIV/STI testing, wheelchair repair, and mental health assistance. Its model has been replicated in over 260 cities across the United States as well as Canada and Australia.
 What We Are Doing
 ----
-Cal Blueprint is creating an Android application to replace the organization's currently inefficient and insecure paper filing system. The goal is to help the organization save resources, improve data integrity, and make their process more streamlined and secure. The application will also provide direct storage of client information into Salesforce, enable tracking of services via QR code scanning, and allow for the organization to move to a data-driven approach of service-providing. 
+Cal Blueprint is creating an Android application to replace the organization's currently inefficient and insecure paper filing system. The goal is to help the organization save resources, improve data integrity, and make their process more streamlined and secure. The application will fully digitize all transactions at events, provide direct storage of client information into Salesforce, enable tracking of services via QR code scanning, and allow for the organization to move to a data-driven approach of service-providing. 
 
 Who We Are
 ----
