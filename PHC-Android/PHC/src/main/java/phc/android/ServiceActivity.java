@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 
 /** Call with resultCode of 0 if providing a service.
  * Call with resultCode of 1 if scanning for registration.
@@ -549,6 +550,7 @@ public class ServiceActivity extends Activity {
         fields.put(serviceName, newStatus);
         Date date = new Date();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd\'T\'hh:mm:ss\'Z\'");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
         String formattedDate = df.format(date);
         fields.put(serviceNameTimeHelper(serviceName), formattedDate);
 
