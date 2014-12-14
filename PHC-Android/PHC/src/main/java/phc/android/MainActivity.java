@@ -296,13 +296,16 @@ public class MainActivity extends Activity
         intent.putExtra("provided_service", mProvidedService);
         intent.putExtra("request_code", FOR_SERVICE);
         CharSequence[] services = null;
+        HashMap<String, String> servicesHashMap = null;
         if (!initialized) {
             Log.d("MainActivity", "Resources list not initialized");
         } else {
-            services = getResourceList().values().toArray(new CharSequence[0]);
+            servicesHashMap = (HashMap<String, String>) getResourceList();
+            services = servicesHashMap.values().toArray(new CharSequence[0]);
         }
         if (services != null) {
             intent.putExtra("services_list", services);
+            intent.putExtra("services_hash", servicesHashMap);
             /* Called with forResult so we can record the provided service if
              * the user goes back to the MainActivity.
              */

@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /** Call with resultCode of 0 if providing a service.
@@ -72,6 +73,11 @@ public class ServiceActivity extends Activity {
      */
     private static CharSequence[] services;
 
+    /** Contains both service keys and values to do
+     * REST requests.
+     */
+    private static HashMap<String, String> servicesHashMap;
+
     /** MainActivity's event id */
     private String mEventID;
 
@@ -108,6 +114,7 @@ public class ServiceActivity extends Activity {
                 int intention = (Integer) bundle.get("request_code");
                 /* This cannot be null! */
                 services = bundle.getCharSequenceArray("services_list");
+                servicesHashMap = (HashMap<String, String>) bundle.getSerializable("services_hash");
                 if (bundle.get("provided_service") == null && intention == MainActivity.FOR_SERVICE) {
                     showSelectServiceDialog(true);
                 } else {
@@ -115,6 +122,7 @@ public class ServiceActivity extends Activity {
                 }
             } else {
                 services = savedInstanceState.getCharSequenceArray("services_list");
+                servicesHashMap = (HashMap<String, String>) savedInstanceState.getSerializable("services_hash");
                 mServiceSelected = (String) savedInstanceState.getCharSequence("provided_service");
                 return;
             }
@@ -418,6 +426,7 @@ public class ServiceActivity extends Activity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putCharSequenceArray("services_list", services);
+        outState.putSerializable("services_hash", servicesHashMap);
         outState.putCharSequence("provided_service", mServiceSelected);
     }
 
@@ -445,7 +454,7 @@ public class ServiceActivity extends Activity {
     }
 
     protected void recordResult(String code) {
-        getServiceStatus(mServiceSelected, code);
+        getServiceStatus(getKeyByValue(servicesHashMap, mServiceSelected), code);
     }
 
     /**
@@ -478,7 +487,7 @@ public class ServiceActivity extends Activity {
 
                     } catch (Exception e) {
                         Log.e("Service Value Response Error", e.getLocalizedMessage());
-                        showFailureAlertDialog("A response was received but could not be processed. Please try again or contact support.");
+                        showFailureAlertDialog("The given code is invalid. Please enter a valid code and try again.");
                     }
                 }
 
@@ -564,6 +573,22 @@ public class ServiceActivity extends Activity {
             Log.e("Service Update Request Error", e.toString());
             showFailureAlertDialog("An unexpected error occurred while processing your request. Please contact technical support.");
         }
+    }
+
+    /**
+     * Helper for finding the appropriate key in the
+     * services HashMap for a given value.
+     * @param map should be the services HashMap
+     * @param value is the value to get the key with
+     * @return String key corresponding to value
+     */
+    public static String getKeyByValue(HashMap<String, String> map, String value) {
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            if (value.equals(entry.getValue())) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 
     /**
