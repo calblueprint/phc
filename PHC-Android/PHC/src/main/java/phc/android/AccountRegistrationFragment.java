@@ -205,7 +205,7 @@ public class AccountRegistrationFragment extends Fragment {
         }
 
         if (!gender.equals("null")) {
-            ArrayAdapter<String> adapter = (ArrayAdapter<String>) ((NothingSelectedSpinnerAdapter) mGenderSpinner.getAdapter()).getSpinnerAdapter();
+            ArrayAdapter<String> adapter = (ArrayAdapter<String>) mGenderSpinner.getAdapter();
             int position = adapter.getPosition(gender);
             if (position != -1) {
                 mGenderSpinner.setSelection(position);
@@ -213,7 +213,7 @@ public class AccountRegistrationFragment extends Fragment {
         }
 
         if (!ethnicity.equals("null")) {
-            ArrayAdapter<String> adapter = (ArrayAdapter<String>) ((NothingSelectedSpinnerAdapter) mEthnicitySpinner.getAdapter()).getSpinnerAdapter();
+            ArrayAdapter<String> adapter = (ArrayAdapter<String>) mEthnicitySpinner.getAdapter();
             int position = adapter.getPosition(ethnicity);
             if (position != -1) {
                 mEthnicitySpinner.setSelection(position);
@@ -221,7 +221,7 @@ public class AccountRegistrationFragment extends Fragment {
         }
 
         if (!language.equals("null")) {
-            ArrayAdapter<String> adapter = (ArrayAdapter<String>) ((NothingSelectedSpinnerAdapter) mLanguageSpinner.getAdapter()).getSpinnerAdapter();
+            ArrayAdapter<String> adapter = (ArrayAdapter<String>) mLanguageSpinner.getAdapter();
             int position = adapter.getPosition(language);
             if (position != -1) {
                 mLanguageSpinner.setSelection(position);

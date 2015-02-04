@@ -5,7 +5,6 @@ import android.database.DataSetObserver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.SpinnerAdapter;
 
@@ -160,13 +159,6 @@ public class NothingSelectedSpinnerAdapter implements SpinnerAdapter, ListAdapte
     public boolean isEnabled(int position) {
         return position == 0 ? false : true; // Don't allow the 'nothing selected'
         // item to be picked.
-    }
-
-    /**
-     * @return the spinner adapter associated with this adapter
-     */
-    public SpinnerAdapter getSpinnerAdapter() {
-        return adapter;
     }
 
 }
