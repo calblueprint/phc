@@ -1,4 +1,4 @@
-Project Homless Connect <br> Android Application
+Project Homeless Connect <br> Android Application
 ====
 
 What is Project Homeless Connect?
