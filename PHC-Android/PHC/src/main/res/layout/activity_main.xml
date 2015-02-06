@@ -19,7 +19,7 @@
     <Button
         android:id="@+id/button_register"
         android:text="@string/button_register"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/button_services"
         android:layout_centerInParent="true"
