@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="phc.android" >
 
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="20" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -9,9 +13,6 @@
         android:label="@string/app_name"
         android:theme="@style/PHCTheme"
         android:name=".PHCApp">
-        <uses-sdk
-            android:minSdkVersion="14"
-            android:targetSdkVersion="20" />
 
         <activity
             android:name=".MainActivity">

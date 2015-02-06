@@ -161,4 +161,10 @@ public class NothingSelectedSpinnerAdapter implements SpinnerAdapter, ListAdapte
         // item to be picked.
     }
 
+    /**
+    * @return the spinner adapter associated with this adapter
+    */
+    public SpinnerAdapter getSpinnerAdapter() {
+        return adapter;
+    }
 }
