@@ -506,8 +506,6 @@ public class ServiceActivity extends Activity {
                 }
             };
 
-            mMainActivity.sendRequest(serviceRequest, callback);
-
 
         } catch (Exception e) {
             if (e.getLocalizedMessage() != null) {
@@ -575,8 +573,6 @@ public class ServiceActivity extends Activity {
                     showFailureAlertDialog("Your code is valid but there was an error updating the data. Please try again or contact support.");
                 }
             };
-
-            mMainActivity.sendRequest(serviceRequest, callback);
 
 
         } catch (Exception e) {
