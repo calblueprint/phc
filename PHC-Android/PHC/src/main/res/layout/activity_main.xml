@@ -15,7 +15,7 @@
         android:background="@drawable/default_button"
         android:text="@string/button_services"
         android:layout_width="300dp"
-        android:layout_height="55dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
         android:onClick="openServices"/>
 
@@ -24,7 +24,7 @@
         android:background="@drawable/default_button"
         android:text="@string/button_register"
         android:layout_width="300dp"
-        android:layout_height="55dp"
+        android:layout_height="50dp"
         android:layout_marginTop="15dp"
         android:layout_gravity="center"
         android:onClick="openRegister"/>
@@ -34,7 +34,7 @@
         android:background="@drawable/default_button"
         android:text="@string/button_exit"
         android:layout_width="300dp"
-        android:layout_height="55dp"
+        android:layout_height="50dp"
         android:layout_marginTop="15dp"
         android:layout_gravity="center"
         android:onClick="openExit"/>
