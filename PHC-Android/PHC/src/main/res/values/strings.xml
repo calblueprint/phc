@@ -13,8 +13,7 @@
     <string name="title_security">Security Key</string>
     <string name="title_error">Error</string>
     <string name="prompt_security">Please enter the security key.</string>
-    <string name = "text_incorrect_security">
-        The security key you have entered is incorrect. Please try again.</string>
+    <string name="text_incorrect_security">        The security key you have entered is incorrect. Please try again.</string>
     <string name="button_submit">Submit</string>
     <string name="button_retry">Retry</string>
 
@@ -46,8 +45,6 @@
         <item>@string/sidebar_confirm</item>
     </string-array>
 
-
-
     <!-- Search -->
     <string name="search_results_title">Results</string>
     <string name="request_url">http://phc-test.herokuapp.com</string>
@@ -59,7 +56,6 @@
     <string name="title_activity_register">Register Client</string>
     <string name="title_activity_services">Manage Services</string>
     <string name="title_activity_exit">Exit Form</string>
-
     <string name="button_search_submit">Search</string>
 
     <!-- Account Registration -->
@@ -129,7 +125,6 @@
 
     <!-- Services Selection -->
     <string name="prompt_services">Which services will you be using today?</string>
-
     <string name="action_submit">Submit</string>
 
     <!-- Service Scan Page -->
@@ -159,15 +154,14 @@
     <string name="input_confirmation_text">The code you entered was: </string>
     <string name="scan_confirmation_text">The scan result was: </string>
 
-
-
     <!-- Exit Activity -->
+    <!-- TODO: rename exit to checkout -->
     <string name="exit_qr_scanner">Scan QR Code and Submit</string>
     <string name="exit_experience_title">Did you have a positive experience?</string>
     <string name="exit_services_title"> Did you receive the services you were looking for? </string>
     <string name="exit_comment_title">Comments</string>
     <string name="exit_yes">Yes</string>
-    <string name="exit_no">No</string>
-
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="checkout_another">Checkout another client</string>
 
 </resources>

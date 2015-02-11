@@ -2,6 +2,7 @@ package phc.android;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,17 +31,46 @@ public class ExitActivity extends Activity {
     private CheckBox mExperience;
     /** The checkboxview holds their input for whether they found their services */
     private CheckBox mServices;
+    /** Field and submit button for manual code input. **/
+    protected EditText mCodeInput;
+    protected Button mCodeInputSubmitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exit);
-        Button scanQr = (Button) findViewById(R.id.exit_qr_scanner);
-        scanQr.setOnClickListener(new ScanListener());
+//        Button scanQr = (Button) findViewById(R.id.exit_qr_scanner);
+//        scanQr.setOnClickListener(new ScanListener());
         mComment = (EditText) findViewById(R.id.exit_comment);
+        mCodeInputSubmitButton = (Button) findViewById(R.id.button_submit);
+        mCodeInputSubmitButton.setOnClickListener(new SubmitListener(this));
+        mCodeInput = (EditText) findViewById(R.id.text_code);
         ActionBar actionbar = getActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
     }
+
+    /**
+     * Used when the user submits their inputted code.
+     */
+    protected class SubmitListener implements View.OnClickListener{
+        private Context mContext;
+
+        public SubmitListener(Context context){
+            mContext = context;
+        }
+
+        @Override
+        public void onClick(View view){
+            /**
+             * Loads next fragment onto the current stack.
+             */
+            FragmentTransaction transaction =
+                    ((Activity)mContext).getFragmentManager().beginTransaction();
+            transaction.add(R.id.checkout_fragment_container, new CheckoutSuccessFragment());
+            transaction.commit();
+            }
+        }
+
 
     /**
      * Used when the user wants to send an intent
@@ -97,7 +127,9 @@ public class ExitActivity extends Activity {
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(c, message, duration);
         toast.show();
-        // Need to replace with function that wipes comments, experience, and services mComment.setText("");
+        // TODO: Load success fragment: Onclick listener that wipes comments, experience, and services
+        // TODO:
+        // mComment.setText("");
         // reloadSuccessFragment();
     }
 }
