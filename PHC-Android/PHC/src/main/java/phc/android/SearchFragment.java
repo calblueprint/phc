@@ -22,6 +22,7 @@ import android.widget.TextView;
 public class SearchFragment extends RegistrationFragment {
 
     public static final String SEARCH_PARAMETERS = "SearchParametersFile";
+    /** Parent Activity **/
     private RegisterActivity parent;
 
     @Override

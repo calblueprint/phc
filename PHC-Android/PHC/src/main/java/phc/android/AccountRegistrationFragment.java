@@ -36,7 +36,7 @@ public class AccountRegistrationFragment extends Fragment {
             mSSN1, mSSN2, mSSN3, mEmail, mFirstName, mLastName;
     /** Continue button. */
     private Button mContinueButton;
-
+    /** Parent Activity **/
     private RegisterActivity mParent;
 
     /**

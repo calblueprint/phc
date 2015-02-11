@@ -52,6 +52,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
     private static final String AUTH_TOKEN = "phcplusplus";
     public static final String SEARCH_RESULT = "SEARCH_RESULT";
     private ProgressDialog progressDialog;
+    /** Parent Activity **/
     private RegisterActivity mParent;
 
     @Override
@@ -216,7 +217,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                     }
                     // If we successfully load a user, we change the state to returning user
                     mParent.setCurrentState(RegisterActivity.RegistrationState.RETURNING_USER);
-                    
+
                     AccountRegistrationFragment newFragment = new AccountRegistrationFragment();
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
                     transaction.replace(R.id.registration_fragment_container, newFragment, getResources().getString(R.string.sidebar_personal_info));

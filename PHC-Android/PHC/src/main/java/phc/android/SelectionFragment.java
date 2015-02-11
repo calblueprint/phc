@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 public class SelectionFragment extends RegistrationFragment {
 
+    /** Parent Activity **/
     private RegisterActivity mParent;
     public static final String SEARCH_RESULT = "SEARCH_RESULT";
 
