@@ -53,6 +53,7 @@ public class SearchFragment extends RegistrationFragment {
     @Override
     public void onAttach(Activity activity) {
         parent = (RegisterActivity) activity;
+        super.onAttach(activity);
     }
 
     @Override

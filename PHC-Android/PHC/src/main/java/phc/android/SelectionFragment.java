@@ -49,6 +49,7 @@ public class SelectionFragment extends RegistrationFragment {
     @Override
     public void onAttach(Activity activity) {
            mParent = (RegisterActivity) activity;
+           super.onAttach(activity);
     }
 
     @Override

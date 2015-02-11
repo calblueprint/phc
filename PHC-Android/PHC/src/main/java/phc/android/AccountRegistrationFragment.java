@@ -63,7 +63,8 @@ public class AccountRegistrationFragment extends Fragment {
 
     @Override
     public void onAttach(Activity activity) {
-        mParent = (RegisterActivity) mParent;
+        mParent = (RegisterActivity) activity;
+        super.onAttach(activity);
     }
 
     @Override
