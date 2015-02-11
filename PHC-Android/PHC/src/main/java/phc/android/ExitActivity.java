@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -25,6 +26,10 @@ public class ExitActivity extends Activity {
     protected String mScanResult;
     /** The textview that holds the comment. */
     private EditText mComment;
+    /** The checkboxview holds their input for good/bad experience */
+    private CheckBox mExperience;
+    /** The checkboxview holds their input for whether they found their services */
+    private CheckBox mServices;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +97,7 @@ public class ExitActivity extends Activity {
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(c, message, duration);
         toast.show();
-        mComment.setText("");
+        // Need to replace with function that wipes comments, experience, and services mComment.setText("");
+        // reloadSuccessFragment();
     }
 }

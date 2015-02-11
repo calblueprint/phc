@@ -1,6 +1,7 @@
 package phc.android;
 
-import android.app.Activity;
+import
+android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -11,7 +12,6 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.Gravity;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-
 /**
  * SecurityKeyDialogFragment holds an AlertDialog that prompts the user for a security key to
  * access the rest of the app. The dialog appears only when the security key that is stored

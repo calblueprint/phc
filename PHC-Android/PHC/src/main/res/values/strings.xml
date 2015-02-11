@@ -163,5 +163,11 @@
 
     <!-- Exit Activity -->
     <string name="exit_qr_scanner">Scan QR Code and Submit</string>
+    <string name="exit_experience_title">Did you have a positive experience?</string>
+    <string name="exit_services_title"> Did you receive the services you were looking for? </string>
+    <string name="exit_comment_title">Comments</string>
+    <string name="exit_yes">Yes</string>
+    <string name="exit_no">No</string>
+
 
 </resources>
