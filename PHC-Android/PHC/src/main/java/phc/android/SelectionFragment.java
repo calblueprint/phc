@@ -1,6 +1,8 @@
 package phc.android;
 
+import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class SelectionFragment extends RegistrationFragment {
+
+    /** Parent Activity **/
+    private RegisterActivity mParent;
+    public static final String SEARCH_RESULT = "SEARCH_RESULT";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,6 +48,12 @@ public class SelectionFragment extends RegistrationFragment {
     }
 
     @Override
+    public void onAttach(Activity activity) {
+           mParent = (RegisterActivity) activity;
+           super.onAttach(activity);
+    }
+
+    @Override
     public void onResume() {
         LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.sidebar_list);
         for (int i = 0; i < sidebarList.getChildCount(); i++) {
@@ -55,6 +67,28 @@ public class SelectionFragment extends RegistrationFragment {
                 tv.setTypeface(null, Typeface.NORMAL);
             }
         }
+
+        // When returning to this selection fragment, we assume we are a new user and clear returning user data
+        mParent.setCurrentState(RegisterActivity.RegistrationState.NEW_USER);
+        clearPreferences();
+
         super.onResume();
+    }
+
+    /** Clears all preferences saved from a previous user **/
+    private void clearPreferences() {
+        SharedPreferences sharedPreferences = mParent.getSharedPreferences(SEARCH_RESULT, 0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("SS_Num");
+        editor.remove("FirstName");
+        editor.remove("LastName");
+        editor.remove("Phone");
+        editor.remove("Birthdate");
+        editor.remove("Email");
+        editor.remove("Gender");
+        editor.remove("Ethnicity");
+        editor.remove("Language");
+        editor.remove("SFID");
+        editor.apply();
     }
 }

@@ -1,5 +1,6 @@
 package phc.android;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -44,6 +45,8 @@ public class ExitActivity extends Activity {
         mCodeInputSubmitButton = (Button) findViewById(R.id.button_submit);
         mCodeInputSubmitButton.setOnClickListener(new SubmitListener(this));
         mCodeInput = (EditText) findViewById(R.id.text_code);
+        ActionBar actionbar = getActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
     }
 
     /**

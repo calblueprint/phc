@@ -39,7 +39,8 @@
 
         <activity
             android:name=".ExitActivity"
-            android:label="@string/title_activity_exit" >
+            android:label="@string/title_activity_exit"
+            android:parentActivityName=".MainActivity">            >
         </activity>
     </application>
 

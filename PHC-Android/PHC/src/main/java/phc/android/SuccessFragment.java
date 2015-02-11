@@ -64,6 +64,7 @@ public class SuccessFragment extends RegistrationFragment {
                         intent.putExtra("services_hashmap", services);
                         String eventId = ((RegisterActivity) getActivity()).getmEventId();
                         intent.putExtra("event_id", eventId);
+                        getActivity().finish();
                         getActivity().startActivity(intent);
                     }
         });
