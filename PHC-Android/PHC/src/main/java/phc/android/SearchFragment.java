@@ -1,5 +1,6 @@
 package phc.android;
 
+import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -21,6 +22,8 @@ import android.widget.TextView;
 public class SearchFragment extends RegistrationFragment {
 
     public static final String SEARCH_PARAMETERS = "SearchParametersFile";
+    private RegisterActivity parent;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -48,6 +51,11 @@ public class SearchFragment extends RegistrationFragment {
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        parent = (RegisterActivity) activity;
+    }
+
+    @Override
     public void onResume() {
         LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.sidebar_list);
         for (int i = 0; i < sidebarList.getChildCount(); i++) {
@@ -61,6 +69,7 @@ public class SearchFragment extends RegistrationFragment {
                 tv.setTypeface(null, Typeface.NORMAL);
             }
         }
+        parent.setCurrentState(RegisterActivity.RegistrationState.NEW_USER);
         super.onResume();
     }
 

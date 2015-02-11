@@ -1,5 +1,6 @@
 package phc.android;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -36,6 +37,8 @@ public class AccountRegistrationFragment extends Fragment {
     /** Continue button. */
     private Button mContinueButton;
 
+    private RegisterActivity mParent;
+
     /**
      * Set spinner content and continue button functionality.
      */
@@ -47,11 +50,20 @@ public class AccountRegistrationFragment extends Fragment {
         initializeLocalVariables(view);
         addEditTextListeners();
         setSpinnerContent();
-        prepopulateForm();
+
+        // Only pre-populate the form if the user is a returning user.
+        if (mParent.getCurrentState() == RegisterActivity.RegistrationState.RETURNING_USER) {
+            prepopulateForm();
+        }
         mContinueButton = (Button) view.findViewById(R.id.button_account_continue);
         mContinueButton.setOnClickListener(new OnContinueClickListener(getActivity(),
                 this, mLayout, new EventRegistrationFragment(), getResources().getString(R.string.sidebar_event_info)));
         return view;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        mParent = (RegisterActivity) mParent;
     }
 
     @Override

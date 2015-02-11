@@ -31,6 +31,10 @@ public class RegisterActivity extends Activity {
     /** The id of the current PHC Event. Should be passed in with intent from MainActivity.*/
     private String mEventId;
 
+    /** Used to keep track of what kind of user we are modifying **/
+    public static enum RegistrationState {NEW_USER, RETURNING_USER};
+    public static RegistrationState currentState;
+
     protected RestClient client;
     private PasscodeManager passcodeManager;
 
@@ -45,6 +49,7 @@ public class RegisterActivity extends Activity {
         ActionBar actionbar = getActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         setServices();
+        currentState = RegistrationState.NEW_USER;
 
         // Passcode manager
         Log.d("Passcode Manager", "new");
@@ -110,6 +115,14 @@ public class RegisterActivity extends Activity {
                 }
             });
         }
+    }
+
+    public static RegistrationState getCurrentState() {
+        return currentState;
+    }
+
+    public static void setCurrentState(RegistrationState currentState) {
+        RegisterActivity.currentState = currentState;
     }
 
     /**
