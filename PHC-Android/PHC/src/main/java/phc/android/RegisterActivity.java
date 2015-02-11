@@ -46,9 +46,10 @@ public class RegisterActivity extends Activity {
         actionbar.setDisplayHomeAsUpEnabled(true);
         setServices();
 
-        // Passcode manager
-        Log.d("Passcode Manager", "new");
-        passcodeManager = SalesforceSDKManager.getInstance().getPasscodeManager();
+//        COMMENTED OUT BY BYRON 2.10.15 TO DISABLED SALESFORCE LOGIN
+//        // Passcode manager
+//        Log.d("Passcode Manager", "new");
+//        passcodeManager = SalesforceSDKManager.getInstance().getPasscodeManager();
 
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
@@ -84,33 +85,34 @@ public class RegisterActivity extends Activity {
         mEventId = intent.getStringExtra("event_id");
     }
 
-    /**
-     * Handles the setup of the Salesforce RestClient, allowing fragments in this activity to
-     * make requests to the backend.
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        // Bring up passcode screen if needed
-        if (passcodeManager.onResume(this)) {
-            // Login options
-            String accountType = SalesforceSDKManager.getInstance().getAccountType();
-
-            // Get a rest client
-            new ClientManager(this, accountType, SalesforceSDKManager.getInstance().getLoginOptions(),
-                    SalesforceSDKManager.getInstance().shouldLogoutWhenTokenRevoked()).getRestClient(this, new ClientManager.RestClientCallback() {
-
-                @Override
-                public void authenticatedRestClient(RestClient client) {
-                    if (client == null) {
-                        SalesforceSDKManager.getInstance().logout(RegisterActivity.this);
-                        return;
-                    }
-                    RegisterActivity.this.client = client;
-                }
-            });
-        }
-    }
+//        COMMENTED OUT BY BYRON 2.10.15 TO DISABLED SALESFORCE LOGIN
+//    /**
+//     * Handles the setup of the Salesforce RestClient, allowing fragments in this activity to
+//     * make requests to the backend.
+//     */
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        // Bring up passcode screen if needed
+//        if (passcodeManager.onResume(this)) {
+//            // Login options
+//            String accountType = SalesforceSDKManager.getInstance().getAccountType();
+//
+//            // Get a rest client
+//            new ClientManager(this, accountType, SalesforceSDKManager.getInstance().getLoginOptions(),
+//                    SalesforceSDKManager.getInstance().shouldLogoutWhenTokenRevoked()).getRestClient(this, new ClientManager.RestClientCallback() {
+//
+//                @Override
+//                public void authenticatedRestClient(RestClient client) {
+//                    if (client == null) {
+//                        SalesforceSDKManager.getInstance().logout(RegisterActivity.this);
+//                        return;
+//                    }
+//                    RegisterActivity.this.client = client;
+//                }
+//            });
+//        }
+//    }
 
     /**
      * Static method that returns a map with all of the resources for the most recent event.
