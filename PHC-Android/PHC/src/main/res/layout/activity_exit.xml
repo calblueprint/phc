@@ -2,11 +2,67 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:text="@string/exit_experience_title"
+        />
+
+    <CheckBox
+        android:id="@+id/exit_pos_experience"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_margin="10dp"
+        android:text="@string/exit_yes"
+        />
+    <CheckBox
+        android:id="@+id/exit_neg_experience"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_margin="10dp"
+        android:text="@string/exit_no"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center"
+        android:id="@+id/exit_services_title"
+        android:textSize="20sp"
+        android:text="@string/exit_services_title"
+        />
+    <CheckBox
+        android:id="@+id/exit_receivedServices"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_margin="10dp"
+        android:text="@string/exit_yes"
+        />
+    <CheckBox
+        android:id="@+id/exit_notReceivedServices"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_margin="10dp"
+        android:text="@string/exit_no"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center"
+        android:id="@+id/experience_text"
+        android:textSize="20sp"
+        android:text="@string/exit_comment_title"
+        />
 
     <EditText
         android:id="@+id/exit_comment"
         android:layout_width="match_parent"
-        android:layout_height="300px"
+        android:layout_height="100dp"
         android:layout_margin="10dp"
         android:inputType="textCapWords|textMultiLine"
         android:textSize="20sp"
@@ -19,5 +75,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         />
+
 
 </LinearLayout>
