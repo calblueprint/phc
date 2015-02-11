@@ -105,6 +105,7 @@ public class RegistrationScannerConfirmationFragment extends ScannerConfirmation
             registerPerson();
             /* shows success toast */
             recordScan();
+            // clear previous information here
             super.onClick(view);
 
         }
