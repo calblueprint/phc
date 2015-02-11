@@ -9,4 +9,8 @@ Rails.application.routes.draw do
       get "check", to: "accounts#check"
     end
   end
+
+
+  resources :users
+
 end

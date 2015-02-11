@@ -1,0 +1,17 @@
+<h1>PHC USERS</h1>
+
+
+<ul>
+<% @users.each do |user| %>
+  <li>
+  <b>Name:</b> <%= user.name %>
+  <br>
+  <b>Email:</b> <%= user.email %>
+  <br>
+  <b>Account Created:</b> <%= user.created_at %>
+  <br>
+  </li>
+<% end %>
+</ul>
+
+
