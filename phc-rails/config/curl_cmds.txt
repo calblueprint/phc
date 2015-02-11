@@ -1,0 +1,4 @@
+curl -X POST \
+     -i \
+     --data "email=byron@gmail.com&password=foobar" \
+     -L localhost:3000/login
