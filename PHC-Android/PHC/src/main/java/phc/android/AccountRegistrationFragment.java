@@ -1,5 +1,6 @@
 package phc.android;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -35,6 +36,8 @@ public class AccountRegistrationFragment extends Fragment {
             mSSN1, mSSN2, mSSN3, mEmail, mFirstName, mLastName;
     /** Continue button. */
     private Button mContinueButton;
+    /** Parent Activity **/
+    private RegisterActivity mParent;
 
     /**
      * Set spinner content and continue button functionality.
@@ -47,11 +50,21 @@ public class AccountRegistrationFragment extends Fragment {
         initializeLocalVariables(view);
         addEditTextListeners();
         setSpinnerContent();
-        prepopulateForm();
+
+        // Only pre-populate the form if the user is a returning user.
+        if (mParent.getCurrentState() == RegisterActivity.RegistrationState.RETURNING_USER) {
+            prepopulateForm();
+        }
         mContinueButton = (Button) view.findViewById(R.id.button_account_continue);
         mContinueButton.setOnClickListener(new OnContinueClickListener(getActivity(),
                 this, mLayout, new EventRegistrationFragment(), getResources().getString(R.string.sidebar_event_info)));
         return view;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        mParent = (RegisterActivity) activity;
+        super.onAttach(activity);
     }
 
     @Override
@@ -67,6 +80,11 @@ public class AccountRegistrationFragment extends Fragment {
                 TextView tv = (TextView) v;
                 tv.setTypeface(null, Typeface.NORMAL);
             }
+        }
+
+        // If we have a new user, we need to clear the fields
+        if (mParent.getCurrentState() == RegisterActivity.RegistrationState.NEW_USER) {
+            clearFields();
         }
         super.onResume();
     }
@@ -99,6 +117,32 @@ public class AccountRegistrationFragment extends Fragment {
         mGenderSpinner = (Spinner) view.findViewById(R.id.spinner_gender);
         mEthnicitySpinner = (Spinner) view.findViewById(R.id.spinner_ethnicity);
         mLanguageSpinner = (Spinner) view.findViewById(R.id.spinner_language);
+    }
+
+    /**
+     * Clears the fields
+     */
+    private void clearFields() {
+        mFirstName.setText("");
+        mLastName.setText("");
+
+        mSSN1.setText("");
+        mSSN2.setText("");
+        mSSN3.setText("");
+
+        mMonth.setText("");
+        mDay.setText("");
+        mYear.setText("");
+
+        mPhone1.setText("");
+        mPhone2.setText("");
+        mPhone3.setText("");
+
+        mEmail.setText("");
+
+        mGenderSpinner.setSelection(0);
+        mEthnicitySpinner.setSelection(0);
+        mLanguageSpinner.setSelection(0);
     }
 
     /**

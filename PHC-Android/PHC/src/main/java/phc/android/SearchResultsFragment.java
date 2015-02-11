@@ -52,6 +52,8 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
     private static final String AUTH_TOKEN = "phcplusplus";
     public static final String SEARCH_RESULT = "SEARCH_RESULT";
     private ProgressDialog progressDialog;
+    /** Parent Activity **/
+    private RegisterActivity mParent;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,6 +81,12 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
     public void onActivityCreated (Bundle savedInstanceState) {
         requestQueue = Volley.newRequestQueue(getActivity());
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        mParent = (RegisterActivity) activity;
+        super.onAttach(activity);
     }
 
     @Override
@@ -207,6 +215,8 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                         editor.putBoolean("Searched", true);
                         editor.commit();
                     }
+                    // If we successfully load a user, we change the state to returning user
+                    mParent.setCurrentState(RegisterActivity.RegistrationState.RETURNING_USER);
 
                     AccountRegistrationFragment newFragment = new AccountRegistrationFragment();
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
