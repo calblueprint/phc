@@ -2,7 +2,6 @@
 <resources>
 
     <item name="red" type="color">#FFD64541</item>
-    <item name="black" type="color">#00000000</item>
     <item name="white" type="color">#FFFFFFFF</item>
     <item name="gray" type="color">#FFC0C0C0</item>
 
