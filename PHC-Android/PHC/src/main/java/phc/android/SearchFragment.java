@@ -23,7 +23,7 @@ public class SearchFragment extends RegistrationFragment {
 
     public static final String SEARCH_PARAMETERS = "SearchParametersFile";
     /** Parent Activity **/
-    private RegisterActivity parent;
+    private RegisterActivity mParent;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,7 +53,7 @@ public class SearchFragment extends RegistrationFragment {
 
     @Override
     public void onAttach(Activity activity) {
-        parent = (RegisterActivity) activity;
+        mParent = (RegisterActivity) activity;
         super.onAttach(activity);
     }
 
@@ -71,7 +71,7 @@ public class SearchFragment extends RegistrationFragment {
                 tv.setTypeface(null, Typeface.NORMAL);
             }
         }
-        parent.setCurrentState(RegisterActivity.RegistrationState.NEW_USER);
+        mParent.setCurrentState(RegisterActivity.RegistrationState.NEW_USER);
         super.onResume();
     }
 
