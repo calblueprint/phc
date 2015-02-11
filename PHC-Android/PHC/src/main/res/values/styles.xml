@@ -71,4 +71,14 @@
         <!--<item name="android:textStyle">bold</item>-->
     </style>
 
+    <style name="EnabledButtonText">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="DisabledButtonText">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/gray</item>
+    </style>
+
 </resources>

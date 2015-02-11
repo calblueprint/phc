@@ -172,9 +172,10 @@ public class MainActivity extends Activity
         if (registerButton == null) { return; }
 
         if (enabled) {
-            registerButton.setTextColor(getResources().getColor(R.color.button_text_color));
+            registerButton.setTextAppearance(getApplicationContext(), R.style.EnabledButtonText);
+            registerButton.setBackgroundResource(R.color.highlightedTextViewColor);
         } else {
-            registerButton.setTextColor(Color.GRAY);
+            registerButton.setTextAppearance(getApplicationContext(), R.style.DisabledButtonText);
         }
     }
 

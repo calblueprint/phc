@@ -17,6 +17,7 @@
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
+        android:textAppearance="@style/DefaultButtonText"
         android:onClick="openServices"/>
 
     <Button
@@ -27,6 +28,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="15dp"
         android:layout_gravity="center"
+        android:textAppearance="@style/DefaultButtonText"
         android:onClick="openRegister"/>
 
     <Button
@@ -37,6 +39,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="15dp"
         android:layout_gravity="center"
+        android:textAppearance="@style/DefaultButtonText"
         android:onClick="openExit"/>
 
 </LinearLayout>
