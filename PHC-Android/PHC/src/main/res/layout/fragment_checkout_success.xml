@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="@dimen/input_text_width"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="@dimen/selection_top_margin">
+
+    <TextView
+        android:id="@+id/text_success"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/text_success"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"/>
+
+    <ImageView
+        android:id="@+id/checkout_again_icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/register_again_icon"
+        android:background="@android:color/transparent">
+    </ImageView>
+
+    <Button
+        android:id="@+id/button_checkout_another"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/checkout_another"
+        android:textStyle="bold"/>
+
+</LinearLayout>
