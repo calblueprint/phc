@@ -173,9 +173,9 @@ public class MainActivity extends Activity
 
         if (enabled) {
             registerButton.setTextAppearance(getApplicationContext(), R.style.EnabledButtonText);
-            registerButton.setBackgroundResource(R.color.highlightedTextViewColor);
         } else {
             registerButton.setTextAppearance(getApplicationContext(), R.style.DisabledButtonText);
+            registerButton.setBackgroundResource(R.drawable.disabled_button);
         }
     }
 
