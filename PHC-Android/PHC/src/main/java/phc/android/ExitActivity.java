@@ -1,5 +1,6 @@
 package phc.android;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -32,6 +33,8 @@ public class ExitActivity extends Activity {
         Button scanQr = (Button) findViewById(R.id.exit_qr_scanner);
         scanQr.setOnClickListener(new ScanListener());
         mComment = (EditText) findViewById(R.id.exit_comment);
+        ActionBar actionbar = getActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
     }
 
     /**
