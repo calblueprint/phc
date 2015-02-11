@@ -81,6 +81,11 @@ public class AccountRegistrationFragment extends Fragment {
                 tv.setTypeface(null, Typeface.NORMAL);
             }
         }
+
+        // If we have a new user, we need to clear the fields
+        if (mParent.getCurrentState() == RegisterActivity.RegistrationState.NEW_USER) {
+            clearFields();
+        }
         super.onResume();
     }
 
@@ -112,6 +117,32 @@ public class AccountRegistrationFragment extends Fragment {
         mGenderSpinner = (Spinner) view.findViewById(R.id.spinner_gender);
         mEthnicitySpinner = (Spinner) view.findViewById(R.id.spinner_ethnicity);
         mLanguageSpinner = (Spinner) view.findViewById(R.id.spinner_language);
+    }
+
+    /**
+     * Clears the fields
+     */
+    private void clearFields() {
+        mFirstName.setText("");
+        mLastName.setText("");
+
+        mSSN1.setText("");
+        mSSN2.setText("");
+        mSSN3.setText("");
+
+        mMonth.setText("");
+        mDay.setText("");
+        mYear.setText("");
+
+        mPhone1.setText("");
+        mPhone2.setText("");
+        mPhone3.setText("");
+
+        mEmail.setText("");
+
+        mGenderSpinner.setSelection(0);
+        mEthnicitySpinner.setSelection(0);
+        mLanguageSpinner.setSelection(0);
     }
 
     /**
