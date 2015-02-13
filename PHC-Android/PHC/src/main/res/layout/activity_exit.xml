@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/checkout_fragment_container"
+    android:name="phc.android.PersonAccountFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,25 +14,84 @@
     android:layout_marginTop="@dimen/top_bottom_margins"
     android:layout_marginBottom="@dimen/top_bottom_margins">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/checkout_layout"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:gravity="center"
             android:textSize="20sp"
-            android:text="@string/exit_experience_title"
+            android:text="@string/checkout_experience_title"
             />
-
-        <CheckBox
-            android:id="@+id/exit_pos_experience"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_margin="10dp"
-            android:text="@string/exit_yes"
-            />
+        <RadioGroup
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/checkout_radio_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/checkout_experience_0"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:onClick="onRadioButtonClicked"
+                />
+            <RadioButton
+                android:id="@+id/checkout_radio_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/checkout_experience_1"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:onClick="onRadioButtonClicked"
+                />
+            <RadioButton
+                android:id="@+id/checkout_radio_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/checkout_experience_2"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:onClick="onRadioButtonClicked"
+                />
+            <RadioButton
+                android:id="@+id/checkout_radio_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/checkout_experience_3"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:onClick="onRadioButtonClicked"
+                />
+            <RadioButton
+                android:id="@+id/checkout_radio_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/checkout_experience_4"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:onClick="onRadioButtonClicked"
+                />
+            <RadioButton
+                android:id="@+id/checkout_radio_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/checkout_experience_5"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:onClick="onRadioButtonClicked"
+                />
+        </RadioGroup>
+        <!--
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,15 +99,17 @@
             android:gravity="center"
             android:id="@+id/exit_services_title"
             android:textSize="20sp"
-            android:text="@string/exit_services_title"
+            android:text="@string/checkout_services_title"
             />
+
         <CheckBox
-            android:id="@+id/exit_receivedServices"
+            android:id="@+id/exit_service_holder"
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:layout_margin="10dp"
-            android:text="@string/exit_yes"
+            android:text="@string/checkout_service_blank"
             />
+            -->
 
         <TextView
             android:layout_width="match_parent"
@@ -50,11 +118,11 @@
             android:gravity="center"
             android:id="@+id/experience_text"
             android:textSize="20sp"
-            android:text="@string/exit_comment_title"
+            android:text="@string/checkout_comment_title"
             />
 
         <EditText
-            android:id="@+id/exit_comment"
+            android:id="@+id/checkout_comment"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_margin="10dp"
@@ -89,13 +157,6 @@
             android:text="@string/button_submit"
             android:textSize="30sp"/>
 
-        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/checkout_fragment_container"
-            android:name="phc.android.PersonAccountFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="3" />
-
 
         <!--
         <Button
@@ -110,3 +171,4 @@
 
     </LinearLayout>
 </ScrollView>
+    </FrameLayout>
