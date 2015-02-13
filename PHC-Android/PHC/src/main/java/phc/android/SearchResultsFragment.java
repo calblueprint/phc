@@ -57,7 +57,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
     private RegisterActivity mParent;
     /** Caching the search results **/
     private SearchResult[] mSearchResults = new SearchResult[0];
-
+    /** ListView for results and its adapter **/
     private ListView mListView;
     private SearchResultAdapter mAdapter;
 
@@ -77,9 +77,8 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
             // Initialize search results to be empty
             mSearchResults = new SearchResult[0];
         }
-        Log.d("Search results", "onCreate: " + mSearchResults.length);
 
-        // Create a new progress dialog if not cached search reaults
+        // Create a new progress dialog if no cached search results
         if (mSearchResults.length == 0) {
             mProgressDialog = new ProgressDialog(getActivity());
             mProgressDialog.setTitle("Search Results");
@@ -159,9 +158,6 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                         Log.e("Birthday Parse Error", e2.toString());
                     }
 
-                    Log.d("Search results","activty: " + getActivity());
-                    Log.d("Search results","results: " + mSearchResults);
-
                     mAdapter = new SearchResultAdapter(mParent, mSearchResults);
                     mListView.setAdapter(mAdapter);
                     // Check if progress dialog is showing before dismissing
@@ -204,7 +200,6 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
 
             searchResultsRequest.setTag(TAG);
             // Only queue request if results cache is empty
-            Log.d("Search results", "" + mSearchResults.length);
             if (mSearchResults.length == 0) {
                 requestQueue.add(searchResultsRequest);
             }
