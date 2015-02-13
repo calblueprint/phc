@@ -125,13 +125,11 @@ public class ScannerFragment extends Fragment {
         if (inputBoxEmpty()) {
             mCodeInputSubmitButton.setEnabled(false);
             mCodeInputSubmitButton.setTextColor(Color.GRAY);
-            mCodeInputSubmitButton.setTextAppearance(getApplicationContext(), R.style.EnabledButtonText);
-            mCodeInputSubmitButton.setBackgroundResource(R.drawable.enabled_button);
+            mCodeInputSubmitButton.setBackgroundResource(R.drawable.disabled_button);
         } else {
             mCodeInputSubmitButton.setEnabled(true);
             mCodeInputSubmitButton.setTextColor(getResources().getColor(R.color.green));
-            servicesButton.setTextAppearance(getApplicationContext(), R.style.EnabledButtonText);
-            servicesButton.setBackgroundResource(R.drawable.enabled_button);
+            mCodeInputSubmitButton.setBackgroundResource(R.drawable.submit_button);
 
         }
     }
