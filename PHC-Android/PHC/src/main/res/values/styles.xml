@@ -80,4 +80,9 @@
         <item name="android:textColor">@color/gray</item>
     </style>
 
+    <style name="SubmitButtonText">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/green</item>
+    </style>
+
 </resources>
