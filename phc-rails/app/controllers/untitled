@@ -1,4 +1,13 @@
 curl -X POST \
      -i \
-     --data "email=byron@gmail.com&password=foobars" \
+     --data "email=byron@gmail.com&password=foobar" \
      -L localhost:3000/login
+
+curl -X GET \
+     -i \
+     -H "user_id: 6" \
+     -H "auth_token: D4hepkoFwPKHmpZKm5RzdQ" \
+     -L localhost:3000/api/v1/search
+
+
+D4hepkoFwPKHmpZKm5RzdQ
