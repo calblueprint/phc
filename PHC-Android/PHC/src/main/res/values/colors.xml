@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <item name="red" type="color">#FFD64541</item>
-    <item name="black" type="color">#00000000</item>
-    <item name="white" type="color">#FFFFFFFF</item>
+    <item name="red" type="color">#D64541</item>
+    <item name="gray" type="color">#C0C0C0</item>
 
-    <item name="red_actionbar" type="color">#FFD64541</item>
-    <item name="red_sidebar" type="color">#FFFFE9E9</item>
-    <item name="gray_sidebar" type="color">#FFC0C0C0</item>
-    <item name="button_text_color" type="color">#FF444444</item>
-    <item name="hint_color" type="color">#FF888888</item>
-    <item name="text_color" type="color">#FF444444</item>
+    <item name="red_actionbar" type="color">#D64541</item>
+    <item name="red_sidebar" type="color">#FFE9E9</item>
+    <item name="gray_sidebar" type="color">#C0C0C0</item>
+    <item name="button_text_color" type="color">#444444</item>
+    <item name="hint_color" type="color">#888888</item>
+    <item name="text_color" type="color">#444444</item>
 
 </resources>

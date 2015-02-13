@@ -19,6 +19,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.salesforce.androidsdk.accounts.UserAccountManager;
+import com.salesforce.androidsdk.app.SalesforceSDKManager;
+import com.salesforce.androidsdk.rest.ClientManager;
+import com.salesforce.androidsdk.rest.RestClient;
+import com.salesforce.androidsdk.rest.RestClient.AsyncRequestCallback;
+import com.salesforce.androidsdk.rest.RestRequest;
+import com.salesforce.androidsdk.rest.RestResponse;
+import com.salesforce.androidsdk.security.PasscodeManager;
+import com.salesforce.androidsdk.util.UserSwitchReceiver;
+
 import org.apache.james.mime4j.field.datetime.DateTime;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -34,7 +44,10 @@ import java.util.Map;
 public class MainActivity extends Activity
                           implements SecurityKeyDialogFragment.SecurityKeyDialogListener{
 
+    private PasscodeManager passcodeManager;
     private String apiVersion;
+    private RestClient client;
+    private UserSwitchReceiver userSwitchReceiver;
     /** Used by ServiceActivity to perform REST requests */
     private static Context mContext;
 
@@ -75,9 +88,18 @@ public class MainActivity extends Activity
         if (savedInstanceState != null) {
             mProvidedService = savedInstanceState.getString("provided_service");
         }
+        // Passcode manager
+        passcodeManager = SalesforceSDKManager.getInstance().getPasscodeManager();
+
+        //@TODO: Remove this line before production
+        SalesforceSDKManager.getInstance().getLoginServerManager().useSandbox();
 
         // ApiVersion
         apiVersion = getString(R.string.api_version);
+
+        userSwitchReceiver = new PHCUserSwitchReceiver();
+        registerReceiver(userSwitchReceiver, new IntentFilter(UserAccountManager.USER_SWITCH_INTENT_ACTION));
+
         // Security Key AlertDialog
         mSecurityKeyPreferences = this.getSharedPreferences(SECURITY_PREFS_NAME,
                 Context.MODE_PRIVATE);
@@ -92,6 +114,7 @@ public class MainActivity extends Activity
             setContentView(R.layout.activity_main);
         }
         mContext = this;
+
         super.onCreate(savedInstanceState);
     }
 
@@ -120,10 +143,12 @@ public class MainActivity extends Activity
     @Override
     public void onPause() {
         super.onPause();
+        passcodeManager.onPause(this);
     }
 
     @Override
     public void onDestroy() {
+        unregisterReceiver(userSwitchReceiver);
         super.onDestroy();
     }
 
@@ -134,6 +159,12 @@ public class MainActivity extends Activity
         setServicesEnabled(initialized);
         setRegisterEnabled(initialized);
         setExitEnabled(initialized);
+        if (!initialized) {
+            loginSalesforce(true);
+        } else {
+            loginSalesforce();
+        }
+
     }
 
     /**
@@ -150,10 +181,14 @@ public class MainActivity extends Activity
          */
         if (servicesButton == null) { return; }
 
+//        servicesButton.setTextAppearance(getApplicationContext(), R.style.EnabledButtonText);
+//        servicesButton.setBackgroundResource(R.drawable.enabled_button);
         if (enabled) {
-            servicesButton.setTextColor(getResources().getColor(R.color.button_text_color));
+            servicesButton.setTextAppearance(getApplicationContext(), R.style.EnabledButtonText);
+            servicesButton.setBackgroundResource(R.drawable.enabled_button);
         } else {
-            servicesButton.setTextColor(Color.GRAY);
+            servicesButton.setTextAppearance(getApplicationContext(), R.style.DisabledButtonText);
+            servicesButton.setBackgroundResource(R.drawable.disabled_button);
         }
     }
 
@@ -171,10 +206,14 @@ public class MainActivity extends Activity
          */
         if (registerButton == null) { return; }
 
+//        registerButton.setTextAppearance(getApplicationContext(), R.style.EnabledButtonText);
+//        registerButton.setBackgroundResource(R.drawable.enabled_button);
         if (enabled) {
-            registerButton.setTextColor(getResources().getColor(R.color.button_text_color));
+            registerButton.setTextAppearance(getApplicationContext(), R.style.EnabledButtonText);
+            registerButton.setBackgroundResource(R.drawable.enabled_button);
         } else {
-            registerButton.setTextColor(Color.GRAY);
+            registerButton.setTextAppearance(getApplicationContext(), R.style.DisabledButtonText);
+            registerButton.setBackgroundResource(R.drawable.disabled_button);
         }
     }
 
@@ -192,10 +231,44 @@ public class MainActivity extends Activity
          */
         if (exitButton == null) { return; }
 
+//        exitButton.setTextAppearance(getApplicationContext(), R.style.EnabledButtonText);
+//        exitButton.setBackgroundResource(R.drawable.enabled_button);
         if (enabled) {
-            exitButton.setTextColor(getResources().getColor(R.color.button_text_color));
+            exitButton.setTextAppearance(getApplicationContext(), R.style.EnabledButtonText);
+            exitButton.setBackgroundResource(R.drawable.enabled_button);
         } else {
-            exitButton.setTextColor(Color.GRAY);
+            exitButton.setTextAppearance(getApplicationContext(), R.style.DisabledButtonText);
+            exitButton.setBackgroundResource(R.drawable.disabled_button);
+        }
+    }
+
+    private void loginSalesforce() {
+        loginSalesforce(false);
+    }
+
+    private void loginSalesforce(final boolean first) {
+        // Bring up passcode screen if needed
+        if (passcodeManager.onResume(this)) {
+            // Login options
+            String accountType = SalesforceSDKManager.getInstance().getAccountType();
+
+            // Get a rest client
+            new ClientManager(this, accountType, SalesforceSDKManager.getInstance().getLoginOptions(),
+                SalesforceSDKManager.getInstance().shouldLogoutWhenTokenRevoked()).getRestClient(this, new ClientManager.RestClientCallback() {
+
+            @Override
+            public void authenticatedRestClient(RestClient client) {
+                if (client == null) {
+                    SalesforceSDKManager.getInstance().logout(MainActivity.this);
+                    return;
+                }
+                MainActivity.this.client = client;
+
+                if (first) {
+                    MainActivity.this.initResourceList();
+                }
+                }
+            });
         }
     }
 
@@ -223,11 +296,11 @@ public class MainActivity extends Activity
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Should log you out.
+    /** Calls Salesforce SDK to log out client.
+     * Should be used when the session is over.
      */
     public void onLogoutClick() {
-
+        SalesforceSDKManager.getInstance().logout(this);
     }
 
     /** Handles the "Services" Button on the splash page. */
@@ -316,6 +389,44 @@ public class MainActivity extends Activity
     }
 
     /**
+     * Helper that sends request to server and print result in text field.
+     *
+     * @param request - The request object that gets executed by the SF SDK
+     * @param callback - The functions that get called when yhe response comes back
+     *                   Modify UI elements here.
+     */
+    protected void sendRequest(RestRequest request, AsyncRequestCallback callback) {
+
+        try {
+
+            client.sendAsync(request, callback);
+
+        } catch (Exception error) {
+            Log.e("SF Request", error.toString());
+        }
+    }
+
+    /**
+     * Refreshes the client if the user has been switched.
+     */
+    private void refreshIfUserSwitched() {
+       loginSalesforce();
+    }
+
+    /**
+     * Acts on the user switch event.
+     *
+     * @author bhariharan
+     */
+    private class PHCUserSwitchReceiver extends UserSwitchReceiver {
+
+        @Override
+        protected void onUserSwitch() {
+            refreshIfUserSwitched();
+        }
+    }
+
+    /**
      * Static method that returns a map with all of the resources for the most recent event.
      *
      * @return Map of resources. Key = Salesforce Field name; Value = Display Name;
@@ -330,14 +441,41 @@ public class MainActivity extends Activity
      * describeResources when it receives a successful response.
      */
     private void initResourceList() {
-        /*
-        I left this is for reference on how to make a resource list.
-        JSONObject json = response.asJSONObject();
-        JSONObject item = (JSONObject) ((JSONArray)json.get("records")).get(0);
-        String id = item.getString("Id");
-        MainActivity.this.mEventId = id;
-        MainActivity.this.describeResources(id);
-        */
+        RestRequest idRequest = null;
+        String soql = "SELECT id FROM PHC_EVENT__c ORDER BY createddate DESC LIMIT 1";
+        try {
+            idRequest = RestRequest.getRequestForQuery(apiVersion, soql);
+
+            AsyncRequestCallback callback = new AsyncRequestCallback() {
+                @Override
+                public void onSuccess(RestRequest request, RestResponse response) {
+                    try {
+                        JSONObject json = response.asJSONObject();
+                        JSONObject item = (JSONObject) ((JSONArray)json.get("records")).get(0);
+                        String id = item.getString("Id");
+                        MainActivity.this.mEventId = id;
+                        MainActivity.this.describeResources(id);
+                    } catch (Exception e) {
+                        Log.e("Id Response Error", e.toString());
+                    }
+
+
+                }
+
+                @Override
+                public void onError(Exception exception) {
+                    if (exception.getLocalizedMessage() != null) {
+                        Log.e("Id Response Error 2", exception.toString());
+                    }
+                }
+            };
+
+            sendRequest(idRequest, callback);
+
+
+        } catch (Exception e) {
+            Log.e("Id Request Error", e.toString());
+        }
     }
 
     /**
@@ -348,7 +486,44 @@ public class MainActivity extends Activity
      *               the next step
      */
     private void describeResources(final String eventId){
-        /* Reference */
+        RestRequest fieldRequest = null;
+        final ArrayList<String> fields = new ArrayList<String>();
+
+        try {
+            fieldRequest = RestRequest.getRequestForDescribe(apiVersion, "PHC_Resource__c");
+
+            AsyncRequestCallback callback = new AsyncRequestCallback() {
+                @Override
+                public void onSuccess(RestRequest request, RestResponse response) {
+                    try {
+                        JSONObject json = response.asJSONObject();
+                        JSONArray fieldArray = json.getJSONArray("fields");
+
+                        for (int i = 0; i < fieldArray.length(); i++) {
+                            JSONObject field = fieldArray.getJSONObject(i);
+                            if (field.getBoolean("custom")) {
+                                fields.add(field.getString("name"));
+                            }
+                        }
+
+                        MainActivity.this.getResourceValues(eventId, fields);
+
+                    } catch (Exception e) {
+                        Log.e("Field Response Error", e.toString());
+                    }
+                }
+
+                @Override
+                public void onError(Exception exception) {
+                    Log.e("Field Response Error 2", exception.toString());
+                }
+            };
+
+            sendRequest(fieldRequest, callback);
+
+        } catch (Exception e) {
+            Log.e("Field Request Exception", e.toString());
+        }
     }
 
     /**
@@ -361,7 +536,48 @@ public class MainActivity extends Activity
      * @param fields: The fields we need to query, since SF doesn't support * notation... -_-
      */
     private void getResourceValues(final String eventId, final List<String> fields){
-        // Left for reference
+        fields.remove("Event__c");
+        String fieldsString = fields.toString();
+        fieldsString = fieldsString.substring(1, fieldsString.length()-1);
+        String soql = "SELECT " + fieldsString + " FROM PHC_Resource__c WHERE event__c = '" + eventId + "'";
+
+
+        try {
+            RestRequest valueRequest = RestRequest.getRequestForQuery(apiVersion, soql);
+            AsyncRequestCallback callback = new AsyncRequestCallback() {
+                @Override
+                public void onSuccess(RestRequest request, RestResponse response) {
+                    try {
+                        JSONObject json = response.asJSONObject();
+                        JSONArray records = json.getJSONArray("records");
+                        JSONObject item = records.getJSONObject(0);
+
+                        for (String field : fields) {
+                            Boolean hasField = item.getBoolean(field);
+                            if (hasField) {
+                                MainActivity.this.resources.put(field, MainActivity.fieldNameHelper(field));
+                            }
+                        }
+                        MainActivity.this.initialized = true;
+                        setServicesEnabled(initialized);
+                        setRegisterEnabled(initialized);
+                        setExitEnabled(initialized);
+
+                    } catch (Exception e) {
+                        Log.e("Value Response Error 2", e.toString());
+                    }
+                }
+
+                @Override
+                public void onError(Exception exception) {
+                    Log.e("Value Response Error", exception.toString());
+                }
+            };
+            sendRequest(valueRequest, callback);
+
+        } catch (Exception e) {
+            Log.e("Value Request Error", e.toString());
+        }
     }
 
 

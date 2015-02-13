@@ -1,5 +1,6 @@
 package phc.android;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -34,5 +35,8 @@ public class ExitActivity extends Activity {
         //remove this fragment.
         transaction.add(R.id.checkout_activity_container, new CheckoutFormFragment());
         transaction.commit();
+        ActionBar actionbar = getActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
     }
+
 }

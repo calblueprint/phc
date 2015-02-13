@@ -66,9 +66,18 @@
         parent="@android:style/Widget.Holo.Button">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@drawable/default_button</item>
+        <item name="android:background">@drawable/enabled_button</item>
         <item name="android:textColor">@color/text_color</item>
-        <!--<item name="android:textStyle">bold</item>-->
+    </style>
+
+    <style name="EnabledButtonText">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="DisabledButtonText">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/gray</item>
     </style>
 
 </resources>
