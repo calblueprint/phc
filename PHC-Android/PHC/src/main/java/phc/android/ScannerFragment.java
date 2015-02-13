@@ -125,11 +125,30 @@ public class ScannerFragment extends Fragment {
         if (inputBoxEmpty()) {
             mCodeInputSubmitButton.setEnabled(false);
             mCodeInputSubmitButton.setTextColor(Color.GRAY);
+            mCodeInputSubmitButton.setTextAppearance(getApplicationContext(), R.style.EnabledButtonText);
+            mCodeInputSubmitButton.setBackgroundResource(R.drawable.enabled_button);
         } else {
             mCodeInputSubmitButton.setEnabled(true);
-            mCodeInputSubmitButton.setTextColor(getResources().getColor(R.color.button_text_color));
+            mCodeInputSubmitButton.setTextColor(getResources().getColor(R.color.green));
+            servicesButton.setTextAppearance(getApplicationContext(), R.style.EnabledButtonText);
+            servicesButton.setBackgroundResource(R.drawable.enabled_button);
 
         }
+    }
+
+    /**
+     * Validates mCodeInput to make sure
+     * at least a single character is present.
+     * Does not validate for content.
+     * @return True if mCodeInput is empty,
+     * False otherwise
+     */
+    protected boolean inputBoxEmpty() {
+        String text = mCodeInput.getText().toString();
+        if (text.trim().equals("")) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -161,21 +180,6 @@ public class ScannerFragment extends Fragment {
             return false;
         }
         return true;
-    }
-
-    /**
-     * Validates mCodeInput to make sure
-     * at least a single character is present.
-     * Does not validate for content.
-     * @return True if mCodeInput is empty,
-     * False otherwise
-     */
-    protected boolean inputBoxEmpty() {
-        String text = mCodeInput.getText().toString();
-        if (text.trim().equals("")) {
-            return true;
-        }
-        return false;
     }
 
     protected void displayInvalidInputToast() {
@@ -230,6 +234,7 @@ public class ScannerFragment extends Fragment {
         Bundle args = new Bundle();
         args.putCharSequence("scan_result", scanResult);
         args.putBoolean("manual_input", manualInput);
+
         ScannerConfirmationFragment confFrag = new ScannerConfirmationFragment();
         confFrag.setArguments(args);
         displayNextFragment(confFrag, ScannerConfirmationFragment.TAG);

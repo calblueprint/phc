@@ -115,6 +115,7 @@ public class MainActivity extends Activity
         }
         mContext = this;
 
+
         super.onCreate(savedInstanceState);
     }
 
@@ -181,8 +182,6 @@ public class MainActivity extends Activity
          */
         if (servicesButton == null) { return; }
 
-//        servicesButton.setTextAppearance(getApplicationContext(), R.style.EnabledButtonText);
-//        servicesButton.setBackgroundResource(R.drawable.enabled_button);
         if (enabled) {
             servicesButton.setTextAppearance(getApplicationContext(), R.style.EnabledButtonText);
             servicesButton.setBackgroundResource(R.drawable.enabled_button);
@@ -206,8 +205,6 @@ public class MainActivity extends Activity
          */
         if (registerButton == null) { return; }
 
-//        registerButton.setTextAppearance(getApplicationContext(), R.style.EnabledButtonText);
-//        registerButton.setBackgroundResource(R.drawable.enabled_button);
         if (enabled) {
             registerButton.setTextAppearance(getApplicationContext(), R.style.EnabledButtonText);
             registerButton.setBackgroundResource(R.drawable.enabled_button);
@@ -231,8 +228,6 @@ public class MainActivity extends Activity
          */
         if (exitButton == null) { return; }
 
-//        exitButton.setTextAppearance(getApplicationContext(), R.style.EnabledButtonText);
-//        exitButton.setBackgroundResource(R.drawable.enabled_button);
         if (enabled) {
             exitButton.setTextAppearance(getApplicationContext(), R.style.EnabledButtonText);
             exitButton.setBackgroundResource(R.drawable.enabled_button);

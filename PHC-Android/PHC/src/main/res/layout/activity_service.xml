@@ -11,7 +11,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        class="phc.android.ServiceSideBarFragment" />
+        class="phc.android.ServiceSideBarFragment"
+        tools:layout="@layout/fragment_service_side_bar" />
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="fill_parent"

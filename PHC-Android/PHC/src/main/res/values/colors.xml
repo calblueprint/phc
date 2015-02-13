@@ -3,6 +3,7 @@
 
     <item name="red" type="color">#D64541</item>
     <item name="gray" type="color">#C0C0C0</item>
+    <item name="green" type="color">#00B159</item>
 
     <item name="red_actionbar" type="color">#D64541</item>
     <item name="red_sidebar" type="color">#FFE9E9</item>
