@@ -108,7 +108,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
     public void onSaveInstanceState(Bundle outState) {
         // Save the cached results
         outState.putParcelableArray(CACHED_RESULTS, mSearchResults);
-        
+
         // Remove the progress dialog on orientation change
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
