@@ -51,29 +51,49 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
     private static final String SEARCH_PATH = "/api/v1/search";
     private static final String AUTH_TOKEN = "phcplusplus";
     public static final String SEARCH_RESULT = "SEARCH_RESULT";
-    private ProgressDialog progressDialog;
+    public static final String CACHED_RESULTS = "CACHED_RESULTS";
+    private ProgressDialog mProgressDialog;
     /** Parent Activity **/
     private RegisterActivity mParent;
+    /** Caching the search results **/
+    private SearchResult[] mSearchResults = new SearchResult[0];
+    /** ListView for results and its adapter **/
+    private ListView mListView;
+    private SearchResultAdapter mAdapter;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_results, container, false);
+        mListView = (ListView) view.findViewById(R.id.search_result_list);
 
-        // Create a new progress dialog
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setTitle("Search Results");
-        progressDialog.setMessage("Loading...");
-        progressDialog.setCancelable(true);
-        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                requestQueue.cancelAll(TAG);
-                dialog.dismiss();
-            }
-        });
-        progressDialog.setIndeterminate(false);
-        progressDialog.show();
+        if (savedInstanceState != null) {
+            mSearchResults = (SearchResult[]) savedInstanceState.get(CACHED_RESULTS);
+            mAdapter = new SearchResultAdapter(getActivity(), mSearchResults);
+            mListView.setAdapter(mAdapter);
+            mAdapter.notifyDataSetChanged();
+        } else {
+            // Initialize search results to be empty
+            mSearchResults = new SearchResult[0];
+        }
+
+        // Create a new progress dialog if no cached search results
+        if (mSearchResults.length == 0) {
+            mProgressDialog = new ProgressDialog(getActivity());
+            mProgressDialog.setTitle("Search Results");
+            mProgressDialog.setMessage("Loading...");
+            mProgressDialog.setCancelable(true);
+            mProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    requestQueue.cancelAll(TAG);
+                    dialog.dismiss();
+                }
+            });
+            mProgressDialog.setIndeterminate(false);
+            mProgressDialog.show();
+        }
 
         return view;
     }
@@ -81,6 +101,17 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
     public void onActivityCreated (Bundle savedInstanceState) {
         requestQueue = Volley.newRequestQueue(getActivity());
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // Save the cached results
+        outState.putParcelableArray(CACHED_RESULTS, mSearchResults);
+
+        // Remove the progress dialog on orientation change
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
     }
 
     @Override
@@ -101,16 +132,12 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
         //If there are search parameters,
         if(firstName != null && lastName != null) {
             String url = getActivity().getResources().getString(R.string.request_url);
-            final ListView listView = (ListView) getView().findViewById(R.id.search_result_list);
-            listView.setOnItemClickListener(this);
-
-            //Clear the previous search
-            searchPreferences.edit().clear().commit();
+            mListView.setOnItemClickListener(this);
 
             JsonArrayRequest searchResultsRequest = new JsonArrayRequest(url + SEARCH_PATH, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray jsonArray) {
-                    SearchResult[] results = new SearchResult[jsonArray.length()];
+                    mSearchResults = new SearchResult[jsonArray.length()];
                     try {
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject json = jsonArray.getJSONObject(i);
@@ -123,7 +150,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                             }
 
                             result.setSalesForceId(json.getString("sf_id"));
-                            results[i] = result;
+                            mSearchResults[i] = result;
                         }
                     } catch (JSONException e1) {
                         Log.e("Search Results Parse Error", e1.toString());
@@ -131,9 +158,12 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                         Log.e("Birthday Parse Error", e2.toString());
                     }
 
-                    SearchResultAdapter adapter = new SearchResultAdapter(SearchResultsFragment.this.getActivity(), results);
-                    listView.setAdapter(adapter);
-                    progressDialog.dismiss();
+                    mAdapter = new SearchResultAdapter(mParent, mSearchResults);
+                    mListView.setAdapter(mAdapter);
+                    // Check if progress dialog is showing before dismissing
+                    if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                        mProgressDialog.dismiss();
+                    }
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -169,7 +199,10 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
             };
 
             searchResultsRequest.setTag(TAG);
-            requestQueue.add(searchResultsRequest);
+            // Only queue request if results cache is empty
+            if (mSearchResults.length == 0) {
+                requestQueue.add(searchResultsRequest);
+            }
         }
 
 

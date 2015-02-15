@@ -1,5 +1,8 @@
 package phc.android;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
 /**
@@ -7,7 +10,7 @@ import java.util.Date;
  *
  * Created by Nishant on 11/23/14.
  */
-public class SearchResult {
+public class SearchResult implements Parcelable{
 
     private String firstName;
     private String lastName;
@@ -47,5 +50,16 @@ public class SearchResult {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(firstName);
+        parcel.writeString(lastName);
+        parcel.writeString(salesForceId);
+        parcel.writeSerializable(birthday);
+    }
 }
