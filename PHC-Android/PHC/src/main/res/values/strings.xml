@@ -157,7 +157,6 @@
     <!-- Checkout Activity -->
 
     <string name="checkout_qr_scanner">Scan QR Code and Submit</string>
-    <string name="checkout_radio_group"></string>
     <string name="checkout_experience_title">Rate your experience</string>
     <string name="checkout_services_title"> Of these services, what are your top 2 priorities?</string>
     <string name="checkout_comment_title">Other comments? </string>

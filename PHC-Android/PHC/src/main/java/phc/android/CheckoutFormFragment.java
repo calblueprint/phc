@@ -25,15 +25,18 @@ public class CheckoutFormFragment extends Fragment {
     /** Holds the result of the scan. */
     protected String mScanResult;
     /** The textview that holds the comment. */
+    /** currently not used because comment box is not yet set up  **/
     private EditText mComment;
-    /** The checkboxview holds their input for good/bad experience */
+    /** Holds their input for experience rating 0-5 */
     private int mExperience;
-    /** The checkboxview holds their input for whether they found their services */
-    private CheckBox mServices;
-    /** Field and submit button for manual code input. **/
-    protected EditText mCodeInput;
-    protected RadioGroup mRadioGroup;
-    protected Button mCodeInputSubmitButton;
+    /** Holds manual code input. **/
+    /** currently not used because not yet set up  **/
+    private EditText mCodeInput;
+    /** Used to set listener to detect when the user rates their experience **/
+    private RadioGroup mRadioGroup;
+    /** Used to set listener to detect when the user clicks submit **/
+    private Button mCodeInputSubmitButton;
+
 
 
     @Override
@@ -91,12 +94,10 @@ public class CheckoutFormFragment extends Fragment {
         @Override
         public void onClick(View view){
             /**
-             * Loads next fragment onto the cusrrent stack.
+             * Loads next fragment onto the current stack.
              */
             FragmentTransaction transaction =
                     ((Activity)mContext).getFragmentManager().beginTransaction();
-            //move this activity to a fragment
-            //remove this fragment.
             transaction.replace(R.id.checkout_activity_container, new CheckoutSuccessFragment());
             transaction.commit();
         }
