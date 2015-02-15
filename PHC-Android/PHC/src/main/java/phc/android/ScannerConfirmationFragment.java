@@ -74,11 +74,11 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
         mScanResultView = (TextView) view.findViewById(R.id.scan_result);
         mScanResultView.setText(mScanResult);
 
-        mRetryButton = (Button) view.findViewById(R.id.retry_scan);
-        mRetryButton.setOnClickListener(new RetryListener());
-
         mConfirmButton = (Button) view.findViewById(R.id.confirm_scan);
         mConfirmButton.setOnClickListener(new ConfirmListener());
+
+        mRetryButton = (Button) view.findViewById(R.id.retry_scan);
+        mRetryButton.setOnClickListener(new RetryListener());
         return view;
     }
 
