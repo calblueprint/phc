@@ -1,10 +1,6 @@
 package phc.android;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.app.FragmentManager;
-import android.app.Service;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -24,10 +20,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 
 public class RegistrationScannerConfirmationFragment extends ScannerConfirmationFragment {
