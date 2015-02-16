@@ -10,7 +10,6 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class SelectServicesFragment extends RegistrationFragment {

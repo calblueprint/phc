@@ -1,7 +1,6 @@
 package phc.android;
 
-import
-android.app.Activity;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
