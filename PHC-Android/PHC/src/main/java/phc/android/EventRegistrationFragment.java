@@ -26,9 +26,9 @@ public class EventRegistrationFragment extends RegistrationFragment{
     private CheckBox mDoctorCheckbox;
     /** Whether the Doctor checkbox has been checked. */
     private Boolean mDoctorChecked = false;
-    /** Doctor name editText. */
-    private EditText mDoctorName;
-    /** Doctor name editText input. */
+    /** Doctor location editText. */
+    private EditText mDoctorLocation;
+    /** Doctor location editText input. */
     private ViewGroup mDoctorLayout;
     /** Children checkbox. */
     private CheckBox mChildrenCheckbox;
@@ -64,8 +64,8 @@ public class EventRegistrationFragment extends RegistrationFragment{
         // If the bundle contains information, loads the optional EditTexts along with their state.
         if (savedInstanceState != null){
             if (savedInstanceState.getBoolean("doctor_check")){
-                addDoctorName();
-                mDoctorName.setText(savedInstanceState.getString("doctor_name"));
+                addDoctorLocation();
+                mDoctorLocation.setText(savedInstanceState.getString("doctor_location"));
             }
             if (savedInstanceState.getBoolean("children_check")){
                 addChildrenAge();
@@ -78,7 +78,7 @@ public class EventRegistrationFragment extends RegistrationFragment{
         // mChildrenChecked to recreate the state.
         else{
             if (mDoctorChecked){
-                addDoctorName();
+                addDoctorLocation();
             }
             if (mChildrenChecked){
                 addChildrenAge();
@@ -98,9 +98,9 @@ public class EventRegistrationFragment extends RegistrationFragment{
             public void onClick(View view) {
                 mDoctorChecked = mDoctorCheckbox.isChecked();
                 if (mDoctorChecked == true) {
-                    addDoctorName();
+                    addDoctorLocation();
                 } else {
-                    removeDoctorName();
+                    removeDoctorLocation();
                 }
             }
         });
@@ -136,22 +136,22 @@ public class EventRegistrationFragment extends RegistrationFragment{
     }
 
     /**
-     * Creates a new EditText prompting the doctor's name when the doctor checkbox is checked.
+     * Creates a new EditText prompting the doctor's location when the doctor checkbox is checked.
      */
-    public void addDoctorName(){
-        mDoctorName = new EditText(mDoctorLayout.getContext());
-        mDoctorName.setLayoutParams(new LinearLayout.LayoutParams
+    public void addDoctorLocation(){
+        mDoctorLocation = new EditText(mDoctorLayout.getContext());
+        mDoctorLocation.setLayoutParams(new LinearLayout.LayoutParams
                 (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        mDoctorName.setHint(R.string.prompt_doctor_name);
-        mDoctorName.setId(R.id.doctor_name);
-        mDoctorLayout.addView(mDoctorName);
+        mDoctorLocation.setHint(R.string.prompt_doctor_location);
+        mDoctorLocation.setId(R.id.doctor_location);
+        mDoctorLayout.addView(mDoctorLocation);
     }
 
     /**
-     * Removes the doctor name EditText when unchecked.
+     * Removes the doctor location EditText when unchecked.
      */
-    public void removeDoctorName(){
-        mDoctorLayout.removeView(mDoctorName);
+    public void removeDoctorLocation(){
+        mDoctorLayout.removeView(mDoctorLocation);
     }
 
     /**
@@ -201,7 +201,7 @@ public class EventRegistrationFragment extends RegistrationFragment{
         if (mDoctorCheckbox != null && mChildrenCheckbox != null){
             outState.putBoolean("doctor_check", mDoctorCheckbox.isChecked());
             if (mDoctorCheckbox.isChecked()){
-                outState.putString("doctor_name", mDoctorName.getText().toString());
+                outState.putString("doctor_location", mDoctorLocation.getText().toString());
             }
             outState.putBoolean("children_check", mChildrenCheckbox.isChecked());
             if (mChildrenCheckbox.isChecked()){

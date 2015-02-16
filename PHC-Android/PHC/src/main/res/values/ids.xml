@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="doctor_name" type="id"/>
+    <item name="doctor_location" type="id"/>
     <item name="children_age" type="id"/>
 </resources>

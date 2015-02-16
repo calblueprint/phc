@@ -112,7 +112,7 @@
     <string name="prompt_children">Minor Children here today?</string>
     <string name="prompt_children_age">(Optional) Age (e.g. 8,2,5)</string>
     <string name="prompt_doctor">Do you currently have a primary care doctor?</string>
-    <string name="prompt_doctor_name">(Optional) Doctor name</string>
+    <string name="prompt_doctor_location">(Optional) Doctor location</string>
 
     <string-array name="neighborhood_array">
         <item>Bayview/HP</item>
