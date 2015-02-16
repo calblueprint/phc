@@ -152,16 +152,22 @@
     <string name="enter_code_prompt">Enter a code here: </string>
     <string name="scan_code_prompt">Or, scan a QR code: </string>
     <string name="input_confirmation_text">The code you entered was: </string>
-    <string name="scan_confirmation_text">The scan result was: </string>
+    <string name="scan_confirmation_texts">The scan result was: </string>
 
-    <!-- Exit Activity -->
-    <!-- TODO: rename exit to checkout -->
-    <string name="exit_qr_scanner">Scan QR Code and Submit</string>
-    <string name="exit_experience_title">Did you have a positive experience?</string>
-    <string name="exit_services_title"> Did you receive the services you were looking for? </string>
-    <string name="exit_comment_title">Comments</string>
-    <string name="exit_yes">Yes</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Checkout Activity -->
+
+    <string name="checkout_qr_scanner">Scan QR Code and Submit</string>
+    <string name="checkout_experience_title">Rate your experience</string>
+    <string name="checkout_services_title"> Of these services, what are your top 2 priorities?</string>
+    <string name="checkout_comment_title">Other comments? </string>
+    <string name="checkout_hello_blank_fragment">Hello blank fragment</string>
     <string name="checkout_another">Checkout another client</string>
+    <string name="checkout_service_blank">Sample Service</string>
+    <string name="checkout_experience_0">0</string>
+    <string name="checkout_experience_1">1</string>
+    <string name="checkout_experience_2">2</string>
+    <string name="checkout_experience_3">3</string>
+    <string name="checkout_experience_4">4</string>
+    <string name="checkout_experience_5">5</string>
 
 </resources>

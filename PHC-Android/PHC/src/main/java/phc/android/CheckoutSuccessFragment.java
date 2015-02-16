@@ -30,6 +30,9 @@ public class CheckoutSuccessFragment extends Fragment {
     }
 
 
+
+
+
     /**
      * Creates an OnClickListener for the "Checkout Another Client" button,
      * which calls a new instance of ExitActivity.
