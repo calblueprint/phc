@@ -33,7 +33,7 @@
         <item>Event Info</item>
         <item>Services Info</item>
         <item>Scan Code</item>
-        <item>Confirmation</item>
+        <item>Confirm</item>
     </string-array>
 
     <!-- Services sidebar -->

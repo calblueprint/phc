@@ -41,8 +41,8 @@ public class SuccessFragment extends RegistrationFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_success, container, false);
         setupStringMappings();
-        setSuccessName(view);
         setOnRepeatActionClickListener(view);
+        setupUI(view);
         return view;
     }
 
@@ -161,11 +161,15 @@ public class SuccessFragment extends RegistrationFragment {
     /**
      * Grabs the person's name from SharedPreferences, and adds it after the Success text
      */
-    protected void setSuccessName(View view) {
+    protected void setupUI(View view) {
+        // Set up text that appears in textview
         TextView mSuccessText = (TextView) view.findViewById(R.id.text_success);
         SharedPreferences sharedPref = getActivity().getSharedPreferences(SharedPreferenceEditorListener.USER_PREFS_NAME, Context.MODE_PRIVATE);
         String firstName = sharedPref.getString("first_name", "");
         String lastName = sharedPref.getString("last_name", "");
         mSuccessText.setText("Success! " + firstName + " " + lastName + " is now " + mActionTextMapping.get(mCurrentSuccessType));
+
+        // Set up text that appears in the button
+        mRepeatActionButton.setText(mButtonTextMapping.get(mCurrentSuccessType));
     }
 }
