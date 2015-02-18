@@ -38,7 +38,6 @@ class Api::V1::AccountsController < ApplicationController
 
     def user_authenticated?(id, token)
       user = User.find_by(id: id)
-      byebug
       if not user
         respond_with "Error: User ID not found in database.", status: 401
         false
