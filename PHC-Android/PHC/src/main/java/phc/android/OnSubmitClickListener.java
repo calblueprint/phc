@@ -3,12 +3,7 @@ package phc.android;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
-
-import java.util.Map;
 
 /**
  * OnSubmitClickListener writes all entries to SalesForce DB and clears SharedPreferences.
@@ -22,7 +17,6 @@ public class OnSubmitClickListener
     public OnSubmitClickListener(Context context) {
         super(context);
     }
-    EditText a;
 
     /**
      * When submit button is clicked, writes SharedPreferences data to Salesforce,

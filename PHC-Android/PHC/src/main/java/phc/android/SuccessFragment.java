@@ -16,8 +16,8 @@ import android.widget.TextView;
 import java.util.HashMap;
 
 /**
- * SuccessFragment is launched on successful submission of a client's form data,
- * and allows the user to go back to activity_register another client.
+ * SuccessFragment is launched on successful submission of a client's data,
+ * and allows the user to go back to the beginning of their current flow.
  */
 public class SuccessFragment extends RegistrationFragment {
 
@@ -99,8 +99,8 @@ public class SuccessFragment extends RegistrationFragment {
     }
 
     /**
-     * Creates an OnClickListener for the "Register Another Client" button,
-     * which calls a new instance of RegisterActivity.
+     * sets an OnClickListener for the repeat action button,
+     * which calls a new instance of whatever activity this fragment is in.
      */
     protected void setOnRepeatActionClickListener(View view) {
         mRepeatActionButton = (Button) view.findViewById(R.id.button_repeat_action);
@@ -160,7 +160,7 @@ public class SuccessFragment extends RegistrationFragment {
     }
 
     /**
-     * Grabs the person's name from SharedPreferences, and adds it after the Success text
+     * Grabs the person's name from SharedPreferences, and adds it after the success text
      */
     protected void setupUI(View view) {
         // Set up text that appears in textview
