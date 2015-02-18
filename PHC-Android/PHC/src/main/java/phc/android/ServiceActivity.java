@@ -117,6 +117,9 @@ public class ServiceActivity extends Activity {
                 services = bundle.getCharSequenceArray("services_list");
                 servicesHashMap = (HashMap<String, String>) bundle.getSerializable("services_hash");
                 if (bundle.get("provided_service") == null && intention == MainActivity.FOR_SERVICE) {
+                    // Set to service to empty if the user hasn't selected one yet
+                    mServiceSelected = "";
+                    //show service dialog for user to select service
                     showSelectServiceDialog(true);
                 } else {
                     mServiceSelected = (String) bundle.get("provided_service");
@@ -280,7 +283,7 @@ public class ServiceActivity extends Activity {
      * that they provide.
      * @param mustSelect is True if the user has not already selected a service.
      */
-    private void showSelectServiceDialog(final boolean mustSelect) {
+    public void showSelectServiceDialog(final boolean mustSelect) {
         DialogFragment newFrag = ServiceAlertDialogFragment.newInstance(mustSelect);
         newFrag.show(getFragmentManager(), "ServiceDialog");
     }
@@ -293,8 +296,7 @@ public class ServiceActivity extends Activity {
      * @param result String scan result
      */
     public void storeScanResult(String result) {
-        /* TODO: Need a function that updates the
-         * Salesforce object
+        /* TODO: Need a function that updates the Salesforce object
          *
          * updateRegistration(result, mSelectedService)
          */
