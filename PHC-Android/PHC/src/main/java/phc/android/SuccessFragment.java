@@ -30,6 +30,8 @@ public class SuccessFragment extends RegistrationFragment {
     private SuccessType mCurrentSuccessType;
     // Determines what text is shown
     private HashMap<SuccessType, String> mActionTextMapping;
+    // Determines what button text is shown
+    private HashMap<SuccessType, String> mButtonTextMapping;
 
     private static final String TAG = "SUCCESS_FRAGMENT";
 
@@ -83,13 +85,17 @@ public class SuccessFragment extends RegistrationFragment {
     }
 
     /**
-     * Setup mapping from success types to strings in confirmation message
+     * Setup mapping from success types to text in confirmation message and button
      */
     private void setupStringMappings(){
         mActionTextMapping = new HashMap<SuccessType, String>();
         mActionTextMapping.put(SuccessType.CHECKIN_SUCCESS, "checked in.");
         mActionTextMapping.put(SuccessType.SERVICE_SUCCESS, "checked in.");
         mActionTextMapping.put(SuccessType.CHECKOUT_SUCCESS, "checked out.");
+        mButtonTextMapping = new HashMap<SuccessType, String>();
+        mButtonTextMapping.put(SuccessType.CHECKIN_SUCCESS, "Check in another client");
+        mButtonTextMapping.put(SuccessType.SERVICE_SUCCESS, "Check in another client");
+        mButtonTextMapping.put(SuccessType.CHECKOUT_SUCCESS, "Check out another client");
     }
 
     /**
@@ -105,6 +111,11 @@ public class SuccessFragment extends RegistrationFragment {
                             @Override
                             public void onClick(View view) {
                                 Intent intent = new Intent(getActivity(), RegisterActivity.class);
+                                HashMap<String, String> services = ((RegisterActivity)getActivity())
+                                        .getServices();
+                                intent.putExtra("services_hashmap", services);
+                                String eventId = ((RegisterActivity) getActivity()).getmEventId();
+                                intent.putExtra("event_id", eventId);
                                 getActivity().finish();
                                 getActivity().startActivity(intent);
                             }
@@ -115,12 +126,10 @@ public class SuccessFragment extends RegistrationFragment {
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Intent intent = new Intent(getActivity(), RegisterActivity.class);
-                                HashMap<String, String> services = ((RegisterActivity)getActivity())
-                                        .getServices();
-                                intent.putExtra("services_hashmap", services);
-                                String eventId = ((RegisterActivity) getActivity()).getmEventId();
-                                intent.putExtra("event_id", eventId);
+                                Intent intent = new Intent(getActivity(), ServiceActivity.class);
+                                intent.putExtra("provided_service", ((ServiceActivity) getActivity()).getmServiceSelected());
+                                intent.putExtra("services_list", ((ServiceActivity) getActivity()).getServices());
+                                intent.putExtra("services_hash", ((ServiceActivity) getActivity()).getServicesHashMap());
                                 getActivity().finish();
                                 getActivity().startActivity(intent);
                             }
