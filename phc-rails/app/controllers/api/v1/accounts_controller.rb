@@ -22,11 +22,13 @@ class Api::V1::AccountsController < ApplicationController
     if auth_token && user_id
       if user_authenticated(user_id, auth_token)
         person = PersonAccount.new
-        person.first_name = request.headers["HTTP_FIRSTNAME"]
-        person.last_name = request.headers["HTTP_LASTNAME"]
-        person.sf_id = request.headers["HTTP_SALESFORCEID"]
+        person.first_name = params[:first_name]
+        person.last_name = params[:last_name]
+        person.sf_id = request.headers[:salesforceid]
         person.save
         respond_with "Successfully saved user!", status: 200
+
+        ##### TODO: POST TO SALESFORCE #####
       end
     else
       respond_with "Error: Please include authentication token.", status: 401

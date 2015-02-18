@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+  respond_to :json
   skip_before_action :verify_authenticity_token
 
   def new
@@ -9,7 +10,7 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:password])
       user.remember
       data = {user_id: user.id, auth_token: user.auth_token}
-      repond_with data
+      respond_with data, json
     else
       respond_with "Error: User authentication failed.", status: 401
     end
