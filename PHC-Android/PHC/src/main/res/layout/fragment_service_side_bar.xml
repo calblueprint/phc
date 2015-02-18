@@ -3,7 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="100dp"
     android:layout_gravity="bottom"
     android:layout_below="@id/service_fragment_container"
     android:gravity="bottom">
@@ -15,12 +15,23 @@
         android:gravity="center|bottom"
         android:background="@color/red">
 
-        <ImageView
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_height="50dp"
             android:padding="10dp"
-            android:src="@drawable/reg_logo" />
+            android:id="@+id/service_prompt_text"
+            android:text="hello there"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/button_exit"
+            android:text="@string/button_logout"
+            android:textColor="@drawable/enabled_button_text"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:onClick="openExit"/>
+
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"

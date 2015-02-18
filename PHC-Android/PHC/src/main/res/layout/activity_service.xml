@@ -27,7 +27,7 @@
         android:id="@+id/service_sidebar"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-      g  android:layout_weight="3"
+        android:layout_weight="3"
         class="phc.android.ServiceSideBarFragment"
         tools:layout="@layout/fragment_service_side_bar" />
 </LinearLayout>
