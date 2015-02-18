@@ -119,7 +119,7 @@ public class ServiceActivity extends Activity {
                 if (bundle.get("provided_service") == null && intention == MainActivity.FOR_SERVICE) {
                     // Set to service to empty if the user hasn't selected one yet
                     mServiceSelected = "";
-                    //show service dialog for user to select service
+                    // Show service dialog for user to select service
                     showSelectServiceDialog(true);
                 } else {
                     mServiceSelected = (String) bundle.get("provided_service");

@@ -29,11 +29,9 @@ public class ScannerFragment extends Fragment {
 
     // Button to start BarcodeScanner app
     private Button mScanButton;
-
     // Field and submit button for manual code input.
     private EditText mCodeInput;
     private Button mCodeInputSubmitButton;
-
     // Button used to change services
     private Button mChangeServiceButton;
 
