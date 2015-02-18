@@ -106,49 +106,55 @@ public class SuccessFragment extends RegistrationFragment {
         mRepeatActionButton = (Button) view.findViewById(R.id.button_repeat_action);
         switch (mCurrentSuccessType) {
             case CHECKIN_SUCCESS:
-                mRepeatActionButton.setOnClickListener(
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent = new Intent(getActivity(), RegisterActivity.class);
-                                HashMap<String, String> services = ((RegisterActivity)getActivity())
-                                        .getServices();
-                                intent.putExtra("services_hashmap", services);
-                                String eventId = ((RegisterActivity) getActivity()).getmEventId();
-                                intent.putExtra("event_id", eventId);
-                                getActivity().finish();
-                                getActivity().startActivity(intent);
-                            }
-                        });
+                mRepeatActionButton.setOnClickListener(new CheckInRepeatOnClickListener());
                 break;
             case SERVICE_SUCCESS:
-                mRepeatActionButton.setOnClickListener(
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent = new Intent(getActivity(), ServiceActivity.class);
-                                intent.putExtra("provided_service", ((ServiceActivity) getActivity()).getmServiceSelected());
-                                intent.putExtra("services_list", ((ServiceActivity) getActivity()).getServices());
-                                intent.putExtra("services_hash", ((ServiceActivity) getActivity()).getServicesHashMap());
-                                getActivity().finish();
-                                getActivity().startActivity(intent);
-                            }
-                        });
+                mRepeatActionButton.setOnClickListener(new ServiceRepeatOnClickListener());
                 break;
             case CHECKOUT_SUCCESS:
-                mRepeatActionButton.setOnClickListener(
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent = new Intent(getActivity(), ExitActivity.class);
-                                getActivity().finish();
-                                getActivity().startActivity(intent);
-                            }
-                        });
+                mRepeatActionButton.setOnClickListener(new CheckOutRepeatOnClickListener());
                 break;
             default:
                 Log.e(TAG, "Did not set the success type using the setType() method");
                 break;
+        }
+    }
+
+    private class CheckInRepeatOnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(getActivity(), RegisterActivity.class);
+            HashMap<String, String> services = ((RegisterActivity)getActivity())
+                    .getServices();
+            intent.putExtra("services_hashmap", services);
+            String eventId = ((RegisterActivity) getActivity()).getmEventId();
+            intent.putExtra("event_id", eventId);
+            getActivity().finish();
+            getActivity().startActivity(intent);
+        }
+    }
+
+    private class ServiceRepeatOnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(getActivity(), ServiceActivity.class);
+            intent.putExtra("provided_service", ((ServiceActivity) getActivity()).getmServiceSelected());
+            intent.putExtra("services_list", ((ServiceActivity) getActivity()).getServices());
+            intent.putExtra("services_hash", ((ServiceActivity) getActivity()).getServicesHashMap());
+            getActivity().finish();
+            getActivity().startActivity(intent);
+        }
+    }
+
+    private class CheckOutRepeatOnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(getActivity(), ExitActivity.class);
+            getActivity().finish();
+            getActivity().startActivity(intent);
         }
     }
 
