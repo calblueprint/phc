@@ -14,7 +14,7 @@
 
     <style name="PHCActionBar"
         parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/red_actionbar</item>
+        <item name="android:background">@color/red</item>
     </style>
 
     <style name="PHCEditText"
