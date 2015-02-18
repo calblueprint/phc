@@ -2,11 +2,10 @@ class Api::V1::AccountsController < ApplicationController
   respond_to :json
 
   def search
+    byebug
     if request.headers["auth_token"] && request.headers["user_id"]
 
-
       ##### TODO: Check Authentication Tokens!!! ######
-
 
       first_name = request.headers["FirstName"]
       last_name = request.headers["LastName"]

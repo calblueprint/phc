@@ -22,7 +22,7 @@ gem "figaro"
 # For hashing and storing secure passwords
 gem "bcrypt"
 
-#Salesforce gems
+# Salesforce gems
 gem "databasedotcom"
 gem "databasedotcom-rails"
 
@@ -39,4 +39,5 @@ group :development do
     gem "bullet"
     gem "annotate", "~> 2.6.5"
     gem "spring"
+    gem "byebug"
 end
