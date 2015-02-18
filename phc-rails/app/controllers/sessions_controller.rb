@@ -10,9 +10,10 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:password])
       user.remember
       data = {user_id: user.id, auth_token: user.auth_token}
-      respond_with data, json
+      respond_with data, :location => root_url
     else
-      respond_with "Error: User authentication failed.", status: 401
+      # Why doesn't respond_with work?
+      respond_with "Error: User authentication failed.", status: 200, :location => root_url
     end
   end
 
@@ -21,9 +22,9 @@ class SessionsController < ApplicationController
     auth_token = params[:auth_token]
     if user && user.authenticated?(auth_token)
       user.end_session
-      respond_with "Successfully logged out.", status: 200
+      respond_with "Successfully logged out.", status: 200, :location => root_url
     else
-      respond_with "Error: Failed to logout.", status: 401
+      respond_with "Error: Failed to logout.", status: 401, :location => root_url
     end
   end
 
