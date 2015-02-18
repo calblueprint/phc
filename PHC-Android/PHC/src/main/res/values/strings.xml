@@ -24,7 +24,7 @@
     <string name="sidebar_event_info">Event Info</string>
     <string name="sidebar_services_info">Services Info</string>
     <string name="sidebar_scan_code">Scan Code</string>
-    <string name="sidebar_confirmation">Confirmation</string>
+    <string name="sidebar_confirm">Confirm</string>
 
     <string-array name="sidebar">
         <item>Selection</item>
@@ -38,7 +38,6 @@
 
     <!-- Services sidebar -->
     <string name="sidebar_scan">Scan</string>
-    <string name="sidebar_confirm">Confirm</string>
 
     <string-array name="services_sidebar">
         <item>@string/sidebar_scan</item>

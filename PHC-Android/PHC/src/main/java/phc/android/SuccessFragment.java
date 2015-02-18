@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +20,16 @@ import java.util.HashMap;
  * and allows the user to go back to activity_register another client.
  */
 public class SuccessFragment extends RegistrationFragment {
-    /* Submit button. */
-    private Button mRegisterAnotherButton;
+
+    // Different flows this success fragment can be in
+    public static enum SuccessType {REGISTER_SUCCESS, SERVICE_SUCCESS, CHECKOUT_SUCCESS};
+    // Submit button
+    private Button mRepeatActionButton;
+    // The flow this success fragment is in
+    private SuccessType mCurrentSuccessType;
+
+    private static final String TAG = "SUCCESS_FRAGMENT";
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,19 +42,39 @@ public class SuccessFragment extends RegistrationFragment {
 
     @Override
     public void onResume() {
-        LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.sidebar_list);
-        for (int i = 0; i < sidebarList.getChildCount(); i++) {
-            View v = sidebarList.getChildAt(i);
-            Object vTag = v.getTag();
-            if ((vTag != null) && (vTag.equals(getResources().getText(R.string.sidebar_confirmation)))) {
-                TextView tv = (TextView) v;
-                tv.setTypeface(null, Typeface.BOLD);
-            } else if (v instanceof TextView) {
-                TextView tv = (TextView) v;
-                tv.setTypeface(null, Typeface.NORMAL);
-            }
+        switch (mCurrentSuccessType) {
+            case REGISTER_SUCCESS:
+                LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.sidebar_list);
+                for (int i = 0; i < sidebarList.getChildCount(); i++) {
+                    View v = sidebarList.getChildAt(i);
+                    Object vTag = v.getTag();
+                    if ((vTag != null) && (vTag.equals(getResources().getText(R.string.sidebar_confirm)))) {
+                        TextView tv = (TextView) v;
+                        tv.setTypeface(null, Typeface.BOLD);
+                    } else if (v instanceof TextView) {
+                        TextView tv = (TextView) v;
+                        tv.setTypeface(null, Typeface.NORMAL);
+                    }
+                }
+                break;
+            case SERVICE_SUCCESS:
+                break;
+            case CHECKOUT_SUCCESS:
+                break;
+            default:
+                Log.e(TAG, "Did not set the success type using the setType() method");
+                break;
+
         }
+
         super.onResume();
+    }
+
+    /**
+     * Should be called from the previous fragment to modify the success fragment based on what flow it is in
+     */
+    public void setType(SuccessType successType) {
+        mCurrentSuccessType = successType;
     }
 
     /**
@@ -53,8 +82,8 @@ public class SuccessFragment extends RegistrationFragment {
      * which calls a new instance of RegisterActivity.
      */
     protected void setOnRegisterAnotherClickListener(View view) {
-        mRegisterAnotherButton = (Button) view.findViewById(R.id.button_register_another);
-        mRegisterAnotherButton.setOnClickListener(
+        mRepeatActionButton = (Button) view.findViewById(R.id.button_register_another);
+        mRepeatActionButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

@@ -25,7 +25,7 @@
     </ImageView>
 
     <Button
-        android:id="@+id/button_register_another"
+        android:id="@+id/button_repeat_action"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
