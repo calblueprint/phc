@@ -6,8 +6,12 @@ curl -X POST \
 curl -X GET \
      -i \
      -H "user_id: 6" \
-     -H "auth_token: D4hepkoFwPKHmpZKm5RzdQ" \
+     -H "auth_token: FhaazGVgsONHww04ZTyLXA" \
      -L localhost:3000/api/v1/search
 
+curl -X GET \
+     -i \
+     -H "user_id: 6" \
+     -L localhost:3000/api/v1/search
 
-D4hepkoFwPKHmpZKm5RzdQ
+FhaazGVgsONHww04ZTyLXA
