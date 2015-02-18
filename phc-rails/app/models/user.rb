@@ -30,7 +30,15 @@ class User < ActiveRecord::Base
   end
 
   def authenticated?(auth_token)
+    # When we end sessions, we destroy the auth token, so nil tokens should always fail
+    if not auth_token
+      return false
+    end
     BCrypt::Password.new(auth_digest).is_password?(auth_token)
+  end
+
+  def end_session
+    update_attribute(:auth_digest, nil)
   end
 
 end

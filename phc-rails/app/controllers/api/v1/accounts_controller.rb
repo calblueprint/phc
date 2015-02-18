@@ -28,6 +28,7 @@ class Api::V1::AccountsController < ApplicationController
         person.last_name = request.headers["HTTP_LASTNAME"]
         person.sf_id = request.headers["HTTP_SALESFORCEID"]
         person.save
+        respond_with "Successfully saved user!", status: 200
       else
         respond_with "Error: Invalid authentication token.", status: 401
       end

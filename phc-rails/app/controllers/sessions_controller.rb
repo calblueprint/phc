@@ -7,15 +7,22 @@ class SessionsController < ApplicationController
   def login
     user = User.find_by(email: params[:email].downcase)
     if user && user.authenticate(params[:password])
-      # Remember user and return the auth token
       user.remember
       data = {user_id: user.id, auth_token: user.auth_token}
-      puts user.auth_digest
-      render :json => data
+      repond_with data
     else
-      # Return error message
-      data = {message: "Error: User authentication failed."}
-      render :json => data
+      respond_with "Error: User authentication failed.", status: 401
+    end
+  end
+
+  def destroy
+    user = User.find_by(email: params[:email].downcase)
+    auth_token = params[:auth_token]
+    if user && user.authenticate?(auth_token)
+      user.end_session
+      respond_with "Successfully logged out.", status: 200
+    else
+      respond_with "Error: Failed to logout.", status: 401
     end
   end
 
