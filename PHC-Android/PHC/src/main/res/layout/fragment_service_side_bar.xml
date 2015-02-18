@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="50dp"
     android:layout_gravity="bottom"
+    android:layout_below="@id/service_fragment_container"
     android:gravity="bottom">
 
     <LinearLayout
@@ -12,8 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center|bottom"
-        android:background="@color/red"
-        android:orientation="horizontal">
+        android:background="@color/red">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -24,7 +24,7 @@
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:background="@color/gray"/>
+            android:background="@color/gray" />
 
     </LinearLayout>
 
