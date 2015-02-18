@@ -14,4 +14,10 @@ curl -X GET \
      -H "user_id: 6" \
      -L localhost:3000/api/v1/search
 
+curl -X GET \
+     -i \
+     -H "user_id: 10" \
+     -H "auth_token: FhaazGVgsONHww04ZTyLXA" \
+     -L localhost:3000/api/v1/search
+
 FhaazGVgsONHww04ZTyLXA

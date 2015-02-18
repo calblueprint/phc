@@ -10,8 +10,6 @@ class Api::V1::AccountsController < ApplicationController
         last_name = request.headers["HTTP_LASTNAME"]
         result = PersonAccount.fuzzy_search({first_name: first_name}, false).fuzzy_search({last_name: last_name}, false)
         respond_with result
-      else
-        respond_with "Error: Invalid authentication token.", status: 401
       end
     else
       respond_with "Error: Please include authentication token.", status: 401
@@ -29,8 +27,6 @@ class Api::V1::AccountsController < ApplicationController
         person.sf_id = request.headers["HTTP_SALESFORCEID"]
         person.save
         respond_with "Successfully saved user!", status: 200
-      else
-        respond_with "Error: Invalid authentication token.", status: 401
       end
     else
       respond_with "Error: Please include authentication token.", status: 401
@@ -42,10 +38,16 @@ class Api::V1::AccountsController < ApplicationController
 
     def user_authenticated?(id, token)
       user = User.find_by(id: id)
+      byebug
       if not user
         respond_with "Error: User ID not found in database.", status: 401
+        false
+      elsif not user.authenticated?(token)
+        respond_with "Error: Invalid authentication token.", status: 401
+        false
+      else
+        true
       end
-      user.authenticated?(token)
     end
 
 end

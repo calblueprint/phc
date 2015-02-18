@@ -18,7 +18,7 @@ class SessionsController < ApplicationController
   def destroy
     user = User.find_by(email: params[:email].downcase)
     auth_token = params[:auth_token]
-    if user && user.authenticate?(auth_token)
+    if user && user.authenticated?(auth_token)
       user.end_session
       respond_with "Successfully logged out.", status: 200
     else
