@@ -29,6 +29,8 @@ task :load_sf => :environment do
     lm = LastModified.new
     query_str = field_str + order_str
   else
+
+    ##### MAJOR SECURITY FLAW - SQL INJECTION LOLOLOL #####
     lm = LastModified.first
     lm_str = "WHERE LastModifiedDate > "
     lm_str += lm.last_modified + " "
