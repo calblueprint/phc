@@ -140,6 +140,7 @@ public class SuccessFragment extends RegistrationFragment {
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(getActivity(), ServiceActivity.class);
+            // Need to give the ServiceActivity our list of services and currently selected service
             intent.putExtra("provided_service", ((ServiceActivity) getActivity()).getmServiceSelected());
             intent.putExtra("services_list", ((ServiceActivity) getActivity()).getServices());
             intent.putExtra("services_hash", ((ServiceActivity) getActivity()).getServicesHashMap());
