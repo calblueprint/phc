@@ -185,7 +185,7 @@ public class MainActivity extends Activity
         if (enabled) {
             servicesButton.setBackgroundResource(R.drawable.enabled_button);
         } else {
-            servicesButton.setTextAppearance(getApplicationContext(), R.style.DisabledButtonText);
+//            servicesButton.setTextAppearance(getApplicationContext(), R.style.DisabledButtonText);
             servicesButton.setBackgroundResource(R.drawable.disabled_button);
         }
     }
@@ -207,7 +207,7 @@ public class MainActivity extends Activity
         if (enabled) {
             registerButton.setBackgroundResource(R.drawable.enabled_button);
         } else {
-            registerButton.setTextAppearance(getApplicationContext(), R.style.DisabledButtonText);
+//            registerButton.setTextAppearance(getApplicationContext(), R.style.DisabledButtonText);
             registerButton.setBackgroundResource(R.drawable.disabled_button);
         }
     }
@@ -229,7 +229,7 @@ public class MainActivity extends Activity
         if (enabled) {
             exitButton.setBackgroundResource(R.drawable.enabled_button);
         } else {
-            exitButton.setTextAppearance(getApplicationContext(), R.style.DisabledButtonText);
+//            exitButton.setTextAppearance(getApplicationContext(), R.style.DisabledButtonText);
             exitButton.setBackgroundResource(R.drawable.disabled_button);
         }
     }

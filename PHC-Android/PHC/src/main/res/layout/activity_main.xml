@@ -13,7 +13,7 @@
     <Button
         android:id="@+id/button_services"
         android:text="@string/button_services"
-        android:textAppearance="@drawable/enabled_button_text"
+        android:textColor="@drawable/enabled_button_text"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
@@ -22,7 +22,7 @@
     <Button
         android:id="@+id/button_register"
         android:text="@string/button_login"
-        android:textAppearance="@drawable/enabled_button_text"
+        android:textColor="@drawable/enabled_button_text"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="15dp"
@@ -32,7 +32,7 @@
     <Button
         android:id="@+id/button_exit"
         android:text="@string/button_logout"
-        android:textAppearance="@drawable/enabled_button_text"
+        android:textColor="@drawable/enabled_button_text"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="15dp"
