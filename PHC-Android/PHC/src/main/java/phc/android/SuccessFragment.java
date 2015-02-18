@@ -71,7 +71,6 @@ public class SuccessFragment extends RegistrationFragment {
             default:
                 Log.e(TAG, "Did not set the success type using the setType() method");
                 break;
-
         }
 
         super.onResume();
