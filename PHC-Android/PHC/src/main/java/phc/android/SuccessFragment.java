@@ -22,11 +22,14 @@ import java.util.HashMap;
 public class SuccessFragment extends RegistrationFragment {
 
     // Different flows this success fragment can be in
-    public static enum SuccessType {REGISTER_SUCCESS, SERVICE_SUCCESS, CHECKOUT_SUCCESS};
+    public static enum SuccessType {
+        CHECKIN_SUCCESS, SERVICE_SUCCESS, CHECKOUT_SUCCESS};
     // Submit button
     private Button mRepeatActionButton;
     // The flow this success fragment is in
     private SuccessType mCurrentSuccessType;
+    // Determines what text is shown
+    private HashMap<SuccessType, String> mActionTextMapping;
 
     private static final String TAG = "SUCCESS_FRAGMENT";
 
@@ -35,15 +38,17 @@ public class SuccessFragment extends RegistrationFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_success, container, false);
+        setupStringMappings();
         setSuccessName(view);
-        setOnRegisterAnotherClickListener(view);
+        setOnRepeatActionClickListener(view);
         return view;
     }
 
     @Override
     public void onResume() {
         switch (mCurrentSuccessType) {
-            case REGISTER_SUCCESS:
+            case CHECKIN_SUCCESS:
+                // TODO: Will delete/change once Warren removes the sidebar
                 LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.sidebar_list);
                 for (int i = 0; i < sidebarList.getChildCount(); i++) {
                     View v = sidebarList.getChildAt(i);
@@ -78,25 +83,64 @@ public class SuccessFragment extends RegistrationFragment {
     }
 
     /**
+     * Setup mapping from success types to strings in confirmation message
+     */
+    private void setupStringMappings(){
+        mActionTextMapping = new HashMap<SuccessType, String>();
+        mActionTextMapping.put(SuccessType.CHECKIN_SUCCESS, "checked in.");
+        mActionTextMapping.put(SuccessType.SERVICE_SUCCESS, "checked in.");
+        mActionTextMapping.put(SuccessType.CHECKOUT_SUCCESS, "checked out.");
+    }
+
+    /**
      * Creates an OnClickListener for the "Register Another Client" button,
      * which calls a new instance of RegisterActivity.
      */
-    protected void setOnRegisterAnotherClickListener(View view) {
-        mRepeatActionButton = (Button) view.findViewById(R.id.button_register_another);
-        mRepeatActionButton.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(getActivity(), RegisterActivity.class);
-                        HashMap<String, String> services = ((RegisterActivity)getActivity())
-                                .getServices();
-                        intent.putExtra("services_hashmap", services);
-                        String eventId = ((RegisterActivity) getActivity()).getmEventId();
-                        intent.putExtra("event_id", eventId);
-                        getActivity().finish();
-                        getActivity().startActivity(intent);
-                    }
-        });
+    protected void setOnRepeatActionClickListener(View view) {
+        mRepeatActionButton = (Button) view.findViewById(R.id.button_repeat_action);
+        switch (mCurrentSuccessType) {
+            case CHECKIN_SUCCESS:
+                mRepeatActionButton.setOnClickListener(
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(getActivity(), RegisterActivity.class);
+                                getActivity().finish();
+                                getActivity().startActivity(intent);
+                            }
+                        });
+                break;
+            case SERVICE_SUCCESS:
+                mRepeatActionButton.setOnClickListener(
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(getActivity(), RegisterActivity.class);
+                                HashMap<String, String> services = ((RegisterActivity)getActivity())
+                                        .getServices();
+                                intent.putExtra("services_hashmap", services);
+                                String eventId = ((RegisterActivity) getActivity()).getmEventId();
+                                intent.putExtra("event_id", eventId);
+                                getActivity().finish();
+                                getActivity().startActivity(intent);
+                            }
+                        });
+                break;
+            case CHECKOUT_SUCCESS:
+                mRepeatActionButton.setOnClickListener(
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(getActivity(), ExitActivity.class);
+                                getActivity().finish();
+                                getActivity().startActivity(intent);
+                            }
+                        });
+                break;
+            default:
+                Log.e(TAG, "Did not set the success type using the setType() method");
+                break;
+        }
     }
 
     /**
@@ -107,6 +151,6 @@ public class SuccessFragment extends RegistrationFragment {
         SharedPreferences sharedPref = getActivity().getSharedPreferences(SharedPreferenceEditorListener.USER_PREFS_NAME, Context.MODE_PRIVATE);
         String firstName = sharedPref.getString("first_name", "");
         String lastName = sharedPref.getString("last_name", "");
-        mSuccessText.setText("Success! " + firstName + " " + lastName + " is now registered.");
+        mSuccessText.setText("Success! " + firstName + " " + lastName + " is now " + mActionTextMapping.get(mCurrentSuccessType));
     }
 }

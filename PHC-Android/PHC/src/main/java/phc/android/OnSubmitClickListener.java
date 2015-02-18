@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 
 import java.util.Map;
 
@@ -21,6 +22,7 @@ public class OnSubmitClickListener
     public OnSubmitClickListener(Context context) {
         super(context);
     }
+    EditText a;
 
     /**
      * When submit button is clicked, writes SharedPreferences data to Salesforce,
@@ -37,7 +39,9 @@ public class OnSubmitClickListener
     private void loadNextFragmentNew(){
         FragmentTransaction transaction =
                 ((Activity) mContext).getFragmentManager().beginTransaction();
-        transaction.replace(R.id.registration_fragment_container, new SuccessFragment());
+        SuccessFragment successFragment = new SuccessFragment();
+        successFragment.setType(SuccessFragment.SuccessType.CHECKIN_SUCCESS);
+        transaction.replace(R.id.registration_fragment_container, successFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
