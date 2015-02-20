@@ -3,11 +3,7 @@ package phc.android;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.View;
-
-import java.util.Map;
 
 /**
  * OnSubmitClickListener writes all entries to SalesForce DB and clears SharedPreferences.
@@ -37,7 +33,9 @@ public class OnSubmitClickListener
     private void loadNextFragmentNew(){
         FragmentTransaction transaction =
                 ((Activity) mContext).getFragmentManager().beginTransaction();
-        transaction.replace(R.id.registration_fragment_container, new SuccessFragment());
+        SuccessFragment successFragment = new SuccessFragment();
+        successFragment.setType(SuccessFragment.SuccessType.CHECKIN_SUCCESS);
+        transaction.replace(R.id.registration_fragment_container, successFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
