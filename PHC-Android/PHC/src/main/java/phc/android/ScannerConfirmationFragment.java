@@ -1,6 +1,8 @@
 package phc.android;
 
+import android.app.Activity;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -118,8 +120,11 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
      */
     protected void confirm() {
         recordScan();
-        FragmentManager manager = getFragmentManager();
-        manager.popBackStack(ScannerConfirmationFragment.TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
+        SuccessFragment successFragment = new SuccessFragment();
+        successFragment.setType(SuccessFragment.SuccessType.SERVICE_SUCCESS);
+        transaction.replace(R.id.service_fragment_container, successFragment);
+        transaction.commit();
     }
 
     /**

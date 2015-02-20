@@ -98,7 +98,9 @@ public class CheckoutFormFragment extends Fragment {
              */
             FragmentTransaction transaction =
                     ((Activity)mContext).getFragmentManager().beginTransaction();
-            transaction.replace(R.id.checkout_activity_container, new CheckoutSuccessFragment());
+            SuccessFragment successFragment = new SuccessFragment();
+            successFragment.setType(SuccessFragment.SuccessType.CHECKOUT_SUCCESS);
+            transaction.replace(R.id.checkout_activity_container, successFragment);
             transaction.commit();
         }
     }

@@ -39,9 +39,6 @@ import java.util.TimeZone;
  */
 public class ServiceActivity extends Activity {
 
-    /** Used to hold which service this user is scanning for. */
-    public static String mServiceSelected;
-
     /** Created when selecting the provided service */
     public static AlertDialog mServiceDialog;
 
@@ -68,6 +65,9 @@ public class ServiceActivity extends Activity {
 
     /** TextView that shows the user the service they provide */
     private TextView mServicePrompt;
+
+    /** Used to hold which service this user is scanning for. */
+    private static String mServiceSelected;
 
     /** List of services, initialized when this activity
      * is called by the MainActivity.
@@ -112,14 +112,13 @@ public class ServiceActivity extends Activity {
              */
             if (savedInstanceState == null) {
                 Bundle bundle = getIntent().getExtras();
-                int intention = (Integer) bundle.get("request_code");
                 /* This cannot be null! */
                 services = bundle.getCharSequenceArray("services_list");
                 servicesHashMap = (HashMap<String, String>) bundle.getSerializable("services_hash");
-                if (bundle.get("provided_service") == null && intention == MainActivity.FOR_SERVICE) {
+                if (bundle.get("provided_service") == null) {
                     // Set to service to empty if the user hasn't selected one yet
                     mServiceSelected = "";
-                    // Show service dialog for user to select service
+                    // Show service dialog for user to select servic
                     showSelectServiceDialog(true);
                 } else {
                     mServiceSelected = (String) bundle.get("provided_service");
@@ -632,5 +631,17 @@ public class ServiceActivity extends Activity {
                 .setTitle(title);
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    public static String getmServiceSelected() {
+        return mServiceSelected;
+    }
+
+    public static CharSequence[] getServices() {
+        return services;
+    }
+
+    public static HashMap<String, String> getServicesHashMap() {
+        return servicesHashMap;
     }
 }
