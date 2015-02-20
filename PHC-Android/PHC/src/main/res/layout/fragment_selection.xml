@@ -27,8 +27,18 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_marginTop="25dp"
+        android:padding="8dp"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/gray"
+        android:text="@string/selection_instruction"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
         android:gravity="center"
         android:textSize="16sp"
         android:textColor="@color/gray"

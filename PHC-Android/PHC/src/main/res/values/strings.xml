@@ -142,11 +142,11 @@
     <string name="form_submit">Submit Form</string>
 
     <!-- Selection Page -->
+    <string name="selection_instruction">Instructions:</string>
     <string name="selection_help">
-        Instructions:
-        Please ask: 'Is this your first time as a PHC event?'
-        If yes, choose create new user.
-        If no, search for returning user.
+        Please ask: 'Is this your first time as a PHC event?'\n
+        If yes, choose create new user.\n
+        If no, search for returning user.\n
         If participant is unsure, search for returning user using the participants name.
     </string>
     <string name="text_success">Success!</string>
