@@ -12,8 +12,8 @@
 
     <Button
         android:id="@+id/button_services"
-        android:background="@drawable/disabled_button"
         android:text="@string/button_services"
+        android:textColor="@drawable/enabled_button_text"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
@@ -21,8 +21,8 @@
 
     <Button
         android:id="@+id/button_register"
-        android:background="@drawable/disabled_button"
         android:text="@string/button_login"
+        android:textColor="@drawable/enabled_button_text"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="15dp"
@@ -31,8 +31,8 @@
 
     <Button
         android:id="@+id/button_exit"
-        android:background="@drawable/disabled_button"
         android:text="@string/button_logout"
+        android:textColor="@drawable/enabled_button_text"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="15dp"

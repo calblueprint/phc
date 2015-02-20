@@ -2,37 +2,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     tools:context="phc.android.ServiceActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center"
+        android:id="@+id/service_prompt_text"
+        android:text="hello there"
+        android:textSize="20sp"
+        android:layout_alignParentTop="true" />
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/service_fragment_container"
+        android:name="phc.android.ServiceFragment"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:layout_weight="2"
+        class="phc.android.ScannerFragment" />
 
     <fragment
         android:id="@+id/service_sidebar"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_weight="3"
         class="phc.android.ServiceSideBarFragment"
         tools:layout="@layout/fragment_service_side_bar" />
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:layout_weight="3">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:gravity="center"
-            android:id="@+id/service_prompt_text"
-            android:textSize="20sp"
-            android:layout_alignParentTop="true"
-            />
-        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/service_fragment_container"
-            android:name="phc.android.ServiceFragment"
-            android:layout_width="match_parent"
-            android:layout_below="@id/service_prompt_text"
-            android:layout_height="match_parent"
-             />
-    </RelativeLayout>
 </LinearLayout>

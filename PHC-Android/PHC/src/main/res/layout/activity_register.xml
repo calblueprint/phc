@@ -11,7 +11,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        class="phc.android.SideBarFragment" />
+        class="phc.android.SideBarFragment"
+        tools:layout="@layout/fragment_side_bar" />
 
     <!-- Login progress -->
     <ProgressBar
