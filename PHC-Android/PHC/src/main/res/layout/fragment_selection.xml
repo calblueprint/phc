@@ -28,10 +28,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="36dp"
         android:gravity="center"
-        android:textSize="16sp"
-        android:textColor="@color/gray"
+        android:textSize="24sp"
+        android:textColor="@color/dark_gray"
         android:text="@string/selection_instruction"
         />
 
@@ -40,8 +40,9 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:gravity="center"
-        android:textSize="16sp"
-        android:textColor="@color/gray"
+        android:textSize="18sp"
+        android:textColor="@color/dark_gray"
+        android:lineSpacingExtra="4sp"
         android:text="@string/selection_help"
         />
 
