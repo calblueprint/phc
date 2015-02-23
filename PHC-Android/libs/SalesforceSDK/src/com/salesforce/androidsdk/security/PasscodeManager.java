@@ -377,17 +377,17 @@ public class PasscodeManager  {
 
     /**
      * @param newFrontActivity
-     * @param registerActivity
+     * @param CheckinActivity
      * @return
      */
-    public boolean lockIfNeeded(Activity newFrontActivity, boolean registerActivity) {
+    public boolean lockIfNeeded(Activity newFrontActivity, boolean CheckinActivity) {
         if (newFrontActivity != null)
             frontActivity = newFrontActivity;
         if (isEnabled() && (isLocked() || shouldLock())) {
             lock(frontActivity);
             return true;
         } else {
-            if (registerActivity) updateLast();
+            if (CheckinActivity) updateLast();
             return false;
         }
     }
