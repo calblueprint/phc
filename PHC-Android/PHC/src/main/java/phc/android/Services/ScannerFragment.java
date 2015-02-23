@@ -199,7 +199,7 @@ public class ScannerFragment extends Fragment {
     }
 
     protected void displayInvalidInputToast() {
-        MainActivity.maybeShowToast(getString(R.string.invalid_input_toast),
+        MainActivity.maybeShowToast(getString(R.string.toast_invalid_input),
                 mInvalidInputToast, Toast.LENGTH_SHORT, getActivity());
     }
 
@@ -209,7 +209,7 @@ public class ScannerFragment extends Fragment {
      */
     protected void showFailureToast() {
         Context c = getActivity().getApplicationContext();
-        CharSequence message = getResources().getString(R.string.scan_failure);
+        CharSequence message = getResources().getString(R.string.toast_scan_failure);
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(c, message, duration);
         toast.show();

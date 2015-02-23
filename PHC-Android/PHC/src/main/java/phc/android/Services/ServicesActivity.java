@@ -37,8 +37,8 @@ import java.util.TimeZone;
 import phc.android.Main.MainActivity;
 import phc.android.R;
 
-/** Call with resultCode of 0 if providing a service.
- * Call with resultCode of 1 if scanning for registration.
+/**
+ * ServicesActivity is the main activity for registering users for services.
  */
 public class ServicesActivity extends Activity {
 
@@ -534,16 +534,16 @@ public class ServicesActivity extends Activity {
         String newStatus;
         if (currentStatus.equals("Applied")) {
             newStatus = "Received";
-            showPreviousState("This is their first time", mServiceSelected);
+            showPreviousState("", mServiceSelected);
         } else if (currentStatus.equals("Received")) {
             newStatus = "Received";
-            showPreviousState("They have already received this service", mServiceSelected);
+            showPreviousState(getString(R.string.text_already_received), mServiceSelected);
         } else if (currentStatus.equals("None")) {
             newStatus = "Drop In";
-            showPreviousState("They are a drop in", mServiceSelected);
+            showPreviousState(getString(R.string.text_drop_in), mServiceSelected);
         } else {
             newStatus = "Drop In";
-            showPreviousState("They already dropped in prior", mServiceSelected);
+            showPreviousState(getString(R.string.text_drop_in_and_already_received), mServiceSelected);
         }
 
         fields.put(serviceName, newStatus);
@@ -617,7 +617,7 @@ public class ServicesActivity extends Activity {
      */
     protected void showSuccessToast() {
         Context c = getApplicationContext();
-        CharSequence message = getResources().getString(R.string.scan_success);
+        CharSequence message = getResources().getString(R.string.toast_scan_success);
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(c, message, duration);
         toast.show();

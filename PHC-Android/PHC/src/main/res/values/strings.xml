@@ -49,13 +49,9 @@
     <string name="request_url">http://phc-test.herokuapp.com</string>
 
     <!-- Splash Page -->
-    <string name="button_services">Services</string>
     <string name="button_checkin">Check-In</string>
+    <string name="button_services">Services</string>
     <string name="button_checkout">Check-Out</string>
-    <string name="title_activity_register">Register Client</string>
-    <string name="title_activity_services">Manage Services</string>
-    <string name="title_activity_exit">Exit Form</string>
-    <string name="button_search_submit">Search</string>
 
     <!-- Account Registration -->
     <string name="prompt_first">First Name</string>
@@ -109,9 +105,9 @@
     <string name="prompt_neighborhood">In what neighborhood do you live?</string>
     <string name="prompt_homeless">Are you homeless?</string>
     <string name="prompt_children">Minor Children here today?</string>
-    <string name="prompt_children_age">(Optional) Age (e.g. 8,2,5)</string>
+    <string name="prompt_children_age">(Optional) age? (e.g. 8,2,5)</string>
     <string name="prompt_doctor">Do you currently have a primary care doctor?</string>
-    <string name="prompt_doctor_location">(Optional) Doctor location</string>
+    <string name="prompt_clinic_name">(Optional) clinic name?</string>
 
     <string-array name="neighborhood_array">
         <item>Bayview/HP</item>
@@ -127,40 +123,45 @@
     <string name="action_submit">Submit</string>
 
     <!-- Service Scan Page -->
-    <string name="start_scan">Click to scan</string>
-    <string name="confirm_scan">Confirm</string>
-    <string name="retry_scan">Retry</string>
+    <string name="button_start_scan">Click to scan</string>
+    <string name="button_confirm_scan">Confirm</string>
+    <string name="button_retry_scan">Retry</string>
 
     <!-- Toast messages -->
-    <string name="scan_success">Result successfully recorded</string>
-    <string name="scan_failure">No result recorded, please try again</string>
-    <string name="invalid_input_toast">Invalid entry, code must contain numbers only</string>
-    <string name="retry_services_toast">Retrieving data, please try again in a few seconds.</string>
+    <string name="toast_scan_success">Result successfully recorded</string>
+    <string name="toast_scan_failure">No result recorded, please try again</string>
+    <string name="toast_invalid_input">Invalid entry, code must contain numbers only</string>
+    <string name="toast_retry_services">Retrieving data, please try again in a few
+        seconds.</string>
 
     <!-- Registration Scan Page -->
-    <string name="scan_prompt">Please scan a QR code</string>
-    <string name="form_submit">Submit Form</string>
+    <string name="prompt_scan">Please scan a QR code</string>
+    <string name="submit_form">Submit Form</string>
 
     <!-- Success Page -->
     <string name="text_success">Success!</string>
     <string name="button_register_another">Register another client</string>
 
     <!-- Service Activity -->
-    <string name="change_service">Change Service</string>
-    <string name="service_prompt">Welcome! Your service is: </string>
-    <string name="enter_code_prompt">Enter a code here: </string>
-    <string name="scan_code_prompt">Or, scan a QR code: </string>
-    <string name="input_confirmation_text">The code you entered was: </string>
-    <string name="scan_confirmation_texts">The scan result was: </string>
+    <string name="button_change_service">Change Service</string>
+    <string name="text_service">Welcome! Your service is: </string>
+    <string name="prompt_enter_code">Enter a code here: </string>
+    <string name="prompt_scan_code">Or, scan a QR code: </string>
+    <string name="text_input_confirmation">The code you entered was: </string>
+    <string name="text_scan_confirmation">The scan result was: </string>
+    <string name="text_drop_in">The client is a drop-in.</string>
+    <string name="text_already_received">The client has already received this service.</string>
+    <string name="text_drop_in_and_already_received">The client is a drop-in who has
+        already received this service. </string>
 
     <!-- Checkout Activity -->
 
-    <string name="checkout_qr_scanner">Scan QR Code and Submit</string>
-    <string name="checkout_experience_title">Rate your experience</string>
-    <string name="checkout_services_title"> Of these services, what are your top 2 priorities?</string>
-    <string name="checkout_comment_title">Other comments? </string>
-    <string name="checkout_another">Checkout another client</string>
-    <string name="checkout_service_blank">Sample Service</string>
+    <string name="button_qr_scanner">Scan QR Code and Submit</string>
+    <string name="prompt_experience">Rate your experience</string>
+    <string name="prompt_priority_services"> Of these services, what are your top 2
+    priorities?</string>
+    <string name="prompt_comments">Other comments? </string>
+    <string name="button_checkout_another">Checkout another client</string>
     <string name="checkout_experience_0">0</string>
     <string name="checkout_experience_1">1</string>
     <string name="checkout_experience_2">2</string>

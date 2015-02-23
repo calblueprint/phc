@@ -148,7 +148,7 @@ public class CheckoutFormFragment extends Fragment {
 
     /** Shows toast if the QR Scan was not successful. */
     protected void showFailureToast() {
-        CharSequence message = getResources().getString(R.string.scan_failure);
+        CharSequence message = getResources().getString(R.string.toast_scan_failure);
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(getActivity(), message, duration);
         toast.show();
@@ -156,7 +156,7 @@ public class CheckoutFormFragment extends Fragment {
 
     /** Method that runs when a QR scan is successful. */
     protected void confirmScan() {
-        CharSequence message = getResources().getString(R.string.scan_success);
+        CharSequence message = getResources().getString(R.string.toast_scan_success);
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(getActivity(), message, duration);
         toast.show();

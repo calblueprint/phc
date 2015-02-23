@@ -20,7 +20,7 @@
 
         <Button
             android:id="@+id/confirm_scan"
-            android:text="@string/confirm_scan"
+            android:text="@string/button_confirm_scan"
             android:layout_below="@id/scan_result"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
@@ -31,7 +31,7 @@
 
         <Button
             android:id="@+id/retry_scan"
-            android:text="@string/retry_scan"
+            android:text="@string/button_retry_scan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"

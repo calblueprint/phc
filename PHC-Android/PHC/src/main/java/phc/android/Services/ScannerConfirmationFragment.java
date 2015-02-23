@@ -135,7 +135,7 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
      */
     protected void showSuccessToast() {
         Context c = getActivity().getApplicationContext();
-        CharSequence message = getResources().getString(R.string.scan_success);
+        CharSequence message = getResources().getString(R.string.toast_scan_success);
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(c, message, duration);
         toast.show();
@@ -147,7 +147,7 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
      */
     protected void showFailureToast() {
         Context c = getActivity().getApplicationContext();
-        CharSequence message = getResources().getString(R.string.scan_failure);
+        CharSequence message = getResources().getString(R.string.toast_scan_failure);
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(c, message, duration);
         toast.show();

@@ -203,7 +203,7 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
          * @param PersonId: The id of the person to whom the registration refers
          */
         private void registration(String PersonId) {
-            String eventId = ((CheckinActivity) getActivity()).getmEventId();
+            String eventId = ((CheckinActivity) getActivity()).getEventId();
             String apiVersion = getActivity().getResources().getString(R.string.api_version);
             String objectName = "Event_Registration__c";
             String[] fields = ((CheckinActivity) getActivity()).getServiceSFNames();

@@ -25,7 +25,7 @@
         android:visibility="gone" />
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/registration_fragment_container"
+        android:id="@+id/checkin_fragment_container"
         android:name="phc.android.PersonAccountFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"

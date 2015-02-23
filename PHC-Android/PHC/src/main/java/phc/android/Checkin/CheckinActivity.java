@@ -10,7 +10,6 @@ import android.util.Log;
 import com.salesforce.androidsdk.app.SalesforceSDKManager;
 import com.salesforce.androidsdk.rest.ClientManager;
 import com.salesforce.androidsdk.rest.RestClient;
-import com.salesforce.androidsdk.security.PasscodeManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +18,7 @@ import java.util.HashMap;
 import phc.android.R;
 
 /**
- * CheckinActivity is the main activity for checkining a client.
+ * CheckinActivity is the main activity for checking in a client.
  */
 public class CheckinActivity extends Activity {
     /** Hashmap of all services being offered at the event. */
@@ -36,7 +35,6 @@ public class CheckinActivity extends Activity {
     public static RegistrationState currentState;
 
     protected RestClient client;
-    private PasscodeManager passcodeManager;
 
     /**
      * On creation of the activity, gets name of services from MainActivity,
@@ -51,14 +49,9 @@ public class CheckinActivity extends Activity {
         setServices();
         currentState = RegistrationState.NEW_USER;
 
-//        COMMENTED OUT BY BYRON 2.10.15 TO DISABLED SALESFORCE LOGIN
-        // Passcode manager
-        Log.d("Passcode Manager", "new");
-        passcodeManager = SalesforceSDKManager.getInstance().getPasscodeManager();
-
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
-        if (findViewById(R.id.registration_fragment_container) != null) {
+        if (findViewById(R.id.checkin_fragment_container) != null) {
             // However, if we're being restored from a previous state,
             // then we don't need to do anything and should return or else
             // we could end up with overlapping fragments.
@@ -74,7 +67,7 @@ public class CheckinActivity extends Activity {
 
             // Add the fragment to the 'fragment_container' FrameLayout
             FragmentTransaction t = getFragmentManager().beginTransaction();
-            t.add(R.id.registration_fragment_container, firstFragment, getResources().getString(R.string.sidebar_selection));
+            t.add(R.id.checkin_fragment_container, firstFragment, getResources().getString(R.string.sidebar_selection));
             t.commit();
         }
     }
@@ -85,7 +78,7 @@ public class CheckinActivity extends Activity {
     protected void setServices(){
         Intent intent = getIntent();
         mServices = (HashMap<String,String>) intent.getSerializableExtra("services_hash");
-        mServiceSFNames = mServices.keySet().toArray(new String[0]);
+        mServiceSFNames = (String[]) intent.getStringArray("services_list");
         Arrays.sort(mServiceSFNames);
         mEventId = intent.getStringExtra("event_id");
     }
@@ -98,25 +91,22 @@ public class CheckinActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        // Bring up passcode screen if needed
-        if (passcodeManager.onResume(this)) {
-            // Login options
-            String accountType = SalesforceSDKManager.getInstance().getAccountType();
+        // Login options
+        String accountType = SalesforceSDKManager.getInstance().getAccountType();
 
-            // Get a rest client
-            new ClientManager(this, accountType, SalesforceSDKManager.getInstance().getLoginOptions(),
-                    SalesforceSDKManager.getInstance().shouldLogoutWhenTokenRevoked()).getRestClient(this, new ClientManager.RestClientCallback() {
+        // Get a rest client
+        new ClientManager(this, accountType, SalesforceSDKManager.getInstance().getLoginOptions(),
+                SalesforceSDKManager.getInstance().shouldLogoutWhenTokenRevoked()).getRestClient(this, new ClientManager.RestClientCallback() {
 
-                @Override
-                public void authenticatedRestClient(RestClient client) {
-                    if (client == null) {
-                        SalesforceSDKManager.getInstance().logout(CheckinActivity.this);
-                        return;
-                    }
-                    CheckinActivity.this.client = client;
+            @Override
+            public void authenticatedRestClient(RestClient client) {
+                if (client == null) {
+                    SalesforceSDKManager.getInstance().logout(CheckinActivity.this);
+                    return;
                 }
-            });
-        }
+                CheckinActivity.this.client = client;
+            }
+        });
     }
 
     public static RegistrationState getCurrentState() {
@@ -139,7 +129,7 @@ public class CheckinActivity extends Activity {
     public String[] getServiceSFNames() { return this.mServiceSFNames; }
 
     /** Method that returns the id of the current PHC Event, passed in through an intent from MainActivity.*/
-    public String getmEventId() {
+    public String getEventId() {
         return mEventId;
     }
 }

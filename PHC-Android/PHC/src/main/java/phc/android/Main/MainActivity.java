@@ -66,6 +66,9 @@ public class MainActivity extends Activity
      of the service (e.g. "acupuncture__c") and the value is the converted name of the service (e.g.
      "acupuncture"). */
     private Map<String, String> sOfferedServices = new HashMap<String, String>();
+    /** String array of all converted service names (values of sOfferedServices). */
+    private String[] sDisplayNames;
+
     /** Indicates whether sOfferedServices has been retrieved and initialized yet. */
     private boolean mInitialized = false;
     /** Holds a toast that shows the services data retrieval incomplete message. */
@@ -233,10 +236,10 @@ public class MainActivity extends Activity
      * @param activity: the next Activity to be started
      */
     private void openActivity(Class activity){
+        sDisplayNames = sOfferedServices.values().toArray(new String[sOfferedServices.size()]);
         Intent intent = new Intent(this, activity);
         intent.putExtra("services_hash", (HashMap<String, String>) sOfferedServices);
-        intent.putExtra("services_list", sOfferedServices.values().toArray(new
-                String[sOfferedServices.size()]));
+        intent.putExtra("services_list", sDisplayNames);
         intent.putExtra("event_id", mEventId);
         startActivity(intent);
     }
@@ -274,7 +277,7 @@ public class MainActivity extends Activity
      * not been completed.
      */
     private void displayRetryToast() {
-        String message = getResources().getString(R.string.retry_services_toast);
+        String message = getResources().getString(R.string.toast_retry_services);
         maybeShowToast(message, mToasts, Toast.LENGTH_SHORT, getApplication());
     }
 

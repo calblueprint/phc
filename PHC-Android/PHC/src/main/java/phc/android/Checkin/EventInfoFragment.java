@@ -30,9 +30,9 @@ public class EventInfoFragment extends CheckinFragment {
     private CheckBox mDoctorCheckbox;
     /** Whether the Doctor checkbox has been checked. */
     private Boolean mDoctorChecked = false;
-    /** Doctor location editText. */
-    private EditText mDoctorLocation;
-    /** Doctor location editText input. */
+    /** Doctor's clinic editText. */
+    private EditText mClinicName;
+    /** Doctor layout. */
     private ViewGroup mDoctorLayout;
     /** Children checkbox. */
     private CheckBox mChildrenCheckbox;
@@ -40,7 +40,7 @@ public class EventInfoFragment extends CheckinFragment {
     private Boolean mChildrenChecked = false;
     /** Children age editText. */
     private EditText mChildrenAge;
-    /** Children age editText input. */
+    /** Children age layout. */
     private ViewGroup mChildrenLayout;
     /** Continue button. */
     private Button mContinueButton;
@@ -68,8 +68,8 @@ public class EventInfoFragment extends CheckinFragment {
         // If the bundle contains information, loads the optional EditTexts along with their state.
         if (savedInstanceState != null){
             if (savedInstanceState.getBoolean("doctor_check")){
-                addDoctorLocation();
-                mDoctorLocation.setText(savedInstanceState.getString("doctor_location"));
+                addClinicName();
+                mClinicName.setText(savedInstanceState.getString("clinic_name"));
             }
             if (savedInstanceState.getBoolean("children_check")){
                 addChildrenAge();
@@ -82,7 +82,7 @@ public class EventInfoFragment extends CheckinFragment {
         // mChildrenChecked to recreate the state.
         else{
             if (mDoctorChecked){
-                addDoctorLocation();
+                addClinicName();
             }
             if (mChildrenChecked){
                 addChildrenAge();
@@ -102,9 +102,9 @@ public class EventInfoFragment extends CheckinFragment {
             public void onClick(View view) {
                 mDoctorChecked = mDoctorCheckbox.isChecked();
                 if (mDoctorChecked == true) {
-                    addDoctorLocation();
+                    addClinicName();
                 } else {
-                    removeDoctorLocation();
+                    removeClinicName();
                 }
             }
         });
@@ -140,22 +140,23 @@ public class EventInfoFragment extends CheckinFragment {
     }
 
     /**
-     * Creates a new EditText prompting the doctor's location when the doctor checkbox is checked.
+     * Creates a new EditText prompting the name of the doctor's clinic when the doctor checkbox is
+     * checked.
      */
-    public void addDoctorLocation(){
-        mDoctorLocation = new EditText(mDoctorLayout.getContext());
-        mDoctorLocation.setLayoutParams(new LinearLayout.LayoutParams
+    public void addClinicName(){
+        mClinicName = new EditText(mDoctorLayout.getContext());
+        mClinicName.setLayoutParams(new LinearLayout.LayoutParams
                 (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        mDoctorLocation.setHint(R.string.prompt_doctor_location);
-        mDoctorLocation.setId(R.id.doctor_location);
-        mDoctorLayout.addView(mDoctorLocation);
+        mClinicName.setHint(R.string.prompt_clinic_name);
+        mClinicName.setId(R.id.clinic_name);
+        mDoctorLayout.addView(mClinicName);
     }
 
     /**
-     * Removes the doctor location EditText when unchecked.
+     * Removes the clinic name EditText when unchecked.
      */
-    public void removeDoctorLocation(){
-        mDoctorLayout.removeView(mDoctorLocation);
+    public void removeClinicName(){
+        mDoctorLayout.removeView(mClinicName);
     }
 
     /**
@@ -205,7 +206,7 @@ public class EventInfoFragment extends CheckinFragment {
         if (mDoctorCheckbox != null && mChildrenCheckbox != null){
             outState.putBoolean("doctor_check", mDoctorCheckbox.isChecked());
             if (mDoctorCheckbox.isChecked()){
-                outState.putString("doctor_location", mDoctorLocation.getText().toString());
+                outState.putString("clinic_name", mClinicName.getText().toString());
             }
             outState.putBoolean("children_check", mChildrenCheckbox.isChecked());
             if (mChildrenCheckbox.isChecked()){
