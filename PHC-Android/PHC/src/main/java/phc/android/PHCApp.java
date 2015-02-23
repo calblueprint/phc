@@ -4,6 +4,9 @@ package phc.android;
 import android.app.Application;
 
 import com.salesforce.androidsdk.app.SalesforceSDKManager;
+
+import phc.android.Main.MainActivity;
+
 /**
  * Created by Nishant on 10/19/14.
  */
