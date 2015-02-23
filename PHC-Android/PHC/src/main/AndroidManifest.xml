@@ -15,7 +15,7 @@
         android:name=".PHCApp">
 
         <activity
-            android:name=".MainActivity">
+            android:name=".Main.MainActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,22 +25,22 @@
         </activity>
 
         <activity
-            android:name=".RegisterActivity"
+            android:name=".Checkin.CheckinActivity"
             android:exported="true"
             android:label="@string/title_activity_register"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".Main.MainActivity">
         </activity>
 
         <activity
-            android:name=".ServiceActivity"
+            android:name=".Services.ServicesActivity"
             android:label="@string/title_activity_services"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".Main.MainActivity">
         </activity>
 
         <activity
-            android:name=".ExitActivity"
+            android:name=".Checkout.CheckoutActivity"
             android:label="@string/title_activity_exit"
-            android:parentActivityName=".MainActivity">            >
+            android:parentActivityName=".Main.MainActivity">            >
         </activity>
     </application>
 

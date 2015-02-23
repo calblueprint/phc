@@ -50,8 +50,8 @@
 
     <!-- Splash Page -->
     <string name="button_services">Services</string>
-    <string name="button_login">Check-In</string>
-    <string name="button_logout">Check-Out</string>
+    <string name="button_checkin">Check-In</string>
+    <string name="button_checkout">Check-Out</string>
     <string name="title_activity_register">Register Client</string>
     <string name="title_activity_services">Manage Services</string>
     <string name="title_activity_exit">Exit Form</string>
@@ -159,7 +159,6 @@
     <string name="checkout_experience_title">Rate your experience</string>
     <string name="checkout_services_title"> Of these services, what are your top 2 priorities?</string>
     <string name="checkout_comment_title">Other comments? </string>
-    <string name="checkout_hello_blank_fragment">Hello blank fragment</string>
     <string name="checkout_another">Checkout another client</string>
     <string name="checkout_service_blank">Sample Service</string>
     <string name="checkout_experience_0">0</string>
