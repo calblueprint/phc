@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import phc.android.Helpers.SuccessFragment;
 import phc.android.R;
 
 public class CheckoutFormFragment extends Fragment {
@@ -98,7 +99,9 @@ public class CheckoutFormFragment extends Fragment {
              */
             FragmentTransaction transaction =
                     ((Activity)mContext).getFragmentManager().beginTransaction();
-            transaction.replace(R.id.checkout_activity_container, new CheckoutSuccessFragment());
+                    SuccessFragment successFragment = new SuccessFragment();
+                    successFragment.setType(SuccessFragment.SuccessType.CHECKOUT_SUCCESS);
+                    transaction.replace(R.id.checkout_activity_container, successFragment);
             transaction.commit();
         }
     }

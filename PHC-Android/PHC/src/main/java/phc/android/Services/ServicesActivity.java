@@ -118,11 +118,11 @@ public class ServicesActivity extends Activity {
                 /* This cannot be null! */
                 services = bundle.getStringArray("services_list");
                 servicesHashMap = (HashMap<String, String>) bundle.getSerializable("services_hash");
-//                if (bundle.get("provided_service") == null && intention == MainActivity.FOR_SERVICE) {
-                showSelectServiceDialog(true);
-//                } else {
-//                    mServiceSelected = (String) bundle.get("provided_service");
-//                }
+                if (bundle.get("provided_service") == null) {
+                    showSelectServiceDialog(true);
+                } else {
+                    mServiceSelected = (String) bundle.get("provided_service");
+                }
             } else {
                 services = savedInstanceState.getCharSequenceArray("services_list");
                 servicesHashMap = (HashMap<String, String>) savedInstanceState.getSerializable("services_hash");
@@ -282,7 +282,7 @@ public class ServicesActivity extends Activity {
      * that they provide.
      * @param mustSelect is True if the user has not already selected a service.
      */
-    private void showSelectServiceDialog(final boolean mustSelect) {
+    public void showSelectServiceDialog(final boolean mustSelect) {
         DialogFragment newFrag = ServiceAlertDialogFragment.newInstance(mustSelect);
         newFrag.show(getFragmentManager(), "ServiceDialog");
     }
@@ -295,8 +295,7 @@ public class ServicesActivity extends Activity {
      * @param result String scan result
      */
     public void storeScanResult(String result) {
-        /* TODO: Need a function that updates the
-         * Salesforce object
+        /* TODO: Need a function that updates the Salesforce object
          *
          * updateRegistration(result, mSelectedService)
          */
@@ -632,5 +631,17 @@ public class ServicesActivity extends Activity {
                 .setTitle(title);
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    public static String getmServiceSelected() {
+        return mServiceSelected;
+    }
+
+    public static CharSequence[] getServices() {
+        return services;
+    }
+
+    public static HashMap<String, String> getServicesHashMap() {
+        return servicesHashMap;
     }
 }
