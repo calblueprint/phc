@@ -2,7 +2,7 @@
 <resources>
 
     <!-- App -->
-    <string name="app_name">  Project Homeless Connect</string>
+    <string name="app_name">   Project Homeless Connect</string>
     <string name="action_settings">Settings</string>
     <!-- Logout -->
     <string name="logout_title">Logout from PHC</string>
@@ -142,7 +142,16 @@
     <string name="prompt_scan">Please scan a QR code</string>
     <string name="submit_form">Submit Form</string>
 
-    <!-- Success Page -->
+    <!-- Selection Page -->
+    <string name="selection_instruction">Instructions:</string>
+    <string name="selection_help">
+        Please ask participant:\n\n
+        Is this your first time at a PHC event?\n\n
+        If yes, press New User option.\n
+        If no, press Returning User option.\n\n
+        If participant is unsure, press Returning User to search.\n
+        If no matches are found, return and press New User.
+    </string>
     <string name="text_success">Success!</string>
     <string name="button_register_another">Register another client</string>
 

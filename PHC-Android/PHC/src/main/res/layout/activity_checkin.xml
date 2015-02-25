@@ -14,7 +14,6 @@
         class="phc.android.Sidebar.SideBarFragment"
         tools:layout="@layout/fragment_side_bar"/>
 
-
     <!-- Login progress -->
     <ProgressBar
         android:id="@+id/login_progress"

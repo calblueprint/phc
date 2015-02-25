@@ -14,7 +14,6 @@
         android:layout_marginBottom="@dimen/selection_new_returning_margin"
         android:src="@drawable/new_user_icon"
         android:background="@android:color/transparent">
-
     </ImageButton>
 
     <ImageButton
@@ -23,7 +22,29 @@
         android:layout_height="wrap_content"
         android:src="@drawable/returning_user_icon"
         android:background="@android:color/transparent">
-
     </ImageButton>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="12dp"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textColor="@color/dark_gray"
+        android:text="@string/selection_instruction"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:textColor="@color/dark_gray"
+        android:lineSpacingExtra="4sp"
+        android:text="@string/selection_help"
+        />
 
 </LinearLayout>
