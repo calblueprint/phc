@@ -35,8 +35,6 @@ public class ScannerFragment extends Fragment {
     // Field and submit button for manual code input.
     private EditText mCodeInput;
     private Button mCodeInputSubmitButton;
-    // Button used to change services
-    private Button mChangeServiceButton;
 
     /** Toast that tells the user when input is
      *  invalid. An array is used to simulate a
@@ -77,8 +75,6 @@ public class ScannerFragment extends Fragment {
         mCodeInputSubmitButton = (Button) view.findViewById(R.id.submit_input);
         mCodeInputSubmitButton.setOnClickListener(new InputSubmitListener());
 
-        mChangeServiceButton = (Button) view.findViewById(R.id.change_service_button);
-        mChangeServiceButton.setOnClickListener(new ChangeServiceOnClickListener());
         setInputSubmitButton();
     }
 
@@ -99,17 +95,6 @@ public class ScannerFragment extends Fragment {
             } else {
                 displayInvalidInputToast();
             }
-        }
-    }
-
-    /**
-     * Listens for clicks to the change service button
-     */
-    private class ChangeServiceOnClickListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View view) {
-            ((ServicesActivity) getActivity()).showSelectServiceDialog(false);
         }
     }
 

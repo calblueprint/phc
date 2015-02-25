@@ -28,11 +28,22 @@
             android:textSize="20sp"
             android:layout_alignParentTop="true"
             />
+
+        <Button
+            android:id="@+id/change_service_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_change_service"
+            android:textSize="20sp"
+            android:layout_below="@id/service_prompt_text"
+            android:layout_centerHorizontal="true"
+            />
+
         <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/service_fragment_container"
             android:name="phc.android.ServiceFragment"
             android:layout_width="match_parent"
-            android:layout_below="@id/service_prompt_text"
+            android:layout_below="@id/change_service_button"
             android:layout_height="match_parent"
              >
         </FrameLayout>
