@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:layout_marginTop="@dimen/top_bottom_margins"
+    android:layout_marginBottom="@dimen/top_bottom_margins"
+    tools:context=".Checkin.CheckinActivity">
+
+    <!-- TODO: is there a better way to generate consistent spacing between LinearLayout elements?-->
+    <!-- TODO: is there a way to shift this to a 2-column layout when in landscape mode? -->
+    <!-- TODO: line up the check boxes, rearrange elements to make it look better-->
+    <LinearLayout
+        android:id="@+id/form_fields"
+        android:orientation="vertical"
+        android:layout_width="@dimen/input_text_width"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:layout_gravity="center_horizontal">
+
+        <EditText
+            android:id="@+id/first_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_first"
+            android:inputType="textCapWords"
+            android:maxLines="1"/>
+
+        <EditText
+            android:id="@+id/last_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_last"
+            android:inputType="textCapWords"
+            android:maxLines="1"/>
+
+        <LinearLayout
+            android:id="@+id/form_ssn"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginRight="25dp"
+                android:text="@string/prompt_ssn"/>
+
+            <EditText
+                android:id="@+id/ssn_1"
+                android:layout_width="@dimen/ssn1"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/connector_width"
+                android:gravity="center"
+                android:maxLines="1"
+                android:inputType="number"
+                android:maxLength="3"
+                android:background="@drawable/smallest_edit_text_bg"/>
+
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/connector_width"
+                android:gravity="center"
+                android:text="-"/>
+
+            <EditText
+                android:id="@+id/ssn_2"
+                android:layout_width="@dimen/ssn2"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/connector_width"
+                android:gravity="center"
+                android:maxLines="1"
+                android:inputType="number"
+                android:maxLength="2"
+                android:background="@drawable/smallest_edit_text_bg"/>
+
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginRight="@dimen/connector_width"
+                android:text="-"/>
+
+            <EditText
+                android:id="@+id/ssn_3"
+                android:layout_width="@dimen/ssn3"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:maxLines="1"
+                android:inputType="number"
+                android:maxLength="4"
+                android:background="@drawable/small_edit_text_bg"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/form_birthday"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginRight="2dp"
+                android:text="@string/prompt_birthday"/>
+
+            <EditText
+                android:id="@+id/birthday_month"
+                android:layout_width="@dimen/birthday1"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/connector_width"
+                android:gravity="center"
+                android:hint="@string/prompt_birthday_month"
+                android:maxLines="1"
+                android:inputType="number"
+                android:maxLength="2"
+                android:background="@drawable/smallest_edit_text_bg"/>
+
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/connector_width"
+                android:gravity="center"
+                android:text="/"/>
+
+            <EditText
+                android:id="@+id/birthday_day"
+                android:layout_width="@dimen/birthday2"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/connector_width"
+                android:gravity="center"
+                android:hint="@string/prompt_birthday_day"
+                android:maxLines="1"
+                android:inputType="number"
+                android:maxLength="2"
+                android:background="@drawable/smallest_edit_text_bg"/>
+
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginRight="@dimen/connector_width"
+                android:text="/"/>
+
+            <EditText
+                android:id="@+id/birthday_year"
+                android:layout_width="@dimen/birthday3"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="@string/prompt_birthday_year"
+                android:maxLines="1"
+                android:inputType="number"
+                android:maxLength="4"
+                android:background="@drawable/small_edit_text_bg"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/form_phone"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/prompt_phone"/>
+
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="("/>
+
+            <EditText
+                android:id="@+id/phone_1"
+                android:layout_width="@dimen/phone1"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:inputType="number"
+                android:maxLength="3"
+                android:background="@drawable/smallest_edit_text_bg"/>
+
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/connector_width"
+                android:gravity="center"
+                android:text=")" />
+
+
+            <EditText
+                android:id="@+id/phone_2"
+                android:layout_width="@dimen/phone2"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/connector_width"
+                android:maxLines="1"
+                android:inputType="number"
+                android:maxLength="3"
+                android:background="@drawable/smallest_edit_text_bg"/>
+
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginRight="@dimen/connector_width"
+                android:text="-"/>
+
+            <EditText
+                android:id="@+id/phone_3"
+                android:layout_width="@dimen/phone3"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:maxLines="1"
+                android:inputType="number"
+                android:maxLength="4"
+                android:background="@drawable/small_edit_text_bg"/>
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_email"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"/>
+
+        <Spinner
+            android:id="@+id/spinner_gender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Spinner
+            android:id="@+id/spinner_ethnicity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Spinner
+            android:id="@+id/spinner_language"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:id="@+id/account_checkboxes"
+            android:layout_marginTop="@dimen/checkboxes_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <CheckBox android:id="@+id/checkbox_foster"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/checkboxes_margin"
+                android:text="@string/prompt_foster"/>
+
+            <CheckBox android:id="@+id/checkbox_military"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/prompt_military"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button_account_continue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="300dp"
+            android:text="@string/action_continue"/>
+
+    </LinearLayout>
+
+</ScrollView>
