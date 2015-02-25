@@ -125,7 +125,6 @@ public class ServicesActivity extends Activity {
         t.add(R.id.service_fragment_container, scannerFragment);
         t.commit();
 
-
         mChangeServiceButton = (Button) findViewById(R.id.change_service_button);
         mChangeServiceButton.setOnClickListener(new ChangeServiceOnClickListener());
     }
