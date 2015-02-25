@@ -1,0 +1,30 @@
+curl -X POST \
+     -i \
+     --data "email=byron@gmail.com&password=foobar" \
+     -L localhost:3000/login
+
+curl -X GET \
+     -i \
+     -H "user_id: 6" \
+     -H "auth_token: 6-9q7ugsKaC0jOwOC4PD0A" \
+     -L localhost:3000/api/v1/search
+
+curl -X POST \
+     -i \
+     --data "firstname=byron&lastname=foobar&salesforceid=10231" \
+     -H "user_id: 6" \
+     -H "auth_token: 6-9q7ugsKaC0jOwOC4PD0A" \
+     -L localhost:3000/api/v1/create
+
+curl -X GET \
+     -i \
+     -H "user_id: 6" \
+     -L localhost:3000/api/v1/search
+
+curl -X GET \
+     -i \
+     -H "user_id: 10" \
+     -H "auth_token: FhaazGVgsONHww04ZTyLXA" \
+     -L localhost:3000/api/v1/search
+
+FhaazGVgsONHww04ZTyLXA

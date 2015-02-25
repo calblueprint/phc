@@ -19,13 +19,18 @@ task :load_sf => :environment do
   order_str = "ORDER BY LastModifiedDate ASC Limit 100"
   field_str = "SELECT Id, FirstName, LastName, PersonBirthdate, LastModifiedDate from Account "
   username = ENV["sf_username"]
-  password = ENV["sf_password"]
+  password = ENV["sf_password"] + ENV["sf_security_token"]
+
+  byebug
+
   # Make sure to remove the true argument in production.
   salesforce = SalesforceBulk::Api.new(username, password,  true)
   if not LastModified.any?
     lm = LastModified.new
     query_str = field_str + order_str
   else
+
+    ##### MAJOR SECURITY FLAW - SQL INJECTION LOLOLOL #####
     lm = LastModified.first
     lm_str = "WHERE LastModifiedDate > "
     lm_str += lm.last_modified + " "
@@ -37,6 +42,6 @@ task :load_sf => :environment do
     lm.save
     save_accounts accounts
     Rake::Task[:load_sf].reenable
-    Rake::Task[:load_sf].invoke
+    #Rake::Task[:load_sf].invoke
   end
 end

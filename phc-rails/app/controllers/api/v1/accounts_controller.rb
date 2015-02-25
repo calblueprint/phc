@@ -1,31 +1,55 @@
 class Api::V1::AccountsController < ApplicationController
   respond_to :json
+  skip_before_action :verify_authenticity_token
 
   def search
-    if request.headers["AuthToken"].eql? ENV["AuthToken"]
-      first_name = request.headers["FirstName"]
-      last_name = request.headers["LastName"]
-      fhash = { first_name: first_name }
-      lhash = { last_name: last_name }
-      res = PersonAccount.fuzzy_search(fhash, false).fuzzy_search(lhash, false)
-      respond_with res
+    auth_token = request.headers["HTTP_AUTH_TOKEN"]
+    user_id = request.headers["HTTP_USER_ID"]
+    if auth_token && user_id
+      if user_authenticated?(user_id, auth_token)
+        first_name = request.headers["HTTP_FIRSTNAME"]
+        last_name = request.headers["HTTP_LASTNAME"]
+        result = PersonAccount.fuzzy_search({first_name: first_name}, false).fuzzy_search({last_name: last_name}, false)
+        respond_with result
+      end
     else
-      respond_with []
+      respond_with "Error: Please include authentication token.", status: 401
     end
   end
 
   def create
-    if request.headers["AuthToken"].eql? ENV["AuthToken"]
-      pa = PersonAccount.new
-      pa.first_name = request.headers["FirstName"]
-      pa.last_name = request.headers["LastName"]
-      pa.sf_id = request.headers["SalesforceID"]
-      pa.save
+    auth_token = request.headers["HTTP_AUTH_TOKEN"]
+    user_id = request.headers["HTTP_USER_ID"]
+    if auth_token && user_id
+      if user_authenticated?(user_id, auth_token)
+        person = PersonAccount.new
+        person.first_name = params[:first_name]
+        person.last_name = params[:last_name]
+        person.sf_id = request.headers[:salesforceid]
+        person.save
+        respond_with "Successfully saved user!", status: 200, :location => root_url
+
+        ##### TODO: POST TO SALESFORCE #####
+      end
+    else
+      respond_with "Error: Please include authentication token.", status: 401, location => root_ur
     end
-    respond_with []
+
   end
 
-  def check
-    respond_with request.headers["AuthToken"].eql? ENV["AuthToken"]
-  end
+  private
+
+    def user_authenticated?(id, token)
+      user = User.find_by(id: id)
+      if not user
+        respond_with "Error: User ID not found in database.", status: 401
+        false
+      elsif not user.authenticated?(token)
+        respond_with "Error: Invalid authentication token.", status: 401
+        false
+      else
+        true
+      end
+    end
+
 end

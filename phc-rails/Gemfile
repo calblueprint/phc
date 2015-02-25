@@ -19,7 +19,10 @@ gem "textacular", :git => "https://github.com/textacular/textacular.git"
 # Use figaro for setting environment variables
 gem "figaro"
 
-#Salesforce gems
+# For hashing and storing secure passwords
+gem "bcrypt"
+
+# Salesforce gems
 gem "databasedotcom"
 gem "databasedotcom-rails"
 
@@ -36,4 +39,5 @@ group :development do
     gem "bullet"
     gem "annotate", "~> 2.6.5"
     gem "spring"
+    gem "byebug"
 end
