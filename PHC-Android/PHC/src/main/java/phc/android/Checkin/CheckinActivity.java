@@ -21,21 +21,6 @@ import phc.android.R;
  */
 public class CheckinActivity extends Activity {
 
-//    /*PASSED FROM MAIN ACTIVITY*/
-//    /** Used to hold an instance of the MainActivity */
-//    private MainActivity mMainActivity;
-//    /** The id of the current PHC Event.*/
-//    private String mEventId;
-//    /** MainActivity's api version */
-//    private String mApiVersion;
-//
-//    /** Hashmap of all services being offered at the event. */
-//    private Map<String, String> mOfferedServices = new HashMap<String, String>();
-//    /** Alphabetized array of Salesforce names for all services. */
-//    private String[] mSalesforceNames;
-//    /** Alphabetized array of display names for all services. */
-//    private String[] mDisplayNames;
-
     /** Used to keep track of what kind of user we are modifying **/
     public static enum RegistrationState {NEW_USER, RETURNING_USER};
     public static RegistrationState currentState;
@@ -50,12 +35,6 @@ public class CheckinActivity extends Activity {
         super.onCreate(savedInstanceState);
         ActionBar actionbar = getActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
-//        mMainActivity = (MainActivity) MainActivity.getContext();
-//        mEventId = mMainActivity.getEventID();
-//        mApiVersion = mMainActivity.getApiVersion();
-//        mOfferedServices = mMainActivity.getOfferedServices();
-//        mSalesforceNames = mMainActivity.getSalesforceNames();
-//        mDisplayNames = mMainActivity.getDisplayNames();
 
         setContentView(R.layout.activity_checkin);
         currentState = RegistrationState.NEW_USER;

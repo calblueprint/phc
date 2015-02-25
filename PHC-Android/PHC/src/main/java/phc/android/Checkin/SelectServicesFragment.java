@@ -58,9 +58,6 @@ public class SelectServicesFragment extends CheckinFragment {
      */
     private void dynamicSetCheckboxes(View view){
         mLayout = (LinearLayout) view.findViewById(R.id.services_list);
-
-//        HashMap<String, String> service_map = ((CheckinActivity) getActivity()).getServices();
-//        mServiceSFNames = ((CheckinActivity) getActivity()).getServiceSFNames();
         mDisplayNames = ((MainActivity) MainActivity.getContext()).getDisplayNames();
 
         for(int i = 0; i < mDisplayNames.length; i++){
