@@ -30,7 +30,7 @@ public class SelectionFragment extends CheckinFragment {
             public void onClick(View v) {
                 PersonalInfoFragment newFragment = new PersonalInfoFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.registration_fragment_container, newFragment, getResources().getString(R.string.sidebar_personal_info));
+                transaction.replace(R.id.checkin_fragment_container, newFragment, getResources().getString(R.string.sidebar_personal_info));
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
@@ -41,7 +41,7 @@ public class SelectionFragment extends CheckinFragment {
             public void onClick(View v) {
                 SearchFragment newFragment = new SearchFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.registration_fragment_container, newFragment, getResources().getString(R.string.sidebar_search));
+                transaction.replace(R.id.checkin_fragment_container, newFragment, getResources().getString(R.string.sidebar_search));
                 transaction.addToBackStack(null);
                 transaction.commit();
             }

@@ -256,7 +256,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
 
                     PersonalInfoFragment newFragment = new PersonalInfoFragment();
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.registration_fragment_container, newFragment, getResources().getString(R.string.sidebar_personal_info));
+                    transaction.replace(R.id.checkin_fragment_container, newFragment, getResources().getString(R.string.sidebar_personal_info));
                     transaction.addToBackStack(null);
                     transaction.commit();
 

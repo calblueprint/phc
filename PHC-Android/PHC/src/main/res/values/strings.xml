@@ -52,6 +52,10 @@
     <string name="button_checkin">Check-In</string>
     <string name="button_services">Services</string>
     <string name="button_checkout">Check-Out</string>
+    <string name="title_activity_register">Register Client</string>
+    <string name="title_activity_services">Manage Services</string>
+    <string name="title_activity_exit">Exit Form</string>
+    <string name="button_search_submit">Search</string>
 
     <!-- Account Registration -->
     <string name="prompt_first">First Name</string>
@@ -105,9 +109,9 @@
     <string name="prompt_neighborhood">In what neighborhood do you live?</string>
     <string name="prompt_homeless">Are you homeless?</string>
     <string name="prompt_children">Minor Children here today?</string>
-    <string name="prompt_children_age">(Optional) age? (e.g. 8,2,5)</string>
+    <string name="prompt_children_age">(Optional) age (e.g. 8,2,5)</string>
     <string name="prompt_doctor">Do you currently have a primary care doctor?</string>
-    <string name="prompt_clinic_name">(Optional) clinic name?</string>
+    <string name="prompt_clinic_name">(Optional) name of clinic</string>
 
     <string-array name="neighborhood_array">
         <item>Bayview/HP</item>
@@ -144,7 +148,7 @@
 
     <!-- Service Activity -->
     <string name="button_change_service">Change Service</string>
-    <string name="text_service">Welcome! Your service is: </string>
+    <string name="text_welcome_service">Welcome! Your service is: </string>
     <string name="prompt_enter_code">Enter a code here: </string>
     <string name="prompt_scan_code">Or, scan a QR code: </string>
     <string name="text_input_confirmation">The code you entered was: </string>

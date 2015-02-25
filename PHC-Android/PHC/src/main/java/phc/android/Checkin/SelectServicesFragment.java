@@ -16,13 +16,14 @@ import phc.android.Checkin.CheckinActivity;
 import phc.android.Checkin.CheckinFragment;
 import phc.android.Checkin.CheckinScannerFragment;
 import phc.android.Helpers.OnContinueClickListener;
+import phc.android.Main.MainActivity;
 import phc.android.R;
 
 public class SelectServicesFragment extends CheckinFragment {
     /** Continue button. */
     private Button mContinueButton;
-    /** Sorted array of all service salesforce names (keys of the hashmap). */
-    private String[] mServiceSFNames;
+    /** Array of service display names. */
+    private String[] mDisplayNames;
     /** Parent layout that holds all checkbox views. */
     private ViewGroup mLayout;
 
@@ -31,8 +32,8 @@ public class SelectServicesFragment extends CheckinFragment {
      * the current event from Salesforce DB and dynamically populates layout
      * with checkboxes for each service.
      * IMPORTANT NOTE: this fragment is unable to use the OnContinueClickListener because
-     * the checkboxes do not have declared resource_names like
-     * In other words, the values of the checkboxes are not written to SharedPreferences
+     * the checkboxes do not have declared resource names.
+     * Therefore, the values of the checkboxes are not written to SharedPreferences
      * when the continue button is hit, but when the checkboxes themselves are clicked.
      */
     @Override
@@ -58,17 +59,18 @@ public class SelectServicesFragment extends CheckinFragment {
     private void dynamicSetCheckboxes(View view){
         mLayout = (LinearLayout) view.findViewById(R.id.services_list);
 
-        HashMap<String, String> service_map = ((CheckinActivity) getActivity()).getServices();
-        mServiceSFNames = ((CheckinActivity) getActivity()).getServiceSFNames();
+//        HashMap<String, String> service_map = ((CheckinActivity) getActivity()).getServices();
+//        mServiceSFNames = ((CheckinActivity) getActivity()).getServiceSFNames();
+        mDisplayNames = ((MainActivity) MainActivity.getContext()).getDisplayNames();
 
-        for(int i = 0; i < mServiceSFNames.length; i++){
+        for(int i = 0; i < mDisplayNames.length; i++){
             CheckBox cb = new CheckBox(getActivity());
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             cb.setLayoutParams(params);
             cb.setId(i);
-            cb.setText(service_map.get(mServiceSFNames[i]));
+            cb.setText(mDisplayNames[i]);
             mLayout.addView(cb);
         }
     }
@@ -88,10 +90,5 @@ public class SelectServicesFragment extends CheckinFragment {
             }
         }
         super.onResume();
-    }
-
-    /** Static method that returns a string array of salesforce names for all services. */
-    public String[] getServiceSFNames() {
-        return this.mServiceSFNames;
     }
 }

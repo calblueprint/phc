@@ -18,6 +18,7 @@ import java.util.HashMap;
 import phc.android.Checkin.CheckinActivity;
 import phc.android.Checkin.CheckinFragment;
 import phc.android.Checkout.CheckoutActivity;
+import phc.android.Main.MainActivity;
 import phc.android.R;
 import phc.android.Services.ServicesActivity;
 
@@ -130,11 +131,6 @@ public class SuccessFragment extends CheckinFragment {
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(getActivity(), CheckinActivity.class);
-            HashMap<String, String> services = ((CheckinActivity)getActivity())
-                    .getServices();
-            intent.putExtra("services_hashmap", services);
-            String eventId = ((CheckinActivity) getActivity()).getmEventId();
-            intent.putExtra("event_id", eventId);
             getActivity().finish();
             getActivity().startActivity(intent);
         }
@@ -145,10 +141,9 @@ public class SuccessFragment extends CheckinFragment {
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(getActivity(), ServicesActivity.class);
-            // Need to give the ServicesActivity our list of services and currently selected service
-            intent.putExtra("provided_service", ((ServicesActivity) getActivity()).getmServiceSelected());
-            intent.putExtra("services_list", ((ServicesActivity) getActivity()).getServices());
-            intent.putExtra("services_hash", ((ServicesActivity) getActivity()).getServicesHashMap());
+            //pass currently selected service
+            intent.putExtra("provided_service", ((ServicesActivity) getActivity())
+                    .getServiceSelected());
             getActivity().finish();
             getActivity().startActivity(intent);
         }

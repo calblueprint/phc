@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import phc.android.Helpers.OnSubmitClickListener;
+import phc.android.Main.MainActivity;
 import phc.android.R;
 import phc.android.Services.ScannerConfirmationFragment;
 import phc.android.Helpers.SharedPreferenceEditorListener;
@@ -74,7 +75,7 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
         mRetryButton.setOnClickListener(new RetryListener());
 
         mConfirmButton = (Button) view.findViewById(R.id.confirm_scan);
-        mConfirmButton.setText(getString(R.string.form_submit));
+        mConfirmButton.setText(getString(R.string.submit_form));
         mConfirmButton.setOnClickListener(new SubmitListener(getActivity()));
         return view;
     }
@@ -203,10 +204,11 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
          * @param PersonId: The id of the person to whom the registration refers
          */
         private void registration(String PersonId) {
-            String eventId = ((CheckinActivity) getActivity()).getEventId();
+//            String eventId = ((CheckinActivity) getActivity()).getEventId();
+            String eventId = ((MainActivity) MainActivity.getContext()).getEventID();
             String apiVersion = getActivity().getResources().getString(R.string.api_version);
             String objectName = "Event_Registration__c";
-            String[] fields = ((CheckinActivity) getActivity()).getServiceSFNames();
+            String[] fields = ((MainActivity) MainActivity.getContext()).getSalesforceNames();
             Map<String, Object> fieldValues = new HashMap<String, Object>();
 
             SharedPreferences servicePreferences = mUserInfo;

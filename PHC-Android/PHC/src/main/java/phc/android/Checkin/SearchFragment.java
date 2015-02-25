@@ -48,7 +48,7 @@ public class SearchFragment extends CheckinFragment {
 
                 SearchResultsFragment newFragment = new SearchResultsFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.registration_fragment_container, newFragment);
+                transaction.replace(R.id.checkin_fragment_container, newFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
             }

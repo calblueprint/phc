@@ -37,7 +37,7 @@ public class OnSubmitClickListener
                 ((Activity) mContext).getFragmentManager().beginTransaction();
         SuccessFragment successFragment = new SuccessFragment();
         successFragment.setType(SuccessFragment.SuccessType.CHECKIN_SUCCESS);
-        transaction.replace(R.id.registration_fragment_container, successFragment);
+        transaction.replace(R.id.checkin_fragment_container, successFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }

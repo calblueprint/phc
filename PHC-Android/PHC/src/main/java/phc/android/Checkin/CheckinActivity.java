@@ -3,37 +3,42 @@ package phc.android.Checkin;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.salesforce.androidsdk.app.SalesforceSDKManager;
 import com.salesforce.androidsdk.rest.ClientManager;
 import com.salesforce.androidsdk.rest.RestClient;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
+import phc.android.Main.MainActivity;
 import phc.android.R;
 
 /**
  * CheckinActivity is the main activity for checking in a client.
  */
 public class CheckinActivity extends Activity {
-    /** Hashmap of all services being offered at the event. */
-    private HashMap<String,String> mServices;
 
-    /** Sorted array of all service salesforce names (keys of the hashmap). */
-    private String[] mServiceSFNames;
-
-    /** The id of the current PHC Event. Should be passed in with intent from MainActivity.*/
-    private String mEventId;
+//    /*PASSED FROM MAIN ACTIVITY*/
+//    /** Used to hold an instance of the MainActivity */
+//    private MainActivity mMainActivity;
+//    /** The id of the current PHC Event.*/
+//    private String mEventId;
+//    /** MainActivity's api version */
+//    private String mApiVersion;
+//
+//    /** Hashmap of all services being offered at the event. */
+//    private Map<String, String> mOfferedServices = new HashMap<String, String>();
+//    /** Alphabetized array of Salesforce names for all services. */
+//    private String[] mSalesforceNames;
+//    /** Alphabetized array of display names for all services. */
+//    private String[] mDisplayNames;
 
     /** Used to keep track of what kind of user we are modifying **/
     public static enum RegistrationState {NEW_USER, RETURNING_USER};
     public static RegistrationState currentState;
-
     protected RestClient client;
 
     /**
@@ -43,47 +48,25 @@ public class CheckinActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_checkin);
         ActionBar actionbar = getActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
-        setServices();
+//        mMainActivity = (MainActivity) MainActivity.getContext();
+//        mEventId = mMainActivity.getEventID();
+//        mApiVersion = mMainActivity.getApiVersion();
+//        mOfferedServices = mMainActivity.getOfferedServices();
+//        mSalesforceNames = mMainActivity.getSalesforceNames();
+//        mDisplayNames = mMainActivity.getDisplayNames();
+
+        setContentView(R.layout.activity_checkin);
         currentState = RegistrationState.NEW_USER;
 
-        // Check that the activity is using the layout version with
-        // the fragment_container FrameLayout
-        if (findViewById(R.id.checkin_fragment_container) != null) {
-            // However, if we're being restored from a previous state,
-            // then we don't need to do anything and should return or else
-            // we could end up with overlapping fragments.
-            if (savedInstanceState != null) {
-                return;
-            }
-            // Create a new Fragment to be placed in the activity layout
-            SelectionFragment firstFragment = new SelectionFragment();
-
-            // In case this activity was started with special instructions from an
-            // Intent, pass the Intent's extras to the fragment as arguments
-            firstFragment.setArguments(getIntent().getExtras());
-
-            // Add the fragment to the 'fragment_container' FrameLayout
-            FragmentTransaction t = getFragmentManager().beginTransaction();
-            t.add(R.id.checkin_fragment_container, firstFragment, getResources().getString(R.string.sidebar_selection));
-            t.commit();
-        }
+        SelectionFragment firstFragment = new SelectionFragment();
+//        firstFragment.setArguments(getIntent().getExtras());
+        FragmentTransaction t = getFragmentManager().beginTransaction();
+        t.add(R.id.checkin_fragment_container, firstFragment, getResources().getString(R.string.sidebar_selection));
+        t.commit();
     }
 
-    /**
-     * Grabs services from MainActivity and creates sorted array of service names.
-     */
-    protected void setServices(){
-        Intent intent = getIntent();
-        mServices = (HashMap<String,String>) intent.getSerializableExtra("services_hash");
-        mServiceSFNames = (String[]) intent.getStringArray("services_list");
-        Arrays.sort(mServiceSFNames);
-        mEventId = intent.getStringExtra("event_id");
-    }
-
-//        COMMENTED OUT BY BYRON 2.10.15 TO DISABLED SALESFORCE LOGIN
     /**
      * Handles the setup of the Salesforce RestClient, allowing fragments in this activity to
      * make requests to the backend.
@@ -110,26 +93,14 @@ public class CheckinActivity extends Activity {
     }
 
     public static RegistrationState getCurrentState() {
+
         return currentState;
+
     }
 
     public static void setCurrentState(RegistrationState currentState) {
+
         CheckinActivity.currentState = currentState;
-    }
 
-    /**
-     * Static method that returns a map with all of the resources for the most recent event.
-     * @return HashMap of resources. Key = Salesforce Field name; Value = Display Name. ;
-     */
-    public HashMap<String, String> getServices() {
-        return this.mServices;
-    }
-
-    /** Static method that returns a string array of salesforce names for all services. */
-    public String[] getServiceSFNames() { return this.mServiceSFNames; }
-
-    /** Method that returns the id of the current PHC Event, passed in through an intent from MainActivity.*/
-    public String getEventId() {
-        return mEventId;
     }
 }

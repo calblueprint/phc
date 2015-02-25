@@ -58,9 +58,9 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
         }
         String prompt;
         if (mManualInput) {
-            prompt = getString(R.string.input_confirmation_text);
+            prompt = getString(R.string.text_input_confirmation);
         } else {
-            prompt = getString(R.string.scan_confirmation_texts);
+            prompt = getString(R.string.text_scan_confirmation);
         }
         mScanResultView.setText(Html.fromHtml(prompt + "<br /><br />" + "<b><big><big>" + mScanResult + "</b></big></big><br />"));
         return view;
