@@ -10,14 +10,6 @@
     android:gravity="center_horizontal"
     tools:context="phc.android.ServiceActivity">
 
-    <Button
-        android:id="@+id/change_service_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/button_change_service"
-        android:textSize="20sp"
-        />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

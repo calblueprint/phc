@@ -16,6 +16,8 @@ import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +57,8 @@ public class ServicesActivity extends Activity {
     private static HashMap<String, String> sOfferedServices = new HashMap<String, String>();
     /** Alphabetized array of display names for all services. */
     private static String[] sDisplayNames;
+    // Button used to change services
+    private Button mChangeServiceButton;
 
     /*SERVICE DETAILS*/
     /** TextView showing the user their service. */
@@ -120,6 +124,10 @@ public class ServicesActivity extends Activity {
         FragmentTransaction t = getFragmentManager().beginTransaction();
         t.add(R.id.service_fragment_container, scannerFragment);
         t.commit();
+
+
+        mChangeServiceButton = (Button) findViewById(R.id.change_service_button);
+        mChangeServiceButton.setOnClickListener(new ChangeServiceOnClickListener());
     }
 
     /**
@@ -613,5 +621,17 @@ public class ServicesActivity extends Activity {
         dialog.show();
     }
 
+    /**
+     * Listens for clicks to the change service button
+     */
+    private class ChangeServiceOnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            showSelectServiceDialog(false);
+        }
+    }
+
     public String getServiceSelected(){ return mServiceSelected; }
+
 }
