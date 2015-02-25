@@ -31,6 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,10 +64,15 @@ public class MainActivity extends Activity
 
     /*RETRIEVING SERVICES (USED BY ALL ACTIVITIES)*/
     /** Hashmap of all services being offered at the event, where the Key is the Salesforce name
-     of the service (e.g. "acupuncture__c") and the value is the converted name of the service (e.g.
+     of the service (e.g. "acupuncture__c") and the value is the display name of the service (e.g.
      "acupuncture"). */
-    private Map<String, String> sOfferedServices = new HashMap<String, String>();
-    /** Indicates whether sOfferedServices has been retrieved and initialized yet. */
+    private static HashMap<String, String> sOfferedServices = new HashMap<String, String>();
+    /** Alphabetized array of Salesforce names for all services. (keys of mOfferedServices). */
+    private static String[] sSalesforceNames;
+    /** Alphabetized array of display names for all services. (values of mOfferedServices). */
+    private static String[] sDisplayNames;
+
+    /** Indicates whether mOfferedServices has been retrieved and initialized yet. */
     private boolean mInitialized = false;
     /** Holds a toast that shows the services data retrieval incomplete message. */
     private Toast[] mToasts = { null };
@@ -234,10 +240,6 @@ public class MainActivity extends Activity
      */
     private void openActivity(Class activity){
         Intent intent = new Intent(this, activity);
-        intent.putExtra("services_hash", (HashMap<String, String>) sOfferedServices);
-        intent.putExtra("services_list", sOfferedServices.values().toArray(new
-                String[sOfferedServices.size()]));
-        intent.putExtra("event_id", mEventId);
         startActivity(intent);
     }
 
@@ -274,7 +276,7 @@ public class MainActivity extends Activity
      * not been completed.
      */
     private void displayRetryToast() {
-        String message = getResources().getString(R.string.retry_services_toast);
+        String message = getResources().getString(R.string.toast_retry_services);
         maybeShowToast(message, mToasts, Toast.LENGTH_SHORT, getApplication());
     }
 
@@ -454,6 +456,13 @@ public class MainActivity extends Activity
                         Log.d("initialized", "initialized");
                         MainActivity.this.mInitialized = true;
 
+                        sSalesforceNames = sOfferedServices.keySet().toArray(new
+                                String[sOfferedServices.size()]);
+                        sDisplayNames = sOfferedServices.values().toArray(new
+                                String[sOfferedServices.size()]);
+                        Arrays.sort(sSalesforceNames);
+                        Arrays.sort(sDisplayNames);
+
                         enableAllButtons();
 
                     } catch (Exception e) {
@@ -532,31 +541,21 @@ public class MainActivity extends Activity
         SalesforceSDKManager.getInstance().logout(this);
     }
 
-    /**
-     * Used by ServicesActivity to access
-     * event ID
-     * @return event id
-     */
     public String getEventID() {
         return mEventId;
     }
 
-    /**
-     * Used by ServicesActivity to access
-     * api version
-     * @return api version
-     */
     public String getApiVersion() {
         return apiVersion;
     }
 
-   /**
-    * Used by ServicesActivity to access
-    * this activity's context
-    * @return Context
-    */
     public static Context getContext() {
         return mContext;
     }
 
+    public HashMap<String, String> getOfferedServices() { return sOfferedServices; }
+
+    public String[] getSalesforceNames() { return sSalesforceNames; }
+
+    public String[] getDisplayNames() { return sDisplayNames; }
 }

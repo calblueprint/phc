@@ -14,7 +14,7 @@
         android:id="@+id/change_service_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/change_service"
+        android:text="@string/button_change_service"
         android:textSize="20sp"
         />
 
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/enter_code"
-        android:text="@string/enter_code_prompt"
+        android:text="@string/prompt_enter_code"
         android:textSize="20sp"
         android:paddingBottom="10dp"
         android:paddingTop="20dp"/>
@@ -51,11 +51,11 @@
         android:textSize="20sp"
         android:paddingTop="30dp"
         android:paddingBottom="10dp"
-        android:text="@string/scan_code_prompt"/>
+        android:text="@string/prompt_scan_code"/>
 
     <Button
         android:id="@+id/start_scan"
-        android:text="@string/start_scan"
+        android:text="@string/button_start_scan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="30sp"/>

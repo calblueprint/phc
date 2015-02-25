@@ -30,12 +30,13 @@ public class ScannerFragment extends Fragment {
 
     public final static String TAG = "ScannerFragment";
 
-    /** Button to start BarcodeScanner app. **/
-    protected Button mScanButton;
-
-    /** Field and submit button for manual code input. **/
-    protected EditText mCodeInput;
-    protected Button mCodeInputSubmitButton;
+    // Button to start BarcodeScanner app
+    private Button mScanButton;
+    // Field and submit button for manual code input.
+    private EditText mCodeInput;
+    private Button mCodeInputSubmitButton;
+    // Button used to change services
+    private Button mChangeServiceButton;
 
     /** Toast that tells the user when input is
      *  invalid. An array is used to simulate a
@@ -75,6 +76,9 @@ public class ScannerFragment extends Fragment {
 
         mCodeInputSubmitButton = (Button) view.findViewById(R.id.submit_input);
         mCodeInputSubmitButton.setOnClickListener(new InputSubmitListener());
+
+        mChangeServiceButton = (Button) view.findViewById(R.id.change_service_button);
+        mChangeServiceButton.setOnClickListener(new ChangeServiceOnClickListener());
         setInputSubmitButton();
     }
 
@@ -83,7 +87,7 @@ public class ScannerFragment extends Fragment {
      * pass the correct arguments to the next fragment,
      * as well as validate the input.
      */
-    protected class InputSubmitListener implements View.OnClickListener {
+    private class InputSubmitListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             CharSequence result = mCodeInput.getText();
@@ -95,6 +99,17 @@ public class ScannerFragment extends Fragment {
             } else {
                 displayInvalidInputToast();
             }
+        }
+    }
+
+    /**
+     * Listens for clicks to the change service button
+     */
+    private class ChangeServiceOnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            ((ServicesActivity) getActivity()).showSelectServiceDialog(false);
         }
     }
 
@@ -184,10 +199,8 @@ public class ScannerFragment extends Fragment {
     }
 
     protected void displayInvalidInputToast() {
-        String message = getString(R.string.invalid_input_toast);
-        Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-//        MainActivity.maybeShowToast(getString(R.string.invalid_input_toast),
-//                mInvalidInputToast, Toast.LENGTH_SHORT, getActivity());
+        MainActivity.maybeShowToast(getString(R.string.toast_invalid_input),
+                mInvalidInputToast, Toast.LENGTH_SHORT, getActivity());
     }
 
     /**
@@ -196,7 +209,7 @@ public class ScannerFragment extends Fragment {
      */
     protected void showFailureToast() {
         Context c = getActivity().getApplicationContext();
-        CharSequence message = getResources().getString(R.string.scan_failure);
+        CharSequence message = getResources().getString(R.string.toast_scan_failure);
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(c, message, duration);
         toast.show();
@@ -283,4 +296,3 @@ public class ScannerFragment extends Fragment {
         }
     }
 }
-

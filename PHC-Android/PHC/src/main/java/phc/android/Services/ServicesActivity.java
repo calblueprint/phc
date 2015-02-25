@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
+import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,59 +38,48 @@ import java.util.TimeZone;
 import phc.android.Main.MainActivity;
 import phc.android.R;
 
-/** Call with resultCode of 0 if providing a service.
- * Call with resultCode of 1 if scanning for registration.
+/**
+ * ServicesActivity is the main activity for registering users for services.
  */
 public class ServicesActivity extends Activity {
 
-    /** Used to hold which service this user is scanning for. */
-    public static String mServiceSelected;
-
-    /** Created when selecting the provided service */
-    public static AlertDialog mServiceDialog;
-
-    /** Created to tell the user they submitted an invalid code */
-    public static AlertDialog mFailureDialog;
-
-    /** Used in error logs to identify this activity. */
-    public static final String TAG = "ServicesActivity";
-
-    /** The result returned to the calling activity through an Intent. */
-    public static String mScanResult;
-
-    /** A handle on the fragment that holds the camera to open and release it. */
-    public ScannerFragment mScannerFragment;
-
-    /** Holds the menu item generated in onPrepareOptionsMenu() */
-    private MenuItem mServiceMenuItem;
-
-    /** Used to hold scan results. */
-    private SharedPreferences mSharedPreferences;
-
-    /** String tag for scanned codes in shared preferences */
-    private final String ALL_CODES = "scanned_codes";
-
-    /** TextView that shows the user the service they provide */
-    private TextView mServicePrompt;
-
-    /** List of services, initialized when this activity
-     * is called by the MainActivity.
-     */
-    private static CharSequence[] services;
-
-    /** Contains both service keys and values to do
-     * REST requests.
-     */
-    private static HashMap<String, String> servicesHashMap;
-
-    /** MainActivity's event id */
-    private String mEventID;
-
+    /*TAKEN FROM MAIN ACTIVITY*/
+    /** Used to hold an instance of the MainActivity */
+    private MainActivity mMainActivity;
+    /** The id of the current PHC Event.*/
+    private String mEventId;
     /** MainActivity's api version */
     private String mApiVersion;
 
-    /** Used to hold an instance of the MainActivity */
-    private MainActivity mMainActivity;
+    /** Hashmap of all services being offered at the event. */
+    private static HashMap<String, String> sOfferedServices = new HashMap<String, String>();
+    /** Alphabetized array of display names for all services. */
+    private static String[] sDisplayNames;
+
+    /*SERVICE DETAILS*/
+    /** TextView showing the user their service. */
+    private TextView mServicePrompt;
+    /** Holds which service this user is scanning for. */
+    public static String mServiceSelected;
+    /** Used in error logs to identify this activity. */
+    public static final String TAG = "ServicesActivity";
+
+    /*DIALOGS AND SCANNERS*/
+    /** Created when selecting the provided service */
+    public static AlertDialog mServiceDialog;
+    /** Created to tell the user they submitted an invalid code */
+    public static AlertDialog mFailureDialog;
+    /** The result returned to the calling activity through an Intent. */
+    public static String mScanResult;
+    /** Holds the menu item generated in onPrepareOptionsMenu(). */
+    private MenuItem mServiceMenuItem;
+
+    /*SHARED PREFERENCES*/
+    /** Used to hold scan results. */
+    private SharedPreferences mSharedPreferences;
+    /** String tag for scanned codes in shared preferences */
+    private final String ALL_CODES = "scanned_codes";
+
 
     /**
      * As soon as the activity starts, this sets up
@@ -104,39 +94,32 @@ public class ServicesActivity extends Activity {
         setContentView(R.layout.activity_services);
         ActionBar actionbar = getActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
+
         mMainActivity = (MainActivity) MainActivity.getContext();
-        mEventID = mMainActivity.getEventID();
+        mEventId = mMainActivity.getEventID();
         mApiVersion = mMainActivity.getApiVersion();
+        sOfferedServices = mMainActivity.getOfferedServices();
+        sDisplayNames = mMainActivity.getDisplayNames();
 
-        if (findViewById(R.id.service_fragment_container) != null) {
-            /* However, if we're being restored from a previous state,
-             * then we don't need to do anything and should return or else
-             * we could end up with overlapping fragments.
-             */
-            if (savedInstanceState == null) {
-                Bundle bundle = getIntent().getExtras();
-                /* This cannot be null! */
-                services = bundle.getStringArray("services_list");
-                servicesHashMap = (HashMap<String, String>) bundle.getSerializable("services_hash");
-//                if (bundle.get("provided_service") == null && intention == MainActivity.FOR_SERVICE) {
-                showSelectServiceDialog(true);
-//                } else {
-//                    mServiceSelected = (String) bundle.get("provided_service");
-//                }
-            } else {
-                services = savedInstanceState.getCharSequenceArray("services_list");
-                servicesHashMap = (HashMap<String, String>) savedInstanceState.getSerializable("services_hash");
-                mServiceSelected = (String) savedInstanceState.getCharSequence("provided_service");
-                return;
-            }
+        Bundle intent = getIntent().getExtras();
 
-            mSharedPreferences = getPreferences(MODE_PRIVATE);
-            mScannerFragment = new ScannerFragment();
-            mScannerFragment.setArguments(getIntent().getExtras());
-            FragmentTransaction t = getFragmentManager().beginTransaction();
-            t.add(R.id.service_fragment_container, mScannerFragment);
-            t.commit();
+        if (savedInstanceState != null) {
+            mServiceSelected = (String) savedInstanceState.getCharSequence("provided_service");
+            return;
         }
+        else if (intent != null && intent.get("provided_service") != null) {
+            mServiceSelected = (String) intent.get("provided_service");
+        }
+        else {
+            showSelectServiceDialog(true);
+        }
+
+        mSharedPreferences = getPreferences(MODE_PRIVATE);
+        ScannerFragment scannerFragment = new ScannerFragment();
+        scannerFragment.setArguments(getIntent().getExtras());
+        FragmentTransaction t = getFragmentManager().beginTransaction();
+        t.add(R.id.service_fragment_container, scannerFragment);
+        t.commit();
     }
 
     /**
@@ -146,6 +129,7 @@ public class ServicesActivity extends Activity {
     public static class ServiceAlertDialogFragment extends DialogFragment {
 
         static boolean mustSelect = false;
+        private String selected;
 
         /**
          * Used to create a new instance of this fragment. Only one instance
@@ -162,7 +146,7 @@ public class ServicesActivity extends Activity {
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            return createSelectServiceDialog(mustSelect);
+            return createSelectServiceDialog();
         }
 
         /**
@@ -181,27 +165,25 @@ public class ServicesActivity extends Activity {
         }
 
         /**
-         *
-         * @param mustSelect is True if the user has not already selected a service,
-         * False otherwise
          * @return a Dialog that will be shown to the user.
          */
-        private Dialog createSelectServiceDialog(final boolean mustSelect) {
+        private Dialog createSelectServiceDialog() {
             final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle("Select Provided Service");
             /* if service is already selected, pre select a button. */
             int prevIndex = -1;
+
             if (mServiceSelected != null) {
-                for (int i = 0; i < services.length; i++) {
-                    if (mServiceSelected.equals(services[i])) {
+                for (int i = 0; i < sDisplayNames.length; i++) {
+                    if (mServiceSelected.equals(sDisplayNames[i])) {
                         prevIndex = i;
                     }
                 }
             }
-            builder.setSingleChoiceItems(services, prevIndex, new DialogInterface.OnClickListener() {
+            builder.setSingleChoiceItems(sDisplayNames, prevIndex, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int item) {
-                    mServiceSelected = services[item].toString();
+                    mServiceSelected = sDisplayNames[item].toString();
                     ((ServicesActivity) getActivity()).setServicePromptText();
                     mServiceDialog.dismiss();
                 }
@@ -282,7 +264,7 @@ public class ServicesActivity extends Activity {
      * that they provide.
      * @param mustSelect is True if the user has not already selected a service.
      */
-    private void showSelectServiceDialog(final boolean mustSelect) {
+    public void showSelectServiceDialog(final boolean mustSelect) {
         DialogFragment newFrag = ServiceAlertDialogFragment.newInstance(mustSelect);
         newFrag.show(getFragmentManager(), "ServiceDialog");
     }
@@ -295,8 +277,7 @@ public class ServicesActivity extends Activity {
      * @param result String scan result
      */
     public void storeScanResult(String result) {
-        /* TODO: Need a function that updates the
-         * Salesforce object
+        /* TODO: Need a function that updates the Salesforce object
          *
          * updateRegistration(result, mSelectedService)
          */
@@ -368,7 +349,7 @@ public class ServicesActivity extends Activity {
      */
     private void setServicePromptText() {
         mServicePrompt = (TextView) findViewById(R.id.service_prompt_text);
-        String prompt = getString(R.string.service_prompt);
+        String prompt = getString(R.string.text_welcome_service);
         mServicePrompt.setText(Html.fromHtml(prompt + "<br />" + "<b>" + mServiceSelected + "<b>"));
     }
 
@@ -382,7 +363,7 @@ public class ServicesActivity extends Activity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.clear();
         /* These parameters are the groupID, itemID, order, and text for the item */
-        mServiceMenuItem = menu.add(Menu.NONE, Menu.NONE, Menu.NONE, R.string.change_service);
+        mServiceMenuItem = menu.add(Menu.NONE, Menu.NONE, Menu.NONE, R.string.button_change_service);
         return true;
     }
     /**
@@ -428,8 +409,6 @@ public class ServicesActivity extends Activity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putCharSequenceArray("services_list", services);
-        outState.putSerializable("services_hash", servicesHashMap);
         outState.putCharSequence("provided_service", mServiceSelected);
     }
 
@@ -457,7 +436,7 @@ public class ServicesActivity extends Activity {
     }
 
     protected void recordResult(String code) {
-        getServiceStatus(getKeyByValue(servicesHashMap, mServiceSelected), code);
+        getServiceStatus(getKeyByValue(sOfferedServices, mServiceSelected), code);
     }
 
     /**
@@ -470,7 +449,7 @@ public class ServicesActivity extends Activity {
     private void getServiceStatus(final String serviceName, String personNumber) {
         RestRequest serviceRequest = null;
         String soql = "SELECT Id, " + serviceName + " FROM Event_Registration__c ";
-        soql = soql + "WHERE PHC_Event__c = '" + mEventID + "' AND ";
+        soql = soql + "WHERE PHC_Event__c = '" + mEventId + "' AND ";
         soql = soql + "Number__c = '" + personNumber + "'";
         try {
             serviceRequest = RestRequest.getRequestForQuery(mApiVersion, soql);
@@ -535,16 +514,16 @@ public class ServicesActivity extends Activity {
         String newStatus;
         if (currentStatus.equals("Applied")) {
             newStatus = "Received";
-            showPreviousState("This is their first time", mServiceSelected);
+            showPreviousState("", mServiceSelected);
         } else if (currentStatus.equals("Received")) {
             newStatus = "Received";
-            showPreviousState("They have already received this service", mServiceSelected);
+            showPreviousState(getString(R.string.text_already_received), mServiceSelected);
         } else if (currentStatus.equals("None")) {
             newStatus = "Drop In";
-            showPreviousState("They are a drop in", mServiceSelected);
+            showPreviousState(getString(R.string.text_drop_in), mServiceSelected);
         } else {
             newStatus = "Drop In";
-            showPreviousState("They already dropped in prior", mServiceSelected);
+            showPreviousState(getString(R.string.text_drop_in_and_already_received), mServiceSelected);
         }
 
         fields.put(serviceName, newStatus);
@@ -618,7 +597,7 @@ public class ServicesActivity extends Activity {
      */
     protected void showSuccessToast() {
         Context c = getApplicationContext();
-        CharSequence message = getResources().getString(R.string.scan_success);
+        CharSequence message = getResources().getString(R.string.toast_scan_success);
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(c, message, duration);
         toast.show();
@@ -633,4 +612,6 @@ public class ServicesActivity extends Activity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    public String getServiceSelected(){ return mServiceSelected; }
 }

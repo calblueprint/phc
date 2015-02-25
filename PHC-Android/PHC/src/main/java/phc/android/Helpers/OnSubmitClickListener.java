@@ -35,7 +35,9 @@ public class OnSubmitClickListener
     private void loadNextFragmentNew(){
         FragmentTransaction transaction =
                 ((Activity) mContext).getFragmentManager().beginTransaction();
-        transaction.replace(R.id.registration_fragment_container, new SuccessFragment());
+        SuccessFragment successFragment = new SuccessFragment();
+        successFragment.setType(SuccessFragment.SuccessType.CHECKIN_SUCCESS);
+        transaction.replace(R.id.checkin_fragment_container, successFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }

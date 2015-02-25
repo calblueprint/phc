@@ -17,7 +17,7 @@
             android:padding="10dp"
             android:gravity="center"
             android:textSize="20sp"
-            android:text="@string/checkout_experience_title"
+            android:text="@string/prompt_experience"
             />
         <RadioGroup
             android:id="@+id/checkout_radiogroup"
@@ -106,7 +106,7 @@
             android:gravity="center"
             android:id="@+id/experience_text"
             android:textSize="20sp"
-            android:text="@string/checkout_comment_title"
+            android:text="@string/prompt_comments"
             />
 
         <EditText
@@ -125,7 +125,7 @@
             android:gravity="center"
             android:id="@+id/enter_code"
             android:textSize="20sp"
-            android:text="@string/enter_code_prompt"
+            android:text="@string/prompt_enter_code"
             />
 
         <EditText

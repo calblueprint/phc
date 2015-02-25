@@ -44,7 +44,7 @@ public class CheckinScannerFragment extends ScannerFragment {
     protected void displayNextFragment(Fragment nextFrag, String fragName) {
         FragmentTransaction transaction =
                 getActivity().getFragmentManager().beginTransaction();
-        transaction.replace(R.id.registration_fragment_container, nextFrag, fragName);
+        transaction.replace(R.id.checkin_fragment_container, nextFrag, fragName);
         transaction.addToBackStack(fragName);
         transaction.commit();
     }

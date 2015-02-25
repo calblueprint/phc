@@ -50,7 +50,7 @@ public class SideBarFragment extends CheckinFragment {
 
                     if (newFragment != null) {
                         FragmentTransaction transaction = fragMan.beginTransaction();
-                        transaction.replace(R.id.registration_fragment_container, newFragment, tag);
+                        transaction.replace(R.id.checkin_fragment_container, newFragment, tag);
                         transaction.addToBackStack(null);
                         transaction.commit();
                     }

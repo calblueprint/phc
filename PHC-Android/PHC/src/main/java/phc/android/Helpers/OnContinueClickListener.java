@@ -12,6 +12,7 @@ import android.widget.Spinner;
 
 import java.util.Arrays;
 
+import phc.android.Main.MainActivity;
 import phc.android.R;
 import phc.android.Checkin.SelectServicesFragment;
 
@@ -104,14 +105,14 @@ public class OnContinueClickListener
      * for each service checkbox, where the key is the Salesforce name of the service.
      */
     private void updateSharedPreferencesServices(ViewGroup layout){
-        String[] sorted_service_names = ((SelectServicesFragment) mCurrFrag).getServiceSFNames();
+        String[] names = ((MainActivity) MainActivity.getContext()).getSalesforceNames();
 
         for (int i = 0; i < layout.getChildCount(); i++) {
             View v = layout.getChildAt(i);
 
             if (v instanceof CheckBox) {
                 boolean checked = ((CheckBox)v).isChecked();
-                mUserInfoEditor.putBoolean(sorted_service_names[i], checked);
+                mUserInfoEditor.putBoolean(names[i], checked);
             }
         }
         mUserInfoEditor.commit();
@@ -123,7 +124,7 @@ public class OnContinueClickListener
     private void loadNextFragment(){
         FragmentTransaction transaction =
                 ((Activity) mContext).getFragmentManager().beginTransaction();
-        transaction.replace(R.id.registration_fragment_container, mNextFrag, mNextFragName);
+        transaction.replace(R.id.checkin_fragment_container, mNextFrag, mNextFragName);
         transaction.addToBackStack(null);
         transaction.commit();
     }

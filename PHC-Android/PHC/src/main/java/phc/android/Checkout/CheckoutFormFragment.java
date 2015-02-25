@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import phc.android.Helpers.SuccessFragment;
 import phc.android.R;
 
 public class CheckoutFormFragment extends Fragment {
@@ -98,7 +99,9 @@ public class CheckoutFormFragment extends Fragment {
              */
             FragmentTransaction transaction =
                     ((Activity)mContext).getFragmentManager().beginTransaction();
-            transaction.replace(R.id.checkout_activity_container, new CheckoutSuccessFragment());
+                    SuccessFragment successFragment = new SuccessFragment();
+                    successFragment.setType(SuccessFragment.SuccessType.CHECKOUT_SUCCESS);
+                    transaction.replace(R.id.checkout_activity_container, successFragment);
             transaction.commit();
         }
     }
@@ -145,7 +148,7 @@ public class CheckoutFormFragment extends Fragment {
 
     /** Shows toast if the QR Scan was not successful. */
     protected void showFailureToast() {
-        CharSequence message = getResources().getString(R.string.scan_failure);
+        CharSequence message = getResources().getString(R.string.toast_scan_failure);
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(getActivity(), message, duration);
         toast.show();
@@ -153,7 +156,7 @@ public class CheckoutFormFragment extends Fragment {
 
     /** Method that runs when a QR scan is successful. */
     protected void confirmScan() {
-        CharSequence message = getResources().getString(R.string.scan_success);
+        CharSequence message = getResources().getString(R.string.toast_scan_success);
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(getActivity(), message, duration);
         toast.show();

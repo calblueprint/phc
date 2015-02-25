@@ -1,6 +1,7 @@
 package phc.android.Services;
 
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import phc.android.Helpers.SuccessFragment;
 import phc.android.R;
 
 
@@ -56,9 +58,9 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
         }
         String prompt;
         if (mManualInput) {
-            prompt = getString(R.string.input_confirmation_text);
+            prompt = getString(R.string.text_input_confirmation);
         } else {
-            prompt = getString(R.string.scan_confirmation_texts);
+            prompt = getString(R.string.text_scan_confirmation);
         }
         mScanResultView.setText(Html.fromHtml(prompt + "<br /><br />" + "<b><big><big>" + mScanResult + "</b></big></big><br />"));
         return view;
@@ -120,8 +122,11 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
      */
     protected void confirm() {
         recordScan();
-        FragmentManager manager = getFragmentManager();
-        manager.popBackStack(ScannerConfirmationFragment.TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
+        SuccessFragment successFragment = new SuccessFragment();
+        successFragment.setType(SuccessFragment.SuccessType.SERVICE_SUCCESS);
+        transaction.replace(R.id.service_fragment_container, successFragment);
+        transaction.commit();
     }
 
     /**
@@ -130,7 +135,7 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
      */
     protected void showSuccessToast() {
         Context c = getActivity().getApplicationContext();
-        CharSequence message = getResources().getString(R.string.scan_success);
+        CharSequence message = getResources().getString(R.string.toast_scan_success);
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(c, message, duration);
         toast.show();
@@ -142,7 +147,7 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
      */
     protected void showFailureToast() {
         Context c = getActivity().getApplicationContext();
-        CharSequence message = getResources().getString(R.string.scan_failure);
+        CharSequence message = getResources().getString(R.string.toast_scan_failure);
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(c, message, duration);
         toast.show();
