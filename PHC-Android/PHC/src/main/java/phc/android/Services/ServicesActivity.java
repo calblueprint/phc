@@ -420,28 +420,30 @@ public class ServicesActivity extends Activity {
         outState.putCharSequence("provided_service", mServiceSelected);
     }
 
-    /**
-     * Handles item selection in the menu.
-     * @param item is the selected item
-     * @return true if the action is consumed here,
-     * false otherwise
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        /* Handle action bar item clicks here. The action bar will
-         * automatically handle clicks on the Home/Up button, so long
-         * as you specify a parent activity in AndroidManifest.xml.
-         */
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        if (id == mServiceMenuItem.getItemId()) {
-            /* User does not have to select another service option */
-            showSelectServiceDialog(false);
-        }
-        return super.onOptionsItemSelected(item);
-    }
+// COMMENTED OUT BY BYRON 2.26.15. Our Settings isn't doing anything right now,
+// and the "Select Another Service" functionality is taken care of by the button.
+//    /**
+//     * Handles item selection in the menu.
+//     * @param item is the selected item
+//     * @return true if the action is consumed here,
+//     * false otherwise
+//     */
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        /* Handle action bar item clicks here. The action bar will
+//         * automatically handle clicks on the Home/Up button, so long
+//         * as you specify a parent activity in AndroidManifest.xml.
+//         */
+//        int id = item.getItemId();
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//        if (id == mServiceMenuItem.getItemId()) {
+//            /* User does not have to select another service option */
+//            showSelectServiceDialog(false);
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     public void recordResult(String code) {
         getServiceStatus(getKeyByValue(sOfferedServices, mServiceSelected), code);
