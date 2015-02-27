@@ -89,7 +89,7 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     /**
      * Used when the user wants to return to scanner fragment.
      */
-    protected class RetryListener implements View.OnClickListener{
+    public class RetryListener implements View.OnClickListener{
         @Override
         public void onClick(View view) {
             retry();
@@ -99,7 +99,7 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     /**
      * Used to confirm the scan result.
      */
-    protected class ConfirmListener implements View.OnClickListener {
+    public class ConfirmListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             confirm();

@@ -22,17 +22,19 @@ import phc.android.Helpers.SuccessFragment;
 import phc.android.R;
 
 public class CheckoutFormFragment extends Fragment {
+    /* Name for logs and fragment transaction code */
+    public final static String TAG = "CheckoutFormFragment";
 
     /** Holds the result of the scan. */
-    protected String mScanResult;
+    protected CharSequence mScanResult;
+    protected Boolean mManualInput;
+
     /** The textview that holds the comment. */
     /** currently not used because comment box is not yet set up  **/
     private EditText mComment;
     /** Holds their input for experience rating 0-5 */
     private int mExperience;
-    /** Holds manual code input. **/
-    /** currently not used because not yet set up  **/
-    private EditText mCodeInput;
+
     /** Used to set listener to detect when the user rates their experience **/
     private RadioGroup mRadioGroup;
     /** Used to set listener to detect when the user clicks submit **/
@@ -43,13 +45,24 @@ public class CheckoutFormFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                 Bundle savedInstanceState){
-        //Button scanQr = (Button) findViewById(R.id.exit_qr_scanner);
-        //scanQr.setOnClickListener(new ScanListener())
+
         View view = inflater.inflate(R.layout.fragment_checkout_form, container, false);
         mComment = (EditText) view.findViewById(R.id.checkout_comment);
         mCodeInputSubmitButton = (Button) view.findViewById(R.id.button_submit);
         mCodeInputSubmitButton.setOnClickListener(new SubmitListener(getActivity()));
-        mCodeInput = (EditText) view.findViewById(R.id.text_code);
+
+
+
+        if (savedInstanceState != null) {
+            mScanResult = savedInstanceState.getCharSequence("scan_result");
+            mManualInput = savedInstanceState.getBoolean("manual_input");
+
+        } else {
+            mScanResult =  getArguments().getCharSequence("scan_result");
+            mManualInput = getArguments().getBoolean("manual_input");
+        }
+
+
 
         mRadioGroup = (RadioGroup) view.findViewById(R.id.checkout_radiogroup);
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
@@ -97,19 +110,46 @@ public class CheckoutFormFragment extends Fragment {
             /**
              * Loads next fragment onto the current stack.
              */
-            FragmentTransaction transaction =
-                    ((Activity)mContext).getFragmentManager().beginTransaction();
-                    SuccessFragment successFragment = new SuccessFragment();
-                    successFragment.setType(SuccessFragment.SuccessType.CHECKOUT_SUCCESS);
-                    transaction.replace(R.id.checkout_activity_container, successFragment);
-            transaction.commit();
+
+            Bundle args = new Bundle();
+            args.putCharSequence("scan_result", mScanResult);
+            args.putBoolean("manual_input", mManualInput);
+            if(mComment == null ){
+                args.putString("comments",  " ");
+            }else{
+                args.putString("comments",  mComment.getText().toString());
+            }
+            args.putInt("experience", mExperience);
+
+
+
+            CheckoutConfirmationFragment confFrag = new CheckoutConfirmationFragment();
+            confFrag.setArguments(args);
+            displayNextFragment(confFrag, CheckoutConfirmationFragment.TAG);
         }
+    }
+
+
+
+    /**
+     * Brings up another fragment when this fragment
+     * is complete
+     * @param nextFrag Fragment to display next
+     * @param fragName String fragment names
+     */
+
+    protected void displayNextFragment(Fragment nextFrag, String fragName) {
+        FragmentTransaction transaction =
+                (getActivity()).getFragmentManager().beginTransaction();
+        transaction.replace(R.id.checkout_activity_container, nextFrag, fragName);
+        transaction.addToBackStack(fragName);
+        transaction.commit();
     }
 
 
     /**
      * Used when the user wants to send an intent
-     * to the scanner app.
+     * to the scanner app.Confirmation
      */
     protected class ScanListener implements View.OnClickListener{
         @Override

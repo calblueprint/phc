@@ -1,0 +1,90 @@
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/checkout_form"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:layout_marginTop="@dimen/top_bottom_margins"
+    android:layout_marginBottom="@dimen/top_bottom_margins">
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/checkout_layout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:text="@string/checkout_confirmation_experience"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:id="@+id/checkout_confirmation_experience_result" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:text="@string/checkout_confirmation_comments"
+            />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkout_confirmation_comments_result"
+            android:gravity="center"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:id="@+id/checkout_confirmation_code_prompt"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:id = "@+id/checkout_confirmation_scan_result"
+            />
+
+
+        <Button
+            android:id="@+id/checkout_confirmation_confirm_scan"
+            android:text="@string/button_confirm_scan"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/green"
+            android:background="@drawable/submit_button"
+            android:textSize="30sp"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            />
+
+        <Button
+            android:id="@+id/checkout_confirmation_retry_scan"
+            android:text="@string/button_retry_scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:textSize="30sp"/>
+
+    </LinearLayout>
+</ScrollView>
