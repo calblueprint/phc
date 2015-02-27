@@ -25,10 +25,13 @@ public class CheckoutActivity extends Activity {
         FragmentTransaction transaction = this.getFragmentManager().beginTransaction();
         //move this activity to a fragment
         //remove this fragment.
-        transaction.add(R.id.checkout_activity_container, new CheckoutFormFragment());
+        transaction.add(R.id.checkout_activity_container, new CheckoutScannerFragment());
         transaction.commit();
         ActionBar actionbar = getActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
     }
 
+    protected void recordResult(String code) {
+        //getServiceStatus(getKeyByValue(sOfferedServices, mServiceSelected), code);
+    }
 }

@@ -31,10 +31,10 @@ public class ScannerFragment extends Fragment {
     public final static String TAG = "ScannerFragment";
 
     // Button to start BarcodeScanner app
-    private Button mScanButton;
+    protected Button mScanButton;
     // Field and submit button for manual code input.
-    private EditText mCodeInput;
-    private Button mCodeInputSubmitButton;
+    protected EditText mCodeInput;
+    protected Button mCodeInputSubmitButton;
 
     /** Toast that tells the user when input is
      *  invalid. An array is used to simulate a
@@ -83,7 +83,7 @@ public class ScannerFragment extends Fragment {
      * pass the correct arguments to the next fragment,
      * as well as validate the input.
      */
-    private class InputSubmitListener implements View.OnClickListener {
+    public class InputSubmitListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             CharSequence result = mCodeInput.getText();
@@ -102,7 +102,7 @@ public class ScannerFragment extends Fragment {
      * Used to watch for input and update the submit button
      * when the user enters or removes text.
      */
-    protected class InputTextWatcher implements TextWatcher {
+    public class InputTextWatcher implements TextWatcher {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
             setInputSubmitButton();
@@ -156,7 +156,7 @@ public class ScannerFragment extends Fragment {
      * Used when the user wants to send an intent
      * to the scanner app.
      */
-    protected class ScanListener implements View.OnClickListener{
+    public class ScanListener implements View.OnClickListener{
         @Override
         public void onClick(View view) {
             startScan();

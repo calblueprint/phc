@@ -151,6 +151,7 @@
         If no or unsure: press Returning User to search the client. If no matches are found,
         return and press New User.
     </string>
+
     <string name="text_success">Success!</string>
     <string name="button_register_another">Register another client</string>
 
@@ -180,5 +181,8 @@
     <string name="checkout_experience_3">3</string>
     <string name="checkout_experience_4">4</string>
     <string name="checkout_experience_5">5</string>
+    <string name="checkout_confirmation_comments">Your comments: </string>
+    <string name="checkout_confirmation_experience">Your experience: </string>
+
 
 </resources>
