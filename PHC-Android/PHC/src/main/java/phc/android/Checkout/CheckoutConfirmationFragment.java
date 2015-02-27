@@ -97,7 +97,8 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
 
         return view;
     }
-
+    // Overrode because crashes otherwise.
+    // TODO: Fix resumeHelper
     @Override
     protected void resumeHelper(){
 
