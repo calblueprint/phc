@@ -143,14 +143,13 @@
     <string name="submit_form">Submit Form</string>
 
     <!-- Selection Page -->
-    <string name="selection_instruction">Instructions:</string>
+    <string name="selection_instruction">Instructions</string>
     <string name="selection_help">
-        Please ask participant:\n\n
-        Is this your first time at a PHC event?\n\n
-        If yes, press New User option.\n
-        If no, press Returning User option.\n\n
-        If participant is unsure, press Returning User to search.\n
-        If no matches are found, return and press New User.
+        Please ask the client: \n
+        \"Is this your first time at a PHC event?\" \n
+        If yes: press New User.\n\n
+        If no or unsure: press Returning User to search the client. If no matches are found,
+        return and press New User.
     </string>
     <string name="text_success">Success!</string>
     <string name="button_register_another">Register another client</string>

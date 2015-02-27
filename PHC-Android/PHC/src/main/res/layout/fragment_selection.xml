@@ -29,12 +29,17 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:layout_marginTop="36dp"
-        android:layout_marginBottom="12dp"
         android:gravity="center"
         android:textSize="24sp"
         android:textColor="@color/dark_gray"
         android:text="@string/selection_instruction"
         />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="12dp"
+        android:background="@color/dark_gray"/>
 
     <TextView
         android:layout_width="match_parent"
