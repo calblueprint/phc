@@ -308,12 +308,13 @@ public class MainActivity extends Activity
      */
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == R.id.action_logout) {
+        if (id == R.id.action_logout) {
             onLogoutClick();
             return true;
         }
+//        } else if (id == R.id.action_settings) {
+//            return true;
+//        }
         return super.onOptionsItemSelected(item);
     }
 
