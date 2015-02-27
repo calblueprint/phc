@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ public class SelectionFragment extends CheckinFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d("recreated", "recreated");
         View view = inflater.inflate(R.layout.fragment_selection, container, false);
 
         Button newUserButton = (Button) view.findViewById(R.id.new_user_button);

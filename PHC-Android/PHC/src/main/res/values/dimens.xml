@@ -2,7 +2,6 @@
     <!-- built-in android dimens -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="input_text_width">300dp</dimen>
     <dimen name="connector_width">3dp</dimen>
     <dimen name="actionbar_gap">40dp</dimen>
     <dimen name="horizontal_rule_height">1dp</dimen>
@@ -10,6 +9,7 @@
     <dimen name="top_bottom_margins">30dp</dimen>
 
     <!-- custom dimens -->
+    <dimen name="input_text_width">300dp</dimen>
     <dimen name="text_size">18sp</dimen>
     <dimen name="text_size_large">30sp</dimen>
     <dimen name="checkboxes_margin">10dp</dimen>
@@ -17,6 +17,7 @@
     <dimen name="fragment_top_margin">60dp</dimen>
     <dimen name="selection_button_width">100dp</dimen>
     <dimen name="selection_button_height">70dp</dimen>
+    <dimen name="rectangle_button_width">250dp</dimen>
     <dimen name="prompt_bottom_margin">20dp</dimen>
 
     <dimen name="ssn1">64dp</dimen>

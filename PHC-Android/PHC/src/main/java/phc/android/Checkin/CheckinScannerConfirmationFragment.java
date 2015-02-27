@@ -26,7 +26,7 @@ import java.util.Map;
 import phc.android.Helpers.OnSubmitClickListener;
 import phc.android.Main.MainActivity;
 import phc.android.R;
-import phc.android.Services.ScannerConfirmationFragment;
+import phc.android.SharedFragments.ScannerConfirmationFragment;
 import phc.android.Helpers.SharedPreferenceEditorListener;
 
 

@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
-import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,6 +36,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
+import phc.android.SharedFragments.ScannerConfirmationFragment;
+import phc.android.SharedFragments.ScannerFragment;
 import phc.android.Main.MainActivity;
 import phc.android.R;
 
@@ -442,7 +443,7 @@ public class ServicesActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    protected void recordResult(String code) {
+    public void recordResult(String code) {
         getServiceStatus(getKeyByValue(sOfferedServices, mServiceSelected), code);
     }
 

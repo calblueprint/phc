@@ -1,4 +1,4 @@
-package phc.android.Services;
+package phc.android.SharedFragments;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -15,8 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import phc.android.Helpers.SuccessFragment;
 import phc.android.R;
+import phc.android.Services.ServicesActivity;
 
 
 public class ScannerConfirmationFragment extends android.app.Fragment {
