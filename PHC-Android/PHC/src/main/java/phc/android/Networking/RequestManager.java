@@ -31,7 +31,7 @@ public class RequestManager {
         sTAG = TAG;
     }
 
-    public static void requestLogin(String email,
+    public void requestLogin(String email,
                                     String password,
                                     Response.Listener<JSONObject> responseListener,
                                     Response.ErrorListener errorListener) {
@@ -47,7 +47,7 @@ public class RequestManager {
         sRequestQueue.add(loginRequest);
     }
 
-    public static void requestSearch(String firstName,
+    public void requestSearch(String firstName,
                                      String lastName,
                                      String userId,
                                      String authToken,
@@ -67,7 +67,7 @@ public class RequestManager {
         sRequestQueue.add(searchRequest);
     }
 
-    public static void requestCreate(String firstName,
+    public void requestCreate(String firstName,
                                      String lastName,
                                      String userId,
                                      String authToken,
