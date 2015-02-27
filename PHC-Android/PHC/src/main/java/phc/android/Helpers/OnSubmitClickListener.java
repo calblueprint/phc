@@ -6,6 +6,7 @@ import android.content.Context;
 import android.view.View;
 
 import phc.android.R;
+import phc.android.SharedFragments.SuccessFragment;
 
 /**
  * OnSubmitClickListener writes all entries to SalesForce DB and clears SharedPreferences.

@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import phc.android.R;
-import phc.android.Services.ScannerFragment;
+import phc.android.SharedFragments.ScannerFragment;
 
 
 public class ServiceSideBarFragment extends Fragment {

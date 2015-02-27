@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:layout_gravity="center_horizontal"
-    android:layout_marginTop="@dimen/selection_top_margin">
+    android:layout_marginTop="@dimen/fragment_top_margin">
 
     <TextView
         android:id="@+id/text_success"

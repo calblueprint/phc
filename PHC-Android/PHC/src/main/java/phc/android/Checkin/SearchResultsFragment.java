@@ -2,6 +2,7 @@ package phc.android.Checkin;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,17 +64,29 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
     private SearchResult[] mSearchResults = new SearchResult[0];
     /** ListView for results and its adapter **/
     private ListView mListView;
-    private SearchResultAdapter mAdapter;
+    /** TextView holding the "No Results Found" message. */
+    private TextView mTextView;
 
+    private SearchResultAdapter mAdapter;
+    /** Button to try search again. */
+    private Button mSearchAgainButton;
+    /** Button to register client as a new user. */
+    private Button mRegisterAsNewButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_results, container, false);
         mListView = (ListView) view.findViewById(R.id.search_result_list);
+        mTextView = (TextView) view.findViewById(R.id.search_text_no_results);
+
+        setupButtons(view);
 
         if (savedInstanceState != null) {
             mSearchResults = (SearchResult[]) savedInstanceState.get(CACHED_RESULTS);
+            if (mSearchResults.length == 0){
+                setNoResultsMessage();
+            }
             mAdapter = new SearchResultAdapter(getActivity(), mSearchResults);
             mListView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
@@ -99,6 +113,37 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
         }
 
         return view;
+    }
+
+
+    public void setupButtons (View view){
+        mSearchAgainButton = (Button) view.findViewById(R.id.button_search_again);
+        mSearchAgainButton.setOnClickListener(new View.OnClickListener() {
+            //returns to search fragment
+            public void onClick(View v) {
+                getFragmentManager().popBackStackImmediate();
+            }
+        });
+
+        mRegisterAsNewButton = (Button) view.findViewById(R.id.button_register_as_new);
+        mRegisterAsNewButton.setOnClickListener(new View.OnClickListener() {
+            //opens personal info fragment
+            public void onClick(View v) {
+                PersonalInfoFragment newFragment = new PersonalInfoFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.checkin_fragment_container, newFragment,
+                        getResources().getString(R.string.sidebar_personal_info));
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+    }
+
+    /**
+     * Sets the TextView's text to "No Results Found"
+     */
+    private void setNoResultsMessage(){
+        mTextView.setText(R.string.search_no_results);
     }
 
     public void onActivityCreated (Bundle savedInstanceState) {
@@ -161,8 +206,15 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                         Log.e("Birthday Parse Error", e2.toString());
                     }
 
-                    mAdapter = new SearchResultAdapter(mParent, mSearchResults);
-                    mListView.setAdapter(mAdapter);
+                    // if there are no results, show the no results message
+                    if (mSearchResults.length == 0){
+                        setNoResultsMessage();
+                    }
+                    // otherwise, populate the list view with the results
+                    else {
+                        mAdapter = new SearchResultAdapter(mParent, mSearchResults);
+                        mListView.setAdapter(mAdapter);
+                    }
                     // Check if progress dialog is showing before dismissing
                     if (mProgressDialog != null && mProgressDialog.isShowing()) {
                         mProgressDialog.dismiss();

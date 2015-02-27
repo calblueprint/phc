@@ -45,19 +45,28 @@
     </string-array>
 
     <!-- Search -->
+    <string name="search_prompt">Please try to search for your client here:</string>
     <string name="search_results_title">Results</string>
     <string name="request_url">http://phc-test.herokuapp.com</string>
+    <string name="search_again">Try search again</string>
+    <string name="search_register_as_new">Register client as new user</string>
+    <string name="search_no_results">No Results Found.</string>
+
 
     <!-- Splash Page -->
     <string name="button_checkin">Check-In</string>
     <string name="button_services">Services</string>
     <string name="button_checkout">Check-Out</string>
-    <string name="title_activity_register">Register Client</string>
+    <string name="title_activity_register">Client Check-In</string>
     <string name="title_activity_services">Manage Services</string>
-    <string name="title_activity_exit">Exit Form</string>
+    <string name="title_activity_exit">Check-Out Form</string>
     <string name="button_search_submit">Search</string>
 
-    <!-- Account Registration -->
+    <!-- Personal Info -->
+    <string name="personal_info_new">Please enter the following information about the
+        client: </string>
+    <string name="personal_info_edit">Please edit the following client information as
+        needed: </string>
     <string name="prompt_first">First Name</string>
     <string name="prompt_last">Last Name</string>
     <string name="prompt_ssn">SSN</string>
@@ -105,7 +114,7 @@
     <string name="error_invalid_phone_number">This phone number is invalid</string>
     <string name="action_continue">Continue</string>
 
-    <!-- Event Registration -->
+    <!-- Event Info -->
     <string name="prompt_neighborhood">In what neighborhood do you live?</string>
     <string name="prompt_homeless">Are you homeless?</string>
     <string name="prompt_children">Minor Children here today?</string>
@@ -138,22 +147,16 @@
     <string name="toast_retry_services">Retrieving data, please try again in a few
         seconds.</string>
 
-    <!-- Registration Scan Page -->
+    <!-- Checkin Scan Page -->
     <string name="prompt_scan">Please scan a QR code</string>
     <string name="submit_form">Submit Form</string>
 
     <!-- Selection Page -->
-    <string name="selection_instruction">Instructions</string>
-    <string name="selection_help">
-        Please ask the client: \n
-        \"Is this your first time at a PHC event?\" \n
-        If yes: press New User.\n\n
-        If no or unsure: press Returning User to search the client. If no matches are found,
-        return and press New User.
-    </string>
-
+    <string name="selection_prompt">Is this the client\'s first time at a PHC event?</string>
+    <string name="selection_yes">Yes</string>
+    <string name="selection_no_unsure">No/Unsure</string>
     <string name="text_success">Success!</string>
-    <string name="button_register_another">Register another client</string>
+    <string name="button_register_another">Check in another client</string>
 
     <!-- Service Activity -->
     <string name="button_change_service">Change Service</string>

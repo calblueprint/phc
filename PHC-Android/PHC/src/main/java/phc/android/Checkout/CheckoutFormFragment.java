@@ -1,7 +1,6 @@
 package phc.android.Checkout;
 
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -18,7 +17,6 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import phc.android.Helpers.SuccessFragment;
 import phc.android.R;
 
 public class CheckoutFormFragment extends Fragment {

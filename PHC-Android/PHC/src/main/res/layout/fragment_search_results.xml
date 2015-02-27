@@ -4,21 +4,50 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal">
+    android:gravity="center_horizontal"
+    >
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/selection_top_margin"
+        android:layout_marginTop="@dimen/fragment_top_margin"
         android:gravity="center_horizontal"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/search_results_title"/>
+        android:text="@string/search_results_title"
+        android:textSize="@dimen/text_size_large"
+        android:layout_marginBottom="@dimen/prompt_bottom_margin"
+        />
 
+    <TextView
+        android:id="@+id/search_text_no_results"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/prompt_bottom_margin"
+        />
 
     <ListView
         android:id="@+id/search_result_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/selection_top_margin"/>
+        android:layout_height="wrap_content"
+        />
+
+    <Button
+        android:layout_gravity="center"
+        android:id="@+id/button_search_again"
+        android:layout_width="@dimen/rectangle_button_width"
+        android:layout_height="wrap_content"
+        android:text="@string/search_again"
+        android:textSize="@dimen/text_size"
+        android:layout_marginBottom="20dp"
+        />
+
+    <Button
+        android:layout_gravity="center"
+        android:id="@+id/button_register_as_new"
+        android:layout_width="@dimen/rectangle_button_width"
+        android:layout_height="wrap_content"
+        android:text="@string/search_register_as_new"
+        android:textSize="@dimen/text_size"
+        />
 
 </LinearLayout>

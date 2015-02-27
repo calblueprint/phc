@@ -10,8 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import phc.android.R;
-import phc.android.Services.ScannerConfirmationFragment;
-import phc.android.Services.ScannerFragment;
+import phc.android.SharedFragments.ScannerConfirmationFragment;
+import phc.android.SharedFragments.ScannerFragment;
 
 public class CheckinScannerFragment extends ScannerFragment {
 

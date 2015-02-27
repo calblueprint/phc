@@ -1,4 +1,4 @@
-package phc.android.Services;
+package phc.android.SharedFragments;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;

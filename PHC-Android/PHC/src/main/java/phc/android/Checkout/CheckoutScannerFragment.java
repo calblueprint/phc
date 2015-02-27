@@ -5,7 +5,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.app.Fragment;
 import phc.android.R;
-import phc.android.Services.ScannerFragment;
+import phc.android.SharedFragments.ScannerFragment;
 
 
 /**

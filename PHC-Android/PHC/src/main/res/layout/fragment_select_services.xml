@@ -16,14 +16,14 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/prompt_services" />
+            android:text="@string/prompt_services"
+            android:layout_marginBottom="@dimen/fragment_top_margin"/>
 
         <LinearLayout
             android:id="@+id/services_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
             android:orientation="vertical" />
 
         <Button

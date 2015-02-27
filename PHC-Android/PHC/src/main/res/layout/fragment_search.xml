@@ -5,7 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:layout_marginTop="@dimen/selection_top_margin">
+    android:layout_marginTop="@dimen/fragment_top_margin">
+
+    <TextView
+        android:id="@+id/search_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/search_prompt"
+        android:textSize="@dimen/text_size"
+        android:layout_marginBottom="@dimen/prompt_bottom_margin"
+        android:layout_centerHorizontal="true"
+        />
 
     <EditText
         android:id="@+id/first_name"
@@ -29,6 +39,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/button_search_submit"
-        android:textStyle="bold"/>
+        />
 
 </LinearLayout>
