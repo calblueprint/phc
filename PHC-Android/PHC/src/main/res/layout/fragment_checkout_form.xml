@@ -118,25 +118,7 @@
             android:textSize="20sp"
             android:maxLines="10"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:gravity="center"
-            android:id="@+id/enter_code"
-            android:textSize="20sp"
-            android:text="@string/prompt_enter_code"
-            />
 
-        <EditText
-            android:id="@+id/text_code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="phone"
-            android:layout_gravity="center"
-            android:textSize="20sp"
-            android:maxLength="10"
-            android:singleLine="true"/>
         <Button
             android:layout_gravity="center"
             android:id="@+id/button_submit"
