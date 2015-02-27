@@ -50,6 +50,7 @@
     <string name="request_url">http://phc-test.herokuapp.com</string>
     <string name="search_again">Try search again</string>
     <string name="search_register_as_new">Register client as new user</string>
+    <string name="search_no_results">No Results Found.</string>
 
 
     <!-- Splash Page -->

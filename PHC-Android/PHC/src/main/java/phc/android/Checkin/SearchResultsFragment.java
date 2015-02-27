@@ -64,6 +64,9 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
     private SearchResult[] mSearchResults = new SearchResult[0];
     /** ListView for results and its adapter **/
     private ListView mListView;
+    /** TextView holding the "No Results Found" message. */
+    private TextView mTextView;
+
     private SearchResultAdapter mAdapter;
     /** Button to try search again. */
     private Button mSearchAgainButton;
@@ -75,11 +78,15 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_results, container, false);
         mListView = (ListView) view.findViewById(R.id.search_result_list);
+        mTextView = (TextView) view.findViewById(R.id.search_text_no_results);
 
         setupButtons(view);
 
         if (savedInstanceState != null) {
             mSearchResults = (SearchResult[]) savedInstanceState.get(CACHED_RESULTS);
+            if (mSearchResults.length == 0){
+                setNoResultsMessage();
+            }
             mAdapter = new SearchResultAdapter(getActivity(), mSearchResults);
             mListView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
@@ -132,6 +139,12 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
         });
     }
 
+    /**
+     * Sets the TextView's text to "No Results Found"
+     */
+    private void setNoResultsMessage(){
+        mTextView.setText(R.string.search_no_results);
+    }
 
     public void onActivityCreated (Bundle savedInstanceState) {
         requestQueue = Volley.newRequestQueue(getActivity());
@@ -193,8 +206,15 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                         Log.e("Birthday Parse Error", e2.toString());
                     }
 
-                    mAdapter = new SearchResultAdapter(mParent, mSearchResults);
-                    mListView.setAdapter(mAdapter);
+                    // if there are no results, show the no results message
+                    if (mSearchResults.length == 0){
+                        setNoResultsMessage();
+                    }
+                    // otherwise, populate the list view with the results
+                    else {
+                        mAdapter = new SearchResultAdapter(mParent, mSearchResults);
+                        mListView.setAdapter(mAdapter);
+                    }
                     // Check if progress dialog is showing before dismissing
                     if (mProgressDialog != null && mProgressDialog.isShowing()) {
                         mProgressDialog.dismiss();

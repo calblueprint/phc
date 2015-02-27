@@ -12,8 +12,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/fragment_top_margin"
         android:gravity="center_horizontal"
-        android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/search_results_title"
+        android:textSize="@dimen/text_size_large"
+        android:layout_marginBottom="@dimen/prompt_bottom_margin"
+        />
+
+    <TextView
+        android:id="@+id/search_text_no_results"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:layout_marginBottom="@dimen/prompt_bottom_margin"
         />
 
