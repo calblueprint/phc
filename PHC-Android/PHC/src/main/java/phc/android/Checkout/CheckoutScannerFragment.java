@@ -46,9 +46,7 @@ public class CheckoutScannerFragment extends ScannerFragment {
         transaction.commit();
     }
 
-
-
-    // don't need?
+    // Can remove when sidebar is added
     @Override
     protected void resumeHelper(){
         ;

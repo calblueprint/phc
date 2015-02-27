@@ -97,7 +97,7 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
 
         return view;
     }
-    // Overrode because crashes otherwise.
+    // Can remove when sidebar is added
     // TODO: Fix resumeHelper
     @Override
     protected void resumeHelper(){
