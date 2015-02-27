@@ -45,6 +45,7 @@
     </string-array>
 
     <!-- Search -->
+    <string name="search_prompt">Please try to search for your client here:</string>
     <string name="search_results_title">Results</string>
     <string name="request_url">http://phc-test.herokuapp.com</string>
 
