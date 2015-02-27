@@ -127,17 +127,5 @@
             android:text="@string/button_submit"
             android:textSize="30sp"/>
 
-
-        <!--
-        <Button
-            android:id="@+id/exit_qr_scanner"
-            android:text="@string/exit_qr_scanner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            />
-            -->
-
-
     </LinearLayout>
 </ScrollView>

@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,7 +25,7 @@ public class SelectionFragment extends CheckinFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_selection, container, false);
 
-        ImageButton newUserButton = (ImageButton) view.findViewById(R.id.new_user_button);
+        Button newUserButton = (Button) view.findViewById(R.id.new_user_button);
         newUserButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 PersonalInfoFragment newFragment = new PersonalInfoFragment();
@@ -36,7 +36,7 @@ public class SelectionFragment extends CheckinFragment {
             }
         });
 
-        ImageButton returningUserButton = (ImageButton) view.findViewById(R.id.returning_user_button);
+        Button returningUserButton = (Button) view.findViewById(R.id.returning_user_button);
         returningUserButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 SearchFragment newFragment = new SearchFragment();

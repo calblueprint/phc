@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/selection_top_margin"
+        android:layout_marginTop="@dimen/fragment_top_margin"
         android:gravity="center_horizontal"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/search_results_title"/>
@@ -19,6 +19,6 @@
         android:id="@+id/search_result_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/selection_top_margin"/>
+        android:layout_marginTop="@dimen/fragment_top_margin"/>
 
 </LinearLayout>

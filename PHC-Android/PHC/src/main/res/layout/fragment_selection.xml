@@ -1,50 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/selection_top_margin"
+    android:layout_margin="@dimen/fragment_top_margin"
     android:gravity="center_horizontal">
 
-    <ImageButton
-        android:id="@+id/new_user_button"
+    <TextView
+        android:id="@+id/selection_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/selection_new_returning_margin"
-        android:src="@drawable/new_user_icon"
-        android:background="@android:color/transparent">
-    </ImageButton>
+        android:text="@string/selection_prompt"
+        android:textSize="@dimen/text_size"
+        android:layout_marginBottom="25dp"
+        android:layout_centerHorizontal="true"
+        />
 
-    <ImageButton
-        android:id="@+id/returning_user_button"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/returning_user_icon"
-        android:background="@android:color/transparent">
-    </ImageButton>
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/selection_prompt">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginBottom="12dp"
-        android:gravity="center"
-        android:textSize="24sp"
-        android:textColor="@color/dark_gray"
-        android:text="@string/selection_instruction"
-        />
+        <Button
+            android:layout_gravity="center"
+            android:id="@+id/new_user_button"
+            android:layout_width="@dimen/selection_button_width"
+            android:layout_height="@dimen/selection_button_height"
+            android:text="@string/selection_yes"
+            android:textSize="@dimen/text_size"
+            android:layout_marginRight="30dp"
+            />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:gravity="center"
-        android:textSize="18sp"
-        android:textColor="@color/dark_gray"
-        android:lineSpacingExtra="4sp"
-        android:text="@string/selection_help"
-        />
+        <Button
+            android:layout_gravity="center"
+            android:id="@+id/returning_user_button"
+            android:layout_width="@dimen/selection_button_width"
+            android:layout_height="@dimen/selection_button_height"
+            android:text="@string/selection_no_unsure"
+            android:textSize="@dimen/text_size"
+            android:layout_toRightOf="@id/new_user_button"
+            />
+    </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

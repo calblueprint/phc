@@ -34,6 +34,8 @@ import phc.android.Helpers.TextLengthWatcher;
 public class PersonalInfoFragment extends Fragment {
     /** Parent layout for all views. */
     private ViewGroup mLayout;
+    /** Prompt text. Changes depending on whether client is a new user or returning user. */
+    private TextView mPrompt;
     /** Spinners. */
     private Spinner mGenderSpinner, mEthnicitySpinner, mLanguageSpinner;
     /** EditTexts. */
@@ -56,10 +58,16 @@ public class PersonalInfoFragment extends Fragment {
         addEditTextListeners();
         setSpinnerContent();
 
+        mPrompt = (TextView) view.findViewById(R.id.personal_info_prompt);
+
         // Only pre-populate the form if the user is a returning user.
         if (mParent.getCurrentState() == CheckinActivity.RegistrationState.RETURNING_USER) {
+            mPrompt.setText(R.string.personal_info_edit);
             prepopulateForm();
+        } else {
+            mPrompt.setText(R.string.personal_info_new);
         }
+
         mContinueButton = (Button) view.findViewById(R.id.button_account_continue);
         mContinueButton.setOnClickListener(new OnContinueClickListener(getActivity(),
                 this, mLayout, new EventInfoFragment(), getResources().getString(R.string
