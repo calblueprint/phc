@@ -1,43 +1,28 @@
 package phc.android.Networking;
 
-import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
-
-import com.android.volley.NetworkError;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
-import phc.android.Helpers.SearchResult;
-
 /**
  * Created by tonywu on 2/24/15.
+ * Contains abstractions for doing network requests.
+ * Should be instantiated by any class that needs to do network requests
  */
 public class RequestManager {
 
     //TODO: Change to heroku url when rails code pushed to heroku
-    //Change this to 10.0.2.2 if you are using the build in android emulator/phone
     private static final String BASE_URL = "http://10.0.2.2:3000";
-
     private static final String LOGIN_ENDPOINT = "/login";
-
     private static final String SEARCH_ENDPOINT = "/api/v1/search";
-
     private static final String CREATE_ENDPOINT = "/api/v1/create";
 
     private static RequestQueue sRequestQueue;
-
     private static String sTAG;
 
     public RequestManager(String TAG, RequestQueue requestQueue) {
@@ -45,6 +30,13 @@ public class RequestManager {
         sTAG = TAG;
     }
 
+    /**
+     * Used to login a user and receive a user_id and auth_token
+     * @param email user email
+     * @param password user password
+     * @param responseListener listener that is called when response received
+     * @param errorListener listener that is called when error
+     */
     public void requestLogin(final String email,
                              final String password,
                              Response.Listener<JSONObject> responseListener,
@@ -71,6 +63,15 @@ public class RequestManager {
         sRequestQueue.add(loginRequest);
     }
 
+    /**
+     * Used to search for a specific user
+     * @param firstName first name of search
+     * @param lastName last name of search
+     * @param userId user_id of logged in user
+     * @param authToken auth_token of logged in user
+     * @param responseListener listener that is called when response received
+     * @param errorListener listener that is called when error
+     */
     public void requestSearch(String firstName,
                                      String lastName,
                                      String userId,
@@ -91,6 +92,15 @@ public class RequestManager {
         sRequestQueue.add(searchRequest);
     }
 
+    /**
+     * Used to create a new user in the databse
+     * @param firstName first name of new user
+     * @param lastName last name of new user
+     * @param userId user_id of logged in user
+     * @param authToken auth_token of logged in user
+     * @param responseListener listener that is called when response received
+     * @param errorListener listener that is called when error
+     */
     public void requestCreate(String firstName,
                                      String lastName,
                                      String userId,
