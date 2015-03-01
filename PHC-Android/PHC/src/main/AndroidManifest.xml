@@ -6,14 +6,6 @@
         android:minSdkVersion="14"
         android:targetSdkVersion="20" />
 
-    <android:uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="18" />
-    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <android:uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="18" />
-
     <application
         android:name=".PHCApp"
         android:allowBackup="true"
@@ -23,7 +15,6 @@
         android:theme="@style/PHCTheme" >
         <activity
             android:name=".Main.SplashActivity"
-            android:label="@string/title_activity_splash"
             android:theme="@style/NoActionBar">
             <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.MAIN" />s
@@ -31,29 +22,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Main.LoginActivity"
-            android:label="@string/title_activity_login" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:name=".Main.LoginActivity">
         </activity>
-        <activity android:name=".Main.MainActivity" >
+        <activity
+            android:name=".Main.MainActivity">
         </activity>
         <activity
             android:name=".Checkin.CheckinActivity"
             android:exported="true"
-            android:label="@string/title_activity_register"
             android:parentActivityName=".Main.MainActivity" >
         </activity>
         <activity
             android:name=".Services.ServicesActivity"
-            android:label="@string/title_activity_services"
             android:parentActivityName=".Main.MainActivity" >
         </activity>
         <activity
             android:name=".Checkout.CheckoutActivity"
-            android:label="@string/title_activity_exit"
             android:parentActivityName=".Main.MainActivity" >
             >
         </activity>
