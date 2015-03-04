@@ -62,6 +62,14 @@ public class MainActivity extends Activity
     /** Current stored Security Key. */
     private String mSecurityKey;
 
+    // User credentials
+    // Key for user shared preferences
+    private static final String USER_PREFS_NAME = "UserKey";
+    // Shared Preferences
+    private SharedPreferences mUserPreferences;
+    // SharedPreference editor object
+    private SharedPreferences.Editor mUserPreferencesEditor;
+
     /*RETRIEVING SERVICES (USED BY ALL ACTIVITIES)*/
     /** Hashmap of all services being offered at the event, where the Key is the Salesforce name
      of the service (e.g. "acupuncture__c") and the value is the display name of the service (e.g.
@@ -535,11 +543,27 @@ public class MainActivity extends Activity
         dialog.show();
     }
 
-    /** Calls Salesforce SDK to log out client.
+    /**
+     * Removes user credentials and returns to LoginActivity
      * Should be used when the session is over.
      */
     public void onLogoutClick() {
-        SalesforceSDKManager.getInstance().logout(this);
+        mUserPreferences = getSharedPreferences(USER_PREFS_NAME,
+                Context.MODE_PRIVATE);
+        mUserPreferencesEditor = mUserPreferences.edit();
+        mUserPreferencesEditor.remove("user_id");
+        mUserPreferencesEditor.remove("auth_token");
+        mUserPreferencesEditor.apply();
+
+        // Go to LoginActivity
+        Intent i = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(i);
+
+        // Close this activity
+        finish();
+
+        //TODO: Remove this line when we remove salesforce sdk
+        //SalesforceSDKManager.getInstance().logout(this);
     }
 
     public String getEventID() {

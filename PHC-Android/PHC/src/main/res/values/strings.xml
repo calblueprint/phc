@@ -4,6 +4,19 @@
     <!-- App -->
     <string name="app_name">   Project Homeless Connect</string>
     <string name="action_settings">Settings</string>
+
+    <!-- Splash Page -->
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="splash_title">Project Homeless\n Connect SF</string>
+
+    <!-- Login -->
+    <string name="title_activity_login">Login</string>
+    <string name="login_title">"Welcome!\nPlease Login"</string>
+    <string name="login_email_label">Email</string>
+    <string name="login_password_label">Password</string>
+    <string name="login_button_label">Login</string>
+
+
     <!-- Logout -->
     <string name="logout_title">Logout from PHC</string>
     <string name="logout_yes">Logout</string>
@@ -171,7 +184,6 @@
         already received this service. </string>
 
     <!-- Checkout Activity -->
-
     <string name="button_qr_scanner">Scan QR Code and Submit</string>
     <string name="prompt_experience">Rate your experience</string>
     <string name="prompt_priority_services"> Of these services, what are your top 2

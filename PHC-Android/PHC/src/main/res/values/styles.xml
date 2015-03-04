@@ -12,6 +12,12 @@
         <item name="android:buttonStyle">@style/PHCButton</item>
     </style>
 
+    <style name = "NoActionBar"
+        parent = "@android:style/Theme.Holo.Light">
+        <item name = "android:windowActionBar">false</item>
+        <item name = "android:windowNoTitle">true</item>
+    </style>
+
     <style name="PHCActionBar"
         parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@color/red_actionbar</item>
