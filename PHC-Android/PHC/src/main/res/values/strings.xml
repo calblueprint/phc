@@ -186,8 +186,7 @@
     <!-- Checkout Activity -->
     <string name="button_qr_scanner">Scan QR Code and Submit</string>
     <string name="prompt_experience">Rate your experience</string>
-    <string name="prompt_priority_services"> Of these services, what are your top 2
-    priorities?</string>
+    <string name="prompt_priority_services"> Which of your applied services do you still need?</string>
     <string name="prompt_comments">Other comments? </string>
     <string name="button_checkout_another">Checkout another client</string>
     <string name="checkout_experience_0">0</string>
