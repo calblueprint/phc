@@ -39,11 +39,12 @@ public class CheckinActivity extends Activity {
         setContentView(R.layout.activity_checkin);
         currentState = RegistrationState.NEW_USER;
 
-        SelectionFragment firstFragment = new SelectionFragment();
-//        firstFragment.setArguments(getIntent().getExtras());
-        FragmentTransaction t = getFragmentManager().beginTransaction();
-        t.add(R.id.checkin_fragment_container, firstFragment, getResources().getString(R.string.sidebar_selection));
-        t.commit();
+        if (savedInstanceState == null) {
+            SelectionFragment firstFragment = new SelectionFragment();
+            FragmentTransaction t = getFragmentManager().beginTransaction();
+            t.add(R.id.checkin_fragment_container, firstFragment, getResources().getString(R.string.sidebar_selection));
+            t.commit();
+        }
     }
 
     /**
