@@ -61,7 +61,7 @@
     <string name="search_prompt">Please try to search for your client here:</string>
     <string name="search_results_title">Results</string>
     <string name="request_url">http://phc-test.herokuapp.com</string>
-    <string name="search_again">Try search again</string>
+    <string name="search_again">Try searching again</string>
     <string name="search_register_as_new">Register client as new user</string>
     <string name="search_no_results">No Results Found.</string>
 
@@ -128,10 +128,10 @@
     <string name="action_continue">Continue</string>
 
     <!-- Event Info -->
-    <string name="prompt_neighborhood">In what neighborhood do you live?</string>
+    <string name="prompt_neighborhood">Neighborhood of residence</string>
     <string name="prompt_homeless">Are you homeless?</string>
-    <string name="prompt_children">Minor Children here today?</string>
-    <string name="prompt_children_age">(Optional) age (e.g. 8,2,5)</string>
+    <string name="prompt_children">Minor children here today?</string>
+    <string name="prompt_children_age">(Optional) ages</string>
     <string name="prompt_doctor">Do you currently have a primary care doctor?</string>
     <string name="prompt_clinic_name">(Optional) name of clinic</string>
 
