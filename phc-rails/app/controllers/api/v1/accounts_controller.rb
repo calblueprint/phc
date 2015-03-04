@@ -10,7 +10,6 @@ class Api::V1::AccountsController < ApplicationController
       if user_authenticated?(user_id, auth_token)
         first_name = request.headers["HTTP_FIRSTNAME"]
         last_name = request.headers["HTTP_LASTNAME"]
-        byebug
         result = PersonAccount.fuzzy_search({first_name: first_name, last_name: last_name}, false)
         respond_with result
       end

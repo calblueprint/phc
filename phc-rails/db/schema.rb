@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150213044554) do
+ActiveRecord::Schema.define(version: 20150309033732) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,16 +24,29 @@ ActiveRecord::Schema.define(version: 20150213044554) do
   end
 
   create_table "person_accounts", force: true do |t|
-    t.string   "first_name"
-    t.string   "last_name"
-    t.datetime "birthday"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "sf_id"
+    t.string   "FirstName"
+    t.string   "LastName"
+    t.string   "SS_Num__c"
+    t.string   "Birthdate__c"
+    t.string   "Phone"
+    t.string   "PersonEmail"
+    t.string   "Gender__c"
+    t.boolean  "Identify_as_GLBT__c"
+    t.string   "Race__c"
+    t.string   "Primary_Language__c"
+    t.boolean  "Foster_care__c"
+    t.boolean  "Veteran__c"
+    t.string   "Housing_Status_New__c"
+    t.string   "How_long_have_you_been_homeless__c"
+    t.string   "Where_do_you_usually_go_for_healthcare__c"
+    t.string   "Medical_Care_Other__c"
   end
 
-  add_index "person_accounts", ["first_name"], name: "index_person_accounts_on_first_name", using: :btree
-  add_index "person_accounts", ["last_name"], name: "index_person_accounts_on_last_name", using: :btree
+  add_index "person_accounts", ["FirstName"], name: "index_person_accounts_on_FirstName", using: :btree
+  add_index "person_accounts", ["LastName"], name: "index_person_accounts_on_LastName", using: :btree
   add_index "person_accounts", ["sf_id"], name: "index_person_accounts_on_sf_id", unique: true, using: :btree
 
   create_table "users", force: true do |t|
