@@ -2,8 +2,10 @@ package phc.android.Networking;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -72,22 +74,27 @@ public class RequestManager {
      * @param responseListener listener that is called when response received
      * @param errorListener listener that is called when error
      */
-    public void requestSearch(String firstName,
-                                     String lastName,
-                                     String userId,
-                                     String authToken,
-                                     Response.Listener<JSONObject> responseListener,
+    public void requestSearch(final String firstName,
+                                     final String lastName,
+                                     final String userId,
+                                     final String authToken,
+                                     Response.Listener<JSONArray> responseListener,
                                      Response.ErrorListener errorListener) {
-        HashMap<String, String> params = new HashMap<String, String>();
-        params.put("first_name", firstName);
-        params.put("last_name", lastName);
-        params.put("user_id", userId);
-        params.put("auth_token", authToken);
 
-        JsonObjectRequest searchRequest = new JsonObjectRequest(BASE_URL + SEARCH_ENDPOINT,
-                new JSONObject(params),
+        JsonArrayRequest searchRequest = new JsonArrayRequest(BASE_URL + SEARCH_ENDPOINT,
                 responseListener,
-                errorListener);
+                errorListener) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("first_name", firstName);
+                params.put("last_name", lastName);
+                params.put("user_id", userId);
+                params.put("auth_token", authToken);
+                params.put("Accept", "*/*");
+                return params;
+            }
+        };
         searchRequest.setTag(sTAG);
         sRequestQueue.add(searchRequest);
     }
