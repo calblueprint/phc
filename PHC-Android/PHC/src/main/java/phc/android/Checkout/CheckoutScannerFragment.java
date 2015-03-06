@@ -26,6 +26,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import phc.android.Checkin.SearchResultsFragment;
 import phc.android.Networking.RequestManager;
@@ -42,9 +43,7 @@ public class CheckoutScannerFragment extends ScannerFragment {
     private static final String USER_PREFS_NAME = "UserKey";
     private static RequestManager sRequestManager;
     private static RequestQueue sRequestQueue;
-    // Shared Preferences needs getActivity?
     private SharedPreferences mUserPreferences;
-    // SharedPreference editor object
     private ArrayList<String> mServicesNotReceived = new ArrayList<String>();
 
 
@@ -59,13 +58,10 @@ public class CheckoutScannerFragment extends ScannerFragment {
         // Set up Volley request framework
         sRequestQueue = Volley.newRequestQueue(this.getActivity());
         sRequestManager = new RequestManager(TAG, sRequestQueue);
-
-        // Needs to create requestmanager for the scanner button too
-
         return view;
     }
 
-// Dont need for service population. Only need confirm scan?
+
     /**
      * This class is used by the input submit button to pass in the
      * correct arguments and the queried services from the given code to the
@@ -81,14 +77,11 @@ public class CheckoutScannerFragment extends ScannerFragment {
                 imm.hideSoftInputFromWindow(mCodeInput.getWindowToken(), 0);
                 CharSequence trimmedResult = (result.toString()).trim();
                 confirmScan(trimmedResult, true);
-
-
             } else {
                 displayInvalidInputToast();
             }
         }
     }
-
 
     /**
      * Sets up the view for the user to confirm
@@ -96,19 +89,16 @@ public class CheckoutScannerFragment extends ScannerFragment {
      */
     @Override
     protected void confirmScan(CharSequence scanResult, boolean manualInput) {
-        /* Can use bundle passed in, or must create new? */
         mUserPreferences = getActivity().getSharedPreferences(USER_PREFS_NAME,
                 Context.MODE_PRIVATE);
         String userId = mUserPreferences.getString("user_id", null);
         String authToken = mUserPreferences.getString("auth_token", null);
-
 
         sRequestManager.requestSearchByCode(scanResult.toString(),
                 authToken,
                 userId,
                 new LoginResponseListener(),
                 new LoginErrorListener());
-
 
         Bundle args = new Bundle();
         args.putCharSequence("scan_result", scanResult);
@@ -120,69 +110,37 @@ public class CheckoutScannerFragment extends ScannerFragment {
         displayNextFragment(confFrag, CheckoutFormFragment.TAG);
     }
 
-
-
     private class LoginResponseListener implements Response.Listener<JSONObject> {
-
-
         @Override
         public void onResponse(JSONObject jsonObject) {
-            try{
-                // find elements in services applied not in checked in services
-                JSONArray appliedServices = jsonObject.getJSONArray("services_applied");
-                JSONArray checkedInServices = jsonObject.getJSONArray("checked_in_services");
+            try {
+                // find services with "applied" value
+                // JSONArray checkedInServices = jsonObject.getJSONArray("checked_in_services");
+                Iterator<String> keys = jsonObject.keys();
 
-                for(int i = 0; i < appliedServices.length(); i++){
-                    boolean found = false;
-                    for(int j = 0; j < checkedInServices.length(); j++){
-                        if (appliedServices.get(i).equals(checkedInServices.get(j))){
-                            found = true;
-                        }
-                    }
-                    // after looking through the list of checked in services, if no duplicate values found
-                    // put that applied service into servicesNotReceived
-                    if(found == false){
-                        // the strings in the array are "jsonobjects".... is this right?
-                        mServicesNotReceived.add(appliedServices.get(i).toString());
+                while (keys.hasNext()) {
+                    String key = (String) keys.next();
+                    if (jsonObject.get(key).toString().equals("Applied")) { // if found "applied", save the key to mServicesNotReceived
+                        mServicesNotReceived.add(key.toString());
                     }
                 }
-
-                // Convert String ArrayList to JSONArray
-                JSONArray servicesNotReceivedJSONArray = new JSONArray(mServicesNotReceived);
-                // Put list of services that were not received into the jsonObject
-                jsonObject.put("services_not_received", servicesNotReceivedJSONArray);
-                // ???????????????????????????????????/
-
-
-            } catch (JSONException e){
+            }catch(JSONException e){
                 Log.e(TAG, "Error parsing JSON");
                 Log.e(TAG, e.toString());
             }
-
         }
     }
 
-
-
-
-
     private class LoginErrorListener implements Response.ErrorListener {
-
         @Override
         public void onErrorResponse(VolleyError volleyError) {
             if (volleyError.getLocalizedMessage() != null) {
                 Log.e(TAG, volleyError.toString());
             }
-
             Toast toast = Toast.makeText(getActivity(), "Error during submission", Toast.LENGTH_SHORT);
             toast.show();
         }
     }
-
-
-
-
-
 
     /**
      * Brings up another fragment when this fragment
