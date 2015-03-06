@@ -11,7 +11,7 @@
 
     <!-- custom dimens -->
     <dimen name="input_text_width">300dp</dimen>
-    <dimen name="text_size">14dp</dimen>
+    <dimen name="text_size">20dp</dimen>
     <dimen name="text_size_large">30dp</dimen>
     <dimen name="checkboxes_margin">10dp</dimen>
     <dimen name="checkbox_left_padding">6dp</dimen>

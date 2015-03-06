@@ -4,8 +4,9 @@
     <item name="white" type="color">#FFFFFF</item>
     <item name="black" type="color">#000000</item>
     <item name="red" type="color">#D64541</item>
-    <item name="gray" type="color">#C0C0C0</item>
     <item name="green" type="color">#00B159</item>
+    <item name="gray" type="color">#C0C0C0</item>
+    <item name="light_gray" type="color">#DDDDDD</item>
     <item name="hint_color" type="color">#888888</item>
     <item name="text_color" type="color">#444444</item>
 
