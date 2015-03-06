@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/red_sidebar">
+    android:background="@color/gray">
 
     <LinearLayout
         android:id="@+id/sidebar_list"
@@ -17,14 +17,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Registration"
-            android:textSize="30sp"
+            android:textSize="@dimen/button_text_size"
             android:layout_gravity="center"
             android:layout_marginTop="6sp"/>
 
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:background="@color/gray_sidebar"/>
+            android:background="@color/gray"/>
 
     </LinearLayout>
 
