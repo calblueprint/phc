@@ -200,8 +200,8 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
 
         //If there are search parameters,
         if(firstName != null && lastName != null && userId != null && authToken != null) {
+            Log.e(TAG, "SENDING REQUEST SEARCH");
             mListView.setOnItemClickListener(this);
-
             sRequestManager.requestSearch(firstName,
                     lastName,
                     userId,
@@ -223,31 +223,30 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject json = jsonArray.getJSONObject(i);
                     SearchResult result = new SearchResult();
-                    result.setFirstName(json.getString("first_name"));
-                    result.setLastName(json.getString("last_name"));
+                    result.setFirstName(json.getString("firstname"));
+                    result.setLastName(json.getString("lastname"));
 
-                    if (!json.getString("birthday").equals("null")) {
-                        result.setBirthday(df.parse(json.getString("birthday")));
+                    if (!json.getString("birthdate__c").equals("null")) {
+                        result.setBirthday(df.parse(json.getString("birthdate__c")));
                     }
 
-                    result.setSalesForceId(json.getString("sf_id"));
+                    result.setSalesForceId(json.getString("sfid"));
                     mSearchResults[i] = result;
-
-                    // if there are no results, show the no results message
-                    if (mSearchResults.length == 0){
-                        setNoResultsMessage();
-                    }
-                    // otherwise, populate the list view with the results
-                    else {
-                        mAdapter = new SearchResultAdapter(mParent, mSearchResults);
-                        mListView.setAdapter(mAdapter);
-                    }
-                    // Check if progress dialog is showing before dismissing
-                    if (mProgressDialog != null && mProgressDialog.isShowing()) {
-                        mProgressDialog.dismiss();
-                    }
                 }
 
+                // if there are no results, show the no results message
+                if (mSearchResults.length == 0){
+                    setNoResultsMessage();
+                }
+                // otherwise, populate the list view with the results
+                else {
+                    mAdapter = new SearchResultAdapter(mParent, mSearchResults);
+                    mListView.setAdapter(mAdapter);
+                }
+                // Check if progress dialog is showing before dismissing
+                if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                    mProgressDialog.dismiss();
+                }
             } catch(JSONException e) {
                 Log.e(TAG, "Error parsing JSON");
                 Log.e(TAG, e.toString());

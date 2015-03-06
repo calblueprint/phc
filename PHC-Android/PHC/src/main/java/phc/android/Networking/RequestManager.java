@@ -1,5 +1,7 @@
 package phc.android.Networking;
 
+import android.util.Log;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -19,7 +21,7 @@ import java.util.Map;
 public class RequestManager {
 
     //TODO: Change to heroku url when rails code pushed to heroku
-    private static final String BASE_URL = "http://10.0.2.2:3000";
+    private static final String BASE_URL = "https://phc-staging.herokuapp.com";
     private static final String LOGIN_ENDPOINT = "/login";
     private static final String SEARCH_ENDPOINT = "/api/v1/search";
     private static final String CREATE_ENDPOINT = "/api/v1/create";
@@ -81,14 +83,23 @@ public class RequestManager {
                                      Response.Listener<JSONArray> responseListener,
                                      Response.ErrorListener errorListener) {
 
-        JsonArrayRequest searchRequest = new JsonArrayRequest(BASE_URL + SEARCH_ENDPOINT,
+        Log.e("pop", "SENDING REQUEST SEARCH 2");
+
+        StringBuilder buildUrl = new StringBuilder(BASE_URL);
+        buildUrl.append(SEARCH_ENDPOINT);
+        buildUrl.append("?");
+        buildUrl.append("first_name=");
+        buildUrl.append(firstName);
+        buildUrl.append("&");
+        buildUrl.append("last_name=");
+        buildUrl.append(lastName);
+
+        JsonArrayRequest searchRequest = new JsonArrayRequest(buildUrl.toString(),
                 responseListener,
                 errorListener) {
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> params = new HashMap<String, String>();
-                params.put("first_name", firstName);
-                params.put("last_name", lastName);
                 params.put("user_id", userId);
                 params.put("auth_token", authToken);
                 params.put("Accept", "*/*");
