@@ -5,7 +5,7 @@
     <dimen name="connector_width">3dp</dimen>
     <dimen name="actionbar_gap">40dp</dimen>
     <dimen name="horizontal_rule_height">1dp</dimen>
-    <dimen name="button_text_size">5dp</dimen>
+    <dimen name="button_text_size">6dp</dimen>
     <dimen name="top_bottom_margins">30dp</dimen>
 
     <!-- custom dimens -->
