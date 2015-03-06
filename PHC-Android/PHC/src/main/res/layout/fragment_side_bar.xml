@@ -12,12 +12,16 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
+        <TextView
+            android:id="@+id/search_prompt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Registration"
+            android:textSize="30sp"
             android:layout_gravity="center"
-            android:padding="10dp"
-            android:src="@drawable/reg_logo" />
+            android:layout_marginTop="6sp"
+            />
+
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
