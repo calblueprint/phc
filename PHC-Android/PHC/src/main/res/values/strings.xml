@@ -129,7 +129,7 @@
 
     <!-- Event Info -->
     <string name="prompt_neighborhood">Neighborhood of residence</string>
-    <string name="prompt_homeless">Are you homeless?</string>
+    <string name="prompt_housing">Housing Status</string>
     <string name="prompt_children">Minor children here today?</string>
     <string name="prompt_children_age">(Optional) ages</string>
     <string name="prompt_doctor">Do you currently have a primary care doctor?</string>
@@ -142,6 +142,13 @@
         <item>Tenderloin</item>
         <item>Mission</item>
         <item>Other</item>
+    </string-array>
+
+
+
+    <string-array name="housing_array">
+        <item>Housed</item>
+        <item>Homeless</item>
     </string-array>
 
     <!-- Services Selection -->
