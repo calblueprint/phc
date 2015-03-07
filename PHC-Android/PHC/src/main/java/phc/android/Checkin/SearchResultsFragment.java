@@ -7,6 +7,7 @@ import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,6 +44,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import phc.android.Main.MainActivity;
+import phc.android.Networking.RequestManager;
 import phc.android.R;
 import phc.android.Helpers.SearchResult;
 
@@ -57,6 +60,14 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
     private static final String AUTH_TOKEN = "phcplusplus";
     public static final String SEARCH_RESULT = "SEARCH_RESULT";
     public static final String CACHED_RESULTS = "CACHED_RESULTS";
+    // Key for user shared preferences
+    private static final String USER_PREFS_NAME = "UserKey";
+
+    private static RequestManager sRequestManager;
+    private static RequestQueue sRequestQueue;
+
+    // Shared Preferences
+    private SharedPreferences mUserPreferences;
     private ProgressDialog mProgressDialog;
     /** Parent Activity **/
     private CheckinActivity mParent;
@@ -111,6 +122,10 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
             mProgressDialog.setIndeterminate(false);
             mProgressDialog.show();
         }
+
+        //Set up Volley request framework
+        sRequestQueue = Volley.newRequestQueue(getActivity());
+        sRequestManager = new RequestManager(TAG, sRequestQueue);
 
         return view;
     }
@@ -171,40 +186,52 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
     @Override
     public void onResume() {
 
-        //Get the search parameters
+        // Get the search parameters
         SharedPreferences searchPreferences = getActivity().getSharedPreferences(SearchFragment.SEARCH_PARAMETERS, 0);
         final String firstName = searchPreferences.getString("firstName", null);
         final String lastName = searchPreferences.getString("lastName", null);
         final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
+        // Get userId and authToken
+        mUserPreferences = getActivity().getSharedPreferences(USER_PREFS_NAME,
+                Context.MODE_PRIVATE);
+        final String userId = mUserPreferences.getString("user_id", null);
+        final String authToken = mUserPreferences.getString("auth_token", null);
+
         //If there are search parameters,
-        if(firstName != null && lastName != null) {
-            String url = getActivity().getResources().getString(R.string.request_url);
+        if(firstName != null && lastName != null && userId != null && authToken != null) {
             mListView.setOnItemClickListener(this);
 
-            JsonArrayRequest searchResultsRequest = new JsonArrayRequest(url + SEARCH_PATH, new Response.Listener<JSONArray>() {
-                @Override
-                public void onResponse(JSONArray jsonArray) {
-                    mSearchResults = new SearchResult[jsonArray.length()];
-                    try {
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject json = jsonArray.getJSONObject(i);
-                            SearchResult result = new SearchResult();
-                            result.setFirstName(json.getString("first_name"));
-                            result.setLastName(json.getString("last_name"));
+            sRequestManager.requestSearch(firstName,
+                    lastName,
+                    userId,
+                    authToken,
+                    new SearchResultResponseListener(),
+                    new SearchResultErrorListener());
+        }
 
-                            if (!json.getString("birthday").equals("null")) {
-                                result.setBirthday(df.parse(json.getString("birthday")));
-                            }
+        super.onResume();
+    }
 
-                            result.setSalesForceId(json.getString("sf_id"));
-                            mSearchResults[i] = result;
-                        }
-                    } catch (JSONException e1) {
-                        Log.e("Search Results Parse Error", e1.toString());
-                    } catch (ParseException e2) {
-                        Log.e("Birthday Parse Error", e2.toString());
+    private class SearchResultResponseListener implements Response.Listener<JSONArray> {
+
+        @Override
+        public void onResponse(JSONArray jsonArray) {
+            try {
+                final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                mSearchResults = new SearchResult[jsonArray.length()];
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject json = jsonArray.getJSONObject(i);
+                    SearchResult result = new SearchResult();
+                    result.setFirstName(json.getString("first_name"));
+                    result.setLastName(json.getString("last_name"));
+
+                    if (!json.getString("birthday").equals("null")) {
+                        result.setBirthday(df.parse(json.getString("birthday")));
                     }
+
+                    result.setSalesForceId(json.getString("sf_id"));
+                    mSearchResults[i] = result;
 
                     // if there are no results, show the no results message
                     if (mSearchResults.length == 0){
@@ -220,48 +247,33 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                         mProgressDialog.dismiss();
                     }
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError volleyError) {
-                    Context context = getActivity();
-                    String message;
-                    if (volleyError instanceof NetworkError) {
-                        message = "Network Error. Please try again later.";
-                    } else {
-                        try {
-                            JSONObject response = new JSONObject(new String(volleyError.networkResponse.data));
-                            message = response.toString();
-                            Log.e("Volley Error", message);
-                        } catch (Exception e) {
-                            Log.e("Volley Error", "unknown");
-                            message = "Unknown Error";
-                        }
-                    }
-                    Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
-                    toast.show();
 
-                }
-            }) {
-                @Override
-                public Map<String, String> getHeaders() {
-                    HashMap<String, String> headers = new HashMap<String, String>();
-                    headers.put("FirstName", firstName);
-                    headers.put("LastName", lastName);
-                    headers.put("AuthToken", AUTH_TOKEN);
-                    headers.put("Accept", "*/*");
-                    return headers;
-                }
-            };
-
-            searchResultsRequest.setTag(TAG);
-            // Only queue request if results cache is empty
-            if (mSearchResults.length == 0) {
-                requestQueue.add(searchResultsRequest);
+            } catch(JSONException e) {
+                Log.e(TAG, "Error parsing JSON");
+                Log.e(TAG, e.toString());
+            } catch (ParseException e) {
+                Log.e(TAG, "Error parsing Birthday");
+                Log.e(TAG, e.toString());
             }
         }
+    }
 
+    private class SearchResultErrorListener implements Response.ErrorListener {
 
-        super.onResume();
+        @Override
+        public void onErrorResponse(VolleyError volleyError) {
+            if (volleyError.getLocalizedMessage() != null) {
+                Log.e(TAG, volleyError.toString());
+            }
+
+            // Check if progress dialog is showing before dismissing
+            if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                mProgressDialog.dismiss();
+            }
+
+            Toast toast = Toast.makeText(getActivity(), "Error during Search", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
     @Override
