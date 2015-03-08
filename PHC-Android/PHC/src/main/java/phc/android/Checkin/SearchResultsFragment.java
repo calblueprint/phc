@@ -185,12 +185,10 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
 
     @Override
     public void onResume() {
-
         // Get the search parameters
-        SharedPreferences searchPreferences = getActivity().getSharedPreferences(SearchFragment.SEARCH_PARAMETERS, 0);
-        final String firstName = searchPreferences.getString("firstName", null);
-        final String lastName = searchPreferences.getString("lastName", null);
-        final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Bundle args = getArguments();
+        String firstName = args.getString("firstName");
+        String lastName = args.getString("lastName");
 
         // Get userId and authToken
         mUserPreferences = getActivity().getSharedPreferences(USER_PREFS_NAME,
