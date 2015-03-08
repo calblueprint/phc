@@ -226,82 +226,21 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
 
     @Override
     public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+        // Get userId and authToken
+        mUserPreferences = getActivity().getSharedPreferences(USER_PREFS_NAME,
+                Context.MODE_PRIVATE);
+        final String userId = mUserPreferences.getString("user_id", null);
+        final String authToken = mUserPreferences.getString("auth_token", null);
+
         SearchResult searchResult = (SearchResult) parent.getItemAtPosition(position);
-        String apiVersion = getString(R.string.api_version);
-        String objectId = searchResult.getSalesForceId();
-        String objectName = "Account";
-        List<String> fields = new ArrayList<String>(Arrays.asList("SS_Num__c", "FirstName", "LastName", "Phone",
-                "Birthdate__c", "PersonEmail", "Gender__c",
-                "Ethnicity__pc", "Primary_Language__c"));
-
-        try {
-            RestRequest request = RestRequest.getRequestForRetrieve(apiVersion, objectName, objectId, fields);
-            AsyncRequestCallback callback = new AsyncRequestCallback() {
-                @Override
-                public void onSuccess(RestRequest request, RestResponse response) {
-                    Activity activity = SearchResultsFragment.this.getActivity();
-                    SharedPreferences sharedPreferences = activity.getSharedPreferences(SEARCH_RESULT, 0);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    try {
-                        JSONObject jsonResponse = response.asJSONObject();
-                        editor.putString("SS_Num", jsonResponse.getString("SS_Num__c"));
-                        editor.putString("FirstName", jsonResponse.getString("FirstName"));
-                        editor.putString("LastName", jsonResponse.getString("LastName"));
-                        editor.putString("Phone", jsonResponse.getString("Phone"));
-                        editor.putString("Birthdate", jsonResponse.getString("Birthdate__c"));
-                        editor.putString("Email", jsonResponse.getString("PersonEmail"));
-                        editor.putString("Gender", jsonResponse.getString("Gender__c"));
-                        editor.putString("Ethnicity", jsonResponse.getString("Ethnicity__pc"));
-                        editor.putString("Language", jsonResponse.getString("Primary_Language__c"));
-                        editor.putString("SFID", jsonResponse.getString("Id"));
-
-                    } catch (IOException e1) {
-                        Log.e("Result Response Error", e1.toString());
-                    } catch (JSONException e2) {
-                        Log.e("Search Result JSON Error", e2.toString());
-                    } finally {
-                        editor.putBoolean("Searched", true);
-                        editor.commit();
-                    }
-                    // If we successfully load a user, we change the state to returning user
-                    mParent.setCurrentState(CheckinActivity.RegistrationState.RETURNING_USER);
-
-                    PersonalInfoFragment newFragment = new PersonalInfoFragment();
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.checkin_fragment_container, newFragment, getResources().getString(R.string.sidebar_personal_info));
-                    transaction.addToBackStack(null);
-                    transaction.commit();
-
-                }
-
-                @Override
-                public void onError(Exception exception) {
-                    Log.e("Search Response Error", exception.toString());
-                }
-            };
-            sendRequest(request, callback);
-        } catch (Exception e) {
-            Log.e("Search Select Error", e.toString());
-        }
-
+        String sfID = searchResult.getSalesForceId();
+        sRequestManager.requestUserInfo(
+                sfID,
+                userId,
+                authToken,
+                new UserInfoResponseListener(),
+                new UserInfoErrorListener());
     }
-
-    /**
-     * Helper that sends request to server and print result in text field.
-     *
-     * @param request  - The request object that gets executed by the SF SDK
-     * @param callback - The functions that get called when yhe response comes back
-     *                 Modify UI elements here.
-     */
-    private void sendRequest(RestRequest request, AsyncRequestCallback callback) {
-
-        try {
-            ((CheckinActivity) getActivity()).client.sendAsync(request, callback);
-        } catch (Exception error) {
-            Log.e("SF Request", error.toString());
-        }
-    }
-
 
     class SearchResultAdapter extends ArrayAdapter<SearchResult> {
 
