@@ -3,8 +3,10 @@ package phc.android.Checkin;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -28,22 +30,17 @@ public class EventInfoFragment extends CheckinFragment {
     private Spinner mNeighborhoodSpinner;
     /** Housing spinner */
     private Spinner mHousingSpinner;
-    /** Doctor checkbox. */
-    private CheckBox mDoctorCheckbox;
-    /** Whether the Doctor checkbox has been checked. */
-    private Boolean mDoctorChecked = false;
-    /** Doctor's clinic editText. */
-    private EditText mClinicName;
+    /** Homeless duration spinner */
+    private Spinner mHomelessSpinner;
+    /** Homeless layout */
+    private ViewGroup mHomelessLayout;
+    /** Healthcare spinner */
+    private Spinner mHealthcareSpinner;
+    /** Healthcare's other editText. */
+    private EditText mHealthcareName;
+
     /** Doctor layout. */
-    private ViewGroup mDoctorLayout;
-    /** Children checkbox. */
-    private CheckBox mChildrenCheckbox;
-    /** Whether the Children checkbox has been checked. */
-    private Boolean mChildrenChecked = false;
-    /** Children age editText. */
-    private EditText mChildrenAge;
-    /** Children age layout. */
-    private ViewGroup mChildrenLayout;
+    private ViewGroup mHealthcareLayout;
     /** Continue button. */
     private Button mContinueButton;
 
@@ -56,72 +53,78 @@ public class EventInfoFragment extends CheckinFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_event_info, container, false);
         mLayout = (LinearLayout) view.findViewById(R.id.event_fields);
-
-        mDoctorCheckbox = (CheckBox) view.findViewById(R.id.checkbox_doctor);
-        mDoctorLayout = (LinearLayout) view.findViewById(R.id.doctor_layout);
-        mChildrenCheckbox = (CheckBox) view.findViewById(R.id.checkbox_children);
-        mChildrenLayout = (LinearLayout) view.findViewById(R.id.children_layout);
+        mHealthcareLayout = (LinearLayout) view.findViewById(R.id.healthcare_layout);
+        mHomelessLayout = (LinearLayout) view.findViewById(R.id.homeless_layout);
         mContinueButton = (Button) view.findViewById(R.id.button_event_continue);
         mNeighborhoodSpinner = (Spinner) view.findViewById(R.id.spinner_neighborhood);
         mHousingSpinner = (Spinner) view.findViewById(R.id.spinner_housing);
+        mHealthcareSpinner = (Spinner) view.findViewById(R.id.spinner_healthcare);
+
+        if(savedInstanceState != null){
+            if(savedInstanceState.getInt("healthcare_spinner") == 5) {
+                // Healthcare is Other
+                mHealthcareName.setText(savedInstanceState.getString("healthcare_name"));
+            } else{
+                removeHealthcareName();
+            }
+
+            if (savedInstanceState.getInt("homeless_spinner") == 1){
+                // Housing Status is Homeless
+                // Set HomelessSpinner
+                mHomelessSpinner.setSelection(savedInstanceState.getInt("homeless_spinner"));
+            }else{
+                removeHomelessDuration();
+            }
+        }else{
+            removeHealthcareName();
+            removeHomelessDuration();
+        }
 
         setSpinnerContent();
         setOnClickListeners(view);
-
-        // If the bundle contains information, loads the optional EditTexts along with their state.
-        if (savedInstanceState != null){
-            if (savedInstanceState.getBoolean("doctor_check")){
-                addClinicName();
-                mClinicName.setText(savedInstanceState.getString("clinic_name"));
-            }
-            if (savedInstanceState.getBoolean("children_check")){
-                addChildrenAge();
-                mChildrenAge.setText(savedInstanceState.getString("children_age"));
-            }
-        }
-        // Alternatively, if we are returning to this fragment on the backstack,
-        // onSaveInstanceState is never called and we cannot rely on the bundle to store the
-        // information. For this case, we rely on the two instance vars mDoctorChecked and
-        // mChildrenChecked to recreate the state.
-        else{
-            if (mDoctorChecked){
-                addClinicName();
-            }
-            if (mChildrenChecked){
-                addChildrenAge();
-            }
-        }
-
         return view;
     }
 
-    /**
-     * Sets onClickListeners for the doctor and children checkboxes,
-     * as well as the continue button.
-     */
+
     private void setOnClickListeners(View view) {
-        mDoctorCheckbox.setOnClickListener(new View.OnClickListener() {
+        mHealthcareSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
             @Override
-            public void onClick(View view) {
-                mDoctorChecked = mDoctorCheckbox.isChecked();
-                if (mDoctorChecked == true) {
-                    addClinicName();
-                } else {
-                    removeClinicName();
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+                Object item = adapterView.getItemAtPosition(pos);
+                if (item != null && item.toString().equals("Other")){
+                    addHealthcareName();
+                }else{
+                    removeHealthcareName();
                 }
             }
-        });
-        mChildrenCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                mChildrenChecked = mChildrenCheckbox.isChecked();
-                if (mChildrenChecked == true) {
-                    addChildrenAge();
-                } else {
-                    removeChildrenAge();
-                }
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                removeHealthcareName();
             }
         });
+
+        mHousingSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+                Object item = adapterView.getItemAtPosition(pos);
+                if (item != null && item.toString().equals("Homeless")){
+                    addHomelessDuration();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                    removeHomelessDuration();
+            }
+        });
+
+
+
+
+
+
         mContinueButton.setOnClickListener(new OnContinueClickListener(
                 getActivity(), this, mLayout, new SelectServicesFragment(),
                 getResources().getString(R.string.sidebar_services_info)));
@@ -131,10 +134,11 @@ public class EventInfoFragment extends CheckinFragment {
      * Sets multiple choice options for the neighborhood spinner.
      */
     private void setSpinnerContent(){
+
         ArrayAdapter<CharSequence> neighborhoodAdapter =
                 ArrayAdapter.createFromResource(getActivity(),
-                                                R.array.neighborhood_array,
-                                                android.R.layout.simple_spinner_item);
+                        R.array.neighborhood_array,
+                        android.R.layout.simple_spinner_item);
         mNeighborhoodSpinner.setAdapter(
                 new NothingSelectedSpinnerAdapter(
                         neighborhoodAdapter,
@@ -151,45 +155,69 @@ public class EventInfoFragment extends CheckinFragment {
                         housingAdapter,
                         R.layout.housing_spinner_row_nothing_selected,
                         getActivity()));
+
+        /** Set healthcare spinner values **/
+        ArrayAdapter<CharSequence> healthcareAdapter =
+                ArrayAdapter.createFromResource(getActivity(),
+                        R.array.healthcare_array,
+                        android.R.layout.simple_spinner_item);
+        mHealthcareSpinner.setAdapter(
+                new NothingSelectedSpinnerAdapter(
+                        healthcareAdapter,
+                        R.layout.healthcare_spinner_row_nothing_selected,
+                        getActivity()));
     }
+
+    /**
+     * Creates a new Spinner prompting the time spent homeless
+     */
+
+    public void addHomelessDuration(){
+        mHomelessSpinner = new Spinner(mHomelessLayout.getContext());
+        mHomelessSpinner.setLayoutParams(new LinearLayout.LayoutParams
+                (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        mHomelessSpinner.setId(R.id.homeless_spinner);
+
+
+         /** Set homeless spinner values **/
+        ArrayAdapter<CharSequence> homelessAdapter=
+                ArrayAdapter.createFromResource(getActivity(),
+                        R.array.homeless_array,
+                        android.R.layout.simple_spinner_item);
+        mHomelessSpinner.setAdapter(
+                new NothingSelectedSpinnerAdapter(
+                        homelessAdapter,
+                        R.layout.homeless_spinner_row_nothing_selected,
+                        getActivity()));
+        mHealthcareLayout.addView(mHomelessSpinner);
+    }
+
+    /**
+     * Removes the homeless duration Spinner
+     */
+    public void removeHomelessDuration(){
+        mHomelessLayout.removeView(mHomelessSpinner);
+    }
+
 
     /**
      * Creates a new EditText prompting the name of the doctor's clinic when the doctor checkbox is
      * checked.
      */
-    public void addClinicName(){
-        mClinicName = new EditText(mDoctorLayout.getContext());
-        mClinicName.setLayoutParams(new LinearLayout.LayoutParams
+    public void addHealthcareName(){
+        mHealthcareName = new EditText(mHealthcareLayout.getContext());
+        mHealthcareName.setLayoutParams(new LinearLayout.LayoutParams
                 (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        mClinicName.setHint(R.string.prompt_clinic_name);
-        mClinicName.setId(R.id.clinic_name);
-        mDoctorLayout.addView(mClinicName);
+        mHealthcareName.setHint(R.string.prompt_clinic_name);
+        mHealthcareName.setId(R.id.clinic_name);
+        mHealthcareLayout.addView(mHealthcareName);
     }
 
     /**
      * Removes the clinic name EditText when unchecked.
      */
-    public void removeClinicName(){
-        mDoctorLayout.removeView(mClinicName);
-    }
-
-    /**
-     * Creates a new EditText prompting the childrens' ages when the child checkbox is checked.
-     */
-    public void addChildrenAge(){
-        mChildrenAge = new EditText(mChildrenLayout.getContext());
-        mChildrenAge.setLayoutParams(new LinearLayout.LayoutParams
-                (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        mChildrenAge.setHint(R.string.prompt_children_age);
-        mChildrenAge.setId(R.id.children_age);
-        mChildrenLayout.addView(mChildrenAge);
-    }
-
-    /**
-     * Removes the children age EditText when unchecked.
-     */
-    public void removeChildrenAge(){
-        mChildrenLayout.removeView(mChildrenAge);
+    public void removeHealthcareName(){
+        mHealthcareLayout.removeView(mHealthcareName);
     }
 
     @Override
@@ -210,22 +238,19 @@ public class EventInfoFragment extends CheckinFragment {
     }
 
     /**
-     *  Explicitly stores state of the children and doctor checkboxes,
-     *  along with their optional EditText inputs, into bundle.
+     *  Explicitly stores state of the housing and healthcare spinners,
+     *  along with their optional EditText and Spinner input, into bundle.
      *  Handles orientation rotations.
      */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (mDoctorCheckbox != null && mChildrenCheckbox != null){
-            outState.putBoolean("doctor_check", mDoctorCheckbox.isChecked());
-            if (mDoctorCheckbox.isChecked()){
-                outState.putString("clinic_name", mClinicName.getText().toString());
-            }
-            outState.putBoolean("children_check", mChildrenCheckbox.isChecked());
-            if (mChildrenCheckbox.isChecked()){
-                outState.putString("children_age", mChildrenAge.getText().toString());
-            }
+
+        outState.putInt("homeless_spinner", mHomelessSpinner.getSelectedItemPosition());
+        outState.putInt("healthcare_spinner", mHealthcareSpinner.getSelectedItemPosition());
+        if (mHealthcareName != null ){
+            outState.putString("healthcare_name", mHealthcareName.getText().toString());
         }
+
     }
 }
