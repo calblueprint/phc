@@ -69,19 +69,31 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
     // Shared Preferences
     private SharedPreferences mUserPreferences;
     private ProgressDialog mProgressDialog;
-    /** Parent Activity **/
+    /**
+     * Parent Activity *
+     */
     private CheckinActivity mParent;
-    /** Caching the search results **/
+    /**
+     * Caching the search results *
+     */
     private SearchResult[] mSearchResults = new SearchResult[0];
-    /** ListView for results and its adapter **/
+    /**
+     * ListView for results and its adapter *
+     */
     private ListView mListView;
-    /** TextView holding the "No Results Found" message. */
+    /**
+     * TextView holding the "No Results Found" message.
+     */
     private TextView mTextView;
 
     private SearchResultAdapter mAdapter;
-    /** Button to try search again. */
+    /**
+     * Button to try search again.
+     */
     private Button mSearchAgainButton;
-    /** Button to register client as a new user. */
+    /**
+     * Button to register client as a new user.
+     */
     private Button mRegisterAsNewButton;
 
     @Override
@@ -95,7 +107,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
 
         if (savedInstanceState != null) {
             mSearchResults = (SearchResult[]) savedInstanceState.get(CACHED_RESULTS);
-            if (mSearchResults.length == 0){
+            if (mSearchResults.length == 0) {
                 setNoResultsMessage();
             }
             mAdapter = new SearchResultAdapter(getActivity(), mSearchResults);
@@ -131,7 +143,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
     }
 
 
-    public void setupButtons (View view){
+    public void setupButtons(View view) {
         mSearchAgainButton = (Button) view.findViewById(R.id.button_search_again);
         mSearchAgainButton.setOnClickListener(new View.OnClickListener() {
             //returns to search fragment
@@ -157,11 +169,11 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
     /**
      * Sets the TextView's text to "No Results Found"
      */
-    private void setNoResultsMessage(){
+    private void setNoResultsMessage() {
         mTextView.setText(R.string.search_no_results);
     }
 
-    public void onActivityCreated (Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         requestQueue = Volley.newRequestQueue(getActivity());
         super.onActivityCreated(savedInstanceState);
     }
@@ -199,8 +211,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
         final String authToken = mUserPreferences.getString("auth_token", null);
 
         //If there are search parameters,
-        if(firstName != null && lastName != null && userId != null && authToken != null) {
-            Log.e(TAG, "SENDING REQUEST SEARCH");
+        if (firstName != null && lastName != null && userId != null && authToken != null) {
             mListView.setOnItemClickListener(this);
             sRequestManager.requestSearch(firstName,
                     lastName,
@@ -213,68 +224,6 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
         super.onResume();
     }
 
-    private class SearchResultResponseListener implements Response.Listener<JSONArray> {
-
-        @Override
-        public void onResponse(JSONArray jsonArray) {
-            try {
-                final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                mSearchResults = new SearchResult[jsonArray.length()];
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject json = jsonArray.getJSONObject(i);
-                    SearchResult result = new SearchResult();
-                    result.setFirstName(json.getString("firstname"));
-                    result.setLastName(json.getString("lastname"));
-
-                    if (!json.getString("birthdate__c").equals("null")) {
-                        result.setBirthday(df.parse(json.getString("birthdate__c")));
-                    }
-
-                    result.setSalesForceId(json.getString("sfid"));
-                    mSearchResults[i] = result;
-                }
-
-                // if there are no results, show the no results message
-                if (mSearchResults.length == 0){
-                    setNoResultsMessage();
-                }
-                // otherwise, populate the list view with the results
-                else {
-                    mAdapter = new SearchResultAdapter(mParent, mSearchResults);
-                    mListView.setAdapter(mAdapter);
-                }
-                // Check if progress dialog is showing before dismissing
-                if (mProgressDialog != null && mProgressDialog.isShowing()) {
-                    mProgressDialog.dismiss();
-                }
-            } catch(JSONException e) {
-                Log.e(TAG, "Error parsing JSON");
-                Log.e(TAG, e.toString());
-            } catch (ParseException e) {
-                Log.e(TAG, "Error parsing Birthday");
-                Log.e(TAG, e.toString());
-            }
-        }
-    }
-
-    private class SearchResultErrorListener implements Response.ErrorListener {
-
-        @Override
-        public void onErrorResponse(VolleyError volleyError) {
-            if (volleyError.getLocalizedMessage() != null) {
-                Log.e(TAG, volleyError.toString());
-            }
-
-            // Check if progress dialog is showing before dismissing
-            if (mProgressDialog != null && mProgressDialog.isShowing()) {
-                mProgressDialog.dismiss();
-            }
-
-            Toast toast = Toast.makeText(getActivity(), "Error during Search", Toast.LENGTH_SHORT);
-            toast.show();
-        }
-    }
-
     @Override
     public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
         SearchResult searchResult = (SearchResult) parent.getItemAtPosition(position);
@@ -282,8 +231,8 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
         String objectId = searchResult.getSalesForceId();
         String objectName = "Account";
         List<String> fields = new ArrayList<String>(Arrays.asList("SS_Num__c", "FirstName", "LastName", "Phone",
-                                                                  "Birthdate__c", "PersonEmail", "Gender__c",
-                                                                  "Ethnicity__pc", "Primary_Language__c"));
+                "Birthdate__c", "PersonEmail", "Gender__c",
+                "Ethnicity__pc", "Primary_Language__c"));
 
         try {
             RestRequest request = RestRequest.getRequestForRetrieve(apiVersion, objectName, objectId, fields);
@@ -340,16 +289,14 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
     /**
      * Helper that sends request to server and print result in text field.
      *
-     * @param request - The request object that gets executed by the SF SDK
+     * @param request  - The request object that gets executed by the SF SDK
      * @param callback - The functions that get called when yhe response comes back
-     *                   Modify UI elements here.
+     *                 Modify UI elements here.
      */
     private void sendRequest(RestRequest request, AsyncRequestCallback callback) {
 
         try {
-
             ((CheckinActivity) getActivity()).client.sendAsync(request, callback);
-
         } catch (Exception error) {
             Log.e("SF Request", error.toString());
         }
@@ -386,18 +333,137 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
 
             SearchResult searchResult = data[position];
 
-            ((TextView)rowView.findViewById(R.id.first_name)).setText(searchResult.getFirstName());
-            ((TextView)rowView.findViewById(R.id.last_name)).setText(searchResult.getLastName());
+            ((TextView) rowView.findViewById(R.id.first_name)).setText(searchResult.getFirstName());
+            ((TextView) rowView.findViewById(R.id.last_name)).setText(searchResult.getLastName());
 
             if (searchResult.getBirthday() != null) {
                 String birthday = sdf.format(searchResult.getBirthday());
-                ((TextView)rowView.findViewById(R.id.birthday)).setText(birthday);
+                ((TextView) rowView.findViewById(R.id.birthday)).setText(birthday);
             } else {
-                ((TextView)rowView.findViewById(R.id.birthday)).setText("None");
+                ((TextView) rowView.findViewById(R.id.birthday)).setText("None");
             }
 
             return rowView;
         }
     }
 
+    /**
+     * Response Listener for initiating a search request
+     */
+    private class SearchResultResponseListener implements Response.Listener<JSONArray> {
+
+        @Override
+        public void onResponse(JSONArray jsonArray) {
+            try {
+                final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                mSearchResults = new SearchResult[jsonArray.length()];
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject json = jsonArray.getJSONObject(i);
+                    SearchResult result = new SearchResult();
+                    result.setFirstName(json.getString("firstname"));
+                    result.setLastName(json.getString("lastname"));
+
+                    if (!json.getString("birthdate__c").equals("null")) {
+                        result.setBirthday(df.parse(json.getString("birthdate__c")));
+                    }
+
+                    result.setSalesForceId(json.getString("sfid"));
+                    mSearchResults[i] = result;
+                }
+
+                // if there are no results, show the no results message
+                if (mSearchResults.length == 0) {
+                    setNoResultsMessage();
+                }
+                // otherwise, populate the list view with the results
+                else {
+                    mAdapter = new SearchResultAdapter(mParent, mSearchResults);
+                    mListView.setAdapter(mAdapter);
+                }
+                // Check if progress dialog is showing before dismissing
+                if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                    mProgressDialog.dismiss();
+                }
+            } catch (JSONException e) {
+                Log.e(TAG, "Error parsing JSON");
+                Log.e(TAG, e.toString());
+            } catch (ParseException e) {
+                Log.e(TAG, "Error parsing Birthday");
+                Log.e(TAG, e.toString());
+            }
+        }
+    }
+
+    /**
+     * Error listener for initiating a search request
+     */
+    private class SearchResultErrorListener implements Response.ErrorListener {
+
+        @Override
+        public void onErrorResponse(VolleyError volleyError) {
+            if (volleyError.getLocalizedMessage() != null) {
+                Log.e(TAG, volleyError.toString());
+            }
+
+            // Check if progress dialog is showing before dismissing
+            if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                mProgressDialog.dismiss();
+            }
+
+            Toast toast = Toast.makeText(getActivity(), "Error during Search", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
+
+    /**
+     * Response Listener for user info request
+     */
+    private class UserInfoResponseListener implements Response.Listener<JSONArray> {
+
+        @Override
+        public void onResponse(JSONArray jsonArray) {
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SEARCH_RESULT, 0);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            try {
+                JSONObject jsonResponse = jsonArray.getJSONObject(0);
+                editor.putString("SS_Num", jsonResponse.getString("SS_Num__c"));
+                editor.putString("FirstName", jsonResponse.getString("FirstName"));
+                editor.putString("LastName", jsonResponse.getString("LastName"));
+                editor.putString("Phone", jsonResponse.getString("Phone"));
+                editor.putString("Birthdate", jsonResponse.getString("Birthdate__c"));
+                editor.putString("Email", jsonResponse.getString("PersonEmail"));
+                editor.putString("Gender", jsonResponse.getString("Gender__c"));
+                editor.putString("Ethnicity", jsonResponse.getString("Ethnicity__pc"));
+                editor.putString("Language", jsonResponse.getString("Primary_Language__c"));
+                editor.putString("SFID", jsonResponse.getString("Id"));
+            } catch (JSONException e2) {
+                Log.e(TAG, e2.toString());
+            } finally {
+                editor.putBoolean("Searched", true);
+                editor.apply();
+            }
+            // If we successfully load a user, we change the state to returning user
+            mParent.setCurrentState(CheckinActivity.RegistrationState.RETURNING_USER);
+
+            PersonalInfoFragment newFragment = new PersonalInfoFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.checkin_fragment_container, newFragment, getResources().getString(R.string.sidebar_personal_info));
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+    }
+
+    /**
+     * Error Listener for user info request
+     */
+    private class UserInfoErrorListener implements Response.ErrorListener {
+
+        @Override
+        public void onErrorResponse(VolleyError volleyError) {
+            Toast toast = Toast.makeText(getActivity(), "Error getting user info", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
 }
+
+

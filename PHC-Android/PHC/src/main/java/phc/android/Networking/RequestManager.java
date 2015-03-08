@@ -24,6 +24,7 @@ public class RequestManager {
     private static final String BASE_URL = "https://phc-staging.herokuapp.com";
     private static final String LOGIN_ENDPOINT = "/login";
     private static final String SEARCH_ENDPOINT = "/api/v1/search";
+    private static final String USER_INFO_ENDPOINT = "api/v1/user";
     private static final String CREATE_ENDPOINT = "/api/v1/create";
 
     private static RequestQueue sRequestQueue;
@@ -83,8 +84,6 @@ public class RequestManager {
                                      Response.Listener<JSONArray> responseListener,
                                      Response.ErrorListener errorListener) {
 
-        Log.e("pop", "SENDING REQUEST SEARCH 2");
-
         StringBuilder buildUrl = new StringBuilder(BASE_URL);
         buildUrl.append(SEARCH_ENDPOINT);
         buildUrl.append("?");
@@ -108,6 +107,41 @@ public class RequestManager {
         };
         searchRequest.setTag(sTAG);
         sRequestQueue.add(searchRequest);
+    }
+
+    /**
+     * Used to search for a specific user
+     * @param sfID salesforce Id of the user we want info from
+     * @param userId user_id of logged in user
+     * @param authToken auth_token of logged in user
+     * @param responseListener listener that is called when response received
+     * @param errorListener listener that is called when error
+     */
+    public void requestUserInfo(final String sfID,
+                              final String userId,
+                              final String authToken,
+                              Response.Listener<JSONArray> responseListener,
+                              Response.ErrorListener errorListener) {
+
+        StringBuilder buildUrl = new StringBuilder(BASE_URL);
+        buildUrl.append(USER_INFO_ENDPOINT);
+        buildUrl.append("/");
+        buildUrl.append(sfID);
+
+        JsonArrayRequest userInfoRequest = new JsonArrayRequest(buildUrl.toString(),
+                responseListener,
+                errorListener) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("user_id", userId);
+                params.put("auth_token", authToken);
+                params.put("Accept", "*/*");
+                return params;
+            }
+        };
+        userInfoRequest.setTag(sTAG);
+        sRequestQueue.add(userInfoRequest);
     }
 
     /**
