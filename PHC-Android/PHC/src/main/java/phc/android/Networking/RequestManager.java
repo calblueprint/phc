@@ -11,6 +11,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import phc.android.Checkout.CheckoutScannerFragment;
+
 /**
  * Created by tonywu on 2/24/15.
  * Contains abstractions for doing network requests.
@@ -100,6 +102,35 @@ public class RequestManager {
     }
 
     /**
+     * Used to search for a person receiving services
+     * @param qrCode qrCode of person seeking services
+     * @param userId user_id of logged in user
+     * @param authToken auth_token of logged in user
+     *
+     */
+
+    public void requestSearchByCode(String qrCode,
+                                    String authToken,
+                                    String userId,
+                                    Response.Listener<JSONObject> responseListener,
+                                    Response.ErrorListener errorListener){
+        HashMap<String, String> params = new HashMap<String, String>();
+
+        params.put("qr_code", qrCode);
+        params.put("user_id", userId);
+        params.put("auth_token", authToken);
+
+        JsonObjectRequest searchRequest = new JsonObjectRequest(BASE_URL + SEARCH_ENDPOINT,
+                new JSONObject(params),
+                responseListener,
+                errorListener);
+        searchRequest.setTag(sTAG);
+        sRequestQueue.add(searchRequest);
+
+
+    }
+
+    /**
      * Used to create a new user in the databse
      * @param firstName first name of new user
      * @param lastName last name of new user
@@ -120,11 +151,13 @@ public class RequestManager {
         params.put("user_id", userId);
         params.put("auth_token", authToken);
 
-        JsonObjectRequest createRequest = new JsonObjectRequest(BASE_URL + CREATE_ENDPOINT,
+            JsonObjectRequest createRequest = new JsonObjectRequest(BASE_URL + CREATE_ENDPOINT,
                 new JSONObject(params),
                 responseListener,
                 errorListener);
         createRequest.setTag(sTAG);
         sRequestQueue.add(createRequest);
     }
+
+
 }
