@@ -4,7 +4,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/red_sidebar">
+    android:layout_gravity="center"
+    android:background="@color/light_gray">
 
     <LinearLayout
         android:id="@+id/sidebar_list"
@@ -12,16 +13,20 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
+        <TextView
+            android:id="@+id/search_prompt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="10dp"
-            android:src="@drawable/reg_logo" />
+            android:text="@string/sidebar_registration"
+            android:textSize="@dimen/sidebar_text_size"
+            android:layout_marginTop="12sp"
+            android:layout_marginBottom="12sp"
+            android:layout_gravity="center"/>
+
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:background="@color/gray_sidebar"/>
+            android:background="@color/gray"/>
 
     </LinearLayout>
 

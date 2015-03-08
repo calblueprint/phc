@@ -14,6 +14,7 @@
         android:id="@+id/button_checkin"
         android:background="@drawable/disabled_button"
         android:text="@string/button_checkin"
+        android:textColor="@drawable/enabled_button_text"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_gravity="center"/>
@@ -22,6 +23,7 @@
         android:id="@+id/button_services"
         android:background="@drawable/disabled_button"
         android:text="@string/button_services"
+        android:textColor="@drawable/enabled_button_text"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="15dp"
@@ -31,6 +33,7 @@
         android:id="@+id/button_checkout"
         android:background="@drawable/disabled_button"
         android:text="@string/button_checkout"
+        android:textColor="@drawable/enabled_button_text"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="15dp"

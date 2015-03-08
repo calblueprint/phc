@@ -50,6 +50,8 @@
     </string-array>
 
     <!-- Services sidebar -->
+    <string name="sidebar_registration"><u>Registration</u></string>
+    <string name="sidebar_services"><u>Services</u></string>
     <string name="sidebar_scan">Scan</string>
 
     <string-array name="services_sidebar">
