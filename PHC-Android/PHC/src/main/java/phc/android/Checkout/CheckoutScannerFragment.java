@@ -40,48 +40,7 @@ import phc.android.SharedFragments.ScannerFragment;
 public class CheckoutScannerFragment extends ScannerFragment {
     /* Name for logs and fragment transaction code */
     public final static String TAG = "CheckoutScannerFragment";
-    private static final String USER_PREFS_NAME = "UserKey";
-    private static RequestManager sRequestManager;
-    private static RequestQueue sRequestQueue;
-    private SharedPreferences mUserPreferences;
     private ArrayList<String> mServicesNotReceived = new ArrayList<String>();
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        /* Inflate the layout for this fragment and set up view*/
-        View view = setupView(inflater, container);
-        mCodeInputSubmitButton = (Button) view.findViewById(R.id.submit_input);
-        mCodeInputSubmitButton.setOnClickListener(new InputSubmitListener());
-
-        // Set up Volley request framework
-        sRequestQueue = Volley.newRequestQueue(this.getActivity());
-        sRequestManager = new RequestManager(TAG, sRequestQueue);
-        return view;
-    }
-
-
-    /**
-     * This class is used by the input submit button to pass in the
-     * correct arguments and the queried services from the given code to the
-     * next fragment, as well as validate the input
-     */
-
-    public class InputSubmitListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            CharSequence result = mCodeInput.getText();
-            if (isValidInput(mCodeInput.getText())) {
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(mCodeInput.getWindowToken(), 0);
-                CharSequence trimmedResult = (result.toString()).trim();
-                confirmScan(trimmedResult, true);
-            } else {
-                displayInvalidInputToast();
-            }
-        }
-    }
 
     /**
      * Sets up the view for the user to confirm
