@@ -69,31 +69,19 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
     // Shared Preferences
     private SharedPreferences mUserPreferences;
     private ProgressDialog mProgressDialog;
-    /**
-     * Parent Activity *
-     */
+    // Parent Activity *
     private CheckinActivity mParent;
-    /**
-     * Caching the search results *
-     */
+    // Caching the search results
     private SearchResult[] mSearchResults = new SearchResult[0];
-    /**
-     * ListView for results and its adapter *
-     */
+    // ListView for results and its adapter *
     private ListView mListView;
-    /**
-     * TextView holding the "No Results Found" message.
-     */
+    // TextView holding the "No Results Found" message.
     private TextView mTextView;
 
     private SearchResultAdapter mAdapter;
-    /**
-     * Button to try search again.
-     */
+    // Button to try search again.
     private Button mSearchAgainButton;
-    /**
-     * Button to register client as a new user.
-     */
+    // Button to register client as a new user.
     private Button mRegisterAsNewButton;
 
     @Override
