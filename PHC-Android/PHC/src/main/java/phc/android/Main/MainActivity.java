@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
 
     // User credentials
     // Key for user shared preferences
-    private static final String USER_PREFS_NAME = "UserKey";
+    private static final String USER_AUTH_PREFS_NAME = "UserKey";
     // Shared Preferences
     private SharedPreferences mUserPreferences;
     // SharedPreference editor object
@@ -227,7 +227,7 @@ public class MainActivity extends Activity {
 
     private void getServices() {
         // Get userId and authToken
-        mUserPreferences = getSharedPreferences(USER_PREFS_NAME,
+        mUserPreferences = getSharedPreferences(USER_AUTH_PREFS_NAME,
                 Context.MODE_PRIVATE);
         final String userId = mUserPreferences.getString("user_id", null);
         final String authToken = mUserPreferences.getString("auth_token", null);
@@ -330,7 +330,7 @@ public class MainActivity extends Activity {
      * Should be used when the session is over.
      */
     public void onLogoutClick() {
-        mUserPreferences = getSharedPreferences(USER_PREFS_NAME,
+        mUserPreferences = getSharedPreferences(USER_AUTH_PREFS_NAME,
                 Context.MODE_PRIVATE);
         mUserPreferencesEditor = mUserPreferences.edit();
         mUserPreferencesEditor.remove("user_id");
