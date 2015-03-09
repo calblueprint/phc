@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 20150309033732) do
     t.boolean  "Identify_as_GLBT__c"
     t.string   "Race__c"
     t.string   "Primary_Language__c"
-    t.boolean  "Foster_care__c"
+    t.boolean  "Foster_Care__c"
     t.boolean  "Veteran__c"
     t.string   "Housing_Status_New__c"
     t.string   "How_long_have_you_been_homeless__c"
