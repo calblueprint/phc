@@ -18,6 +18,7 @@ class ApplicationController < ActionController::Base
   end
 
   def verify_security_token
+    byebug
     auth_token = request.headers["HTTP_AUTH_TOKEN"]
     user_id = request.headers["HTTP_USER_ID"]
     if auth_token && user_id
@@ -26,6 +27,7 @@ class ApplicationController < ActionController::Base
       end
     else
       respond_with "Error: Please include authentication token.", status: 401
+      false
     end
   end
 

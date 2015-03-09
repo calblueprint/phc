@@ -26,15 +26,25 @@
 
 class Account < ActiveRecord::Base
 
-  def create(params)
+
+
+  # I'm not sure if calling this 'create' will overwrite something and cause funky behavior.
+  def self.spawn(params)
+    fields = [:sf_id, "FirstName","LastName","SS_Num__c","Birthdate__c","Phone","PersonEmail","Gender__c","Identify_as_GLBT__c",
+      "Race__c", "Primary_Language__c", "Foster_Care__c","Veteran__c","Housing_Status_New__c","How_long_have_you_been_homeless__c",
+      "Where_do_you_usually_go_for_healthcare__c","Medical_Care_Other__c"]
+
+    # NOTE, new accounts for now will not have an Salesforce ID associated with them until we
+    # implement posting to Salesforce. Therefore, for now, sf_id can be empty, and we will
+    # match an event registration to an account through the Rails ID primary key.
     account = Account.new
-    account.FirstName = params[:first_name]
-    account.LastName = params[:last_name]
-    account.sf_id = request.headers[:salesforceid]
-    account.save
-    respond_with "Successfully saved user!", status: 200, location: root_url
+    fields.each do |key|
+      account[key] = params[key]
+    end
+    if account.save then account else nil end
 
     #### TODO: POST TO SALESFORCE #####
+
   end
 
 end

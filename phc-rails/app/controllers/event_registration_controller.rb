@@ -2,11 +2,15 @@ class EventRegistrationController < ApplicationController
   before_action :verify_security_token
 
   def create
-    # See if the account exists already
+    # Create account if does not exist
+    if not Account.exists?(sf_id: params[:account_sfid])
+      params[:sf_id] = params.delete :account_sfid # Change key to sf_id
+      account = Account.spawn(params)
+    else
+      account = Account.find_by(sf_id: params[:account_sfid])
 
-    # If not, create account
+    # Save to EventRegistration table
 
-    # Else, save to EventRegistration table
   end
 
   def search
