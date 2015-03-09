@@ -26,6 +26,8 @@ public class EventInfoFragment extends CheckinFragment {
     private ViewGroup mLayout;
     /** Neighborhood spinner. */
     private Spinner mNeighborhoodSpinner;
+    /** Housing spinner */
+    private Spinner mHousingSpinner;
     /** Doctor checkbox. */
     private CheckBox mDoctorCheckbox;
     /** Whether the Doctor checkbox has been checked. */
@@ -61,6 +63,7 @@ public class EventInfoFragment extends CheckinFragment {
         mChildrenLayout = (LinearLayout) view.findViewById(R.id.children_layout);
         mContinueButton = (Button) view.findViewById(R.id.button_event_continue);
         mNeighborhoodSpinner = (Spinner) view.findViewById(R.id.spinner_neighborhood);
+        mHousingSpinner = (Spinner) view.findViewById(R.id.spinner_housing);
 
         setSpinnerContent();
         setOnClickListeners(view);
@@ -136,6 +139,17 @@ public class EventInfoFragment extends CheckinFragment {
                 new NothingSelectedSpinnerAdapter(
                         neighborhoodAdapter,
                         R.layout.neighborhood_spinner_row_nothing_selected,
+                        getActivity()));
+
+        /** Set housing spinner values **/
+        ArrayAdapter<CharSequence> housingAdapter =
+                ArrayAdapter.createFromResource(getActivity(),
+                                                R.array.housing_array,
+                                                android.R.layout.simple_spinner_item);
+        mHousingSpinner.setAdapter(
+                new NothingSelectedSpinnerAdapter(
+                        housingAdapter,
+                        R.layout.housing_spinner_row_nothing_selected,
                         getActivity()));
     }
 

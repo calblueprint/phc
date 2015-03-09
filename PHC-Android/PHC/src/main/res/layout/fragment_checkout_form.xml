@@ -79,7 +79,7 @@
                 android:padding="10dp"
                 />
         </RadioGroup>
-        <!--
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -87,17 +87,16 @@
             android:gravity="center"
             android:id="@+id/exit_services_title"
             android:textSize="20sp"
-            android:text="@string/checkout_services_title"
+            android:text="@string/prompt_priority_services"
             />
 
-        <CheckBox
-            android:id="@+id/exit_service_holder"
+        <LinearLayout
+            android:id="@+id/services_list"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_margin="10dp"
-            android:text="@string/checkout_service_blank"
-            />
-            -->
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical" />
+
 
         <TextView
             android:layout_width="match_parent"

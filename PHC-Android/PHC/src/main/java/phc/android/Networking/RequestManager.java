@@ -13,6 +13,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import phc.android.Checkout.CheckoutScannerFragment;
+
 /**
  * Created by tonywu on 2/24/15.
  * Contains abstractions for doing network requests.
@@ -165,11 +167,13 @@ public class RequestManager {
         params.put("user_id", userId);
         params.put("auth_token", authToken);
 
-        JsonObjectRequest createRequest = new JsonObjectRequest(BASE_URL + CREATE_ENDPOINT,
+            JsonObjectRequest createRequest = new JsonObjectRequest(BASE_URL + CREATE_ENDPOINT,
                 new JSONObject(params),
                 responseListener,
                 errorListener);
         createRequest.setTag(sTAG);
         sRequestQueue.add(createRequest);
     }
+
+
 }

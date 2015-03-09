@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -19,16 +20,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import phc.android.Main.MainActivity;
+import phc.android.Networking.RequestManager;
 import phc.android.R;
 
 
 public class ScannerFragment extends Fragment {
 
     public final static String TAG = "ScannerFragment";
+
+
+    protected static final String USER_PREFS_NAME = "UserKey";
+    protected static RequestManager sRequestManager;
+    protected  static RequestQueue sRequestQueue;
+    protected SharedPreferences mUserPreferences;
+
 
     // Button to start BarcodeScanner app
     protected Button mScanButton;
@@ -48,8 +59,16 @@ public class ScannerFragment extends Fragment {
                              Bundle savedInstanceState) {
         /* Inflate the layout for this fragment and set up view*/
         View view = setupView(inflater, container);
+        mCodeInputSubmitButton = (Button) view.findViewById(R.id.submit_input);
+        mCodeInputSubmitButton.setOnClickListener(new InputSubmitListener());
+
+        // Set up Volley request framework
+        sRequestQueue = Volley.newRequestQueue(this.getActivity());
+        sRequestManager = new RequestManager(TAG, sRequestQueue);
         return view;
     }
+
+
 
     /**
      * Separate method for setting up view so that this

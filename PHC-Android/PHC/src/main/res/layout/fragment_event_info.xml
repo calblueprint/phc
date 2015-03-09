@@ -26,17 +26,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
+            <Spinner
+                android:id="@+id/spinner_housing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <LinearLayout
                 android:id="@+id/event_checkboxes"
                 android:layout_marginTop="@dimen/checkboxes_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <CheckBox android:id="@+id/checkbox_homeless"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/prompt_homeless"/>
 
                 <LinearLayout
                     android:id="@+id/children_layout"

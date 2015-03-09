@@ -38,8 +38,8 @@ public class SideBarFragment extends CheckinFragment {
                     LinearLayout.LayoutParams.WRAP_CONTENT));
             button.setBackgroundColor(Color.TRANSPARENT);
             button.setText(tag);
-            button.setTextColor(getResources().getColor(R.color.button_text_color));
-            button.setTextSize(getResources().getDimensionPixelSize(R.dimen.button_text_size));
+            button.setTextColor(getResources().getColor(R.color.black));
+            button.setTextSize(getResources().getDimensionPixelSize(R.dimen.sidebar_button_size));
             button.setTag(tag);
             button.setOnClickListener(new View.OnClickListener() {
 
@@ -62,7 +62,6 @@ public class SideBarFragment extends CheckinFragment {
             horizRule.setLayoutParams(new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     getResources().getDimensionPixelSize(R.dimen.horizontal_rule_height)));
-            horizRule.setBackgroundColor(getResources().getColor(R.color.gray_sidebar));
             sidebarList.addView(horizRule);
         }
 

@@ -10,13 +10,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.util.ArrayList;
+
+import phc.android.Main.MainActivity;
 import phc.android.R;
 
 public class CheckoutFormFragment extends Fragment {
@@ -38,13 +43,19 @@ public class CheckoutFormFragment extends Fragment {
     /** Used to set listener to detect when the user clicks submit **/
     private Button mCodeInputSubmitButton;
 
+    /** Parent layout that holds all checkbox views. */
+    private ViewGroup mLayout;
 
+    /** Array of service display names. */
+    private ArrayList<String> mServicesNotReceived;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                 Bundle savedInstanceState){
 
         View view = inflater.inflate(R.layout.fragment_checkout_form, container, false);
+
+
         mComment = (EditText) view.findViewById(R.id.checkout_comment);
         mCodeInputSubmitButton = (Button) view.findViewById(R.id.button_submit);
         mCodeInputSubmitButton.setOnClickListener(new SubmitListener(getActivity()));
@@ -54,10 +65,13 @@ public class CheckoutFormFragment extends Fragment {
         if (savedInstanceState != null) {
             mScanResult = savedInstanceState.getCharSequence("scan_result");
             mManualInput = savedInstanceState.getBoolean("manual_input");
+            mServicesNotReceived = savedInstanceState.getStringArrayList("services_not_received");
+
 
         } else {
             mScanResult =  getArguments().getCharSequence("scan_result");
             mManualInput = getArguments().getBoolean("manual_input");
+            mServicesNotReceived = getArguments().getStringArrayList("services_not_received");
         }
 
 
@@ -88,10 +102,33 @@ public class CheckoutFormFragment extends Fragment {
             }
         });
 
-
+        dynamicSetCheckboxes(view);
         return view;
     }
 
+
+    /**
+     * Dynamically populates layout with checkboxes for each service they applied but
+     * not check in for.
+     * Note: the current ID assignment method is rather hacky, but it's the only way that seems to
+     * work. Android is not able to save and load dynamically created views even when their ID is
+     * set, unless the views are created again with the same previous ID.
+     */
+    private void dynamicSetCheckboxes(View view){
+        mLayout = (LinearLayout) view.findViewById(R.id.services_list);
+       // mServicesNotReceived = ((MainActivity) MainActivity.getContext()).getDisplayNames();
+
+        for(int i = 0; i < mServicesNotReceived.size(); i++){
+            CheckBox cb = new CheckBox(getActivity());
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            cb.setLayoutParams(params);
+            cb.setId(i);
+            cb.setText(mServicesNotReceived.get(i));
+            mLayout.addView(cb);
+        }
+    }
 
     /**
      * Used when the user submits their inputted code.
