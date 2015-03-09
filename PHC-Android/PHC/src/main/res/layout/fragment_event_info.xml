@@ -31,28 +31,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <LinearLayout
-                android:id="@+id/homeless_layout"
-                android:layout_marginTop="@dimen/checkboxes_margin"
+            <Spinner
+                android:id="@+id/spinner_homeless_duration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:visibility="gone" />
 
-            </LinearLayout>
 
             <Spinner
                 android:id="@+id/spinner_healthcare"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <LinearLayout
-                android:id="@+id/healthcare_layout"
-                android:layout_marginTop="@dimen/checkboxes_margin"
+            <EditText
+                android:id="@+id/healthcare_other"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:hint="@string/prompt_healthcare"
+                android:visibility="gone"/>
 
-            </LinearLayout>
 
             <Button
                 android:id="@+id/button_event_continue"
@@ -62,6 +59,7 @@
                 android:text="@string/action_continue"
                 android:textSize="@dimen/text_size"
                 />
+
 
         </LinearLayout>
 
