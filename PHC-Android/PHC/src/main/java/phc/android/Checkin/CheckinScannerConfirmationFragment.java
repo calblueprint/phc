@@ -203,6 +203,8 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
             if(!year.equals("") && !month.equals("") && !day.equals("")) {
                 String birthday = year + "-" + month + "-" + day;
                 fields.put("Birthdate__c", birthday);
+            } else {
+                fields.put("Birthdate__c", "");
             }
 
             String phone = "";
