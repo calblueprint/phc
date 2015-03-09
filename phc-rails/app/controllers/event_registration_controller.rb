@@ -1,5 +1,6 @@
 class EventRegistrationController < ApplicationController
   def create
+
   end
 
   def search
