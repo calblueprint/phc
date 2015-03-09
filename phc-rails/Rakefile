@@ -25,6 +25,7 @@ task :load_sf => :environment do
 
       attrs = attrs.to_hash
       attrs[:sf_id] = attrs.delete "Id"
+
       puts "Updating account #{attrs[:sf_id]}: #{attrs["FirstName"]} #{attrs["LastName"]}"
       Account.find_or_create_by(sf_id: attrs[:sf_id]) do |account|
         account.update(attrs)
