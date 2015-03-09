@@ -9,8 +9,8 @@ Rails.application.routes.draw do
       get "accounts/:sf_id", to: "accounts#show"
       post 'event_registrations/create'
       get 'event_registrations/search'
-      get 'event_registrations/update_service'
-      get 'event_registrations/update_feedback'
+      post 'event_registrations/update_service'
+      post 'event_registrations/update_feedback'
     end
   end
 
