@@ -206,7 +206,6 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                     new SearchResultResponseListener(),
                     new SearchResultErrorListener());
         }
-
         super.onResume();
     }
 
@@ -267,7 +266,6 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
             } else {
                 ((TextView) rowView.findViewById(R.id.birthday)).setText("None");
             }
-
             return rowView;
         }
     }
@@ -391,5 +389,3 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
         }
     }
 }
-
-
