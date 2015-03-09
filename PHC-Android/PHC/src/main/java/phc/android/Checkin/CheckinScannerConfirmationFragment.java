@@ -167,6 +167,7 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
             public void onErrorResponse(VolleyError volleyError) {
                 if (volleyError.getLocalizedMessage() != null) {
                     Log.e(TAG, "Volley Error");
+                    volleyError.printStackTrace();
                 }
 
                 Toast toast = Toast.makeText(getActivity(), "Error registering user", Toast.LENGTH_SHORT);
