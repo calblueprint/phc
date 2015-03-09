@@ -26,7 +26,7 @@ public class RequestManager {
     private static final String BASE_URL = "http://private-00cae-phcherokuconnect.apiary-mock.com";
     private static final String LOGIN_ENDPOINT = "/login";
     private static final String SEARCH_ENDPOINT = "/api/v1/search";
-    private static final String USER_INFO_ENDPOINT = "api/v1/user";
+    private static final String USER_INFO_ENDPOINT = "/api/v1/account";
     private static final String CREATE_ENDPOINT = "/api/v1/create";
 
     private static RequestQueue sRequestQueue;
@@ -122,7 +122,7 @@ public class RequestManager {
     public void requestUserInfo(final String sfID,
                               final String userId,
                               final String authToken,
-                              Response.Listener<JSONArray> responseListener,
+                              Response.Listener<JSONObject> responseListener,
                               Response.ErrorListener errorListener) {
 
         StringBuilder buildUrl = new StringBuilder(BASE_URL);
@@ -130,7 +130,8 @@ public class RequestManager {
         buildUrl.append("/");
         buildUrl.append(sfID);
 
-        JsonArrayRequest userInfoRequest = new JsonArrayRequest(buildUrl.toString(),
+        JsonObjectRequest userInfoRequest = new JsonObjectRequest(buildUrl.toString(),
+                null,
                 responseListener,
                 errorListener) {
             @Override
@@ -144,6 +145,31 @@ public class RequestManager {
         };
         userInfoRequest.setTag(sTAG);
         sRequestQueue.add(userInfoRequest);
+    }
+
+    /*
+     * Used to search for a person receiving services
+     * @param qrCode qrCode of person seeking services
+     * @param userId user_id of logged in user
+     * @param authToken auth_token of logged in user
+     */
+    public void requestSearchByCode(String qrCode,
+                                    String authToken,
+                                    String userId,
+                                    Response.Listener<JSONObject> responseListener,
+                                    Response.ErrorListener errorListener){
+        HashMap<String, String> params = new HashMap<String, String>();
+
+        params.put("qr_code", qrCode);
+        params.put("user_id", userId);
+        params.put("auth_token", authToken);
+
+        JsonObjectRequest searchRequest = new JsonObjectRequest(BASE_URL + SEARCH_ENDPOINT,
+                new JSONObject(params),
+                responseListener,
+                errorListener);
+        searchRequest.setTag(sTAG);
+        sRequestQueue.add(searchRequest);
     }
 
     /**

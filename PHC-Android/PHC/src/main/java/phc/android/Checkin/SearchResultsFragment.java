@@ -285,14 +285,14 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject json = jsonArray.getJSONObject(i);
                     SearchResult result = new SearchResult();
-                    result.setFirstName(json.getString("firstname"));
-                    result.setLastName(json.getString("lastname"));
+                    result.setFirstName(json.getString("FirstName"));
+                    result.setLastName(json.getString("LastName"));
 
-                    if (!json.getString("birthdate__c").equals("null")) {
-                        result.setBirthday(df.parse(json.getString("birthdate__c")));
+                    if (!json.getString("Birthdate__c").equals("null")) {
+                        result.setBirthday(df.parse(json.getString("Birthdate__c")));
                     }
 
-                    result.setSalesForceId(json.getString("sfid"));
+                    result.setSalesForceId(json.getString("sf_id"));
                     mSearchResults[i] = result;
                 }
 
@@ -343,24 +343,21 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
     /**
      * Response Listener for user info request
      */
-    private class UserInfoResponseListener implements Response.Listener<JSONArray> {
+    private class UserInfoResponseListener implements Response.Listener<JSONObject> {
 
         @Override
-        public void onResponse(JSONArray jsonArray) {
+        public void onResponse(JSONObject jsonObject) {
             SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SEARCH_RESULT, 0);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             try {
-                JSONObject jsonResponse = jsonArray.getJSONObject(0);
-                editor.putString("SS_Num", jsonResponse.getString("SS_Num__c"));
-                editor.putString("FirstName", jsonResponse.getString("FirstName"));
-                editor.putString("LastName", jsonResponse.getString("LastName"));
-                editor.putString("Phone", jsonResponse.getString("Phone"));
-                editor.putString("Birthdate", jsonResponse.getString("Birthdate__c"));
-                editor.putString("Email", jsonResponse.getString("PersonEmail"));
-                editor.putString("Gender", jsonResponse.getString("Gender__c"));
-                editor.putString("Ethnicity", jsonResponse.getString("Ethnicity__pc"));
-                editor.putString("Language", jsonResponse.getString("Primary_Language__c"));
-                editor.putString("SFID", jsonResponse.getString("Id"));
+                editor.putString("SS_Num", jsonObject.getString("SS_Num__c"));
+                editor.putString("FirstName", jsonObject.getString("FirstName"));
+                editor.putString("LastName", jsonObject.getString("LastName"));
+                editor.putString("Phone", jsonObject.getString("Phone"));
+                editor.putString("Birthdate", jsonObject.getString("Birthdate__c"));
+                editor.putString("Email", jsonObject.getString("PersonEmail"));
+                editor.putString("Gender", jsonObject.getString("Gender__c"));
+                editor.putString("Language", jsonObject.getString("Primary_Language__c"));
             } catch (JSONException e2) {
                 Log.e(TAG, e2.toString());
             } finally {
@@ -385,6 +382,10 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
 
         @Override
         public void onErrorResponse(VolleyError volleyError) {
+            if (volleyError.getLocalizedMessage() != null) {
+                Log.e(TAG, volleyError.toString());
+            }
+
             Toast toast = Toast.makeText(getActivity(), "Error getting user info", Toast.LENGTH_SHORT);
             toast.show();
         }

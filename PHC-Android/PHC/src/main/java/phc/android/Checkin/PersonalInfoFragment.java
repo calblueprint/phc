@@ -270,14 +270,6 @@ public class PersonalInfoFragment extends Fragment {
             }
         }
 
-        if (!ethnicity.equals("null")) {
-            ArrayAdapter<String> adapter = (ArrayAdapter<String>) ((NothingSelectedSpinnerAdapter) mEthnicitySpinner.getAdapter()).getSpinnerAdapter();
-            int position = adapter.getPosition(ethnicity);
-            if (position != -1) {
-                mEthnicitySpinner.setSelection(position);
-            }
-        }
-
         if (!language.equals("null")) {
             ArrayAdapter<String> adapter = (ArrayAdapter<String>) ((NothingSelectedSpinnerAdapter) mLanguageSpinner.getAdapter()).getSpinnerAdapter();
             int position = adapter.getPosition(language);
