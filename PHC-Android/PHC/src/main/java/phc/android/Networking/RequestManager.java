@@ -21,10 +21,10 @@ import phc.android.Checkout.CheckoutScannerFragment;
 public class RequestManager {
 
     //TODO: Change to heroku url when rails code pushed to heroku
-    private static final String BASE_URL = "http://10.0.2.2:3000";
+    private static final String BASE_URL = "http://private-00cae-phcherokuconnect.apiary-mock.com";
     private static final String LOGIN_ENDPOINT = "/login";
     private static final String SEARCH_ENDPOINT = "/api/v1/search";
-    private static final String CREATE_ENDPOINT = "/api/v1/create";
+    private static final String CREATE_EVENT_REG_ENDPOINT = "/api/v1/event_registration";
 
     private static RequestQueue sRequestQueue;
     private static String sTAG;
@@ -131,33 +131,33 @@ public class RequestManager {
     }
 
     /**
-     * Used to create a new user in the databse
-     * @param firstName first name of new user
-     * @param lastName last name of new user
+     * Used to create a new Event Registration object in the databse
+     * @param params key values that descrive the event registration object being created
      * @param userId user_id of logged in user
      * @param authToken auth_token of logged in user
      * @param responseListener listener that is called when response received
      * @param errorListener listener that is called when error
      */
-    public void requestCreate(String firstName,
-                                     String lastName,
-                                     String userId,
-                                     String authToken,
+    public void requestCreateEventReg(HashMap<String, Object> params,
+                                     final String userId,
+                                     final String authToken,
                                      Response.Listener<JSONObject> responseListener,
                                      Response.ErrorListener errorListener) {
-        HashMap<String, String> params = new HashMap<String, String>();
-        params.put("first_name", firstName);
-        params.put("last_name", lastName);
-        params.put("user_id", userId);
-        params.put("auth_token", authToken);
 
-            JsonObjectRequest createRequest = new JsonObjectRequest(BASE_URL + CREATE_ENDPOINT,
+        JsonObjectRequest createRequest = new JsonObjectRequest(BASE_URL + CREATE_EVENT_REG_ENDPOINT,
                 new JSONObject(params),
                 responseListener,
-                errorListener);
+                errorListener) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("user_id", userId);
+                headers.put("auth_token", authToken);
+                headers.put("Accept", "*/*");
+                return headers;
+            }
+        };
         createRequest.setTag(sTAG);
         sRequestQueue.add(createRequest);
     }
-
-
 }
