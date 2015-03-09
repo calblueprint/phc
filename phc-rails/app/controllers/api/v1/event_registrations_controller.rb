@@ -3,7 +3,6 @@ class Api::V1::EventRegistrationsController < ApplicationController
   before_action :verify_security_token
 
   def create
-    byebug
     reg = EventRegistration.new
 
     # Create account if salesforce id was not passed in
@@ -40,6 +39,8 @@ class Api::V1::EventRegistrationsController < ApplicationController
   end
 
   def search
+    qr_code = params[:Number__c]
+    respond_with EventRegistration.exists?(Number__c: qr_code)
   end
 
   def update_service
