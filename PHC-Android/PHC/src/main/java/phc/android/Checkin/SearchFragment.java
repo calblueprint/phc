@@ -39,14 +39,13 @@ public class SearchFragment extends CheckinFragment {
         final EditText lastName = (EditText) view.findViewById(R.id.last_name);
         submitSearchButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //Save parameters to SharedPrefs to access from the next activity.
-                SharedPreferences searchPrameters = getActivity().getSharedPreferences(SEARCH_PARAMETERS, 0);
-                SharedPreferences.Editor searchParametersEditor = searchPrameters.edit();
-                searchParametersEditor.putString("firstName", firstName.getText().toString());
-                searchParametersEditor.putString("lastName", lastName.getText().toString());
-                searchParametersEditor.commit();
+                // Save arguments for next fragment
+                Bundle args = new Bundle();
+                args.putString("firstName", firstName.getText().toString());
+                args.putString("lastName", lastName.getText().toString());
 
                 SearchResultsFragment newFragment = new SearchResultsFragment();
+                newFragment.setArguments(args);
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.checkin_fragment_container, newFragment);
                 transaction.addToBackStack(null);

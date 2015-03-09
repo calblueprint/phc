@@ -103,7 +103,7 @@ public class LoginActivity extends Activity {
 
                 // Close this activity
                 finish();
-            } catch(JSONException e){
+            } catch(JSONException e) {
                 Log.e(TAG, "Error parsing JSON");
                 Log.e(TAG, e.toString());
             }
