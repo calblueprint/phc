@@ -286,7 +286,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                     result.setFirstName(json.getString("FirstName"));
                     result.setLastName(json.getString("LastName"));
 
-                    if (!json.getString("Birthdate__c").equals("null")) {
+                    if (!json.getString("Birthdate__c").equals("")) {
                         result.setBirthday(df.parse(json.getString("Birthdate__c")));
                     }
 
@@ -356,6 +356,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                 editor.putString("Email", jsonObject.getString("PersonEmail"));
                 editor.putString("Gender", jsonObject.getString("Gender__c"));
                 editor.putString("Language", jsonObject.getString("Primary_Language__c"));
+                editor.putString("SFID", jsonObject.getString("sf_id"));
             } catch (JSONException e2) {
                 Log.e(TAG, e2.toString());
             } finally {

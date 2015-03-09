@@ -23,10 +23,10 @@ import phc.android.Checkout.CheckoutScannerFragment;
 public class RequestManager {
 
     //TODO: Change to heroku url when rails code pushed to heroku
-    private static final String BASE_URL = "http://private-00cae-phcherokuconnect.apiary-mock.com";
+    private static final String BASE_URL = "http://phc-staging.herokuapp.com";
     private static final String LOGIN_ENDPOINT = "/login";
     private static final String SEARCH_ENDPOINT = "/api/v1/search";
-    private static final String USER_INFO_ENDPOINT = "/api/v1/account";
+    private static final String USER_INFO_ENDPOINT = "/api/v1/accounts";
     private static final String CREATE_ENDPOINT = "/api/v1/create";
 
     private static RequestQueue sRequestQueue;
@@ -89,10 +89,10 @@ public class RequestManager {
         StringBuilder buildUrl = new StringBuilder(BASE_URL);
         buildUrl.append(SEARCH_ENDPOINT);
         buildUrl.append("?");
-        buildUrl.append("first_name=");
+        buildUrl.append("FirstName=");
         buildUrl.append(firstName);
         buildUrl.append("&");
-        buildUrl.append("last_name=");
+        buildUrl.append("LastName=");
         buildUrl.append(lastName);
 
         JsonArrayRequest searchRequest = new JsonArrayRequest(buildUrl.toString(),
