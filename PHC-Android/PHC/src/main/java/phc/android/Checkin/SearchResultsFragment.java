@@ -61,7 +61,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
     public static final String SEARCH_RESULT = "SEARCH_RESULT";
     public static final String CACHED_RESULTS = "CACHED_RESULTS";
     // Key for user shared preferences
-    private static final String USER_PREFS_NAME = "UserKey";
+    private static final String USER_AUTH_PREFS_NAME = "UserKey";
 
     private static RequestManager sRequestManager;
     private static RequestQueue sRequestQueue;
@@ -191,7 +191,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
         String lastName = args.getString("lastName");
 
         // Get userId and authToken
-        mUserPreferences = getActivity().getSharedPreferences(USER_PREFS_NAME,
+        mUserPreferences = getActivity().getSharedPreferences(USER_AUTH_PREFS_NAME,
                 Context.MODE_PRIVATE);
         final String userId = mUserPreferences.getString("user_id", null);
         final String authToken = mUserPreferences.getString("auth_token", null);
@@ -212,7 +212,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
     @Override
     public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
         // Get userId and authToken
-        mUserPreferences = getActivity().getSharedPreferences(USER_PREFS_NAME,
+        mUserPreferences = getActivity().getSharedPreferences(USER_AUTH_PREFS_NAME,
                 Context.MODE_PRIVATE);
         final String userId = mUserPreferences.getString("user_id", null);
         final String authToken = mUserPreferences.getString("auth_token", null);

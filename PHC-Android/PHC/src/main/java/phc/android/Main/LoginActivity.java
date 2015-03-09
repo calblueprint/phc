@@ -26,7 +26,7 @@ public class LoginActivity extends Activity {
 
     private static final String TAG = "LoginActivity";
     // Key for user shared preferences
-    private static final String USER_PREFS_NAME = "UserKey";
+    private static final String USER_AUTH_PREFS_NAME = "UserKey";
 
     private static RequestManager sRequestManager;
     private static RequestQueue sRequestQueue;
@@ -90,7 +90,7 @@ public class LoginActivity extends Activity {
                 // Get the user_id and auth_token and save into SharedPreferences
                 String userId = jsonObject.getString("user_id");
                 String authToken = jsonObject.getString("auth_token");
-                mUserPreferences = getSharedPreferences(USER_PREFS_NAME,
+                mUserPreferences = getSharedPreferences(USER_AUTH_PREFS_NAME,
                         Context.MODE_PRIVATE);
                 mUserPreferencesEditor = mUserPreferences.edit();
                 mUserPreferencesEditor.putString("user_id", userId);
