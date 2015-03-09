@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  get 'event_registration/create'
+
+  get 'event_registration/search'
+
+  get 'event_registration/update_service'
+
+  get 'event_registration/update_feedback'
+
   root "static_pages#index"
   get "pull", to: "accounts#pull"
 
