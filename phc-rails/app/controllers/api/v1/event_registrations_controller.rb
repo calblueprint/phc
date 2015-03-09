@@ -20,9 +20,23 @@ class Api::V1::EventRegistrationsController < ApplicationController
       reg[:account_sfid] = sf_id
     end
 
-    reg[:Number__c] == params[:Number__c]
+    reg.Number__c = params[:Number__c]
 
-    respond_with "Successfully registered user!", status: 200, location: root_url
+    services = ["Acupuncture__c", "Addiction_Recovery__c", "CAAP__c", "Dental__c", \
+        "Disability_Services__c", "Employment__c", "Foodbank__c", \
+        "Haircuts__c", "Legal__c", "Massage__c", "Medical__c", "Showers__c", \
+        "Veteran_Services__c", "Wheelchair_Repair__c" ]
+    services.each do |service|
+      if params[service] == "true"
+        (reg.services ||= []) << Service.new(name: service)
+      end
+    end
+
+    if reg.save
+      render :json => { status: "Success" }
+    else
+      render :json => { status: "Failure" }
+    end
   end
 
   def search

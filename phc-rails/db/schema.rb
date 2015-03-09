@@ -43,13 +43,6 @@ ActiveRecord::Schema.define(version: 20150309074301) do
   add_index "accounts", ["LastName"], name: "index_accounts_on_LastName", using: :btree
   add_index "accounts", ["sf_id"], name: "index_accounts_on_sf_id", unique: true, using: :btree
 
-  create_table "event_registration_services", id: false, force: true do |t|
-    t.integer "event_registration_id"
-    t.integer "service_id"
-  end
-
-  add_index "event_registration_services", ["event_registration_id", "service_id"], name: "join_table_index", unique: true, using: :btree
-
   create_table "event_registrations", force: true do |t|
     t.string   "account_sfid"
     t.string   "phc_sfid"
@@ -59,6 +52,13 @@ ActiveRecord::Schema.define(version: 20150309074301) do
     t.datetime "updated_at"
     t.string   "Number__c"
   end
+
+  create_table "event_registrations_services", id: false, force: true do |t|
+    t.integer "event_registration_id"
+    t.integer "service_id"
+  end
+
+  add_index "event_registrations_services", ["event_registration_id", "service_id"], name: "join_table_index", unique: true, using: :btree
 
   create_table "last_modifieds", force: true do |t|
     t.datetime "created_at"
