@@ -27,13 +27,13 @@ class User < ActiveRecord::Base
   def remember
     self.auth_token = User.new_token
     update_attribute(:auth_digest, User.digest(auth_token))
+    self.auth_token
   end
 
   def authenticated?(auth_token)
     # When we end sessions, we destroy the auth token, so nil tokens should always fail
-    if not auth_token
-      return false
-    end
+    return false if auth_digest.nil?
+    return false if auth_token.nil?
     BCrypt::Password.new(auth_digest).is_password?(auth_token)
   end
 

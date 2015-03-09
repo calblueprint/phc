@@ -11,5 +11,5 @@
 #  sf_id      :string(255)
 #
 
-class PersonAccount < ActiveRecord::Base
+class Account < ActiveRecord::Base
 end
