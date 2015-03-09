@@ -14,7 +14,7 @@ class Api::V1::EventRegistrationsController < ApplicationController
       reg[:account_sfid] = account.id
     else
       if not Account.exists?(sf_id: sf_id)
-        raise "Unknown Salesforce ID"
+        raise "Unknown Salesforce ID. This should not happen!"
       end
       account = Account.find_by(sf_id: params[:account_sfid])
       reg[:account_sfid] = sf_id
