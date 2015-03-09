@@ -156,7 +156,8 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
 
             @Override
             public void onResponse(JSONObject jsonObject) {
-                mUserInfo.edit().clear().commit();
+                mUserInfo.edit().clear().apply();
+                Log.d(TAG, jsonObject.toString());
             }
         }
 
@@ -165,135 +166,11 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 if (volleyError.getLocalizedMessage() != null) {
-                    Log.e(TAG, volleyError.toString());
+                    Log.e(TAG, "Volley Error");
                 }
 
                 Toast toast = Toast.makeText(getActivity(), "Error registering user", Toast.LENGTH_SHORT);
                 toast.show();
-            }
-        }
-
-        /**
-         * Inserts a new Account object using the information from the form if search was not used.
-         */
-        private void newPerson() {
-            String apiVersion = getActivity().getResources().getString(R.string.api_version);
-            String objectName = "Account";
-            Map<String, Object> fields = getFields();
-
-            //@TODO: Add error handling
-
-            try {
-                RestRequest request = RestRequest.getRequestForCreate(apiVersion, objectName, fields);
-                RestClient.AsyncRequestCallback callback = new RestClient.AsyncRequestCallback() {
-                    @Override
-                    public void onSuccess(RestRequest request, RestResponse response) {
-                        try {
-                            JSONObject json = response.asJSONObject();
-                            boolean success = json.getBoolean("success");
-                            if (success) {registration(json.getString("id"));}
-                        } catch (IOException e1) {
-
-                        } catch (JSONException e2) {
-
-                        }
-                    }
-
-                    @Override
-                    public void onError(Exception exception) {
-
-                        Log.e("Insert Response Error", exception.toString());
-                    }
-                };
-                sendRequest(request, callback);
-            } catch (Exception e) {
-                Log.e("Person Insert Error", e.toString());
-            }
-
-        }
-
-        /**
-         * Updated a known Account object if search was used to arrive at submit page.
-         * @param Id: The id of the returning client.
-         */
-        private void updatePerson(final String Id) {
-            String apiVersion = getActivity().getResources().getString(R.string.api_version);
-            String objectName = "Account";
-            Map<String, Object> fields = getFields();
-            //@TODO: Add error handling
-
-            try {
-                RestRequest request = RestRequest.getRequestForUpdate(apiVersion, objectName, Id, fields);
-                RestClient.AsyncRequestCallback callback = new RestClient.AsyncRequestCallback() {
-                    @Override
-                    public void onSuccess(RestRequest request, RestResponse response) {
-                       registration(Id);
-                    }
-
-                    @Override
-                    public void onError(Exception exception) {
-
-                        Log.e("Update Response Error", exception.toString());
-                    }
-                };
-                sendRequest(request, callback);
-            } catch (Exception e) {
-                Log.e("Person Update Error", e.toString());
-            }
-        }
-
-        /**
-         * After an Account is sucessfully inserted/updated, this method will create a new registration
-         * object using the current PHC Event and the rest of the information from the filled out forms.
-         *
-         * @param PersonId: The id of the person to whom the registration refers
-         */
-        private void registration(String PersonId) {
-//            String eventId = ((CheckinActivity) getActivity()).getEventId();
-            String eventId = ((MainActivity) MainActivity.getContext()).getEventID();
-            String apiVersion = getActivity().getResources().getString(R.string.api_version);
-            String objectName = "Event_Registration__c";
-            String[] fields = ((MainActivity) MainActivity.getContext()).getSalesforceNames();
-            Map<String, Object> fieldValues = new HashMap<String, Object>();
-
-            SharedPreferences servicePreferences = mUserInfo;
-            for (String field : fields) {
-                Log.d("Field", field);
-                boolean fieldValue = servicePreferences.getBoolean(field, false);
-                if (fieldValue) {
-                    fieldValues.put(field, "Applied");
-                }
-            }
-            fieldValues.put("PHC_Event__c", eventId);
-            fieldValues.put("Account__c", PersonId);
-            fieldValues.put("Number__c", servicePreferences.getString(mName, "0"));
-
-            try {
-                RestRequest request = RestRequest.getRequestForCreate(apiVersion, objectName, fieldValues);
-                RestClient.AsyncRequestCallback callback = new RestClient.AsyncRequestCallback() {
-                    @Override
-                    public void onSuccess(RestRequest request, RestResponse response) {
-                        try {
-                            JSONObject json = response.asJSONObject();
-                            boolean success = json.getBoolean("success");
-                            mUserInfo.edit().clear().commit();
-                        } catch (IOException e1) {
-
-                        } catch (JSONException e2) {
-
-                        }
-                    }
-
-                    @Override
-                    public void onError(Exception exception) {
-
-                        Log.e("Register Response Error", exception.toString());
-                    }
-                };
-                sendRequest(request, callback);
-
-            } catch (Exception e) {
-                Log.e("Person Update Error", e.toString());
             }
         }
 
@@ -327,7 +204,6 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
                 fields.put("Birthdate__c", birthday);
             }
 
-
             String phone = "";
             phone = phone + userPreferences.getString("phone_1", "");
             phone = phone + userPreferences.getString("phone_2", "");
@@ -345,29 +221,9 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
             fields.put("Veteran__c", userPreferences.getBoolean("checkbox__military", false));
             fields.put("Minor_Children__c", userPreferences.getBoolean("checkbox_children", false));
 
-
             return fields;
         }
-
-        /**
-         * Helper that sends request to server and print result in text field.
-         *
-         * @param request - The request object that gets executed by the SF SDK
-         * @param callback - The functions that get called when the response comes back
-         *                   Modify UI elements here.
-         */
-        private void sendRequest(RestRequest request, RestClient.AsyncRequestCallback callback) {
-
-            try {
-
-                ((CheckinActivity) getActivity()).client.sendAsync(request, callback);
-
-            } catch (Exception error) {
-                Log.e("SF Request", error.toString());
-            }
-        }
     }
-
 
     /**
      * Records the scan result in shared preferences
