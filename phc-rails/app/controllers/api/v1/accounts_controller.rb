@@ -15,8 +15,8 @@ class Api::V1::AccountsController < ApplicationController
       if user_authenticated?(user_id, auth_token)
         first_name = request.headers["HTTP_FIRSTNAME"]
         last_name = request.headers["HTTP_LASTNAME"]
-        result = Account.fuzzy_search({:FirstName=>first_name, :LastName=>last_name}, false)
-        respond_with result.to_json(:only => [:FirstName, :LastName, :Birthdate__c, :sf_id])
+        result = Account.fuzzy_search({ FirstName: first_name, LastName: last_name }, false)
+        respond_with result.to_json(only: [:FirstName, :LastName, :Birthdate__c, :sf_id])
       end
     else
       respond_with "Error: Please include authentication token.", status: 401
@@ -38,7 +38,8 @@ class Api::V1::AccountsController < ApplicationController
         ##### TODO: POST TO SALESFORCE #####
       end
     else
-      respond_with "Error: Please include authentication token.", status: 401, location: root_url
+      respond_with "Error: Please include authentication token.", \
+        status: 401, location: root_url
     end
 
   end

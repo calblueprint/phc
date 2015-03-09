@@ -7,7 +7,7 @@ Rails.application.routes.draw do
       get "search", to: "accounts#search"
       post "create", to: "accounts#create"
       get "check", to: "accounts#check"
-      get 'accounts/:sf_id', to: 'accounts#show'
+      get "accounts/:sf_id", to: "accounts#show"
     end
   end
 
