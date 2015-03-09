@@ -11,19 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150309033732) do
+ActiveRecord::Schema.define(version: 20150309035653) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_trgm"
 
-  create_table "last_modifieds", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "last_modified"
-  end
-
-  create_table "person_accounts", force: true do |t|
+  create_table "accounts", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "sf_id"
@@ -45,9 +39,15 @@ ActiveRecord::Schema.define(version: 20150309033732) do
     t.string   "Medical_Care_Other__c"
   end
 
-  add_index "person_accounts", ["FirstName"], name: "index_person_accounts_on_FirstName", using: :btree
-  add_index "person_accounts", ["LastName"], name: "index_person_accounts_on_LastName", using: :btree
-  add_index "person_accounts", ["sf_id"], name: "index_person_accounts_on_sf_id", unique: true, using: :btree
+  add_index "accounts", ["FirstName"], name: "index_accounts_on_FirstName", using: :btree
+  add_index "accounts", ["LastName"], name: "index_accounts_on_LastName", using: :btree
+  add_index "accounts", ["sf_id"], name: "index_accounts_on_sf_id", unique: true, using: :btree
+
+  create_table "last_modifieds", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "last_modified"
+  end
 
   create_table "users", force: true do |t|
     t.string   "name"
