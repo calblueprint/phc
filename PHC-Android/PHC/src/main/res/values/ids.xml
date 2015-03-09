@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="clinic_name" type="id"/>
-    <item name="homeless_spinner" type="id"/>
+    <item name="healthcare_name" type="id"/>
+    <item name="spinner_homeless" type="id"/>
 </resources>

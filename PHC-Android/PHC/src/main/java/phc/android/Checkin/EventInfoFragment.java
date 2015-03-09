@@ -2,6 +2,7 @@ package phc.android.Checkin;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,18 +32,19 @@ public class EventInfoFragment extends CheckinFragment {
     /** Housing spinner */
     private Spinner mHousingSpinner;
     /** Homeless duration spinner */
-    private Spinner mHomelessSpinner;
+    private Spinner mHomelessDurationSpinner;
     /** Homeless layout */
     private ViewGroup mHomelessLayout;
     /** Healthcare spinner */
     private Spinner mHealthcareSpinner;
     /** Healthcare's other editText. */
-    private EditText mHealthcareName;
+    private EditText mHealthcareOtherText;
 
     /** Doctor layout. */
     private ViewGroup mHealthcareLayout;
     /** Continue button. */
     private Button mContinueButton;
+
 
     /**
      * On creation of the fragment for the first time, sets onClickListeners for checkboxes with
@@ -61,23 +63,37 @@ public class EventInfoFragment extends CheckinFragment {
         mHealthcareSpinner = (Spinner) view.findViewById(R.id.spinner_healthcare);
 
         if(savedInstanceState != null){
+            Log.d("savedInstanceState != null ", " ");
             if(savedInstanceState.getInt("healthcare_spinner") == 5) {
                 // Healthcare is Other
-                mHealthcareName.setText(savedInstanceState.getString("healthcare_name"));
+                mHealthcareOtherText = (EditText) view.findViewById(R.id.healthcare_name);
+                mHealthcareOtherText.setText(savedInstanceState.getString("healthcare_name"));
+                Log.d("savedInstanceState != null ", "mHealthcareName is set");
             } else{
+                Log.d("", "");
+                mHealthcareOtherText = (EditText) view.findViewById(R.id.healthcare_name);
                 removeHealthcareName();
+                Log.d("savedInstanceState != null ", "mHealthcareName is removed");
             }
 
-            if (savedInstanceState.getInt("homeless_spinner") == 1){
+            if (savedInstanceState.getInt("housing_spinner") == 1){
                 // Housing Status is Homeless
                 // Set HomelessSpinner
-                mHomelessSpinner.setSelection(savedInstanceState.getInt("homeless_spinner"));
+                mHomelessDurationSpinner = (Spinner) view.findViewById(R.id.spinner_homeless);
+                mHomelessDurationSpinner.setSelection(savedInstanceState.getInt("homeless_spinner"));
+                Log.d("savedInstanceState != null ", "mHomelessspinner is set");
             }else{
+                mHomelessDurationSpinner = (Spinner) view.findViewById(R.id.spinner_homeless);
+                removeHomelessDuration();
+                Log.d("savedInstanceState != null ", "mHomelessspinner is removed");
+            }
+        } else {
+            if (mHomelessDurationSpinner != null){
                 removeHomelessDuration();
             }
-        }else{
-            removeHealthcareName();
-            removeHomelessDuration();
+            if (mHealthcareOtherText != null){
+                removeHealthcareName();
+            }
         }
 
         setSpinnerContent();
@@ -100,7 +116,7 @@ public class EventInfoFragment extends CheckinFragment {
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                removeHealthcareName();
+
             }
         });
 
@@ -111,19 +127,15 @@ public class EventInfoFragment extends CheckinFragment {
                 Object item = adapterView.getItemAtPosition(pos);
                 if (item != null && item.toString().equals("Homeless")){
                     addHomelessDuration();
+                }else{
+                    removeHomelessDuration();
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                    removeHomelessDuration();
             }
         });
-
-
-
-
-
 
         mContinueButton.setOnClickListener(new OnContinueClickListener(
                 getActivity(), this, mLayout, new SelectServicesFragment(),
@@ -173,51 +185,51 @@ public class EventInfoFragment extends CheckinFragment {
      */
 
     public void addHomelessDuration(){
-        mHomelessSpinner = new Spinner(mHomelessLayout.getContext());
-        mHomelessSpinner.setLayoutParams(new LinearLayout.LayoutParams
+        mHomelessDurationSpinner = new Spinner(mHomelessLayout.getContext());
+        mHomelessDurationSpinner.setLayoutParams(new LinearLayout.LayoutParams
                 (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        mHomelessSpinner.setId(R.id.homeless_spinner);
-
+        mHomelessDurationSpinner.setId(R.id.spinner_homeless);
 
          /** Set homeless spinner values **/
         ArrayAdapter<CharSequence> homelessAdapter=
                 ArrayAdapter.createFromResource(getActivity(),
                         R.array.homeless_array,
                         android.R.layout.simple_spinner_item);
-        mHomelessSpinner.setAdapter(
+        mHomelessDurationSpinner.setAdapter(
                 new NothingSelectedSpinnerAdapter(
                         homelessAdapter,
                         R.layout.homeless_spinner_row_nothing_selected,
                         getActivity()));
-        mHealthcareLayout.addView(mHomelessSpinner);
+        mHomelessLayout.addView(mHomelessDurationSpinner);
     }
 
     /**
      * Removes the homeless duration Spinner
      */
     public void removeHomelessDuration(){
-        mHomelessLayout.removeView(mHomelessSpinner);
+        mHomelessLayout.removeView(mHomelessDurationSpinner);
     }
 
 
     /**
-     * Creates a new EditText prompting the name of the doctor's clinic when the doctor checkbox is
-     * checked.
+     * Creates a new EditText prompting the name of the clinic/healthcare when the Other option is
+     * selected for healthcare.
      */
     public void addHealthcareName(){
-        mHealthcareName = new EditText(mHealthcareLayout.getContext());
-        mHealthcareName.setLayoutParams(new LinearLayout.LayoutParams
+        mHealthcareOtherText = new EditText(mHealthcareLayout.getContext());
+        mHealthcareOtherText.setLayoutParams(new LinearLayout.LayoutParams
                 (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        mHealthcareName.setHint(R.string.prompt_clinic_name);
-        mHealthcareName.setId(R.id.clinic_name);
-        mHealthcareLayout.addView(mHealthcareName);
+        mHealthcareOtherText.setHint(R.string.prompt_clinic_name);
+        mHealthcareOtherText.setId(R.id.healthcare_name);
+        mHealthcareLayout.addView(mHealthcareOtherText);
     }
 
     /**
      * Removes the clinic name EditText when unchecked.
      */
     public void removeHealthcareName(){
-        mHealthcareLayout.removeView(mHealthcareName);
+        Log.d("ENTER-REMOVE-HEALTHCARE", "ENTERED");
+        mHealthcareLayout.removeView(mHealthcareOtherText);
     }
 
     @Override
@@ -245,12 +257,11 @@ public class EventInfoFragment extends CheckinFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        outState.putInt("homeless_spinner", mHomelessSpinner.getSelectedItemPosition());
+        outState.putInt("housing_spinner", mHousingSpinner.getSelectedItemPosition());
         outState.putInt("healthcare_spinner", mHealthcareSpinner.getSelectedItemPosition());
-        if (mHealthcareName != null ){
-            outState.putString("healthcare_name", mHealthcareName.getText().toString());
+        if (mHealthcareOtherText != null ){
+            outState.putString("healthcare_name", mHealthcareOtherText.getText().toString());
+            Log.d("onSaveInstanceState", "mHealthCareName != null ");
         }
-
     }
 }
