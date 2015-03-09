@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
 import com.salesforce.androidsdk.rest.RestClient;
 import com.salesforce.androidsdk.rest.RestRequest;
 import com.salesforce.androidsdk.rest.RestResponse;
@@ -25,6 +31,7 @@ import java.util.Map;
 
 import phc.android.Helpers.OnSubmitClickListener;
 import phc.android.Main.MainActivity;
+import phc.android.Networking.RequestManager;
 import phc.android.R;
 import phc.android.SharedFragments.ScannerConfirmationFragment;
 import phc.android.Helpers.SharedPreferenceEditorListener;
@@ -34,9 +41,18 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
 
     /* Tag for logs and fragment code */
     public final static String TAG = "CheckinScannerConfirmationFragment";
+    // Key for user shared preferences
+    private static final String USER_AUTH_PREFS_NAME = "UserKey";
+
+    // Request Manager Objects
+    private static RequestManager sRequestManager;
+    private static RequestQueue sRequestQueue;
 
     /* Name to store code in saved preferences */
     private final String mName = "qr_code";
+
+    // Shared Preferences
+    private SharedPreferences mUserPreferences;
 
     /* Preference editor for saved preferences */
     private PreferenceEditor mPreferenceEditor;
@@ -63,7 +79,8 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
      * @param container is the view group this view belongs to
      */
     @Override
-    protected View setupView(LayoutInflater inflater, ViewGroup container) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
+        super.onCreateView(inflater, container, bundle);
 
         View view = inflater.inflate(R.layout.fragment_scanner_confirmation, container, false);
         mPreferenceEditor = new PreferenceEditor(getActivity().getApplicationContext());
@@ -77,6 +94,10 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
         mConfirmButton = (Button) view.findViewById(R.id.confirm_scan);
         mConfirmButton.setText(getString(R.string.submit_form));
         mConfirmButton.setOnClickListener(new SubmitListener(getActivity()));
+
+        //Set up Volley request framework
+        sRequestQueue = Volley.newRequestQueue(getActivity());
+        sRequestManager = new RequestManager(TAG, sRequestQueue);
         return view;
     }
 
@@ -117,14 +138,38 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
          * create a new Event Registration object that reflects the user's preferred services.
          */
         private void registerPerson() {
-            SharedPreferences searchResult;
-            searchResult = getActivity().getSharedPreferences(SearchResultsFragment.SEARCH_RESULT, 0);
+            HashMap<String, Object> fields = getFields();
+            mUserPreferences = getActivity().getSharedPreferences(USER_AUTH_PREFS_NAME,
+                    Context.MODE_PRIVATE);
+            String userId = mUserPreferences.getString("user_id", null);
+            String authToken = mUserPreferences.getString("auth_token", null);
 
-            if(!searchResult.getBoolean("Searched", false)) {
-                newPerson();
-            } else {
-                updatePerson(searchResult.getString("SFID", null));
-                searchResult.edit().clear().commit();
+            sRequestManager.requestCreateEventReg(
+                    fields,
+                    userId,
+                    authToken,
+                    new RegisterResponseListener(),
+                    new RegisterErrorListener());
+        }
+
+        private class RegisterResponseListener implements Response.Listener<JSONObject> {
+
+            @Override
+            public void onResponse(JSONObject jsonObject) {
+                mUserInfo.edit().clear().commit();
+            }
+        }
+
+        private class RegisterErrorListener implements Response.ErrorListener {
+
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                if (volleyError.getLocalizedMessage() != null) {
+                    Log.e(TAG, volleyError.toString());
+                }
+
+                Toast toast = Toast.makeText(getActivity(), "Error registering user", Toast.LENGTH_SHORT);
+                toast.show();
             }
         }
 
@@ -258,7 +303,7 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
          * @return a Map containing key value pairs of Account information. The keys are field names,
          * and the values are their associated values.
          */
-        private Map<String, Object> getFields() {
+        private HashMap<String, Object> getFields() {
             HashMap<String, Object> fields = new HashMap<String, Object>();
             SharedPreferences userPreferences;
             userPreferences = mUserInfo;
