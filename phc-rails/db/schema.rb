@@ -48,8 +48,7 @@ ActiveRecord::Schema.define(version: 20150309074301) do
     t.integer "service_id"
   end
 
-  add_index "event_registration_services", ["event_registration_id"], name: "index_event_registration_services_on_event_registration_id", using: :btree
-  add_index "event_registration_services", ["service_id"], name: "index_event_registration_services_on_service_id", using: :btree
+  add_index "event_registration_services", ["event_registration_id", "service_id"], name: "join_table_index", unique: true, using: :btree
 
   create_table "event_registrations", force: true do |t|
     t.string   "account_sfid"
