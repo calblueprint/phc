@@ -1,14 +1,5 @@
 Rails.application.routes.draw do
-  get 'event_registration/create'
-
-  get 'event_registration/search'
-
-  get 'event_registration/update_service'
-
-  get 'event_registration/update_feedback'
-
   root "static_pages#index"
-  get "pull", to: "accounts#pull"
 
   namespace :api do
     namespace :v1 do
@@ -16,6 +7,10 @@ Rails.application.routes.draw do
       post "create", to: "accounts#create"
       get "check", to: "accounts#check"
       get "accounts/:sf_id", to: "accounts#show"
+      get 'event_registration/create'
+      get 'event_registration/search'
+      get 'event_registration/update_service'
+      get 'event_registration/update_feedback'
     end
   end
 
