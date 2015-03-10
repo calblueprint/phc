@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -45,6 +46,13 @@ public class PersonalInfoFragment extends Fragment {
     private Button mContinueButton;
     /** Parent Activity **/
     private CheckinActivity mParent;
+    /** GLBT Checkbox **/
+    private CheckBox mGLBTCheckbox;
+    /** Military Checkbox **/
+    private CheckBox mMilitaryCheckbox;
+    /** Foster Checkbox **/
+    private CheckBox mFosterCheckbox;
+
 
     /**
      * Set spinner content and continue button functionality.
@@ -68,11 +76,13 @@ public class PersonalInfoFragment extends Fragment {
             mPrompt.setText(R.string.personal_info_new);
         }
 
+
         mContinueButton = (Button) view.findViewById(R.id.button_account_continue);
         mContinueButton.setOnClickListener(new OnContinueClickListener(getActivity(),
                 this, mLayout, new EventInfoFragment(), getResources().getString(R.string
                 .sidebar_event_info)));
         return view;
+
     }
 
     @Override
@@ -127,6 +137,7 @@ public class PersonalInfoFragment extends Fragment {
         mPhone3 = (EditText) view.findViewById(R.id.phone_3);
 
         mEmail = (EditText) view.findViewById(R.id.email);
+
 
         mGenderSpinner = (Spinner) view.findViewById(R.id.spinner_gender);
         mEthnicitySpinner = (Spinner) view.findViewById(R.id.spinner_ethnicity);
@@ -232,6 +243,13 @@ public class PersonalInfoFragment extends Fragment {
         String gender = sharedPreferences.getString("Gender", null);
         String ethnicity = sharedPreferences.getString("Ethnicity", null);
         String language = sharedPreferences.getString("Language", null);
+        Boolean glbt = sharedPreferences.getBoolean("checkbox_glbt", false);
+        Boolean foster = sharedPreferences.getBoolean("checkbox_foster", false);
+        Boolean military = sharedPreferences.getBoolean("checkbox_military", false);
+
+        if(!glbt.equals("null")) mGLBTCheckbox.setActivated(true);
+        if(!foster.equals("null")) mMilitaryCheckbox.setActivated(true);
+        if(!military.equals("null")) mFosterCheckbox.setActivated(true);
 
         if(!firstName.equals("null")) mFirstName.setText(firstName);
         if(!lastName.equals("null")) mLastName.setText(lastName);
