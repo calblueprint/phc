@@ -1,35 +1,22 @@
 package phc.android.Checkout;
 
 
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
-import com.salesforce.androidsdk.util.JSTestCase;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import phc.android.Checkin.SearchResultsFragment;
-import phc.android.Networking.RequestManager;
 import phc.android.R;
 import phc.android.SharedFragments.ScannerFragment;
 

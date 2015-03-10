@@ -2,7 +2,6 @@ package phc.android.Checkin;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,9 +12,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import phc.android.Checkin.CheckinActivity;
-import phc.android.Checkin.CheckinFragment;
-import phc.android.Checkin.SearchResultsFragment;
 import phc.android.R;
 
 /**

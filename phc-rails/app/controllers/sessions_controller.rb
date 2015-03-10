@@ -8,8 +8,8 @@ class SessionsController < ApplicationController
   def login
     user = User.find_by(email: params[:email].downcase)
     if user && user.authenticate(params[:password])
-      user.remember
-      data = {user_id: user.id, auth_token: user.auth_token}
+      auth_token = user.remember
+      data = { user_id: user.id, auth_token: auth_token }
       respond_with data, :location => root_url
     else
       # Why doesn't respond_with work?

@@ -9,11 +9,6 @@ import com.salesforce.androidsdk.app.SalesforceSDKManager;
 import com.salesforce.androidsdk.rest.ClientManager;
 import com.salesforce.androidsdk.rest.RestClient;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
-import phc.android.Main.MainActivity;
 import phc.android.R;
 
 /**

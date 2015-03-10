@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 
-import phc.android.Checkout.CheckoutFormFragment;
 import phc.android.R;
 import phc.android.SharedFragments.ScannerFragment;
 

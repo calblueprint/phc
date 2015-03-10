@@ -21,7 +21,6 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 
-import phc.android.Main.MainActivity;
 import phc.android.R;
 
 public class CheckoutFormFragment extends Fragment {

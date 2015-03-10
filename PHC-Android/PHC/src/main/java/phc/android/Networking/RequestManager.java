@@ -13,8 +13,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import phc.android.Checkout.CheckoutScannerFragment;
-
 /**
  * Created by tonywu on 2/24/15.
  * Contains abstractions for doing network requests.
@@ -26,10 +24,12 @@ public class RequestManager {
     private static final String BASE_URL = "http://phc-staging.herokuapp.com";
     private static final String LOGIN_ENDPOINT = "/login";
     private static final String SEARCH_ENDPOINT = "/api/v1/search";
-    private static final String CREATE_ENDPOINT = "/api/v1/create";
     private static final String SEARCH_REG_ENDPOINT = "/api/v1/event_registrations/search";
     private static final String UPDATE_SERVICE_ENDPOINT =
             "/api/v1/event_registrations/update_service";
+    private static final String CREATE_EVENT_REG_ENDPOINT = "/api/v1/event_registrations/create";
+    private static final String USER_INFO_ENDPOINT = "/api/v1/accounts";
+    private static final String SERVICES_ENDPOINT = "/services";
 
     private static RequestQueue sRequestQueue;
     private static String sTAG;
@@ -88,14 +88,21 @@ public class RequestManager {
                                      Response.Listener<JSONArray> responseListener,
                                      Response.ErrorListener errorListener) {
 
-        JsonArrayRequest searchRequest = new JsonArrayRequest(BASE_URL + SEARCH_ENDPOINT,
+        StringBuilder buildUrl = new StringBuilder(BASE_URL);
+        buildUrl.append(SEARCH_ENDPOINT);
+        buildUrl.append("?");
+        buildUrl.append("FirstName=");
+        buildUrl.append(firstName);
+        buildUrl.append("&");
+        buildUrl.append("LastName=");
+        buildUrl.append(lastName);
+
+        JsonArrayRequest searchRequest = new JsonArrayRequest(buildUrl.toString(),
                 responseListener,
                 errorListener) {
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> params = new HashMap<String, String>();
-                params.put("first_name", firstName);
-                params.put("last_name", lastName);
                 params.put("user_id", userId);
                 params.put("auth_token", authToken);
                 params.put("Accept", "*/*");
@@ -107,12 +114,47 @@ public class RequestManager {
     }
 
     /**
+     * Used to search for a specific user
+     * @param sfID salesforce Id of the user we want info from
+     * @param userId user_id of logged in user
+     * @param authToken auth_token of logged in user
+     * @param responseListener listener that is called when response received
+     * @param errorListener listener that is called when error
+     */
+    public void requestUserInfo(final String sfID,
+                              final String userId,
+                              final String authToken,
+                              Response.Listener<JSONObject> responseListener,
+                              Response.ErrorListener errorListener) {
+
+        StringBuilder buildUrl = new StringBuilder(BASE_URL);
+        buildUrl.append(USER_INFO_ENDPOINT);
+        buildUrl.append("/");
+        buildUrl.append(sfID);
+
+        JsonObjectRequest userInfoRequest = new JsonObjectRequest(buildUrl.toString(),
+                null,
+                responseListener,
+                errorListener) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("user_id", userId);
+                params.put("auth_token", authToken);
+                params.put("Accept", "*/*");
+                return params;
+            }
+        };
+        userInfoRequest.setTag(sTAG);
+        sRequestQueue.add(userInfoRequest);
+    }
+
+    /**
      * Used to search for a person receiving services
      * @param qrCode qrCode of person seeking services
      * @param userId user_id of logged in user
      * @param authToken auth_token of logged in user
      */
-
     public void requestSearchByCode(final String qrCode,
                                     final String authToken,
                                     final String userId,
@@ -127,10 +169,10 @@ public class RequestManager {
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> params = new HashMap<String, String>();
-                params.put("user_id", "1");
-//                params.put("user_id", userId);
-                params.put("auth_token", "vqWbG-dyt-cu9d9zqt1fXw");
-//                params.put("auth_token", authToken);
+//                params.put("user_id", "1");
+                params.put("user_id", userId);
+//                params.put("auth_token", "vqWbG-dyt-cu9d9zqt1fXw");
+                params.put("auth_token", authToken);
                 params.put("Accept", "*/*");
                 params.put("Number__c", qrCode);
                 return params;
@@ -141,30 +183,32 @@ public class RequestManager {
     }
 
     /**
-     * Used to create a new user in the databse
-     * @param firstName first name of new user
-     * @param lastName last name of new user
+     * Used to create a new Event Registration object in the databse
+     * @param params key values that descrive the event registration object being created
      * @param userId user_id of logged in user
      * @param authToken auth_token of logged in user
      * @param responseListener listener that is called when response received
      * @param errorListener listener that is called when error
      */
-    public void requestCreate(String firstName,
-                                     String lastName,
-                                     String userId,
-                                     String authToken,
+    public void requestCreateEventReg(HashMap<String, Object> params,
+                                     final String userId,
+                                     final String authToken,
                                      Response.Listener<JSONObject> responseListener,
                                      Response.ErrorListener errorListener) {
-        HashMap<String, String> params = new HashMap<String, String>();
-        params.put("first_name", firstName);
-        params.put("last_name", lastName);
-        params.put("user_id", userId);
-        params.put("auth_token", authToken);
 
-            JsonObjectRequest createRequest = new JsonObjectRequest(BASE_URL + CREATE_ENDPOINT,
+        JsonObjectRequest createRequest = new JsonObjectRequest(BASE_URL + CREATE_EVENT_REG_ENDPOINT,
                 new JSONObject(params),
                 responseListener,
-                errorListener);
+                errorListener) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("user_id", userId);
+                headers.put("auth_token", authToken);
+                headers.put("Accept", "*/*");
+                return headers;
+            }
+        };
         createRequest.setTag(sTAG);
         sRequestQueue.add(createRequest);
     }
@@ -194,10 +238,10 @@ public class RequestManager {
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> params = new HashMap<String, String>();
-                params.put("user_id", "1");
-                params.put("auth_token", "vqWbG-dyt-cu9d9zqt1fXw");
-//                params.put("user_id", userId);
-//                params.put("auth_token", authToken);
+//                params.put("user_id", "1");
+//                params.put("auth_token", "vqWbG-dyt-cu9d9zqt1fXw");
+                params.put("user_id", userId);
+                params.put("auth_token", authToken);
                 params.put("Accept", "*/*");
                 return params;
             }
@@ -206,4 +250,23 @@ public class RequestManager {
         sRequestQueue.add(updateRequest);
     }
 
+    public void requestServices(final String userId,
+                                final String authToken,
+                                Response.Listener<JSONArray> responseListener,
+                                Response.ErrorListener errorListener) {
+        JsonArrayRequest searchRequest = new JsonArrayRequest(BASE_URL + SERVICES_ENDPOINT,
+                responseListener,
+                errorListener) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("user_id", userId);
+                params.put("auth_token", authToken);
+                params.put("Accept", "*/*");
+                return params;
+            }
+        };
+        searchRequest.setTag(sTAG);
+        sRequestQueue.add(searchRequest);
+    }
 }

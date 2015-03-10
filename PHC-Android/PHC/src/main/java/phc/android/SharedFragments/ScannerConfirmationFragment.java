@@ -59,7 +59,7 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     protected static RequestQueue sRequestQueue;
 
     /* Shared Preferences */
-    protected static final String USER_PREFS_NAME = "UserKey";
+    protected static final String USER_AUTH_PREFS_NAME = "UserKey";
     protected SharedPreferences mUserPreferences;
     protected String mUserId;
     protected String mAuthToken;
@@ -97,7 +97,7 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
         sRequestManager = new RequestManager(TAG, sRequestQueue);
 
         // Get userId and authToken
-        mUserPreferences = getActivity().getSharedPreferences(USER_PREFS_NAME,
+        mUserPreferences = getActivity().getSharedPreferences(USER_AUTH_PREFS_NAME,
                 Context.MODE_PRIVATE);
         mUserId = mUserPreferences.getString("user_id", null);
         mAuthToken = mUserPreferences.getString("auth_token", null);

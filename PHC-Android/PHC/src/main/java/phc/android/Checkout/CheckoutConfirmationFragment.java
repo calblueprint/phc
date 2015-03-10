@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import phc.android.SharedFragments.SuccessFragment;
 import phc.android.R;
 import phc.android.SharedFragments.ScannerConfirmationFragment;
+import phc.android.SharedFragments.SuccessFragment;
 
 
 public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {

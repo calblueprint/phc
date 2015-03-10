@@ -96,12 +96,14 @@
     <string name="prompt_language">Primary Language...</string>
     <string name="prompt_military">Served in the military?</string>
     <string name="prompt_foster">Been in Foster Care?</string>
+    <string name="prompt_glbt">Identify as GLBT?</string>
 
     <string-array name="gender_array">
         <item>Male</item>
         <item>Female</item>
         <item>Transgender</item>
     </string-array>
+
     <string-array name="ethnicity_array">
         <item>African American</item>
         <item>Latino</item>
@@ -129,10 +131,9 @@
     <!-- Event Info -->
     <string name="prompt_neighborhood">Neighborhood of residence</string>
     <string name="prompt_housing">Housing Status</string>
-    <string name="prompt_children">Minor children here today?</string>
-    <string name="prompt_children_age">(Optional) ages</string>
-    <string name="prompt_doctor">Do you currently have a primary care doctor?</string>
-    <string name="prompt_clinic_name">(Optional) name of clinic</string>
+    <string name="prompt_healthcare">Where do you go for healthcare?</string>
+    <string name="prompt_homeless">How long have you been homeless?</string>
+
 
     <string-array name="neighborhood_array">
         <item>Bayview/HP</item>
@@ -143,12 +144,36 @@
         <item>Other</item>
     </string-array>
 
-
-
     <string-array name="housing_array">
         <item>Housed</item>
         <item>Homeless</item>
+        <item>Other</item>
     </string-array>
+
+    <string-array name="healthcare_array">
+        <item>Hospital/Emergency Room</item>
+        <item>Urgent Care</item>
+        <item>Clinic / Primary Care Doctor</item>
+        <item>VA</item>
+        <item>Does not go for care</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="homeless_array">
+        <item>Less than 3 months</item>
+        <item>3-6 months </item>
+        <item>6-9 months </item>
+        <item>9-12 months </item>
+        <item>1-3 years </item>
+        <item>3-5 years </item>
+        <item>5-7 years </item>
+        <item>7-10 years </item>
+        <item>10-15 years </item>
+        <item>15 years and more</item>
+    </string-array>
+
+
+
 
     <!-- Services Selection -->
     <string name="prompt_services">Which services will you be using today?</string>

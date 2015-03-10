@@ -26,7 +26,7 @@ public class LoginActivity extends Activity {
 
     private static final String TAG = "LoginActivity";
     // Key for user shared preferences
-    private static final String USER_PREFS_NAME = "UserKey";
+    private static final String USER_AUTH_PREFS_NAME = "UserKey";
 
     private static RequestManager sRequestManager;
     private static RequestQueue sRequestQueue;
@@ -64,21 +64,11 @@ public class LoginActivity extends Activity {
             String email = mEmailText.getText().toString();
             String password = mPasswordText.getText().toString();
 
-            // Used to bypass login, Testing only
-            // TODO: Take out before publishing app
-            if (email.equals("email") && password.equals("pass")) {
-                // Start MainActivity
-                Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(i);
-
-                // Close this activity
-                finish();
-            } else {
-                sRequestManager.requestLogin(email,
-                        password,
-                        new LoginResponseListener(),
-                        new LoginErrorListener());
-            }
+             sRequestManager.requestLogin(
+                     email,
+                     password,
+                     new LoginResponseListener(),
+                     new LoginErrorListener());
         }
     }
 
@@ -90,7 +80,7 @@ public class LoginActivity extends Activity {
                 // Get the user_id and auth_token and save into SharedPreferences
                 String userId = jsonObject.getString("user_id");
                 String authToken = jsonObject.getString("auth_token");
-                mUserPreferences = getSharedPreferences(USER_PREFS_NAME,
+                mUserPreferences = getSharedPreferences(USER_AUTH_PREFS_NAME,
                         Context.MODE_PRIVATE);
                 mUserPreferencesEditor = mUserPreferences.edit();
                 mUserPreferencesEditor.putString("user_id", userId);
