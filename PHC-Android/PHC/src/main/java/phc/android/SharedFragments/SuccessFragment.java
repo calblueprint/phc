@@ -179,11 +179,11 @@ public class SuccessFragment extends CheckinFragment {
 
         String firstName = sharedPref.getString("first_name", "");
         String lastName = sharedPref.getString("last_name", "");
-        if (firstName == "" && lastName == ""){
+        if (firstName.equals("") && lastName.equals("")){
             clientName = "The client";
         } else {
-            if (firstName != "") clientName += firstName;
-            if (lastName != "") clientName += " " + lastName;
+            if (!firstName.equals("")) clientName += firstName;
+            if (!lastName.equals("")) clientName += " " + lastName;
         }
 
         mSuccessText.setText("Success! " + clientName + " is now " + mActionTextMapping.get
