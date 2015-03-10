@@ -41,8 +41,8 @@ public class ServicesScannerConfirmationFragment extends ScannerConfirmationFrag
 
         Log.d ("looking up: ", mScanResult);
         sRequestManager.requestSearchByCode(mScanResult,
-                mAuthToken,
                 mUserId,
+                mAuthToken,
                 new SearchByCodeResponseListener(),
                 new SearchByCodeErrorListener());
 
@@ -106,8 +106,8 @@ public class ServicesScannerConfirmationFragment extends ScannerConfirmationFrag
 
                 sRequestManager.requestUpdateService(mScanResult,
                         service,
-                        mAuthToken,
                         mUserId,
+                        mAuthToken,
                         new UpdateServiceResponseListener(),
                         new UpdateServiceErrorListener());
 

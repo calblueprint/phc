@@ -38,10 +38,6 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
     // Key for user shared preferences
     private static final String USER_AUTH_PREFS_NAME = "UserKey";
 
-    // Request Manager Objects
-    private static RequestManager sRequestManager;
-    private static RequestQueue sRequestQueue;
-
     /* Name to store code in saved preferences */
     private final String mName = "qr_code";
 
@@ -65,44 +61,13 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
         }
     }
 
-    /**
-     * Separate method for setting up view so that this
-     * functionality can be overriden by a subclass.
-     * Override to setup mPreferenceEditor
-     * @param inflater instantiates the XML layout
-     * @param container is the view group this view belongs to
-     */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
-        super.onCreateView(inflater, container, bundle);
-
-        View view = inflater.inflate(R.layout.fragment_scanner_confirmation, container, false);
+    protected View setupView(LayoutInflater inflater, ViewGroup container) {
+        View view = super.setupView(inflater, container);
+        mConfirmButton.setOnClickListener(new SubmitListener(getActivity()));
         mPreferenceEditor = new PreferenceEditor(getActivity().getApplicationContext());
 
-        mScanResultView = (TextView) view.findViewById(R.id.scan_result);
-        mScanResultView.setText(mScanResult);
-
-        mRetryButton = (Button) view.findViewById(R.id.retry_scan);
-        mRetryButton.setOnClickListener(new RetryListener());
-
-        mConfirmButton = (Button) view.findViewById(R.id.confirm_scan);
-        mConfirmButton.setText(getString(R.string.submit_form));
-        mConfirmButton.setOnClickListener(new SubmitListener(getActivity()));
-
-        //Set up Volley request framework
-        sRequestQueue = Volley.newRequestQueue(getActivity());
-        sRequestManager = new RequestManager(TAG, sRequestQueue);
         return view;
-    }
-
-    /**
-     * Used when the user wants to return to scan
-     */
-    protected class RetryListener implements View.OnClickListener{
-        @Override
-        public void onClick(View view) {
-            retry();
-        }
     }
 
     /**
