@@ -25,6 +25,9 @@ public class RequestManager {
     private static final String LOGIN_ENDPOINT = "/login";
     private static final String SEARCH_ENDPOINT = "/api/v1/search";
     private static final String CREATE_ENDPOINT = "/api/v1/create";
+    private static final String SEARCH_REG_ENDPOINT = "/api/v1/event_registrations/search";
+    private static final String UPDATE_SERVICE_ENDPOINT =
+            "/api/v1/event_registrations/update_service";
 
     private static RequestQueue sRequestQueue;
     private static String sTAG;
@@ -120,7 +123,7 @@ public class RequestManager {
         params.put("user_id", userId);
         params.put("auth_token", authToken);
 
-        JsonObjectRequest searchRequest = new JsonObjectRequest(BASE_URL + SEARCH_ENDPOINT,
+        JsonObjectRequest searchRequest = new JsonObjectRequest(BASE_URL + SEARCH_REG_ENDPOINT,
                 new JSONObject(params),
                 responseListener,
                 errorListener);
@@ -159,5 +162,31 @@ public class RequestManager {
         sRequestQueue.add(createRequest);
     }
 
+    /**
+     * Used to mark a client as checked-in to a service.
+     * @param userId user_id of logged in user
+     * @param authToken auth_token of logged in user
+     * @param responseListener listener that is called when response received
+     * @param errorListener listener that is called when error
+     */
+    public void requestUpdateService(String qrCode,
+                                     String serviceName,
+                                     String userId,
+                                     String authToken,
+                                     Response.Listener<JSONObject> responseListener,
+                                     Response.ErrorListener errorListener) {
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("Number__c", qrCode);
+        params.put("service_name", serviceName);
+        params.put("user_id", userId);
+        params.put("auth_token", authToken);
+
+        JsonObjectRequest createRequest = new JsonObjectRequest(BASE_URL + UPDATE_SERVICE_ENDPOINT,
+                new JSONObject(params),
+                responseListener,
+                errorListener);
+        createRequest.setTag(sTAG);
+        sRequestQueue.add(createRequest);
+    }
 
 }
