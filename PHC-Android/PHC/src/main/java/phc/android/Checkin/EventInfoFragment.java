@@ -25,8 +25,6 @@ import phc.android.R;
 public class EventInfoFragment extends CheckinFragment {
     /** Parent layout for all views. */
     private ViewGroup mLayout;
-    /** Neighborhood spinner. */
-    private Spinner mNeighborhoodSpinner;
     /** Housing spinner */
     private Spinner mHousingSpinner;
     /** Homeless duration spinner */
@@ -54,7 +52,7 @@ public class EventInfoFragment extends CheckinFragment {
         mHomelessDurationSpinner = (Spinner) view.findViewById(R.id.spinner_homeless_duration);
         mLayout = (LinearLayout) view.findViewById(R.id.event_fields);
         mContinueButton = (Button) view.findViewById(R.id.button_event_continue);
-        mNeighborhoodSpinner = (Spinner) view.findViewById(R.id.spinner_neighborhood);
+
         mHousingSpinner = (Spinner) view.findViewById(R.id.spinner_housing);
         mHealthcareSpinner = (Spinner) view.findViewById(R.id.spinner_healthcare);
         setSpinnerContent();
@@ -136,17 +134,6 @@ public class EventInfoFragment extends CheckinFragment {
 
 
     private void setSpinnerContent(){
-        /**  Sets multiple choice options for the neighborhood spinner **/
-        ArrayAdapter<CharSequence> neighborhoodAdapter =
-                ArrayAdapter.createFromResource(getActivity(),
-                        R.array.neighborhood_array,
-                        android.R.layout.simple_spinner_item);
-        mNeighborhoodSpinner.setAdapter(
-                new NothingSelectedSpinnerAdapter(
-                        neighborhoodAdapter,
-                        R.layout.neighborhood_spinner_row_nothing_selected,
-                        getActivity()));
-
         /** Set housing spinner values **/
         ArrayAdapter<CharSequence> housingAdapter =
                 ArrayAdapter.createFromResource(getActivity(),
