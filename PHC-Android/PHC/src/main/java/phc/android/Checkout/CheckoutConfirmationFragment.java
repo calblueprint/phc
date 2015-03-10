@@ -43,12 +43,12 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
 
         /* Grab the last scan result from this fragment or the previous */
         if (savedInstanceState != null) {
-            mScanResult = savedInstanceState.getCharSequence("scan_result");
+            mScanResult = savedInstanceState.getCharSequence("scan_result").toString();
             mManualInput = savedInstanceState.getBoolean("manual_input");
             mExperience = savedInstanceState.getInt("experience");
             mComments = savedInstanceState.getString("comments");
         } else {
-            mScanResult =  getArguments().getCharSequence("scan_result");
+            mScanResult =  getArguments().getCharSequence("scan_result").toString();
             mManualInput = getArguments().getBoolean("manual_input");
             mExperience = getArguments().getInt("experience");
             mComments =getArguments().getString("comments");
@@ -154,16 +154,4 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
         transaction.replace(R.id.checkout_activity_container, successFragment);
         transaction.commit();
     }
-
-    /**
-     * Records the scan result in shared preferences
-     * and displays a success toast.
-     */
-    @Override
-    protected void recordScan() {
-        CheckoutActivity activity = (CheckoutActivity) getActivity();
-        activity.recordResult((String) mScanResult);
-    }
-
-
 }

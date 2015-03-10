@@ -19,4 +19,15 @@ public class Utils {
         columnName = columnName.replace("_", " ");
         return columnName;
     }
+
+    /**
+     * Converts display name to Salesforce name.
+     * @param displayName display name of service
+     * @return salesforce name of service
+     */
+    public static String fieldNameHelperReverse(String displayName) {
+        displayName = displayName.replace(" ", "_");
+        return displayName + "__c";
+    }
+
 }

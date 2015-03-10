@@ -23,7 +23,6 @@ public class ServiceSideBarFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_service_side_bar, container, false);
 
-        // Grab list of all services offered for the current event from Salesforce DB
         Resources res = getResources();
         final String[] elements = res.getStringArray(R.array.services_sidebar);
         LinearLayout sidebarList = (LinearLayout) view.findViewById(R.id.services_sidebar_list);
@@ -51,11 +50,12 @@ public class ServiceSideBarFragment extends Fragment {
                     Fragment newFragment = fragMan.findFragmentByTag(tag);
 
                     if (newFragment == null) {
-                        if (tag.equals(getResources().getString(R.string.sidebar_scan))) {
+                        if (tag.equals(getResources().getString(R.string.sidebar_scan_code))) {
                             newFragment = new ScannerFragment();
                         } else if (tag.equals(getResources().getString(R.string.sidebar_confirm))) {
                             newFragment = new ScannerFragment();
                         }
+                        ((ScannerFragment)newFragment).setType(ScannerFragment.FlowType.SERVICES);
                     }
 
                     FragmentTransaction transaction = fragMan.beginTransaction();

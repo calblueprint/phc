@@ -35,25 +35,25 @@ public class CheckoutScannerFragment extends ScannerFragment {
      */
     @Override
     protected void confirmScan(CharSequence scanResult, boolean manualInput) {
-        mUserPreferences = getActivity().getSharedPreferences(USER_PREFS_NAME,
-                Context.MODE_PRIVATE);
-        String userId = mUserPreferences.getString("user_id", null);
-        String authToken = mUserPreferences.getString("auth_token", null);
+//        mUserPreferences = getActivity().getSharedPreferences(USER_PREFS_NAME,
+//                Context.MODE_PRIVATE);
+//        String userId = mUserPreferences.getString("user_id", null);
+//        String authToken = mUserPreferences.getString("auth_token", null);
 
-        sRequestManager.requestSearchByCode(scanResult.toString(),
-                authToken,
-                userId,
-                new LoginResponseListener(),
-                new LoginErrorListener());
+//        sRequestManager.requestSearchByCode(scanResult.toString(),
+//                authToken,
+//                userId,
+//                new LoginResponseListener(),
+//                new LoginErrorListener());
 
         Bundle args = new Bundle();
         args.putCharSequence("scan_result", scanResult);
         args.putBoolean("manual_input", manualInput);
-        args.putStringArrayList("services_not_received", mServicesNotReceived);
+//        args.putStringArrayList("services_not_received", mServicesNotReceived);
 
         Fragment confFrag = new CheckoutFormFragment();
         confFrag.setArguments(args);
-        displayNextFragment(confFrag, CheckoutFormFragment.TAG);
+//        displayNextFragment(confFrag, CheckoutFormFragment.TAG);
     }
 
     private class LoginResponseListener implements Response.Listener<JSONObject> {
@@ -88,26 +88,10 @@ public class CheckoutScannerFragment extends ScannerFragment {
         }
     }
 
-    /**
-     * Brings up another fragment when this fragment
-     * is complete
-     * @param nextFrag Fragment to display next
-     * @param fragName String fragment names
-     */
-    @Override
-    protected void displayNextFragment(Fragment nextFrag, String fragName) {
-        FragmentTransaction transaction =
-                (getActivity()).getFragmentManager().beginTransaction();
-        transaction.replace(R.id.checkout_activity_container, nextFrag, fragName);
-        transaction.addToBackStack(fragName);
-        transaction.commit();
-    }
-
     // Can remove when sidebar is added
     @Override
     protected void resumeHelper(){
         ;
     }
-
 
 }

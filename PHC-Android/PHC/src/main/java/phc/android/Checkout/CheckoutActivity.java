@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 
 import phc.android.R;
+import phc.android.SharedFragments.ScannerFragment;
 
 /**
  * An activity for when a client exits an event and wants someone to follow up
@@ -15,22 +16,19 @@ import phc.android.R;
  */
 public class CheckoutActivity extends Activity {
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
+
         FragmentTransaction transaction = this.getFragmentManager().beginTransaction();
-        //move this activity to a fragment
-        //remove this fragment.
-        transaction.add(R.id.checkout_activity_container, new CheckoutScannerFragment());
+        ScannerFragment scannerFragment = new ScannerFragment();
+        scannerFragment.setType(ScannerFragment.FlowType.CHECKOUT);
+        transaction.add(R.id.checkout_activity_container, scannerFragment);
         transaction.commit();
+
         ActionBar actionbar = getActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
     }
 
-    protected void recordResult(String code) {
-        //getServiceStatus(getKeyByValue(sOfferedServices, mServiceSelected), code);
-    }
 }

@@ -33,7 +33,8 @@ import phc.android.SharedFragments.ScannerConfirmationFragment;
 public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragment {
 
     /* Tag for logs and fragment code */
-    public final static String TAG = "CheckinScannerConfirmationFragment";
+    public final static String TAG = "CHECKIN_SCANNER_CONF";
+
     // Key for user shared preferences
     private static final String USER_AUTH_PREFS_NAME = "UserKey";
 
@@ -223,21 +224,12 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
     }
 
     /**
-     * Records the scan result in shared preferences
-     * and displays a success toast.
-     */
-    @Override
-    protected void recordScan() {
-        mPreferenceEditor.storeScanResult(mScanResult.toString());
-        showSuccessToast();
-    }
-
-    /**
      * Returns to scanner fragment and displays a
      * failure toast
      */
     @Override
     protected void retry() {
+        Log.d("retried", "not working");
         showFailureToast();
         FragmentManager manager = getFragmentManager();
         manager.popBackStack(CheckinScannerConfirmationFragment.TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -245,7 +237,7 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
 
     @Override
     protected void resumeHelper() {
-        LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.sidebar_list);
+        LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.checkin_sidebar_list);
         for (int i = 0; i < sidebarList.getChildCount(); i++) {
             View v = sidebarList.getChildAt(i);
             Object vTag = v.getTag();

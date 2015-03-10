@@ -1,12 +1,17 @@
 package phc.android.SharedFragments;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +20,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+import phc.android.Helpers.SearchResult;
+import phc.android.Networking.RequestManager;
 import phc.android.R;
 import phc.android.Services.ServicesActivity;
 
@@ -28,13 +47,22 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     protected TextView mScanResultView;
 
     /* Holds last scan result */
-    protected CharSequence mScanResult;
+    protected String mScanResult;
 
     /* Button to go back to scanner fragment */
     protected Button mRetryButton;
 
     /* Button to confirm result */
     protected Button mConfirmButton;
+
+    protected static RequestManager sRequestManager;
+    protected static RequestQueue sRequestQueue;
+
+    /* Shared Preferences */
+    protected static final String USER_AUTH_PREFS_NAME = "UserKey";
+    protected SharedPreferences mUserPreferences;
+    protected String mUserId;
+    protected String mAuthToken;
 
     /** Keeps track of whether the user
      * scanned a code or input it
@@ -50,10 +78,10 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
 
         /* Grab the last scan result from this fragment or the previous */
         if (savedInstanceState != null) {
-            mScanResult = savedInstanceState.getCharSequence("scan_result");
+            mScanResult = savedInstanceState.getCharSequence("scan_result").toString();
             mManualInput = savedInstanceState.getBoolean("manual_input");
         } else {
-            mScanResult = getArguments().getCharSequence("scan_result");
+            mScanResult = getArguments().getCharSequence("scan_result").toString();
             mManualInput = getArguments().getBoolean("manual_input");
         }
         String prompt;
@@ -63,6 +91,17 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
             prompt = getString(R.string.text_scan_confirmation);
         }
         mScanResultView.setText(Html.fromHtml(prompt + "<br /><br />" + "<b><big><big>" + mScanResult + "</b></big></big><br />"));
+
+        //Set up Volley request framework
+        sRequestQueue = Volley.newRequestQueue(getActivity());
+        sRequestManager = new RequestManager(TAG, sRequestQueue);
+
+        // Get userId and authToken
+        mUserPreferences = getActivity().getSharedPreferences(USER_AUTH_PREFS_NAME,
+                Context.MODE_PRIVATE);
+        mUserId = mUserPreferences.getString("user_id", null);
+        mAuthToken = mUserPreferences.getString("auth_token", null);
+
         return view;
     }
 
@@ -97,6 +136,17 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     }
 
     /**
+     * Returns to scanner fragment and displays a
+     * failure toast.
+     */
+    protected void retry() {
+        showFailureToast();
+        FragmentManager manager = getFragmentManager();
+        manager.popBackStack(ScannerConfirmationFragment.TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
+
+
+    /**
      * Used to confirm the scan result.
      */
     public class ConfirmListener implements View.OnClickListener {
@@ -107,27 +157,11 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     }
 
     /**
-     * Returns to scanner fragment and displays a
-     * failure toast.
+     * To be overriden by the subclass.
+     * Each type of ScannerConfirmation Fragment will perform a different operation
+     * when the "confirm" button is pressed.
      */
-    protected void retry() {
-        showFailureToast();
-        FragmentManager manager = getFragmentManager();
-        manager.popBackStack(ScannerConfirmationFragment.TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-    }
-
-    /**
-     * Records the scan, returns to scanner fragment,
-     * and displays a success toast.
-     */
-    protected void confirm() {
-        recordScan();
-        FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
-        SuccessFragment successFragment = new SuccessFragment();
-        successFragment.setType(SuccessFragment.SuccessType.SERVICE_SUCCESS);
-        transaction.replace(R.id.service_fragment_container, successFragment);
-        transaction.commit();
-    }
+    protected void confirm() {}
 
     /**
      * Displays a success message at the bottom of
@@ -151,15 +185,6 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(c, message, duration);
         toast.show();
-    }
-
-    /**
-     * Records the scan result in shared preferences
-     * and displays a success toast.
-     */
-    protected void recordScan() {
-        ServicesActivity activity = (ServicesActivity) getActivity();
-        activity.recordResult((String) mScanResult);
     }
 
     /**
@@ -207,36 +232,4 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     public void whenBackPressed() {
         retry();
     }
-
-    /**
-     * Lets the calling activity know that a valid
-     * QR code was received. This valid code may be
-     * overwritten multiple times before it is
-     * returned to the calling activity.
-     * Not currently used.
-     *
-     * @param result is the decoded string
-     * @return no return value, uses Intent to communicate
-     */
-    private void returnSuccessfulResult(String result) {
-        Intent scanResult = new Intent();
-        scanResult.putExtra("scan_result", result);
-        getActivity().setResult(getActivity().RESULT_OK, scanResult);
-        getActivity().finish();
-    }
-
-    /**
-     * Lets the calling activity know that a valid
-     * QR code was not received before the user
-     * returned using the back button.
-     * Not currently used.
-     *
-     * @return no return value, uses Intent to communicate
-     */
-    private void returnCanceledResult() {
-        Intent scanResult = new Intent();
-        getActivity().setResult(getActivity().RESULT_CANCELED, scanResult);
-        getActivity().finish();
-    }
 }
-

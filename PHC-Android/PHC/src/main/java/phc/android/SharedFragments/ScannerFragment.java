@@ -10,6 +10,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,50 +26,82 @@ import com.android.volley.toolbox.Volley;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.util.HashMap;
+
+import phc.android.Checkin.CheckinScannerConfirmationFragment;
+import phc.android.Checkout.CheckoutConfirmationFragment;
+import phc.android.Checkout.CheckoutScannerConfirmationFragment;
 import phc.android.Main.MainActivity;
 import phc.android.Networking.RequestManager;
 import phc.android.R;
+import phc.android.Services.ServicesScannerConfirmationFragment;
 
 
 public class ScannerFragment extends Fragment {
 
-    public final static String TAG = "ScannerFragment";
+    public final static String TAG = "SCANNER_FRAGMENT";
 
+    /* Different flows this scanner fragment can be in. */
+    public static enum FlowType { CHECKIN, SERVICES, CHECKOUT };
+    /* The flow this scanner fragment is in. */
+    private FlowType mCurrentFlowType;
+    /* The correct ScannerConfirmationFragment to load next (depends on flow type). */
+    private ScannerConfirmationFragment mConfFrag;
+    /* The tag of the the ScannerConfirmationFragment to load next. */
+    private String mConfFragTag;
+    /* The correct fragment container to load the next fragment into. */
+    private int mFragContainer;
+    /* The correct sidebar to use (depends on flow type). */
+    private int mSidebarId;
 
-    protected static final String USER_PREFS_NAME = "UserKey";
-    protected static RequestManager sRequestManager;
-    protected  static RequestQueue sRequestQueue;
-    protected SharedPreferences mUserPreferences;
-
-
-    // Button to start BarcodeScanner app
+    /* Button to start BarcodeScanner app. */
     protected Button mScanButton;
-    // Field and submit button for manual code input.
+    /* Field and submit button for manual code input. */
     protected EditText mCodeInput;
     protected Button mCodeInputSubmitButton;
 
-    /** Toast that tells the user when input is
-     *  invalid. An array is used to simulate a
-     *  pointer and pass by reference instead
-     *  of by value.
-     */
+    /* Toast that tells the user when input is invalid.
+     * An array is used to simulate a pointer and pass by reference instead of by value. */
     protected Toast[] mInvalidInputToast = { null };
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        /* Inflate the layout for this fragment and set up view*/
+        // Inflate the layout for this fragment and set up view
         View view = setupView(inflater, container);
         mCodeInputSubmitButton = (Button) view.findViewById(R.id.submit_input);
         mCodeInputSubmitButton.setOnClickListener(new InputSubmitListener());
 
-        // Set up Volley request framework
-        sRequestQueue = Volley.newRequestQueue(this.getActivity());
-        sRequestManager = new RequestManager(TAG, sRequestQueue);
         return view;
     }
 
+    /**
+     * Called from each Activity to specify which sidebar to use
+     * and which fragment to load next.
+     */
+    public void setType(FlowType type) {
+        mCurrentFlowType = type;
 
+        switch (mCurrentFlowType){
+            case CHECKIN:
+                mConfFrag = new CheckinScannerConfirmationFragment();
+                mConfFragTag = ((CheckinScannerConfirmationFragment)mConfFrag).TAG;
+                mFragContainer = R.id.checkin_fragment_container;
+                mSidebarId = R.id.checkin_sidebar_list;
+                break;
+            case SERVICES:
+                mConfFrag = new ServicesScannerConfirmationFragment();
+                mConfFragTag = ((ServicesScannerConfirmationFragment)mConfFrag).TAG;
+                mFragContainer = R.id.service_fragment_container;
+                mSidebarId = R.id.services_sidebar_list;
+                break;
+//            case CHECKOUT: //TODO: ADD ONCE CHECKOUT IS IMPLEMENTED
+//                mConfFrag = new CheckoutScannerConfirmationFragment();
+//                mFragContainer = R.id.checkout_fragment_container;
+//                break;
+        }
+    }
 
     /**
      * Separate method for setting up view so that this
@@ -247,30 +280,20 @@ public class ScannerFragment extends Fragment {
     }
 
     /**
-     * Sets up the view for the user to confirm
-     * the scanned code.
+     * Sets up the view for the user to confirm the scanned code.
+     * @param scanResult QR code
+     * @param manualInput false if user used scanner, true if user entered manually
      */
     protected void confirmScan(CharSequence scanResult, boolean manualInput) {
         Bundle args = new Bundle();
         args.putCharSequence("scan_result", scanResult);
         args.putBoolean("manual_input", manualInput);
+        mConfFrag.setArguments(args);
 
-        ScannerConfirmationFragment confFrag = new ScannerConfirmationFragment();
-        confFrag.setArguments(args);
-        displayNextFragment(confFrag, ScannerConfirmationFragment.TAG);
-    }
-
-    /**
-     * Brings up another fragment when this fragment
-     * is complete
-     * @param nextFrag Fragment to display next
-     * @param fragName String fragment name
-     */
-    protected void displayNextFragment(Fragment nextFrag, String fragName) {
         FragmentTransaction transaction =
                 getActivity().getFragmentManager().beginTransaction();
-        transaction.replace(R.id.service_fragment_container, nextFrag, fragName);
-        transaction.addToBackStack(fragName);
+        transaction.replace(mFragContainer, mConfFrag, mConfFragTag);
+        transaction.addToBackStack(mConfFragTag);
         transaction.commit();
     }
 
@@ -286,11 +309,13 @@ public class ScannerFragment extends Fragment {
      * execute this class's super.onResume()
      */
     protected void resumeHelper() {
-        LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.services_sidebar_list);
+        Log.d("Sidebar Resumed", "RESUMED");
+        LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(mSidebarId);
         for (int i = 0; i < sidebarList.getChildCount(); i++) {
             View v = sidebarList.getChildAt(i);
             Object vTag = v.getTag();
-            if ((vTag != null) && (vTag.equals(getResources().getString(R.string.sidebar_scan)))) {
+            if ((vTag != null) && (vTag.equals(getResources().getString(R.string.sidebar_scan_code))
+            )) {
                 TextView tv = (TextView) v;
                 tv.setTypeface(null, Typeface.BOLD);
             } else if (v instanceof TextView) {

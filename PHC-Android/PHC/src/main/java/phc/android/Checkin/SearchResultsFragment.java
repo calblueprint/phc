@@ -40,12 +40,10 @@ import phc.android.R;
  * and allows the user to go back to activity_checkin another client.
  */
 public class SearchResultsFragment extends Fragment implements ListView.OnItemClickListener {
-    private static RequestQueue requestQueue;
     private static final String TAG = "Search";
-    private static final String SEARCH_PATH = "/api/v1/search";
-    private static final String AUTH_TOKEN = "phcplusplus";
     public static final String SEARCH_RESULT = "SEARCH_RESULT";
     public static final String CACHED_RESULTS = "CACHED_RESULTS";
+
     // Key for user shared preferences
     private static final String USER_AUTH_PREFS_NAME = "UserKey";
 
@@ -54,8 +52,10 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
 
     // Shared Preferences
     private SharedPreferences mUserPreferences;
+
     private ProgressDialog mProgressDialog;
-    // Parent Activity *
+
+    // Parent Activity
     private CheckinActivity mParent;
     // Caching the search results
     private SearchResult[] mSearchResults = new SearchResult[0];
@@ -101,7 +101,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
             mProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    requestQueue.cancelAll(TAG);
+                    sRequestQueue.cancelAll(TAG);
                     dialog.dismiss();
                 }
             });
@@ -145,11 +145,6 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
      */
     private void setNoResultsMessage() {
         mTextView.setText(R.string.search_no_results);
-    }
-
-    public void onActivityCreated(Bundle savedInstanceState) {
-        requestQueue = Volley.newRequestQueue(getActivity());
-        super.onActivityCreated(savedInstanceState);
     }
 
     @Override

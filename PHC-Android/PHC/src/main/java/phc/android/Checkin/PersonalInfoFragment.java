@@ -93,7 +93,7 @@ public class PersonalInfoFragment extends Fragment {
 
     @Override
     public void onResume() {
-        LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.sidebar_list);
+        LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.checkin_sidebar_list);
         for (int i = 0; i < sidebarList.getChildCount(); i++) {
             View v = sidebarList.getChildAt(i);
             Object vTag = v.getTag();
