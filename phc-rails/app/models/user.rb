@@ -33,7 +33,8 @@ class User < ActiveRecord::Base
 
   # Return random auth token for user
   def User.new_token
-    SecureRandom.urlsafe_base64
+    # SecureRandom.urlsafe_base64
+    return ENV['AUTH_TOKEN'] # temp to allow multiple logins of same user
   end
 
   # Stores hash of auth token for future sessions
