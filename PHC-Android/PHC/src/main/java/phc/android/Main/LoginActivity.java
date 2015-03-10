@@ -64,21 +64,11 @@ public class LoginActivity extends Activity {
             String email = mEmailText.getText().toString();
             String password = mPasswordText.getText().toString();
 
-            // Used to bypass login, Testing only
-            // TODO: Take out before publishing app
-            if (email.equals("email") && password.equals("pass")) {
-                // Start MainActivity
-                Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(i);
-
-                // Close this activity
-                finish();
-            } else {
-                sRequestManager.requestLogin(email,
-                        password,
-                        new LoginResponseListener(),
-                        new LoginErrorListener());
-            }
+             sRequestManager.requestLogin(
+                     email,
+                     password,
+                     new LoginResponseListener(),
+                     new LoginErrorListener());
         }
     }
 
