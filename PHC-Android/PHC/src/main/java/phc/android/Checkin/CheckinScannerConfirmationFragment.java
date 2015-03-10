@@ -118,6 +118,7 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
         @Override
         public void onClick(View view) {
             registerPerson();
+            mPreferenceEditor.storeScanResult(mScanResultView.getText().toString());
             // clear previous information here
             super.onClick(view);
 
@@ -218,6 +219,7 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
             fields.put("How_long_have_you_been_homeless__c", userPreferences.getString("spinner_homeless_duration", ""));
             fields.put("Where_do_you_usually_go_for_healthcare__c", userPreferences.getString("spinner_healthcare", ""));
             fields.put("Medical_Care_Other__c", userPreferences.getString("healthcare_other", ""));
+            fields.put("Number__c", userPreferences.getString("qr_code", ""));
 
             return fields;
         }
