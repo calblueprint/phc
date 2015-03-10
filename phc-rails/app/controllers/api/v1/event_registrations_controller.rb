@@ -31,7 +31,7 @@ class Api::V1::EventRegistrationsController < ApplicationController
       (event_reg.services ||= []) << Service.new(name: service, status:status)
     end
 
-    render :json => { status: (event_reg.save? ? "Success" : "Failure") }
+    render :json => { status: (event_reg.save ? "Success" : "Failure") }
   end
 
   def search
