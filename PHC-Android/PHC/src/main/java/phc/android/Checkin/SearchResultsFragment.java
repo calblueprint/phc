@@ -60,15 +60,15 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
     private static final String AUTH_TOKEN = "phcplusplus";
     public static final String SEARCH_RESULT = "SEARCH_RESULT";
     public static final String CACHED_RESULTS = "CACHED_RESULTS";
-    // Key for user shared preferences
-    private static final String USER_PREFS_NAME = "UserKey";
 
     private static RequestManager sRequestManager;
     private static RequestQueue sRequestQueue;
 
     // Shared Preferences
+    private static final String USER_PREFS_NAME = "UserKey";
     private SharedPreferences mUserPreferences;
     private ProgressDialog mProgressDialog;
+
     /** Parent Activity **/
     private CheckinActivity mParent;
     /** Caching the search results **/

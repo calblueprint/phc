@@ -10,14 +10,10 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.HashMap;
-
-import phc.android.Checkin.CheckinActivity;
-import phc.android.Checkin.CheckinFragment;
-import phc.android.Checkin.CheckinScannerFragment;
 import phc.android.Helpers.OnContinueClickListener;
 import phc.android.Main.MainActivity;
 import phc.android.R;
+import phc.android.SharedFragments.ScannerFragment;
 
 public class SelectServicesFragment extends CheckinFragment {
     /** Continue button. */
@@ -44,9 +40,12 @@ public class SelectServicesFragment extends CheckinFragment {
         dynamicSetCheckboxes(view);
 
         mContinueButton = (Button) view.findViewById(R.id.button_services_continue);
+        ScannerFragment scannerFragment = new ScannerFragment();
+        scannerFragment.setType(ScannerFragment.FlowType.CHECKIN);
+
         mContinueButton.setOnClickListener(new OnContinueClickListener(
-                getActivity(), this, mLayout, new CheckinScannerFragment(),
-                getResources().getString(R.string.sidebar_services_info)));
+                getActivity(), this, mLayout, scannerFragment,
+                getResources().getString(R.string.sidebar_scan_code)));
         return view;
     }
 
@@ -74,7 +73,7 @@ public class SelectServicesFragment extends CheckinFragment {
 
     @Override
     public void onResume() {
-        LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.sidebar_list);
+        LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.checkin_sidebar_list);
         for (int i = 0; i < sidebarList.getChildCount(); i++) {
             View v = sidebarList.getChildAt(i);
             Object vTag = v.getTag();
