@@ -61,7 +61,7 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
 
         public void storeScanResult(String result) {
             mUserInfoEditor.putString(mName, result);
-            mUserInfoEditor.commit();
+            mUserInfoEditor.apply();
         }
     }
 
@@ -117,8 +117,8 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
 
         @Override
         public void onClick(View view) {
+            mPreferenceEditor.storeScanResult(mScanResult);
             registerPerson();
-            mPreferenceEditor.storeScanResult(mScanResultView.getText().toString());
             // clear previous information here
             super.onClick(view);
 
