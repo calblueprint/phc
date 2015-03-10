@@ -167,6 +167,7 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
                     Log.e(TAG, "Volley Error");
                     volleyError.printStackTrace();
                 }
+                volleyError.printStackTrace();
 
                 Toast toast = Toast.makeText(getActivity(), "Error registering user", Toast.LENGTH_SHORT);
                 toast.show();
@@ -217,10 +218,9 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
             fields.put("Gender__c", userPreferences.getString("spinner_gender", ""));
             fields.put("Ethnicity__pc", userPreferences.getString("spinner_ethnicity", ""));
             fields.put("Primary_Language__c", userPreferences.getString("spinner_language", ""));
+            fields.put("Identify_as_GLBT__c", userPreferences.getBoolean("checkbox_glbt", false));
             fields.put("Foster_Care__c", userPreferences.getBoolean("checkbox_foster", false));
-            fields.put("Veteran__c", userPreferences.getBoolean("checkbox__military", false));
-            fields.put("Veteran__c", userPreferences.getBoolean("checkbox__military", false));
-            fields.put("Minor_Children__c", userPreferences.getBoolean("checkbox_children", false));
+            fields.put("Veteran__c", userPreferences.getBoolean("checkbox_military", false));
 
             return fields;
         }
