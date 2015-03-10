@@ -249,13 +249,9 @@ public class PersonalInfoFragment extends Fragment {
         String gender = sharedPreferences.getString("Gender", null);
         String ethnicity = sharedPreferences.getString("Ethnicity", null);
         String language = sharedPreferences.getString("Language", null);
-        Boolean glbt = sharedPreferences.getBoolean("checkbox_glbt", false);
-        Boolean foster = sharedPreferences.getBoolean("checkbox_foster", false);
-        Boolean military = sharedPreferences.getBoolean("checkbox_military", false);
-
-        if(!glbt.equals("null")) mGLBTCheckbox.setActivated(true);
-        if(!foster.equals("null")) mMilitaryCheckbox.setActivated(true);
-        if(!military.equals("null")) mFosterCheckbox.setActivated(true);
+        boolean glbt = sharedPreferences.getBoolean("GLBT", false);
+        boolean foster = sharedPreferences.getBoolean("Foster", false);
+        boolean military = sharedPreferences.getBoolean("Military", false);
 
         if(!firstName.equals("null")) mFirstName.setText(firstName);
         if(!lastName.equals("null")) mLastName.setText(lastName);
@@ -310,5 +306,8 @@ public class PersonalInfoFragment extends Fragment {
             }
         }
 
+        mGLBTCheckbox.setChecked(glbt);
+        mMilitaryCheckbox.setChecked(military);
+        mFosterCheckbox.setChecked(foster);
     }
 }
