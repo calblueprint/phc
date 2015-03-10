@@ -3,34 +3,35 @@ class Api::V1::EventRegistrationsController < ApplicationController
   before_action :verify_security_token
 
   def create
-    reg = EventRegistration.new
+    event_reg = EventRegistration.new
 
     # Create account if salesforce id was not passed in
     sf_id = params[:account_sfid]
     if sf_id.nil?
-      params[:sf_id] = params.delete :account_sfid # Change key to sf_id
+      # Create account of the parameters passed in, sf_id will be nil
+      params[:sf_id] = params.delete :account_sfid
       account = Account.spawn(params)
-      reg[:account_sfid] = account.id
+
+      # Since we don't know the SF id yet, use the unique rails id for now to identify the account
+      event_reg[:account_sfid] = account.id
     else
+      # We retrieve the corresponding account if the salesforce id was passed in
       if not Account.exists?(sf_id: sf_id)
         raise "Unknown Salesforce ID. This should not happen!"
       end
       account = Account.find_by(sf_id: params[:account_sfid])
-      reg[:account_sfid] = sf_id
+      event_reg[:account_sfid] = account.sf_id
     end
 
-    reg.Number__c = params[:Number__c]
-    services = ["Acupuncture__c", "Addiction_Recovery__c", "CAAP__c", "Dental__c", \
-        "Disability_Services__c", "Employment__c", "Foodbank__c", \
-        "Haircuts__c", "Legal__c", "Massage__c", "Medical__c", "Showers__c", \
-        "Veteran_Services__c", "Wheelchair_Repair__c" ]
-    services.each do |service|
-      # Mark service as applied or none if not selected
+    # Number__c is the QR_code that was passed in, which identifies a
+    # particular account for the current PHC event
+    event_reg.Number__c = params[:Number__c]
+    Service.services.each do |service|
       status = (if params[service] == "true" then Service.APPLIED else Service.NONE end)
-      (reg.services ||= []) << Service.new(name: service, status:status)
+      (event_reg.services ||= []) << Service.new(name: service, status:status)
     end
 
-    render :json => { status: (reg.save? ? "Success" : "Failure") }
+    render :json => { status: (event_reg.save? ? "Success" : "Failure") }
   end
 
   def search
@@ -42,6 +43,7 @@ class Api::V1::EventRegistrationsController < ApplicationController
     registration = EventRegistration.find_by(Number__c: params[:Number__c])
     if registration.nil?
       render :json => { status: "Failure", message: "Did not find event registration corresponding to QR code." }
+      return
     end
 
     service = registration.services.find_by(name: params[:service_name])

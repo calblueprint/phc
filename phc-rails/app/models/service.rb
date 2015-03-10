@@ -28,4 +28,13 @@ class Service < ActiveRecord::Base
     "Received"
   end
 
+  def self.services
+    # In the future, we may retrieve these through the Salesforce API, but
+    # for now they are hardcoded in
+    ["Acupuncture__c", "Addiction_Recovery__c", "CAAP__c", "Dental__c", \
+      "Disability_Services__c", "Employment__c", "Foodbank__c", \
+      "Haircuts__c", "Legal__c", "Massage__c", "Medical__c", "Showers__c", \
+      "Veteran_Services__c", "Wheelchair_Repair__c" ]
+  end
+
 end
