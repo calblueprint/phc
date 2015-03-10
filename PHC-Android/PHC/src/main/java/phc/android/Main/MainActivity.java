@@ -2,11 +2,9 @@ package phc.android.Main;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -18,53 +16,28 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.salesforce.androidsdk.accounts.UserAccountManager;
-import com.salesforce.androidsdk.app.SalesforceSDKManager;
-import com.salesforce.androidsdk.rest.ClientManager;
-import com.salesforce.androidsdk.rest.RestClient;
-import com.salesforce.androidsdk.rest.RestClient.AsyncRequestCallback;
-import com.salesforce.androidsdk.rest.RestRequest;
-import com.salesforce.androidsdk.rest.RestResponse;
-import com.salesforce.androidsdk.util.UserSwitchReceiver;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
+import org.json.JSONException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import phc.android.Checkin.CheckinActivity;
 import phc.android.Checkout.CheckoutActivity;
 import phc.android.Helpers.Utils;
+import phc.android.Networking.RequestManager;
 import phc.android.R;
 import phc.android.Services.ServicesActivity;
 
-public class MainActivity extends Activity
-                          implements SecurityKeyDialogFragment.SecurityKeyDialogListener{
-
-    /*SALESFORCE SETUP*/
-    private String apiVersion;
-    /** Allows app to send HTTP requests to Salesforce server. */
-    private RestClient client;
-    /** Broadcast Receiver that listens for the user switch event. */
-    private UserSwitchReceiver userSwitchReceiver;
-
-    /*SECURITY KEY*/
-    /** SharedPreference file name for Security Key. */
-    private static final String SECURITY_PREFS_NAME = "SecurityKey";
-    /** SharedPreference object. */
-    private SharedPreferences mSecurityKeyPreferences;
-    /** SharedPreference editor object. */
-    private SharedPreferences.Editor mSecurityKeyPreferencesEditor;
-    /** Current stored Security Key. */
-    private String mSecurityKey;
+public class MainActivity extends Activity {
 
     // User credentials
     // Key for user shared preferences
-    private static final String USER_PREFS_NAME = "UserKey";
+    private static final String USER_AUTH_PREFS_NAME = "UserKey";
     // Shared Preferences
     private SharedPreferences mUserPreferences;
     // SharedPreference editor object
@@ -93,6 +66,7 @@ public class MainActivity extends Activity
     /** Holds the event Id of the most recently created PHC Event,
      * treated in the app as the current event. */
     private String mEventId = "";
+    private static final String TAG = "MainActivity";
 
     /*BUTTONS*/
     /** Button leading to Services Activity. */
@@ -102,31 +76,20 @@ public class MainActivity extends Activity
     /** Button leading to Checkout Activity. */
     private Button mCheckoutButton;
 
+    // Network request objects
+    private static RequestManager sRequestManager;
+    private static RequestQueue sRequestQueue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        checkConnectivity();
         mContext = this;
+        setContentView(R.layout.activity_main);
 
-        // Salesforce Setup
-        apiVersion = getString(R.string.api_version);
-        //@TODO: Remove this line before production
-        SalesforceSDKManager.getInstance().getLoginServerManager().useSandbox();
-        userSwitchReceiver = new PHCUserSwitchReceiver(); //launches initial Salesforce login page.
-        registerReceiver(userSwitchReceiver, new IntentFilter(UserAccountManager.USER_SWITCH_INTENT_ACTION));
+        //Set up Volley request framework
+        sRequestQueue = Volley.newRequestQueue(this);
+        sRequestManager = new RequestManager(TAG, sRequestQueue);
 
-        // Security Key AlertDialog
-        mSecurityKeyPreferences = this.getSharedPreferences(SECURITY_PREFS_NAME,
-                Context.MODE_PRIVATE);
-        mSecurityKeyPreferencesEditor = mSecurityKeyPreferences.edit();
-        mSecurityKey = mSecurityKeyPreferences.getString("security_key", null);
-        // TODO: replace SecurityKeyDialogFragment.SECURITY_KEY with actual SF security key
-        if (mSecurityKey == null || !mSecurityKey.equals(SecurityKeyDialogFragment
-                .SECURITY_KEY)){
-            showSecurityKeyDialog();
-        }
-        else{
-            setContentView(R.layout.activity_main);
-        }
+        getServices();
 
         super.onCreate(savedInstanceState);
     }
@@ -151,7 +114,6 @@ public class MainActivity extends Activity
 
         if (!mInitialized){
             disableAllButtons();
-            loginSalesforce(); //will enable buttons if successful
         }
         else{
             enableAllButtons();
@@ -160,70 +122,7 @@ public class MainActivity extends Activity
 
     @Override
     public void onDestroy() {
-        unregisterReceiver(userSwitchReceiver);
         super.onDestroy();
-    }
-
-    /**
-     * Acts on the user switch event.
-     */
-    private class PHCUserSwitchReceiver extends UserSwitchReceiver {
-
-        /**
-         * Refreshes the client if the user has been switched, reopening the login.
-         */
-        @Override
-        protected void onUserSwitch() {
-            mInitialized = false;
-            loginSalesforce();
-        }
-    }
-
-    /**
-     * Opens login screen. If successful login, initializes services,
-     * sets mInitialized to true, and enables buttons.
-     */
-    private void loginSalesforce() {
-        // Login options
-        String accountType = SalesforceSDKManager.getInstance().getAccountType();
-
-        // Get a rest client
-        new ClientManager(this, accountType, SalesforceSDKManager.getInstance().getLoginOptions(),
-                SalesforceSDKManager.getInstance().shouldLogoutWhenTokenRevoked()).
-                getRestClient(this, new ClientManager.RestClientCallback() {
-
-            @Override
-            public void authenticatedRestClient(RestClient client) {
-                if (client == null) {
-                    SalesforceSDKManager.getInstance().logout(MainActivity.this);
-                    return;
-                }
-                MainActivity.this.client = client;
-                MainActivity.this.initServicesList();
-            }
-        });
-    }
-
-    /**
-     * Creates and shows the security key dialog.
-     */
-    public void showSecurityKeyDialog(){
-        DialogFragment dialog = new SecurityKeyDialogFragment();
-        dialog.show(getFragmentManager(), "SecurityKeyDialogFragment");
-    }
-
-    /**
-     * When correct security key is entered, writes security key to SharedPreferences,
-     * dismisses the alert dialog, and sets the main activity layout.
-     * @param dialog: the AlertDialog
-     */
-    @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
-        mSecurityKeyPreferencesEditor.putString("security_key",
-                ((SecurityKeyDialogFragment)dialog).mInputString);
-        mSecurityKeyPreferencesEditor.commit();
-        dialog.dismiss();
-        setContentView(R.layout.activity_main);
     }
 
     /**
@@ -326,168 +225,51 @@ public class MainActivity extends Activity
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Helper that sends request to server and print result in text field.
-     *
-     * @param request - The request object that gets executed by the SF SDK
-     * @param callback - The functions that get called when the response comes back
-     *                   Modify UI elements here.
-     */
-    protected void sendRequest(RestRequest request, AsyncRequestCallback callback) {
+    private void getServices() {
+        // Get userId and authToken
+        mUserPreferences = getSharedPreferences(USER_AUTH_PREFS_NAME,
+                Context.MODE_PRIVATE);
+        final String userId = mUserPreferences.getString("user_id", null);
+        final String authToken = mUserPreferences.getString("auth_token", null);
 
-        try { client.sendAsync(request, callback); }
-        catch (Exception error) {
-            Log.e("SF Request", error.toString());
+        sRequestManager.requestServices(
+                userId,
+                authToken,
+                new ServicesResponseListener(),
+                new ServicesErrorListener());
+    }
+
+    private class ServicesResponseListener implements Response.Listener<JSONArray> {
+
+        @Override
+        public void onResponse(JSONArray jsonArray) {
+            try {
+                sSalesforceNames = new String[jsonArray.length()];
+                sDisplayNames = new String[jsonArray.length()];
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    sSalesforceNames[i] = (String) jsonArray.get(i);
+                    sDisplayNames[i] = Utils.fieldNameHelper((String) jsonArray.get(i));
+                    sOfferedServices.put(sSalesforceNames[i], sDisplayNames[i]);
+                }
+                mInitialized = true;
+                refreshButtons();
+            } catch (JSONException e ) {
+                Log.e(TAG, "Error parsing JSON");
+                e.printStackTrace();
+            }
         }
     }
 
-    /**
-     * Run this when the app starts up. This will create the object that contains
-     * all services offered at the most recently created event object. Calls
-     * describeServices when it receives a successful response.
-     */
-    private void initServicesList() {
-        //Salesforce Object Query Language
-        String soql = "SELECT id FROM PHC_EVENT__c ORDER BY createddate DESC LIMIT 1";
-        try {
-            RestRequest idRequest = RestRequest.getRequestForQuery(apiVersion, soql);
+    private class ServicesErrorListener implements Response.ErrorListener {
 
-            AsyncRequestCallback callback = new AsyncRequestCallback() {
-                @Override
-                public void onSuccess(RestRequest request, RestResponse response) {
-                    try {
-                        JSONObject json = response.asJSONObject();
-                        JSONObject item = (JSONObject) ((JSONArray)json.get("records")).get(0);
-                        String id = item.getString("Id");
-                        MainActivity.this.mEventId = id;
-                        MainActivity.this.describeServices(id);
-                    } catch (Exception e) {
-                        Log.e("EventId Response Error", e.toString());
-                    }
-                }
+        @Override
+        public void onErrorResponse(VolleyError volleyError) {
+            if (volleyError.getLocalizedMessage() != null) {
+                Log.e(TAG, volleyError.toString());
+            }
 
-                @Override
-                public void onError(Exception exception) {
-                    if (exception.getLocalizedMessage() != null) {
-                        Log.e("EventId Response Error", exception.toString());
-                    }
-                }
-            };
-
-            sendRequest(idRequest, callback);
-
-
-        } catch (Exception e) {
-            Log.e("EventId Request Error", e.toString());
-        }
-    }
-
-    /**
-     * Created a describe request for the PHC_Resource__c object in the Salesforce
-     * backend. This will give us the list of fields we need to query in the next step.
-     *
-     * @param eventId: The eventId returned from the previous step. This will be used in
-     *               the next step
-     */
-    private void describeServices(final String eventId){
-        RestRequest fieldRequest = null;
-        final ArrayList<String> fields = new ArrayList<String>();
-
-        try {
-            fieldRequest = RestRequest.getRequestForDescribe(apiVersion, "PHC_Resource__c");
-
-            AsyncRequestCallback callback = new AsyncRequestCallback() {
-                @Override
-                public void onSuccess(RestRequest request, RestResponse response) {
-                    try {
-                        JSONObject json = response.asJSONObject();
-                        JSONArray fieldArray = json.getJSONArray("fields");
-
-                        for (int i = 0; i < fieldArray.length(); i++) {
-                            JSONObject field = fieldArray.getJSONObject(i);
-                            if (field.getBoolean("custom")) {
-                                fields.add(field.getString("name"));
-                            }
-                        }
-
-                        MainActivity.this.getServiceValues(eventId, fields);
-
-                    } catch (Exception e) {
-                        Log.e("Field Response Error", e.toString());
-                    }
-                }
-
-                @Override
-                public void onError(Exception exception) {
-                    Log.e("Field Response Error 2", exception.toString());
-                }
-            };
-
-            sendRequest(fieldRequest, callback);
-
-        } catch (Exception e) {
-            Log.e("Field Request Exception", e.toString());
-        }
-    }
-
-    /**
-     * Final step: uses the eventId to find the right PHC_Resource object and queries the
-     * fields we found in Step 2 to find which services are available at the given event.
-     * Places these into a Map where the key is the column name and the value is its display
-     * value. Enables buttons if successful.
-     *
-     * @param eventId: The id of the event associated with the desired resource
-     * @param fields: The fields we need to query, since SF doesn't support * notation... -_-
-     */
-    private void getServiceValues(final String eventId, final List<String> fields){
-        fields.remove("Event__c");
-        String fieldsString = fields.toString();
-        fieldsString = fieldsString.substring(1, fieldsString.length()-1);
-        String soql = "SELECT " + fieldsString + " FROM PHC_Resource__c WHERE event__c = '" + eventId + "'";
-
-        try {
-            RestRequest valueRequest = RestRequest.getRequestForQuery(apiVersion, soql);
-            AsyncRequestCallback callback = new AsyncRequestCallback() {
-                @Override
-                public void onSuccess(RestRequest request, RestResponse response) {
-                    try {
-                        JSONObject json = response.asJSONObject();
-                        JSONArray records = json.getJSONArray("records");
-                        JSONObject item = records.getJSONObject(0);
-
-                        for (String field : fields) {
-                            Boolean hasField = item.getBoolean(field);
-                            if (hasField) {
-                                MainActivity.this.sOfferedServices.put(
-                                        field, Utils.fieldNameHelper((field)));
-                            }
-                        }
-                        Log.d("initialized", "initialized");
-                        MainActivity.this.mInitialized = true;
-
-                        sSalesforceNames = sOfferedServices.keySet().toArray(new
-                                String[sOfferedServices.size()]);
-                        sDisplayNames = sOfferedServices.values().toArray(new
-                                String[sOfferedServices.size()]);
-                        Arrays.sort(sSalesforceNames);
-                        Arrays.sort(sDisplayNames);
-
-                        enableAllButtons();
-
-                    } catch (Exception e) {
-                        Log.e("Value Response Error 2", e.toString());
-                    }
-                }
-
-                @Override
-                public void onError(Exception exception) {
-                    Log.e("Value Response Error", exception.toString());
-                }
-            };
-            sendRequest(valueRequest, callback);
-
-        } catch (Exception e) {
-            Log.e("Value Request Error", e.toString());
+            Toast toast = Toast.makeText(getApplicationContext(), "Error getting services", Toast.LENGTH_SHORT);
+            toast.show();
         }
     }
 
@@ -548,7 +330,7 @@ public class MainActivity extends Activity
      * Should be used when the session is over.
      */
     public void onLogoutClick() {
-        mUserPreferences = getSharedPreferences(USER_PREFS_NAME,
+        mUserPreferences = getSharedPreferences(USER_AUTH_PREFS_NAME,
                 Context.MODE_PRIVATE);
         mUserPreferencesEditor = mUserPreferences.edit();
         mUserPreferencesEditor.remove("user_id");
@@ -561,17 +343,10 @@ public class MainActivity extends Activity
 
         // Close this activity
         finish();
-
-        //TODO: Remove this line when we remove salesforce sdk
-        //SalesforceSDKManager.getInstance().logout(this);
     }
 
     public String getEventID() {
         return mEventId;
-    }
-
-    public String getApiVersion() {
-        return apiVersion;
     }
 
     public static Context getContext() {

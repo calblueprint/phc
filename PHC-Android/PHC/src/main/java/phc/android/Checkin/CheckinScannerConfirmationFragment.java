@@ -103,8 +103,6 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
         @Override
         public void onClick(View view) {
             registerPerson();
-            /* shows success toast */
-            recordScan();
             // clear previous information here
             super.onClick(view);
 
@@ -204,7 +202,6 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
          * @param PersonId: The id of the person to whom the registration refers
          */
         private void registration(String PersonId) {
-//            String eventId = ((CheckinActivity) getActivity()).getEventId();
             String eventId = ((MainActivity) MainActivity.getContext()).getEventID();
             String apiVersion = getActivity().getResources().getString(R.string.api_version);
             String objectName = "Event_Registration__c";
