@@ -1,5 +1,7 @@
 package phc.android.Networking;
 
+import android.util.Log;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -157,8 +159,8 @@ public class RequestManager {
      * @param authToken auth_token of logged in user
      */
     public void requestSearchByCode(final String qrCode,
-                                    final String authToken,
                                     final String userId,
+                                    final String authToken,
                                     Response.Listener<JSONObject> responseListener,
                                     Response.ErrorListener errorListener){
 
