@@ -1,0 +1,27 @@
+# == Schema Information
+#
+# Table name: event_registrations
+#
+#  id           :integer          not null, primary key
+#  account_sfid :string(255)
+#  phc_sfid     :string(255)
+#  FirstName    :string(255)
+#  LastName     :string(255)
+#  created_at   :datetime
+#  updated_at   :datetime
+#  Number__c    :string(255)
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  account_sfid: MyString
+  phc_sfid: MyString
+  FirstName: MyString
+  LastName: MyString
+
+two:
+  account_sfid: MyString
+  phc_sfid: MyString
+  FirstName: MyString
+  LastName: MyString
