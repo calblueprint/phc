@@ -1,5 +1,7 @@
 package phc.android.Networking;
 
+import android.util.Log;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -121,6 +123,7 @@ public class RequestManager {
                 null,
                 responseListener,
                 errorListener) {
+
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> params = new HashMap<String, String>();

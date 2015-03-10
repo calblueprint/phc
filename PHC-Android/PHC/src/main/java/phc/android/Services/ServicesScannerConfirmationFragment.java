@@ -1,6 +1,7 @@
 package phc.android.Services;
 
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -38,6 +39,7 @@ public class ServicesScannerConfirmationFragment extends ScannerConfirmationFrag
     @Override
     protected void confirm() {
 
+        Log.d ("looking up: ", mScanResult);
         sRequestManager.requestSearchByCode(mScanResult,
                 mAuthToken,
                 mUserId,
@@ -74,12 +76,24 @@ public class ServicesScannerConfirmationFragment extends ScannerConfirmationFrag
         dialog.show();
     }
 
+    /**
+     * Returns to scanner fragment and displays a
+     * failure toast.
+     */
+    @Override
+    protected void retry() {
+        showFailureToast();
+        FragmentManager manager = getFragmentManager();
+        manager.popBackStack(TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
+
     private class SearchByCodeResponseListener implements Response.Listener<JSONObject> {
 
         @Override
         public void onResponse(JSONObject jsonObject) {
             try {
                 mRegistrationFound = jsonObject.getBoolean("present");
+                Log.d("found?", Boolean.toString(mRegistrationFound));
             } catch(JSONException e) {
                 Log.e(TAG, "Error parsing JSON");
                 Log.e(TAG, e.toString());
