@@ -31,12 +31,12 @@ class Api::V1::EventRegistrationsController < ApplicationController
       (event_reg.services ||= []) << Service.new(name: service, status:status)
     end
 
-    render :json => { status: (event_reg.save? ? "Success" : "Failure") }
+    render :json => { status: (event_reg.save ? "Success" : "Failure") }
   end
 
   def search
-    qr_code = params[:Number__c]
-    render :json => { present: EventRegistration.exists?(Number__c: qr_code) ? true : false }
+    qr_code = request.headers["HTTP_NUMBER__C"]
+    render :json => { present: (EventRegistration.exists?(Number__c: qr_code) ? true : false) }
   end
 
   def update_service
