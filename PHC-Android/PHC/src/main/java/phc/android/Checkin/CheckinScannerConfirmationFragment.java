@@ -124,8 +124,6 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
         @Override
         public void onClick(View view) {
             registerPerson();
-            /* shows success toast */
-            recordScan();
             // clear previous information here
             super.onClick(view);
 
