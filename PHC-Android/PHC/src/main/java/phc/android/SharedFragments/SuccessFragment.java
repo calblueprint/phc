@@ -59,7 +59,7 @@ public class SuccessFragment extends CheckinFragment {
         switch (mCurrentSuccessType) {
             case CHECKIN_SUCCESS:
                 // TODO: Will delete/change once Warren removes the sidebar
-                LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.sidebar_list);
+                LinearLayout sidebarList = (LinearLayout) getActivity().findViewById(R.id.checkin_sidebar);
                 for (int i = 0; i < sidebarList.getChildCount(); i++) {
                     View v = sidebarList.getChildAt(i);
                     Object vTag = v.getTag();
@@ -76,9 +76,7 @@ public class SuccessFragment extends CheckinFragment {
                 break;
             case CHECKOUT_SUCCESS:
                 break;
-            default:
-                Log.e(TAG, "Did not set the success type using the setType() method");
-                break;
+
         }
 
         super.onResume();
@@ -167,9 +165,19 @@ public class SuccessFragment extends CheckinFragment {
         // Set up text that appears in textview
         TextView mSuccessText = (TextView) view.findViewById(R.id.text_success);
         SharedPreferences sharedPref = getActivity().getSharedPreferences(SharedPreferenceEditorListener.USER_PREFS_NAME, Context.MODE_PRIVATE);
+        String clientName = "";
+
         String firstName = sharedPref.getString("first_name", "");
         String lastName = sharedPref.getString("last_name", "");
-        mSuccessText.setText("Success! " + firstName + " " + lastName + " is now " + mActionTextMapping.get(mCurrentSuccessType));
+        if (firstName == "" && lastName == ""){
+            clientName = "The client";
+        } else {
+            if (firstName != "") clientName += firstName;
+            if (lastName != "") clientName += " " + lastName;
+        }
+
+        mSuccessText.setText("Success! " + clientName + " is now " + mActionTextMapping.get
+                (mCurrentSuccessType));
 
         // Set up text that appears in the button
         mRepeatActionButton.setText(mButtonTextMapping.get(mCurrentSuccessType));
