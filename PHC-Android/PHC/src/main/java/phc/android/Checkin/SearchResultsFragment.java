@@ -356,6 +356,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                 editor.putString("Email", jsonObject.getString("PersonEmail"));
                 editor.putString("Gender", jsonObject.getString("Gender__c"));
                 editor.putString("Language", jsonObject.getString("Primary_Language__c"));
+                editor.putString("Ethnicity", jsonObject.getString("Race__c"));
                 editor.putString("SFID", jsonObject.getString("sf_id"));
             } catch (JSONException e2) {
                 Log.e(TAG, e2.toString());
