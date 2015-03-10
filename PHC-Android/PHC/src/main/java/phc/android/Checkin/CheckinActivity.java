@@ -42,31 +42,6 @@ public class CheckinActivity extends Activity {
         }
     }
 
-    /**
-     * Handles the setup of the Salesforce RestClient, allowing fragments in this activity to
-     * make requests to the backend.
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        // Login options
-        String accountType = SalesforceSDKManager.getInstance().getAccountType();
-
-        // Get a rest client
-        new ClientManager(this, accountType, SalesforceSDKManager.getInstance().getLoginOptions(),
-                SalesforceSDKManager.getInstance().shouldLogoutWhenTokenRevoked()).getRestClient(this, new ClientManager.RestClientCallback() {
-
-            @Override
-            public void authenticatedRestClient(RestClient client) {
-                if (client == null) {
-                    SalesforceSDKManager.getInstance().logout(CheckinActivity.this);
-                    return;
-                }
-                CheckinActivity.this.client = client;
-            }
-        });
-    }
-
     public static RegistrationState getCurrentState() {
 
         return currentState;
