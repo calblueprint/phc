@@ -1,5 +1,7 @@
 package phc.android.Networking;
 
+import android.util.Log;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -24,6 +26,7 @@ public class RequestManager {
     private static final String BASE_URL = "http://phc-staging.herokuapp.com";
     private static final String LOGIN_ENDPOINT = "/login";
     private static final String SEARCH_ENDPOINT = "/api/v1/search";
+    private static final String USER_INFO_ENDPOINT = "/api/v1/accounts";
     private static final String CREATE_ENDPOINT = "/api/v1/create";
     private static final String SERVICES_ENDPOINT = "/services";
 
@@ -84,14 +87,21 @@ public class RequestManager {
                                      Response.Listener<JSONArray> responseListener,
                                      Response.ErrorListener errorListener) {
 
-        JsonArrayRequest searchRequest = new JsonArrayRequest(BASE_URL + SEARCH_ENDPOINT,
+        StringBuilder buildUrl = new StringBuilder(BASE_URL);
+        buildUrl.append(SEARCH_ENDPOINT);
+        buildUrl.append("?");
+        buildUrl.append("FirstName=");
+        buildUrl.append(firstName);
+        buildUrl.append("&");
+        buildUrl.append("LastName=");
+        buildUrl.append(lastName);
+
+        JsonArrayRequest searchRequest = new JsonArrayRequest(buildUrl.toString(),
                 responseListener,
                 errorListener) {
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> params = new HashMap<String, String>();
-                params.put("first_name", firstName);
-                params.put("last_name", lastName);
                 params.put("user_id", userId);
                 params.put("auth_token", authToken);
                 params.put("Accept", "*/*");
@@ -103,13 +113,47 @@ public class RequestManager {
     }
 
     /**
+     * Used to search for a specific user
+     * @param sfID salesforce Id of the user we want info from
+     * @param userId user_id of logged in user
+     * @param authToken auth_token of logged in user
+     * @param responseListener listener that is called when response received
+     * @param errorListener listener that is called when error
+     */
+    public void requestUserInfo(final String sfID,
+                              final String userId,
+                              final String authToken,
+                              Response.Listener<JSONObject> responseListener,
+                              Response.ErrorListener errorListener) {
+
+        StringBuilder buildUrl = new StringBuilder(BASE_URL);
+        buildUrl.append(USER_INFO_ENDPOINT);
+        buildUrl.append("/");
+        buildUrl.append(sfID);
+
+        JsonObjectRequest userInfoRequest = new JsonObjectRequest(buildUrl.toString(),
+                null,
+                responseListener,
+                errorListener) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("user_id", userId);
+                params.put("auth_token", authToken);
+                params.put("Accept", "*/*");
+                return params;
+            }
+        };
+        userInfoRequest.setTag(sTAG);
+        sRequestQueue.add(userInfoRequest);
+    }
+
+    /*
      * Used to search for a person receiving services
      * @param qrCode qrCode of person seeking services
      * @param userId user_id of logged in user
      * @param authToken auth_token of logged in user
-     *
      */
-
     public void requestSearchByCode(String qrCode,
                                     String authToken,
                                     String userId,
@@ -127,8 +171,6 @@ public class RequestManager {
                 errorListener);
         searchRequest.setTag(sTAG);
         sRequestQueue.add(searchRequest);
-
-
     }
 
     /**
