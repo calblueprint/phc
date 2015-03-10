@@ -111,6 +111,8 @@ public class MainActivity extends Activity {
         mServicesButton = (Button) findViewById(R.id.button_services);
         mCheckinButton = (Button) findViewById(R.id.button_checkin);
         mCheckoutButton = (Button) findViewById(R.id.button_checkout);
+        // Todo: Remove once Checkout is fixed
+        mCheckoutButton.setVisibility(View.GONE);
 
         if (!mInitialized){
             disableAllButtons();
@@ -168,7 +170,8 @@ public class MainActivity extends Activity {
     private void enableAllButtons(){
         setButtonEnabled(mServicesButton, ServicesActivity.class);
         setButtonEnabled(mCheckinButton, CheckinActivity.class);
-        setButtonEnabled(mCheckoutButton, CheckoutActivity.class);
+        // TODO: Uncomment once checkout is fixed
+//        setButtonEnabled(mCheckoutButton, CheckoutActivity.class);
     }
 
     private void disableAllButtons(){
