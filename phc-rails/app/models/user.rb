@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id              :integer          not null, primary key
+#  name            :string(255)
+#  email           :string(255)
+#  created_at      :datetime
+#  updated_at      :datetime
+#  password_digest :string(255)
+#  auth_digest     :string(255)
+#
+
 class User < ActiveRecord::Base
   attr_accessor :auth_token
 
@@ -20,7 +33,8 @@ class User < ActiveRecord::Base
 
   # Return random auth token for user
   def User.new_token
-    SecureRandom.urlsafe_base64
+    # SecureRandom.urlsafe_base64
+    return ENV['AUTH_TOKEN'] # temp to allow multiple logins of same user
   end
 
   # Stores hash of auth token for future sessions
