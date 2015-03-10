@@ -135,7 +135,6 @@
     <string name="prompt_neighborhood">Neighborhood of residence</string>
     <string name="prompt_housing">Housing Status</string>
     <string name="prompt_healthcare">Where do you go for healthcare?</string>
-    <string name="prompt_clinic_name">(Optional) name of clinic</string>
     <string name="prompt_homeless">How long have you been homeless?</string>
 
 
