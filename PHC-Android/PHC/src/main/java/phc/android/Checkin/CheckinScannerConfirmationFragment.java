@@ -221,7 +221,10 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
             fields.put("Identify_as_GLBT__c", userPreferences.getBoolean("checkbox_glbt", false));
             fields.put("Foster_Care__c", userPreferences.getBoolean("checkbox_foster", false));
             fields.put("Veteran__c", userPreferences.getBoolean("checkbox_military", false));
-
+            fields.put("How_long_have_you_been_homeless__c", userPreferences.getString("spinner_homeless_duration", ""));
+            fields.put("Where_do_you_usually_go_for_healthcare__c", userPreferences.getString("spinner_healthcare", ""));
+            fields.put("Medical_Care_Other__c", userPreferences.getString("healthcare_other", ""));
+            
             return fields;
         }
     }
