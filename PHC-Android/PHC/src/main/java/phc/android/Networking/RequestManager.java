@@ -28,6 +28,7 @@ public class RequestManager {
     private static final String SEARCH_ENDPOINT = "/api/v1/search";
     private static final String USER_INFO_ENDPOINT = "/api/v1/accounts";
     private static final String CREATE_ENDPOINT = "/api/v1/create";
+    private static final String SERVICES_ENDPOINT = "/services";
 
     private static RequestQueue sRequestQueue;
     private static String sTAG;
@@ -201,5 +202,25 @@ public class RequestManager {
         sRequestQueue.add(createRequest);
     }
 
+    public void requestServices(final String userId,
+                                final String authToken,
+                                Response.Listener<JSONArray> responseListener,
+                                Response.ErrorListener errorListener) {
+        JsonArrayRequest searchRequest = new JsonArrayRequest(BASE_URL + SERVICES_ENDPOINT,
+                responseListener,
+                errorListener) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("user_id", userId);
+                params.put("auth_token", authToken);
+                params.put("Accept", "*/*");
+                return params;
+            }
+        };
+        searchRequest.setTag(sTAG);
+        sRequestQueue.add(searchRequest);
+
+    }
 
 }

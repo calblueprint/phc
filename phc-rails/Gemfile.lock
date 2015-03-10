@@ -109,6 +109,9 @@ GEM
       json (~> 1.4)
     salesforce_bulk (1.0.3)
       xml-simple
+    salesforce_bulk_api (0.0.11)
+      json
+      xml-simple
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
@@ -152,6 +155,7 @@ DEPENDENCIES
   rails (= 4.1.5)
   rails_12factor
   salesforce_bulk
+  salesforce_bulk_api
   sdoc (~> 0.4.0)
   spring
   textacular!

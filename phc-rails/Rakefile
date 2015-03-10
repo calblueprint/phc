@@ -1,47 +1,35 @@
 # Add your own tasks in files placed in lib/tasks ending in .rake,
 # for example lib/tasks/capistrano.rake, and they will automatically be available to Rake.
-
 require File.expand_path('../config/application', __FILE__)
 
 Rails.application.load_tasks
 require 'salesforce_bulk'
 
 task :load_sf => :environment do
-
-  def save_accounts(accounts)
-    accounts.result.records.each do |a|
-      a = a.to_hash
-      pa = PersonAccount.find_or_initialize_by(sf_id: a["Id"])
-      pa.update(first_name: a["FirstName"], last_name: a["LastName"], birthday: a["PersonBirthdate"])
-    end
-  end
-
-  order_str = "ORDER BY LastModifiedDate ASC Limit 100"
-  field_str = "SELECT Id, FirstName, LastName, PersonBirthdate, LastModifiedDate from Account "
   username = ENV["sf_username"]
   password = ENV["sf_password"] + ENV["sf_security_token"]
 
-  byebug
-
   # Make sure to remove the true argument in production.
-  salesforce = SalesforceBulk::Api.new(username, password,  true)
-  if not LastModified.any?
-    lm = LastModified.new
-    query_str = field_str + order_str
-  else
+  salesforce = SalesforceBulk::Api.new(username, password, false)
 
-    ##### MAJOR SECURITY FLAW - SQL INJECTION LOLOLOL #####
-    lm = LastModified.first
-    lm_str = "WHERE LastModifiedDate > "
-    lm_str += lm.last_modified + " "
-    query_str = field_str + lm_str + order_str
-  end
-  accounts = salesforce.query("Account", query_str)
-  if accounts.result.records.length != 0
-    lm.last_modified = accounts.result.records.last["LastModifiedDate"]
-    lm.save
-    save_accounts accounts
-    Rake::Task[:load_sf].reenable
-    #Rake::Task[:load_sf].invoke
-  end
+  fields = ["Id", "FirstName","LastName","SS_Num__c","Birthdate__c","Phone","PersonEmail","Gender__c","Identify_as_GLBT__c",
+      "Race__c", "Primary_Language__c", "Foster_care__c","Veteran__c","Housing_Status_New__c","How_long_have_you_been_homeless__c",
+      "Where_do_you_usually_go_for_healthcare__c","Medical_Care_Other__c"]
+  query  = "SELECT " + fields.join(", ") + " from Account"
+  puts "Querying salesforce..."
+
+  # NOTE: Should we remove filter names that are null?
+  response = salesforce.query("Account", query)
+    response.result.records.each do |attrs|
+      #Rename ID to SF_ID so we don't overrate ActiveRecord's primary key
+
+      attrs = attrs.to_hash
+      attrs[:sf_id] = attrs.delete "Id"
+      puts "Updating account #{attrs[:sf_id]}: #{attrs["FirstName"]} #{attrs["LastName"]}"
+      Account.find_or_create_by(sf_id: attrs[:sf_id]) do |account|
+        account.update(attrs)
+      end
+    end
+  Rake::Task[:load_sf].reenable
+  #Rake::Task[:load_sf].invoke
 end

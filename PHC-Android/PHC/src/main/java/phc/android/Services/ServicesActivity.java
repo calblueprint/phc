@@ -102,7 +102,7 @@ public class ServicesActivity extends Activity {
 
         mMainActivity = (MainActivity) MainActivity.getContext();
         mEventId = mMainActivity.getEventID();
-        mApiVersion = mMainActivity.getApiVersion();
+//        mApiVersion = mMainActivity.getApiVersion();
         sOfferedServices = mMainActivity.getOfferedServices();
         sDisplayNames = mMainActivity.getDisplayNames();
 
