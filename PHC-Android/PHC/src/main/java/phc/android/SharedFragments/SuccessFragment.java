@@ -19,7 +19,6 @@ import phc.android.Checkin.CheckinActivity;
 import phc.android.Checkin.CheckinFragment;
 import phc.android.Checkout.CheckoutActivity;
 import phc.android.Helpers.SharedPreferenceEditorListener;
-import phc.android.Main.MainActivity;
 import phc.android.R;
 import phc.android.Services.ServicesActivity;
 
@@ -42,12 +41,17 @@ public class SuccessFragment extends CheckinFragment {
     private HashMap<SuccessType, String> mButtonTextMapping;
 
     private static final String TAG = "SUCCESS_FRAGMENT";
+    // Key for saving the success type across instance states
+    private static final String SUCCES_TYPE_KEY = "SUCCESS_TYPE";
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_success, container, false);
+        if (savedInstanceState != null) {
+            mCurrentSuccessType = (SuccessType) savedInstanceState.getSerializable(SUCCES_TYPE_KEY);
+        }
         setupStringMappings();
         setOnRepeatActionClickListener(view);
         setupUI(view);
@@ -82,6 +86,12 @@ public class SuccessFragment extends CheckinFragment {
         }
 
         super.onResume();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+        bundle.putSerializable(SUCCES_TYPE_KEY, mCurrentSuccessType);
     }
 
     /**

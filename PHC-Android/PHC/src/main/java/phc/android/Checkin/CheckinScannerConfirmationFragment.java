@@ -18,23 +18,16 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.salesforce.androidsdk.rest.RestClient;
-import com.salesforce.androidsdk.rest.RestRequest;
-import com.salesforce.androidsdk.rest.RestResponse;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 
 import phc.android.Helpers.OnSubmitClickListener;
-import phc.android.Main.MainActivity;
+import phc.android.Helpers.SharedPreferenceEditorListener;
 import phc.android.Networking.RequestManager;
 import phc.android.R;
 import phc.android.SharedFragments.ScannerConfirmationFragment;
-import phc.android.Helpers.SharedPreferenceEditorListener;
 
 
 public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragment {
@@ -167,6 +160,7 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
                     Log.e(TAG, "Volley Error");
                     volleyError.printStackTrace();
                 }
+                volleyError.printStackTrace();
 
                 Toast toast = Toast.makeText(getActivity(), "Error registering user", Toast.LENGTH_SHORT);
                 toast.show();
@@ -217,10 +211,12 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
             fields.put("Gender__c", userPreferences.getString("spinner_gender", ""));
             fields.put("Ethnicity__pc", userPreferences.getString("spinner_ethnicity", ""));
             fields.put("Primary_Language__c", userPreferences.getString("spinner_language", ""));
+            fields.put("Identify_as_GLBT__c", userPreferences.getBoolean("checkbox_glbt", false));
             fields.put("Foster_Care__c", userPreferences.getBoolean("checkbox_foster", false));
-            fields.put("Veteran__c", userPreferences.getBoolean("checkbox__military", false));
-            fields.put("Veteran__c", userPreferences.getBoolean("checkbox__military", false));
-            fields.put("Minor_Children__c", userPreferences.getBoolean("checkbox_children", false));
+            fields.put("Veteran__c", userPreferences.getBoolean("checkbox_military", false));
+            fields.put("How_long_have_you_been_homeless__c", userPreferences.getString("spinner_homeless_duration", ""));
+            fields.put("Where_do_you_usually_go_for_healthcare__c", userPreferences.getString("spinner_healthcare", ""));
+            fields.put("Medical_Care_Other__c", userPreferences.getString("healthcare_other", ""));
 
             return fields;
         }

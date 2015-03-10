@@ -25,32 +25,32 @@ import java.util.GregorianCalendar;
 
 import phc.android.Helpers.NothingSelectedSpinnerAdapter;
 import phc.android.Helpers.OnContinueClickListener;
-import phc.android.R;
 import phc.android.Helpers.TextLengthWatcher;
+import phc.android.R;
 
 /**
  * PersonalInfoFragment is the registration form for all new clients
  * and contains personal account questions that do not change over time.
  */
 public class PersonalInfoFragment extends Fragment {
-    /** Parent layout for all views. */
+    // Parent layout for all views.
     private ViewGroup mLayout;
-    /** Prompt text. Changes depending on whether client is a new user or returning user. */
+    // Prompt text. Changes depending on whether client is a new user or returning user.
     private TextView mPrompt;
-    /** Spinners. */
+    // Spinners.
     private Spinner mGenderSpinner, mEthnicitySpinner, mLanguageSpinner;
-    /** EditTexts. */
+    // EditTexts.
     private EditText mMonth, mDay, mYear, mPhone1, mPhone2, mPhone3,
             mSSN1, mSSN2, mSSN3, mEmail, mFirstName, mLastName;
-    /** Continue button. */
+    // Continue button.
     private Button mContinueButton;
-    /** Parent Activity **/
+    // Parent Activity
     private CheckinActivity mParent;
-    /** GLBT Checkbox **/
+    // GLBT Checkbox
     private CheckBox mGLBTCheckbox;
-    /** Military Checkbox **/
+    // Military Checkbox
     private CheckBox mMilitaryCheckbox;
-    /** Foster Checkbox **/
+    // Foster Checkbox
     private CheckBox mFosterCheckbox;
 
 
@@ -138,10 +138,13 @@ public class PersonalInfoFragment extends Fragment {
 
         mEmail = (EditText) view.findViewById(R.id.email);
 
-
         mGenderSpinner = (Spinner) view.findViewById(R.id.spinner_gender);
         mEthnicitySpinner = (Spinner) view.findViewById(R.id.spinner_ethnicity);
         mLanguageSpinner = (Spinner) view.findViewById(R.id.spinner_language);
+
+        mGLBTCheckbox = (CheckBox) view.findViewById(R.id.checkbox_glbt);
+        mFosterCheckbox = (CheckBox) view.findViewById(R.id.checkbox_foster);
+        mMilitaryCheckbox = (CheckBox) view.findViewById(R.id.checkbox_military);
     }
 
     /**
@@ -168,10 +171,14 @@ public class PersonalInfoFragment extends Fragment {
         mGenderSpinner.setSelection(0);
         mEthnicitySpinner.setSelection(0);
         mLanguageSpinner.setSelection(0);
+
+        mGLBTCheckbox.setChecked(false);
+        mFosterCheckbox.setChecked(false);
+        mMilitaryCheckbox.setChecked(false);
     }
 
     /**
-     * Adds TextChangedListeners to the phone and ssn fieilds
+     * Adds TextChangedListeners to the phone and ssn fields
      */
     private void addEditTextListeners(){
         mSSN1.addTextChangedListener(new TextLengthWatcher(3,mSSN2));
@@ -185,11 +192,10 @@ public class PersonalInfoFragment extends Fragment {
         mPhone1.addTextChangedListener(new TextLengthWatcher(3,mPhone2));
         mPhone2.addTextChangedListener(new TextLengthWatcher(3,mPhone3));
         mPhone3.addTextChangedListener(new TextLengthWatcher(4,mEmail));
-
     }
 
     /**
-     * initializes spinners with hints.
+     * Initializes spinners with hints.
      */
     private void setSpinnerContent() {
         ArrayAdapter<CharSequence> genderAdapter =
@@ -243,13 +249,9 @@ public class PersonalInfoFragment extends Fragment {
         String gender = sharedPreferences.getString("Gender", null);
         String ethnicity = sharedPreferences.getString("Ethnicity", null);
         String language = sharedPreferences.getString("Language", null);
-        Boolean glbt = sharedPreferences.getBoolean("checkbox_glbt", false);
-        Boolean foster = sharedPreferences.getBoolean("checkbox_foster", false);
-        Boolean military = sharedPreferences.getBoolean("checkbox_military", false);
-
-        if(!glbt.equals("null")) mGLBTCheckbox.setActivated(true);
-        if(!foster.equals("null")) mMilitaryCheckbox.setActivated(true);
-        if(!military.equals("null")) mFosterCheckbox.setActivated(true);
+        boolean glbt = sharedPreferences.getBoolean("GLBT", false);
+        boolean foster = sharedPreferences.getBoolean("Foster", false);
+        boolean military = sharedPreferences.getBoolean("Military", false);
 
         if(!firstName.equals("null")) mFirstName.setText(firstName);
         if(!lastName.equals("null")) mLastName.setText(lastName);
@@ -304,5 +306,8 @@ public class PersonalInfoFragment extends Fragment {
             }
         }
 
+        mGLBTCheckbox.setChecked(glbt);
+        mMilitaryCheckbox.setChecked(military);
+        mFosterCheckbox.setChecked(foster);
     }
 }

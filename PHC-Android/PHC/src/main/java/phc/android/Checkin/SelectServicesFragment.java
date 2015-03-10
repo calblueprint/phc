@@ -10,11 +10,6 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.HashMap;
-
-import phc.android.Checkin.CheckinActivity;
-import phc.android.Checkin.CheckinFragment;
-import phc.android.Checkin.CheckinScannerFragment;
 import phc.android.Helpers.OnContinueClickListener;
 import phc.android.Main.MainActivity;
 import phc.android.R;

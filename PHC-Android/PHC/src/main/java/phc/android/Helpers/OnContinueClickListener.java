@@ -12,9 +12,9 @@ import android.widget.Spinner;
 
 import java.util.Arrays;
 
+import phc.android.Checkin.SelectServicesFragment;
 import phc.android.Main.MainActivity;
 import phc.android.R;
-import phc.android.Checkin.SelectServicesFragment;
 
 /**
  * OnContinueClickListener stores all view inputs into SharedPreferences

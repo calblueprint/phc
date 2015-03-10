@@ -1,7 +1,5 @@
 package phc.android.Networking;
 
-import android.util.Log;
-
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -12,8 +10,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import phc.android.Checkout.CheckoutScannerFragment;
 
 /**
  * Created by tonywu on 2/24/15.
