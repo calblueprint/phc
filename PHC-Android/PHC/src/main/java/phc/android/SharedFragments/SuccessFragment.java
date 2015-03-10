@@ -19,7 +19,6 @@ import phc.android.Checkin.CheckinActivity;
 import phc.android.Checkin.CheckinFragment;
 import phc.android.Checkout.CheckoutActivity;
 import phc.android.Helpers.SharedPreferenceEditorListener;
-import phc.android.Main.MainActivity;
 import phc.android.R;
 import phc.android.Services.ServicesActivity;
 

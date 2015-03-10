@@ -36,10 +36,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
-import phc.android.SharedFragments.ScannerConfirmationFragment;
-import phc.android.SharedFragments.ScannerFragment;
 import phc.android.Main.MainActivity;
 import phc.android.R;
+import phc.android.SharedFragments.ScannerConfirmationFragment;
+import phc.android.SharedFragments.ScannerFragment;
 
 /**
  * ServicesActivity is the main activity for registering users for services.

@@ -25,8 +25,8 @@ import java.util.GregorianCalendar;
 
 import phc.android.Helpers.NothingSelectedSpinnerAdapter;
 import phc.android.Helpers.OnContinueClickListener;
-import phc.android.R;
 import phc.android.Helpers.TextLengthWatcher;
+import phc.android.R;
 
 /**
  * PersonalInfoFragment is the registration form for all new clients
