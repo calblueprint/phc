@@ -30,16 +30,12 @@ class Api::V1::EventRegistrationsController < ApplicationController
       (reg.services ||= []) << Service.new(name: service, status:status)
     end
 
-    if reg.save
-      render :json => { status: "Success" }
-    else
-      render :json => { status: "Failure" }
-    end
+    render :json => { status: (reg.save? ? "Success" : "Failure") }
   end
 
   def search
     qr_code = params[:Number__c]
-    respond_with EventRegistration.exists?(Number__c: qr_code)
+    render :json => { present: EventRegistration.exists?(Number__c: qr_code) ? true : false }
   end
 
   def update_service

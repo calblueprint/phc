@@ -10,12 +10,12 @@ class ApplicationController < ActionController::Base
     user = User.find_by(id: id)
     if not user
       respond_with "Error: User ID not found in database.", status: 401
-      false
+      return false
     elsif not user.authenticated?(token)
       respond_with "Error: Invalid authentication token.", status: 401
-      false
+      return false
     else
-      true
+      return true
     end
   end
 
@@ -23,13 +23,11 @@ class ApplicationController < ActionController::Base
     auth_token = request.headers["HTTP_AUTH_TOKEN"]
     user_id = request.headers["HTTP_USER_ID"]
     if auth_token && user_id
-      if user_authenticated?(user_id, auth_token)
-        return true
-      end
+      return true if user_authenticated?(user_id, auth_token)
     else
       respond_with "Error: Please include authentication token.", status: 401
-      false
     end
+    return false
   end
 
 end
