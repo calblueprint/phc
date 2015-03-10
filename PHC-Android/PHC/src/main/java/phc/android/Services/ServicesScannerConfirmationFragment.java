@@ -15,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import phc.android.Helpers.SearchResult;
+import phc.android.Helpers.Utils;
 import phc.android.R;
 import phc.android.SharedFragments.ScannerConfirmationFragment;
 import phc.android.SharedFragments.SuccessFragment;
@@ -43,18 +44,6 @@ public class ServicesScannerConfirmationFragment extends ScannerConfirmationFrag
                 new SearchByCodeResponseListener(),
                 new SearchByCodeErrorListener());
 
-        if (mRegistrationFound) {
-
-            sRequestManager.requestUpdateService(mScanResult,
-                    ((ServicesActivity)getActivity()).getServiceSelected(),
-                    mAuthToken,
-                    mUserId,
-                    new UpdateServiceResponseListener(),
-                    new UpdateServiceErrorListener());
-
-        } else {
-            notFoundDialogue();
-        }
     }
 
     /**
@@ -95,6 +84,22 @@ public class ServicesScannerConfirmationFragment extends ScannerConfirmationFrag
                 Log.e(TAG, "Error parsing JSON");
                 Log.e(TAG, e.toString());
             }
+
+            if (mRegistrationFound) {
+
+                String service = Utils.fieldNameHelperReverse(
+                        ((ServicesActivity)getActivity()).getServiceSelected());
+
+                sRequestManager.requestUpdateService(mScanResult,
+                        service,
+                        mAuthToken,
+                        mUserId,
+                        new UpdateServiceResponseListener(),
+                        new UpdateServiceErrorListener());
+
+            } else {
+                notFoundDialogue();
+            }
         }
     }
 
@@ -120,9 +125,9 @@ public class ServicesScannerConfirmationFragment extends ScannerConfirmationFrag
                 String message = jsonObject.getString("message");
                 // makes a toast if receive an unexpected service status message
                 // (i.e. client is a drop-in or client has already used the service)
-                if (message != ""){
+                if (!message.equals("")){
                     Context c = getActivity();
-                    Toast toast = Toast.makeText(c, message, Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(c, message, Toast.LENGTH_LONG);
                     toast.show();
                 }
 

@@ -21,7 +21,7 @@ import phc.android.Checkout.CheckoutScannerFragment;
 public class RequestManager {
 
     //TODO: Change to heroku url when rails code pushed to heroku
-    private static final String BASE_URL = "http://10.0.2.2:3000";
+    private static final String BASE_URL = "http://phc-staging.herokuapp.com";
     private static final String LOGIN_ENDPOINT = "/login";
     private static final String SEARCH_ENDPOINT = "/api/v1/search";
     private static final String CREATE_ENDPOINT = "/api/v1/create";
@@ -109,28 +109,32 @@ public class RequestManager {
      * @param qrCode qrCode of person seeking services
      * @param userId user_id of logged in user
      * @param authToken auth_token of logged in user
-     *
      */
 
-    public void requestSearchByCode(String qrCode,
-                                    String authToken,
-                                    String userId,
+    public void requestSearchByCode(final String qrCode,
+                                    final String authToken,
+                                    final String userId,
                                     Response.Listener<JSONObject> responseListener,
                                     Response.ErrorListener errorListener){
-        HashMap<String, String> params = new HashMap<String, String>();
-
-        params.put("qr_code", qrCode);
-        params.put("user_id", userId);
-        params.put("auth_token", authToken);
 
         JsonObjectRequest searchRequest = new JsonObjectRequest(BASE_URL + SEARCH_REG_ENDPOINT,
-                new JSONObject(params),
+                null,
                 responseListener,
-                errorListener);
+                errorListener) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("user_id", "1");
+//                params.put("user_id", userId);
+                params.put("auth_token", "vqWbG-dyt-cu9d9zqt1fXw");
+//                params.put("auth_token", authToken);
+                params.put("Accept", "*/*");
+                params.put("Number__c", qrCode);
+                return params;
+            }
+        };
         searchRequest.setTag(sTAG);
         sRequestQueue.add(searchRequest);
-
-
     }
 
     /**
@@ -169,24 +173,34 @@ public class RequestManager {
      * @param responseListener listener that is called when response received
      * @param errorListener listener that is called when error
      */
-    public void requestUpdateService(String qrCode,
-                                     String serviceName,
-                                     String userId,
-                                     String authToken,
+    public void requestUpdateService(final String qrCode,
+                                     final String serviceName,
+                                     final String userId,
+                                     final String authToken,
                                      Response.Listener<JSONObject> responseListener,
                                      Response.ErrorListener errorListener) {
+
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("Number__c", qrCode);
         params.put("service_name", serviceName);
-        params.put("user_id", userId);
-        params.put("auth_token", authToken);
 
-        JsonObjectRequest createRequest = new JsonObjectRequest(BASE_URL + UPDATE_SERVICE_ENDPOINT,
+        JsonObjectRequest updateRequest = new JsonObjectRequest(BASE_URL + UPDATE_SERVICE_ENDPOINT,
                 new JSONObject(params),
                 responseListener,
-                errorListener);
-        createRequest.setTag(sTAG);
-        sRequestQueue.add(createRequest);
+                errorListener) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("user_id", "1");
+                params.put("auth_token", "vqWbG-dyt-cu9d9zqt1fXw");
+//                params.put("user_id", userId);
+//                params.put("auth_token", authToken);
+                params.put("Accept", "*/*");
+                return params;
+            }
+        };
+        updateRequest.setTag(sTAG);
+        sRequestQueue.add(updateRequest);
     }
 
 }
