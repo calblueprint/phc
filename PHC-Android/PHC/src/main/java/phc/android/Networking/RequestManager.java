@@ -79,12 +79,15 @@ public class RequestManager {
      * @param responseListener listener that is called when response received
      * @param errorListener listener that is called when error
      */
-    public void requestSearch(final String firstName,
-                                     final String lastName,
+    public void requestSearch(String firstName,
+                                     String lastName,
                                      final String userId,
                                      final String authToken,
                                      Response.Listener<JSONArray> responseListener,
                                      Response.ErrorListener errorListener) {
+        // Strip whitespace from first and last name;
+        firstName = firstName.replaceAll("\\s+","");
+        lastName = lastName.replaceAll("\\s+","");
 
         StringBuilder buildUrl = new StringBuilder(BASE_URL);
         buildUrl.append(SEARCH_ENDPOINT);
