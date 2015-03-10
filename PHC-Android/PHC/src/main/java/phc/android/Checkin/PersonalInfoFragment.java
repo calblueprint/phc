@@ -286,7 +286,7 @@ public class PersonalInfoFragment extends Fragment {
             ArrayAdapter<String> adapter = (ArrayAdapter<String>) ((NothingSelectedSpinnerAdapter) mGenderSpinner.getAdapter()).getSpinnerAdapter();
             int position = adapter.getPosition(gender);
             if (position != -1) {
-                mGenderSpinner.setSelection(position);
+                mGenderSpinner.setSelection(position+1);
             }
         }
 
@@ -294,7 +294,7 @@ public class PersonalInfoFragment extends Fragment {
             ArrayAdapter<String> adapter = (ArrayAdapter<String>) ((NothingSelectedSpinnerAdapter) mEthnicitySpinner.getAdapter()).getSpinnerAdapter();
             int position = adapter.getPosition(ethnicity);
             if (position != -1) {
-                mEthnicitySpinner.setSelection(position);
+                mEthnicitySpinner.setSelection(position+1);
             }
         }
 
@@ -302,7 +302,7 @@ public class PersonalInfoFragment extends Fragment {
             ArrayAdapter<String> adapter = (ArrayAdapter<String>) ((NothingSelectedSpinnerAdapter) mLanguageSpinner.getAdapter()).getSpinnerAdapter();
             int position = adapter.getPosition(language);
             if (position != -1) {
-                mLanguageSpinner.setSelection(position);
+                mLanguageSpinner.setSelection(position+1);
             }
         }
 
