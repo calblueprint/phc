@@ -69,20 +69,18 @@ public class PersonalInfoFragment extends Fragment {
         mPrompt = (TextView) view.findViewById(R.id.personal_info_prompt);
 
         // Only pre-populate the form if the user is a returning user.
-        if (mParent.getCurrentState() == CheckinActivity.RegistrationState.RETURNING_USER) {
+        if (mParent.getCurrentState() == CheckinActivity.FormDataState.SAVE_DATA) {
             mPrompt.setText(R.string.personal_info_edit);
             prepopulateForm();
         } else {
             mPrompt.setText(R.string.personal_info_new);
         }
 
-
         mContinueButton = (Button) view.findViewById(R.id.button_account_continue);
         mContinueButton.setOnClickListener(new OnContinueClickListener(getActivity(),
                 this, mLayout, new EventInfoFragment(), getResources().getString(R.string
                 .sidebar_event_info)));
         return view;
-
     }
 
     @Override
@@ -107,9 +105,12 @@ public class PersonalInfoFragment extends Fragment {
         }
 
         // If we have a new user, we need to clear the fields
-        if (mParent.getCurrentState() == CheckinActivity.RegistrationState.NEW_USER) {
+        if (mParent.getCurrentState() == CheckinActivity.FormDataState.CLEAR_DATA) {
             clearFields();
         }
+        // Once this fragment is entered, we now save form data
+        // This will be reset to CLEAR DATA when returning to the SelectionFragment
+        mParent.setCurrentState(CheckinActivity.FormDataState.SAVE_DATA);
         super.onResume();
     }
 
@@ -240,15 +241,15 @@ public class PersonalInfoFragment extends Fragment {
             return;
         }
 
-        String ssNum = sharedPreferences.getString("SS_Num", null);
-        String firstName = sharedPreferences.getString("FirstName", null);
-        String lastName = sharedPreferences.getString("LastName", null);
-        String phone = sharedPreferences.getString("Phone", null);
-        String birthdateString = sharedPreferences.getString("Birthdate", null);
-        String email = sharedPreferences.getString("Email", null);
-        String gender = sharedPreferences.getString("Gender", null);
-        String ethnicity = sharedPreferences.getString("Ethnicity", null);
-        String language = sharedPreferences.getString("Language", null);
+        String ssNum = sharedPreferences.getString("SS_Num", "");
+        String firstName = sharedPreferences.getString("FirstName", "");
+        String lastName = sharedPreferences.getString("LastName", "");
+        String phone = sharedPreferences.getString("Phone", "");
+        String birthdateString = sharedPreferences.getString("Birthdate", "");
+        String email = sharedPreferences.getString("Email", "");
+        String gender = sharedPreferences.getString("Gender", "");
+        String ethnicity = sharedPreferences.getString("Ethnicity", "");
+        String language = sharedPreferences.getString("Language", "");
         boolean glbt = sharedPreferences.getBoolean("GLBT", false);
         boolean foster = sharedPreferences.getBoolean("Foster", false);
         boolean military = sharedPreferences.getBoolean("Military", false);

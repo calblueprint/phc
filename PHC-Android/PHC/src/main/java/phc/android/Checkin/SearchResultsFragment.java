@@ -348,8 +348,9 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                 editor.putBoolean("Searched", true);
                 editor.apply();
             }
-            // If we successfully load a user, we change the state to returning user
-            mParent.setCurrentState(CheckinActivity.RegistrationState.RETURNING_USER);
+            // If we successfully load a user, we do not need to clear form data since we need to
+            // populate it
+            mParent.setCurrentState(CheckinActivity.FormDataState.SAVE_DATA);
 
             PersonalInfoFragment newFragment = new PersonalInfoFragment();
             FragmentTransaction transaction = getFragmentManager().beginTransaction();

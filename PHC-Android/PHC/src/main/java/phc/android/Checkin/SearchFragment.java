@@ -71,7 +71,10 @@ public class SearchFragment extends CheckinFragment {
                 tv.setTypeface(null, Typeface.NORMAL);
             }
         }
-        mParent.setCurrentState(CheckinActivity.RegistrationState.NEW_USER);
+
+        // When searching for a new user, we need to anticipate clearing any form data that
+        // might have been previously filled out
+        mParent.setCurrentState(CheckinActivity.FormDataState.CLEAR_DATA);
         super.onResume();
     }
 
