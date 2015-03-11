@@ -116,7 +116,7 @@ public class MainActivity extends Activity {
         mProgressDialog =
                 ProgressDialog.show(MainActivity.this, "Please wait...", "Retrieving Data", true);
 
-        // Schedules the retryDialog to appear after timeout
+        // Schedules the retry dialog to appear after timeout
         new java.util.Timer().schedule(
                 new java.util.TimerTask() {
                     @Override

@@ -20,7 +20,6 @@ import java.util.Map;
  */
 public class RequestManager {
 
-    //TODO: Change to heroku url when rails code pushed to heroku
     private static final String BASE_URL = "http://phc-staging.herokuapp.com";
     private static final String LOGIN_ENDPOINT = "/login";
     private static final String SEARCH_ENDPOINT = "/api/v1/search";
@@ -257,7 +256,7 @@ public class RequestManager {
                                 final String authToken,
                                 Response.Listener<JSONArray> responseListener,
                                 Response.ErrorListener errorListener) {
-        JsonArrayRequest searchRequest = new JsonArrayRequest(BASE_URL + SERVICES_ENDPOINT,
+        JsonArrayRequest serviceRequest = new JsonArrayRequest(BASE_URL + SERVICES_ENDPOINT,
                 responseListener,
                 errorListener) {
             @Override
@@ -269,7 +268,7 @@ public class RequestManager {
                 return params;
             }
         };
-        searchRequest.setTag(sTAG);
-        sRequestQueue.add(searchRequest);
+        serviceRequest.setTag(sTAG);
+        sRequestQueue.add(serviceRequest);
     }
 }
