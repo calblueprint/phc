@@ -2,6 +2,7 @@ package phc.android.Main;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -43,37 +44,43 @@ public class MainActivity extends Activity {
     // SharedPreference editor object
     private SharedPreferences.Editor mUserPreferencesEditor;
 
-    /*RETRIEVING SERVICES (USED BY ALL ACTIVITIES)*/
+    // RETRIEVING SERVICES (USED BY ALL ACTIVITIES)
     /** Hashmap of all services being offered at the event, where the Key is the Salesforce name
      of the service (e.g. "acupuncture__c") and the value is the display name of the service (e.g.
      "acupuncture"). */
     private static HashMap<String, String> sOfferedServices = new HashMap<String, String>();
-    /** Alphabetized array of Salesforce names for all services. (keys of mOfferedServices). */
+    // Alphabetized array of Salesforce names for all services. (keys of mOfferedServices).
     private static String[] sSalesforceNames;
-    /** Alphabetized array of display names for all services. (values of mOfferedServices). */
+    // Alphabetized array of display names for all services. (values of mOfferedServices).
     private static String[] sDisplayNames;
 
-    /** Indicates whether mOfferedServices has been retrieved and initialized yet. */
+    // Indicates whether mOfferedServices has been retrieved and initialized yet.
     private boolean mInitialized = false;
-    /** Holds a toast that shows the services data retrieval incomplete message. */
+    // Holds a toast that shows the services data retrieval incomplete message.
     private Toast[] mToasts = { null };
 
-    /*SERVICES ACTIVITY*/
-    /** Used by ServicesActivity to perform REST requests */
+    // SERVICES ACTIVITY
+    // Used by ServicesActivity to perform REST requests
     private static Context mContext;
 
-    /*OTHER*/
+    // OTHER
     /** Holds the event Id of the most recently created PHC Event,
      * treated in the app as the current event. */
     private String mEventId = "";
     private static final String TAG = "MainActivity";
+    // Timeout for getting services (milliseconds)
+    private static final int REQUEST_TIMEOUT = 10000;
+    // Progress Dialog
+    private ProgressDialog mProgressDialog;
+    // Retry Dialog that prompts users to try the request again
+    private AlertDialog mRetryDialog;
 
-    /*BUTTONS*/
-    /** Button leading to Services Activity. */
+    // BUTTONS
+    // Button leading to Services Activity.
     private Button mServicesButton;
-    /** Button leading to Checkin Activity. */
+    // Button leading to Checkin Activity.
     private Button mCheckinButton;
-    /** Button leading to Checkout Activity. */
+    // Button leading to Checkout Activity.
     private Button mCheckoutButton;
 
     // Network request objects
@@ -89,6 +96,7 @@ public class MainActivity extends Activity {
         sRequestQueue = Volley.newRequestQueue(this);
         sRequestManager = new RequestManager(TAG, sRequestQueue);
 
+        showProgressIndicator();
         getServices();
 
         super.onCreate(savedInstanceState);
@@ -99,6 +107,53 @@ public class MainActivity extends Activity {
         super.onResume();
         checkConnectivity();
         refreshButtons();
+    }
+
+    /**
+     * Shows the progress dialog and creates an alert dialog is the request times out
+     */
+    private void showProgressIndicator() {
+        mProgressDialog =
+                ProgressDialog.show(MainActivity.this, "Please wait...", "Retrieving Data", true);
+
+        // Schedules the retry dialog to appear after timeout
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (!mInitialized) {
+                                    mProgressDialog.dismiss();
+                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                            MainActivity.this);
+                                    alertDialogBuilder.setTitle("Request Timed Out");
+                                    alertDialogBuilder.setPositiveButton("Try Again", new retryDialogOnClickListener());
+                                    mRetryDialog = alertDialogBuilder.create();
+                                    mRetryDialog.show();
+                                } else {
+                                    mProgressDialog.dismiss();
+                                }
+                            }
+                        });
+                    }
+                },
+                REQUEST_TIMEOUT
+        );
+    }
+
+    /**
+     * OnClickListener that retries the request and shows the progress indicator again
+     */
+    private class retryDialogOnClickListener implements DialogInterface.OnClickListener {
+
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            mRetryDialog.dismiss();
+            showProgressIndicator();
+            getServices();
+        }
     }
 
     /**
@@ -222,9 +277,6 @@ public class MainActivity extends Activity {
             onLogoutClick();
             return true;
         }
-//        } else if (id == R.id.action_settings) {
-//            return true;
-//        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -256,6 +308,7 @@ public class MainActivity extends Activity {
                 }
                 mInitialized = true;
                 refreshButtons();
+                mProgressDialog.dismiss();
             } catch (JSONException e ) {
                 Log.e(TAG, "Error parsing JSON");
                 e.printStackTrace();
