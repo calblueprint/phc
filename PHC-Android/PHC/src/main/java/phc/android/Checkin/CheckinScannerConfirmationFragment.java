@@ -25,6 +25,7 @@ import java.util.HashMap;
 
 import phc.android.Helpers.OnSubmitClickListener;
 import phc.android.Helpers.SharedPreferenceEditorListener;
+import phc.android.Main.MainActivity;
 import phc.android.Networking.RequestManager;
 import phc.android.R;
 import phc.android.SharedFragments.ScannerConfirmationFragment;
@@ -185,6 +186,15 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
             fields.put("Where_do_you_usually_go_for_healthcare__c", userPreferences.getString("spinner_healthcare", ""));
             fields.put("Medical_Care_Other__c", userPreferences.getString("healthcare_other", ""));
             fields.put("Number__c", userPreferences.getString("qr_code", ""));
+
+            // Add services
+            String[] sf_names = ((MainActivity) MainActivity.getContext()).getSalesforceNames();
+            for (String name : sf_names) {
+                boolean fieldValue = mUserInfo.getBoolean(name, false);
+                if (fieldValue) {
+                    fields.put(name, fieldValue);
+                }
+            }
 
             return fields;
         }
