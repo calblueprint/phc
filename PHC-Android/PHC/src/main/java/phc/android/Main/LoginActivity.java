@@ -11,8 +11,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 
@@ -104,11 +109,31 @@ public class LoginActivity extends Activity {
 
         @Override
         public void onErrorResponse(VolleyError volleyError) {
+            String errorMessage = "";
             if (volleyError.getLocalizedMessage() != null) {
                 Log.e(TAG, volleyError.toString());
             }
+            if (volleyError instanceof NoConnectionError){
+                errorMessage = "No internet connection. Please reconnect or try another network.";
+            }
+            else if (volleyError instanceof TimeoutError){
+                errorMessage = "Slow internet. Please try again or connect to another network.";
+            }
+            else if (volleyError instanceof NetworkError){
+                errorMessage = "Server error. Please ask for assistance.";
+            }
+            else if (volleyError instanceof ParseError){
+                errorMessage = "Error parsing the server's response. Please ask for assistance.";
+            }
+            else if (volleyError.networkResponse != null){
+                if (volleyError.networkResponse.statusCode == 401) {
+                    errorMessage = "Incorrect e-mail or password.";
+                }
+            }
+            else { errorMessage = "Unknown login error. Please ask for assistance."; }
 
-            Toast toast = Toast.makeText(getApplicationContext(), "Error during login", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getApplicationContext(), errorMessage,
+                    Toast.LENGTH_LONG);
             toast.show();
         }
     }
