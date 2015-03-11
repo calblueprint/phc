@@ -176,7 +176,7 @@
 
 
     <!-- Services Selection -->
-    <string name="prompt_services">Which services will you be using today?</string>
+    <string name="prompt_services">Which services will the client be using today?</string>
     <string name="action_submit">Submit</string>
 
     <!-- Service Scan Page -->
