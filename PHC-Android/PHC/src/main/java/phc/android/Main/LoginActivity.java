@@ -1,6 +1,8 @@
 package phc.android.Main;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,6 +26,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Timer;
+
 import phc.android.Networking.RequestManager;
 import phc.android.R;
 
@@ -32,6 +36,8 @@ public class LoginActivity extends Activity {
     private static final String TAG = "LoginActivity";
     // Key for user shared preferences
     private static final String USER_AUTH_PREFS_NAME = "UserKey";
+    // Timeout for login request
+    private static final int REQUEST_TIMEOUT = 10000;
 
     private static RequestManager sRequestManager;
     private static RequestQueue sRequestQueue;
@@ -43,6 +49,9 @@ public class LoginActivity extends Activity {
     private EditText mEmailText;
     private EditText mPasswordText;
     private Button mLoginButton;
+    private ProgressDialog mProgressDialog;
+    // Timer used to schedule the progress dialog to disappear
+    private Timer mTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +78,8 @@ public class LoginActivity extends Activity {
             String email = mEmailText.getText().toString();
             String password = mPasswordText.getText().toString();
 
-             sRequestManager.requestLogin(
+            showProgressDialog();
+            sRequestManager.requestLogin(
                      email,
                      password,
                      new LoginResponseListener(),
@@ -91,6 +101,11 @@ public class LoginActivity extends Activity {
                 mUserPreferencesEditor.putString("user_id", userId);
                 mUserPreferencesEditor.putString("auth_token", authToken);
                 mUserPreferencesEditor.apply();
+
+                // Dismiss the progress dialog and stop the timed task
+                mProgressDialog.dismiss();
+                mTimer.cancel();
+                mTimer.purge();
 
                 // Start MainActivity
                 Intent i = new Intent(LoginActivity.this, MainActivity.class);
@@ -132,10 +147,43 @@ public class LoginActivity extends Activity {
             }
             else { errorMessage = "Unknown login error. Please ask for assistance."; }
 
+            // Dismiss the progress dialog and stop the timed task
+            mProgressDialog.dismiss();
+            mTimer.cancel();
+            mTimer.purge();
+
+            // Display the error message
             Toast toast = Toast.makeText(getApplicationContext(), errorMessage,
                     Toast.LENGTH_LONG);
             toast.show();
         }
     }
+
+    private void showProgressDialog() {
+        mProgressDialog =
+                ProgressDialog.show(LoginActivity.this, "Please wait...", "Logging In", true);
+
+        // Creates a timer that closes the progress dialog and displays a toast after timeout
+        mTimer = new Timer();
+        mTimer.schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mProgressDialog.dismiss();
+                                String errorMessage = "Request timed out. Please try again.";
+                                Toast toast = Toast.makeText(getApplicationContext(), errorMessage,
+                                        Toast.LENGTH_LONG);
+                                toast.show();
+                            }
+                        });
+                    }
+                },
+                REQUEST_TIMEOUT
+        );
+    }
+
 
 }

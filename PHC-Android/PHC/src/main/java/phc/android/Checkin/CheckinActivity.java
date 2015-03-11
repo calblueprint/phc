@@ -5,8 +5,6 @@ import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 
-import com.salesforce.androidsdk.app.SalesforceSDKManager;
-import com.salesforce.androidsdk.rest.ClientManager;
 import com.salesforce.androidsdk.rest.RestClient;
 
 import phc.android.R;
@@ -16,9 +14,11 @@ import phc.android.R;
  */
 public class CheckinActivity extends Activity {
 
-    /** Used to keep track of what kind of user we are modifying **/
-    public static enum RegistrationState {NEW_USER, RETURNING_USER};
-    public static RegistrationState currentState;
+    // Used to keep track of whether or not to save form data
+    public static enum FormDataState {
+        CLEAR_DATA, SAVE_DATA
+    };
+    public static FormDataState currentState;
     protected RestClient client;
 
     /**
@@ -32,7 +32,8 @@ public class CheckinActivity extends Activity {
         actionbar.setDisplayHomeAsUpEnabled(true);
 
         setContentView(R.layout.activity_checkin);
-        currentState = RegistrationState.NEW_USER;
+        // Anticipate to clear form data since we are starting a new check in
+        currentState = FormDataState.CLEAR_DATA;
 
         if (savedInstanceState == null) {
             SelectionFragment firstFragment = new SelectionFragment();
@@ -42,15 +43,11 @@ public class CheckinActivity extends Activity {
         }
     }
 
-    public static RegistrationState getCurrentState() {
-
+    public static FormDataState getCurrentState() {
         return currentState;
-
     }
 
-    public static void setCurrentState(RegistrationState currentState) {
-
+    public static void setCurrentState(FormDataState currentState) {
         CheckinActivity.currentState = currentState;
-
     }
 }
