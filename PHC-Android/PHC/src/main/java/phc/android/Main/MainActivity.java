@@ -28,7 +28,6 @@ import org.json.JSONException;
 import java.util.HashMap;
 
 import phc.android.Checkin.CheckinActivity;
-import phc.android.Checkout.CheckoutActivity;
 import phc.android.Helpers.Utils;
 import phc.android.Networking.RequestManager;
 import phc.android.R;

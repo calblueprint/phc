@@ -4,20 +4,16 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
@@ -26,7 +22,6 @@ import java.util.HashMap;
 import phc.android.Helpers.OnSubmitClickListener;
 import phc.android.Helpers.SharedPreferenceEditorListener;
 import phc.android.Main.MainActivity;
-import phc.android.Networking.RequestManager;
 import phc.android.R;
 import phc.android.SharedFragments.ScannerConfirmationFragment;
 

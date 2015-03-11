@@ -11,11 +11,9 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import phc.android.Helpers.SearchResult;
 import phc.android.Helpers.Utils;
 import phc.android.R;
 import phc.android.SharedFragments.ScannerConfirmationFragment;

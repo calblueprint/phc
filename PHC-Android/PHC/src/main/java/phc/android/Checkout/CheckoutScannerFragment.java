@@ -2,8 +2,6 @@ package phc.android.Checkout;
 
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -17,7 +15,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import phc.android.R;
 import phc.android.SharedFragments.ScannerFragment;
 
 
