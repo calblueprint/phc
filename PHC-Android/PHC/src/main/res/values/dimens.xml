@@ -25,8 +25,8 @@
     <dimen name="ssn2">58dp</dimen>
     <dimen name="ssn3">80dp</dimen>
 
-    <dimen name="birthday1">58dp</dimen>
-    <dimen name="birthday2">58dp</dimen>
+    <dimen name="birthday1">64dp</dimen>
+    <dimen name="birthday2">64dp</dimen>
     <dimen name="birthday3">80dp</dimen>
 
     <dimen name="phone1">64dp</dimen>

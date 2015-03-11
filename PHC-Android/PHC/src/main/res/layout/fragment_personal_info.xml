@@ -55,8 +55,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginRight="25dp"
+                android:layout_marginRight="28dp"
                 android:text="@string/prompt_ssn"/>
 
             <EditText
@@ -117,9 +116,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_marginRight="2dp"
                 android:text="@string/prompt_birthday"
-                android:textSize="18.5dp"/>
+                android:textSize="18.5dp"
+                android:layout_marginRight="22dp"/>
 
             <EditText
                 android:id="@+id/birthday_month"
@@ -131,8 +130,7 @@
                 android:maxLines="1"
                 android:inputType="number"
                 android:maxLength="2"
-                android:background="@drawable/smallest_edit_text_bg"
-                android:textSize="16dp"/>
+                android:background="@drawable/smallest_edit_text_bg"/>
 
             <TextView
                 android:layout_width="10dp"
@@ -151,8 +149,7 @@
                 android:maxLines="1"
                 android:inputType="number"
                 android:maxLength="2"
-                android:background="@drawable/smallest_edit_text_bg"
-                android:textSize="16dp"/>
+                android:background="@drawable/smallest_edit_text_bg"/>
 
             <TextView
                 android:layout_width="10dp"
@@ -170,8 +167,7 @@
                 android:maxLines="1"
                 android:inputType="number"
                 android:maxLength="4"
-                android:background="@drawable/small_edit_text_bg"
-                android:textSize="16dp"/>
+                android:background="@drawable/small_edit_text_bg"/>
         </LinearLayout>
 
         <LinearLayout
