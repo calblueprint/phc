@@ -249,8 +249,10 @@
             android:layout_height="wrap_content"/>
 
         <CheckBox android:id="@+id/checkbox_glbt"
+            android:layout_marginTop="@dimen/checkboxes_margin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/checkboxes_margin"
             android:text="@string/prompt_glbt"/>
 
         <Spinner
