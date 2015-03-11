@@ -259,31 +259,41 @@ public class ServicesActivity extends Activity {
         mServicePrompt.setText(Html.fromHtml(prompt + "<br />" + "<b>" + mServiceSelected + "<b>"));
     }
 
-    /**
+  /*  *//** TODO: Delete when confirm there is no use for this 
      * Dynamically clears the options menu and adds the option to
      * change a service.
      * @param menu is passed in by the library.
      * @return true so that menu is created.
-     */
+     *//*
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.clear();
-        /* These parameters are the groupID, itemID, order, and text for the item */
+        *//* These parameters are the groupID, itemID, order, and text for the item *//*
         mServiceMenuItem = menu.add(Menu.NONE, Menu.NONE, Menu.NONE, R.string.button_change_service);
         return true;
-    }
-    /**
+    }*/
+
+/*
+
+    */
+
+/**
+ * TODO: Delete when confirm there is no use for 'logout' in service activity
      * Not currently used. onPrepareOptionsMenu is
      * used instead to add options.
      * @param menu is passed in by the library
      * @return must be true for menu to be displayed.
-     */
+     *//*
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        /* Inflate the menu; this adds items to the action bar if it is present. */
+        */
+/* Inflate the menu; this adds items to the action bar if it is present. *//*
+
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+*/
 
     /**
      * onBackPressed() overrides the default back button
