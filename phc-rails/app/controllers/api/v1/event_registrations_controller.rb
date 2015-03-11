@@ -36,6 +36,7 @@ class Api::V1::EventRegistrationsController < ApplicationController
 
   def search
     qr_code = request.headers["HTTP_NUMBER__C"]
+    puts qr_code
     render :json => { present: (EventRegistration.exists?(Number__c: qr_code) ? true : false) }
   end
 
