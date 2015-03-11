@@ -70,7 +70,8 @@ public class ServicesScannerConfirmationFragment extends ScannerConfirmationFrag
                 retry();
             }
         });
-        builder.setTitle("QR Code not found.");
+        builder.setTitle("Code not recognized");
+        builder.setMessage("Either entered incorrectly OR person has not checked in");
 
         AlertDialog dialog = builder.create();
         dialog.show();
