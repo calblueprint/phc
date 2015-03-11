@@ -73,7 +73,7 @@ public class SelectionFragment extends CheckinFragment {
         }
 
         // When returning to this selection fragment, we assume we are a new user and clear returning user data
-        mParent.setCurrentState(CheckinActivity.RegistrationState.NEW_USER);
+        mParent.setCurrentState(CheckinActivity.FormDataState.CLEAR_DATA);
         clearPreferences();
 
         super.onResume();
