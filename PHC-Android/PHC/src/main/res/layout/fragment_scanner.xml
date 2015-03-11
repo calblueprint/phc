@@ -27,6 +27,7 @@
         android:textSize="20sp"
         android:maxLength="10"
         android:layout_marginBottom="10dp"
+        android:gravity="center"
         android:singleLine="true"/>
 
     <Button
