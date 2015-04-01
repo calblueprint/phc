@@ -23,38 +23,6 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
     /* Tag for logs and fragment code */
     public final static String TAG = "CHECKOUT_SCANNER_CONF";
 
-    @Override
-    protected View setupView(LayoutInflater inflater, ViewGroup container) {
-        View view = super.setupView(inflater, container);
-        mConfirmButton.setOnClickListener(new SubmitListener(getActivity()));
-        //mPreferenceEditor = new PreferenceEditor(getActivity().getApplicationContext());
-        return view;
-    }
-
-    /**
-     * Used to confirm the scan result.
-     * Uses OnSubmit
-     */
-    protected class SubmitListener extends OnSubmitClickListener implements View.OnClickListener {
-
-
-        public SubmitListener(Context context) {
-            super(context);
-        }
-
-        @Override
-        public void onClick(View view) {
-            //mPreferenceEditor.storeScanResult(mScanResult);
-            //registerPerson();
-            // clear previous information here
-            super.onClick(view);
-
-        }
-    }
-
-
-
-
 
 
     /**
