@@ -14,7 +14,7 @@ class Api::V1::AccountsController < ApplicationController
     cursor = request.params[:cursor]
     result = Account.fuzzy_search({ FirstName: first_name, LastName: last_name }, false)
     for account in result
-      if account.sf_id == nil
+      if account.sf_id.nil?
         account.sf_id = "None"
       end
     end
