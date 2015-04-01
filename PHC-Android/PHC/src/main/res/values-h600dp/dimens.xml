@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- These dimens are used for any device that is taller than 600dp in portrait mode.
+     This includes any tablet Nexus 7 or taller. -->
+<resources>
+    <dimen name="search_result_list_view_height">600dp</dimen>
+</resources>
