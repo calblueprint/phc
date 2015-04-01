@@ -102,7 +102,7 @@ public class CheckoutFormFragment extends Fragment {
             }
         });
 
-        dynamicSetCheckboxes(view);
+     //   dynamicSetCheckboxes(view);
         return view;
     }
 
@@ -114,7 +114,7 @@ public class CheckoutFormFragment extends Fragment {
      * work. Android is not able to save and load dynamically created views even when their ID is
      * set, unless the views are created again with the same previous ID.
      */
-    private void dynamicSetCheckboxes(View view){
+  /*  private void dynamicSetCheckboxes(View view){
         mLayout = (LinearLayout) view.findViewById(R.id.services_list);
        //TODO: FIX THIS  mServicesNotReceived = get.getDisplayNames();
 
@@ -130,7 +130,7 @@ public class CheckoutFormFragment extends Fragment {
         }
     }
 
-
+*/
     /**
      * Used when the user submits their inputted code.
      */

@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,32 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
     /* Tag for logs and fragment code */
     public final static String TAG = "CHECKOUT_SCANNER_CONF";
 
+    @Override
+    protected void confirm(){
+
+
+        Bundle args = new Bundle();
+        args.putCharSequence("scan_result", mScanResult);
+        args.putBoolean("manual_input", mManualInput);
+        CheckoutFormFragment formFrag = new CheckoutFormFragment();
+        formFrag.setArguments(args);
+        displayNextFragment(formFrag, CheckoutConfirmationFragment.TAG);
+    }
+
+
+    /**
+     * Brings up another fragment when this fragment
+     * is complete
+     * @param nextFrag Fragment to display next
+     * @param fragName String fragment names
+     */
+    protected void displayNextFragment(Fragment nextFrag, String fragName) {
+        FragmentTransaction transaction =
+                (getActivity()).getFragmentManager().beginTransaction();
+        transaction.replace(R.id.checkout_activity_container, nextFrag, fragName);
+        transaction.addToBackStack(fragName);
+        transaction.commit();
+    }
 
 
     /**

@@ -144,6 +144,7 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
      * Each type of ScannerConfirmation Fragment will perform a different operation
      * when the "confirm" button is pressed.
      */
+
     protected void confirm() {}
 
     /**

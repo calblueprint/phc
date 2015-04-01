@@ -147,6 +147,7 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
      */
     @Override
     protected void confirm() {
+        //TODO: Submit results
         //recordScan();
         FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
         SuccessFragment successFragment = new SuccessFragment();
