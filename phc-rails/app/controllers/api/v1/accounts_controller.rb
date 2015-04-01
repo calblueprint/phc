@@ -11,10 +11,16 @@ class Api::V1::AccountsController < ApplicationController
   def search
     first_name = request.params[:FirstName]
     last_name = request.params[:LastName]
+    cursor = request.params[:cursor]
     result = Account.fuzzy_search({ FirstName: first_name, LastName: last_name }, false)
-    for account in result:
+    for account in result
       if account.sf_id == nil
         account.sf_id = "None"
+      end
+    end
+    unless cursor.nil?
+      result = result[cursor.to_i, 20]
+    end # Hardcoded 20 pagination size
     respond_with result.to_json(only: [:FirstName, :LastName, :Birthdate__c, :sf_id])
   end
 
