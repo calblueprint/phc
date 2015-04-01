@@ -12,6 +12,9 @@ class Api::V1::AccountsController < ApplicationController
     first_name = request.params[:FirstName]
     last_name = request.params[:LastName]
     result = Account.fuzzy_search({ FirstName: first_name, LastName: last_name }, false)
+    for account in result:
+      if account.sf_id == nil
+        account.sf_id = "None"
     respond_with result.to_json(only: [:FirstName, :LastName, :Birthdate__c, :sf_id])
   end
 
