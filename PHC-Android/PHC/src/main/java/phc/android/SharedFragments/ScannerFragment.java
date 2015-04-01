@@ -74,7 +74,10 @@ public class ScannerFragment extends Fragment {
      */
     public void setType(FlowType type) {
         mCurrentFlowType = type;
+        initializeFlowTypeVariables();
+    }
 
+    public void initializeFlowTypeVariables() {
         switch (mCurrentFlowType){
             case CHECKIN:
                 mConfFrag = new CheckinScannerConfirmationFragment();
@@ -177,7 +180,6 @@ public class ScannerFragment extends Fragment {
             mCodeInputSubmitButton.setEnabled(true);
             mCodeInputSubmitButton.setTextColor(getResources().getColor(R.color.green));
             mCodeInputSubmitButton.setBackgroundResource(R.drawable.submit_button);
-
         }
     }
 
@@ -280,6 +282,10 @@ public class ScannerFragment extends Fragment {
         Bundle args = new Bundle();
         args.putCharSequence("scan_result", scanResult);
         args.putBoolean("manual_input", manualInput);
+
+        // Need to re-initialize variables for the next fragment, since setArguments can only be
+        // called on a fragment once
+        initializeFlowTypeVariables();
         mConfFrag.setArguments(args);
 
         FragmentTransaction transaction =
