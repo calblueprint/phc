@@ -21,6 +21,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 
+import phc.android.Main.MainActivity;
 import phc.android.R;
 
 public class CheckoutFormFragment extends Fragment {
@@ -115,7 +116,7 @@ public class CheckoutFormFragment extends Fragment {
      */
     private void dynamicSetCheckboxes(View view){
         mLayout = (LinearLayout) view.findViewById(R.id.services_list);
-       // mServicesNotReceived = ((MainActivity) MainActivity.getContext()).getDisplayNames();
+       //TODO: FIX THIS  mServicesNotReceived = get.getDisplayNames();
 
         for(int i = 0; i < mServicesNotReceived.size(); i++){
             CheckBox cb = new CheckBox(getActivity());
@@ -128,6 +129,7 @@ public class CheckoutFormFragment extends Fragment {
             mLayout.addView(cb);
         }
     }
+
 
     /**
      * Used when the user submits their inputted code.
