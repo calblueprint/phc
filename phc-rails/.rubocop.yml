@@ -10,8 +10,8 @@ AllCops:
     - Guardfile
 
 Metrics/LineLength:
-  Description: 'Limit lines to 110 characters.'
-  Max: 110
+  Description: 'Limit lines to 180 characters.'
+  Max: 180
 
 Style/StringLiterals:
   Enabled: false
