@@ -21,7 +21,7 @@ class Api::V1::AccountsController < ApplicationController
     unless cursor.nil?
       result = result[cursor.to_i, 20] # Hardcoded 20 pagination size
     end
-    if result.nil? then
+    if result.nil?
       respond_with [].to_json
     else
       respond_with result.to_json(only: [:FirstName, :LastName, :Birthdate__c, :sf_id])
