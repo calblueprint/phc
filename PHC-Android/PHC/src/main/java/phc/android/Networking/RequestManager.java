@@ -274,44 +274,39 @@ public class RequestManager {
      * Uncomplete
      * Used to fetch all the services. Need Alton's returned applied
      * but not received services
+     *
      */
+//  public void requestGetApplied
 
     /**
      * Uncomplete
-     * Used to update feedback. Used in checkout confirmation page
+     *
+     * Used to create a new object with checkout information
      */
-    public void requestUpdateFeedback(final String qrCode,
-                                      final String comments,
-                                      final String experience,
-                                      final String userID,
+    public void requestUpdateFeedback(HashMap<String, Object> params,
+                                      final String userId,
                                       final String authToken,
-                                      Response.Listener<JSONArray> responseListener,
-                                      Response.ErrorListener errorListener) {
+                                      Response.Listener<JSONObject> responseListener,
+                                      Response.ErrorListener errorListener){
 
-        HashMap<String, String> params = new HashMap<String, String>();
-        params.put("Number__c", qrCode);
-        params.put("experience", experience);
-        params.put("comments", comments);
-
-        // Fix this
-        JsonArrayRequest updateRequest = new JsonArrayRequest(BASE_URL + UPDATE_SERVICE_ENDPOINT,
-                new JSONArray(params),
+        JsonObjectRequest createRequest = new JsonObjectRequest(BASE_URL + CREATE_EVENT_REG_ENDPOINT,
+                new JSONObject(params),
                 responseListener,
                 errorListener) {
+
             @Override
             public Map<String, String> getHeaders() {
-                HashMap<String, String> params = new HashMap<String, String>();
-//                params.put("user_id", "1");
-//                params.put("auth_token", "vqWbG-dyt-cu9d9zqt1fXw");
-                params.put("user_id", userID);
-                params.put("auth_token", authToken);
-                params.put("Accept", "*/*");
-                return params;
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("user_id", userId);
+                headers.put("auth_token", authToken);
+                headers.put("Accept", "*/*");  // What is this used for
+                return headers;
             }
         };
-        updateRequest.setTag(sTAG);
-        sRequestQueue.add(updateRequest);
+        createRequest.setTag(sTAG);
+        sRequestQueue.add(createRequest);
     }
+
 
 
 

@@ -67,7 +67,10 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
         transaction.commit();
     }
 
-
+    /**
+     * Used to confirm the scan result
+     * Uses OnSubmit
+     */
     // Why can't this be protected? wat
     // this code is exactly like servicesscannerconfirmationfragmnent
     class SearchByCodeResponseListener implements Response.Listener<JSONObject> {
@@ -84,8 +87,6 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
             if (mRegistrationFound) {
                 // Get services here
                 // Use Alton's returned list of applied services
-
-
 
                 //args.put(stuff)
 

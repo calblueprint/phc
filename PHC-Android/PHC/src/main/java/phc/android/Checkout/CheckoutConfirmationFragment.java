@@ -3,13 +3,26 @@ package phc.android.Checkout;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
+import phc.android.Helpers.OnSubmitClickListener;
+import phc.android.Helpers.SharedPreferenceEditorListener;
 import phc.android.R;
 import phc.android.SharedFragments.ScannerConfirmationFragment;
 import phc.android.SharedFragments.SuccessFragment;
@@ -34,6 +47,10 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
 
     /* Displays correct prompt */
     protected TextView mPrompt;
+
+    protected String mServicesNotReceived;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -155,4 +172,69 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
         transaction.replace(R.id.checkout_activity_container, successFragment);
         transaction.commit();
     }
+
+
+    protected class SubmitListener extends OnSubmitClickListener implements View.OnClickListener{
+        public SubmitListener(Context context){ super (context); }
+        @Override
+        public void onClick(View view){
+            // mPreferenceEditor.storescanresult(mScanResult);
+            fillFields();
+            // clear previous information
+            super.onClick(view);
+        }
+
+        /**
+         *
+         */
+        private void fillFields(){
+           HashMap<String, Object> fields = getFields();
+            mUserPreferences = getActivity().getSharedPreferences(USER_AUTH_PREFS_NAME,
+                    Context.MODE_PRIVATE);
+            String userId = mUserPreferences.getString("user_id", null);
+            String authToken = mUserPreferences.getString("auth_token", null);
+
+            sRequestManager.requestUpdateFeedback(
+                    fields,
+                    userId,
+                    authToken,
+                    new RegisterResponseListener(),
+                    new RegisterErrorListener());
+
+        }
+
+        private class RegisterResponseListener implements Response.Listener<JSONObject>{
+
+            @Override
+            public void onResponse(JSONObject jsonObject){
+                //mUserInfo.edit().clear().apply();
+                Log.d(TAG, jsonObject.toString());
+            }
+        }
+        private class RegisterErrorListener implements Response.ErrorListener{
+            @Override
+            public void onErrorResponse(VolleyError volleyError){
+                if (volleyError.getLocalizedMessage() != null){
+                    Log.e(TAG, "Volley Error");
+                    volleyError.printStackTrace();
+                }
+                volleyError.printStackTrace();
+                Toast toast = Toast.makeText(getActivity(), "Error checking out user", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }
+
+        private HashMap<String, Object> getFields(){
+            HashMap<String, Object> fields = new HashMap<String,Object>();
+
+            fields.put("Comment", mComments);
+            fields.put("Experience", mExperience);
+            fields.put("ServicesNotReceived", mServicesNotReceived);
+            fields.put("Number__c", mScanResult);
+
+            return fields;
+        }
+
+    }
+
 }
