@@ -275,8 +275,32 @@ public class RequestManager {
      * Used to fetch all the services. Need Alton's returned applied
      * but not received services
      *
+     *
      */
-//  public void requestGetApplied
+  public void requestGetApplied(final String qrCode,
+                                final String userId,
+                                final String authToken,
+                                Response.Listener<JSONObject> responseListener,
+                                Response.ErrorListener errorListener){
+      JsonObjectRequest searchRequest = new JsonObjectRequest(BASE_URL + SEARCH_REG_ENDPOINT,
+              null,
+              responseListener,
+              errorListener){
+      @Override
+      public Map<String, String> getHeaders(){
+          HashMap<String, String> params = new HashMap<String, String>();
+          params.put("user_id", "1");
+          params.put("user_id", userId);
+          params.put("auth_token", "vqWbG-dyt-cu9d9zqt1fXw");
+          params.put("auth_token", authToken);
+          params.put("Accept", "*/*");
+          params.put("Number__c", qrCode);
+          return params;
+      }
+    };
+      searchRequest.setTag(sTAG);
+      sRequestQueue.add(searchRequest);
+  }
 
     /**
      * Uncomplete

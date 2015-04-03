@@ -230,7 +230,7 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
         /**
          * A Helper function for getting the relevant information to post
          * @return a Map containing key value pairs of checkout information. The keys are
-         * field names, and the values are their associated values. 
+         * field names, and the values are their associated values.
          */
         private HashMap<String, Object> getFields(){
             HashMap<String, Object> fields = new HashMap<String,Object>();
@@ -246,3 +246,28 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

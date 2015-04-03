@@ -1,10 +1,12 @@
 package phc.android.Checkout;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +23,7 @@ import org.json.JSONObject;
 import phc.android.Helpers.OnSubmitClickListener;
 import phc.android.Helpers.Utils;
 import phc.android.R;
+import phc.android.Services.ServicesActivity;
 import phc.android.SharedFragments.ScannerConfirmationFragment;
 import phc.android.SharedFragments.SuccessFragment;
 
@@ -35,17 +38,20 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
     /* Holds the response from requestSearchByCode (true if qr code matches). */
     private boolean mRegistrationFound = false;
 
+    /* Holds the status boolean from requestGetApplied (true qr code maps to existing person) */
+    Boolean mStatus;
+
     @Override
     protected void confirm(){
         Bundle args = new Bundle();
 
         Log.d ("looking up: ", mScanResult);
-        sRequestManager.requestSearchByCode(mScanResult,
+        sRequestManager.requestGetApplied(mScanResult,
                 mUserId,
                 mAuthToken,
                 new SearchByCodeResponseListener(),
                 new SearchByCodeErrorListener());
-
+    // maybe this should be somewhere else
         args.putCharSequence("scan_result", mScanResult);
         args.putBoolean("manual_input", mManualInput);
         CheckoutFormFragment formFrag = new CheckoutFormFragment();
@@ -73,12 +79,13 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
      */
     // Why can't this be protected? wat
     // this code is exactly like servicesscannerconfirmationfragmnent
+
     class SearchByCodeResponseListener implements Response.Listener<JSONObject> {
         @Override
         public void onResponse(JSONObject jsonObject) {
             try {
-                mRegistrationFound = jsonObject.getBoolean("present");
-                Log.d("found?", Boolean.toString(mRegistrationFound));
+                mStatus = jsonObject.getBoolean("status");
+                Log.d("found?", Boolean.toString(mStatus));
             } catch (JSONException e) {
                 Log.e(TAG, "Error parsing JSON");
                 Log.e(TAG, e.toString());
@@ -88,29 +95,76 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
                 // Get services here
                 // Use Alton's returned list of applied services
 
-                //args.put(stuff)
+                String service = Utils.fieldNameHelperReverse(
+                        ((ServicesActivity)getActivity()).getServiceSelected());
+                sRequestManager.requestUpdateService(mScanResult,
+                        service,
+                        mUserId,
+                        mAuthToken,
+                        new RegisterResponseListener(),
+                        new RegisterErrorListener());
 
 
+            } else{
+                notFoundDialogue();
             }
 
         }
     }
 
-        private class SearchByCodeErrorListener implements Response.ErrorListener{
+    private class SearchByCodeErrorListener implements Response.ErrorListener{
 
             @Override
             public void onErrorResponse(VolleyError volleyError){
                 if (volleyError.getLocalizedMessage() != null){
                     Log.e(TAG, volleyError.toString());
                 }
-
                 Toast toast = Toast.makeText(getActivity(), "Error looking up the QR Code",
                         Toast.LENGTH_SHORT);
                 toast.show();
-            }
         }
+    }
+    private class RegisterResponseListener implements Response.Listener<JSONObject>{
+
+        @Override
+        public void onResponse(JSONObject jsonObject){
+            //mUserInfo.edit().clear().apply();
+            // TODO: Not sure what this is for?
+            Log.d(TAG, jsonObject.toString());
+        }
+    }
+    private class RegisterErrorListener implements Response.ErrorListener{
+        @Override
+        public void onErrorResponse(VolleyError volleyError){
+            if (volleyError.getLocalizedMessage() != null){
+                Log.e(TAG, "Volley Error");
+                volleyError.printStackTrace();
+            }
+            volleyError.printStackTrace();
+            Toast toast = Toast.makeText(getActivity(), "Error checking out user", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
 
 
+    /**
+     * Creates an alert dialogue to tell the user that the qr code is not found,
+     * along with a button to try another.
+     */
+    public void notFoundDialogue(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                retry();
+            }
+        });
+        builder.setTitle("Code not recognized");
+        builder.setMessage("Either entered incorrectly OR person has not checked in");
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
 
 
     /**
