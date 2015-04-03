@@ -79,6 +79,7 @@ GEM
     minitest (5.4.2)
     multi_json (1.10.1)
     multipart-post (1.2.0)
+    newrelic_rpm (3.10.0.279)
     pg (0.17.1)
     polyglot (0.3.5)
     rack (1.5.2)
@@ -151,6 +152,7 @@ DEPENDENCIES
   databasedotcom-rails
   figaro
   jbuilder (~> 2.0)
+  newrelic_rpm
   pg
   rails (= 4.1.5)
   rails_12factor
