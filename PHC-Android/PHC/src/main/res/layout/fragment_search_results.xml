@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,6 +8,7 @@
     >
 
     <TextView
+        android:id="@+id/search_text_results"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/fragment_top_margin"
@@ -23,31 +24,37 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:layout_marginBottom="@dimen/prompt_bottom_margin"
+        android:layout_below="@id/search_text_results"
         />
 
     <ListView
         android:id="@+id/search_result_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/search_result_list_view_height"
+        android:layout_below="@id/search_text_results"
+        android:layout_marginBottom="@dimen/search_result_list_view_margin_bottom"
         />
 
     <Button
-        android:layout_gravity="center"
+        android:gravity="center"
         android:id="@+id/button_search_again"
-        android:layout_width="@dimen/rectangle_button_width"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/search_result_button_height"
         android:text="@string/search_again"
         android:textSize="@dimen/text_size"
-        android:layout_marginBottom="20dp"
+        android:layout_below="@id/search_result_list"
+        android:layout_margin="@dimen/search_result_button_margin"
         />
 
     <Button
-        android:layout_gravity="center"
+        android:gravity="center"
         android:id="@+id/button_register_as_new"
-        android:layout_width="@dimen/rectangle_button_width"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/search_result_button_height"
         android:text="@string/search_register_as_new"
         android:textSize="@dimen/text_size"
+        android:layout_below="@id/search_result_list"
+        android:layout_toRightOf="@id/button_search_again"
+        android:layout_margin="@dimen/search_result_button_margin"
         />
-
-</LinearLayout>
+</RelativeLayout>
