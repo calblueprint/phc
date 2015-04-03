@@ -173,7 +173,10 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
         transaction.commit();
     }
 
-
+    /**
+     * Used to submit checkout fields
+     * Uses OnSubmit
+     */
     protected class SubmitListener extends OnSubmitClickListener implements View.OnClickListener{
         public SubmitListener(Context context){ super (context); }
         @Override
@@ -185,7 +188,7 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
         }
 
         /**
-         *
+         * Creates hashmap that has checkout fields (comments, experience, services not received
          */
         private void fillFields(){
            HashMap<String, Object> fields = getFields();
@@ -200,7 +203,6 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
                     authToken,
                     new RegisterResponseListener(),
                     new RegisterErrorListener());
-
         }
 
         private class RegisterResponseListener implements Response.Listener<JSONObject>{
@@ -208,6 +210,7 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
             @Override
             public void onResponse(JSONObject jsonObject){
                 //mUserInfo.edit().clear().apply();
+                // TODO: Not sure what this is for?
                 Log.d(TAG, jsonObject.toString());
             }
         }
@@ -224,6 +227,11 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
             }
         }
 
+        /**
+         * A Helper function for getting the relevant information to post
+         * @return a Map containing key value pairs of checkout information. The keys are
+         * field names, and the values are their associated values. 
+         */
         private HashMap<String, Object> getFields(){
             HashMap<String, Object> fields = new HashMap<String,Object>();
 
