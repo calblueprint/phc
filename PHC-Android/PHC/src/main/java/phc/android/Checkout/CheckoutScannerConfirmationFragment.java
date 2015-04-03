@@ -94,7 +94,7 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
             if (mRegistrationFound) {
                 // Get services here
                 // Use Alton's returned list of applied services
-
+                Log.d("found the user","");
                 String service = Utils.fieldNameHelperReverse(
                         ((ServicesActivity)getActivity()).getServiceSelected());
                 sRequestManager.requestUpdateService(mScanResult,
@@ -103,8 +103,6 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
                         mAuthToken,
                         new RegisterResponseListener(),
                         new RegisterErrorListener());
-
-
             } else{
                 notFoundDialogue();
             }

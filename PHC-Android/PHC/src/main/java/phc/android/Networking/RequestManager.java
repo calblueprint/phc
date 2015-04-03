@@ -282,7 +282,7 @@ public class RequestManager {
                                 final String authToken,
                                 Response.Listener<JSONObject> responseListener,
                                 Response.ErrorListener errorListener){
-      JsonObjectRequest searchRequest = new JsonObjectRequest(BASE_URL + SEARCH_REG_ENDPOINT,
+      JsonObjectRequest searchRequest = new JsonObjectRequest("http://docs.phcherokuconnect.apiary.io/#reference/event-registrations/get-applied/get-applied-services",
               null,
               responseListener,
               errorListener){
