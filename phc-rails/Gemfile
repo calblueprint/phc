@@ -31,7 +31,7 @@ gem "rails_12factor", group: :production
 gem 'salesforce_bulk'
 gem 'salesforce_bulk_api'
 
-
+gem 'newrelic_rpm'
 
 #Recommended gems
 group :development do
