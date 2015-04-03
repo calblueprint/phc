@@ -1,5 +1,5 @@
 class ServicesController < ApplicationController
   def show
-      render :json => Service.services.sort
+    respond_with Service.services.sort.to_json
   end
 end
