@@ -258,8 +258,8 @@ public class PersonalInfoFragment extends Fragment {
         if(!lastName.equals("null")) mLastName.setText(lastName);
         if(!email.equals("null")) mEmail.setText(email);
         if(ssNum != null && ssNum.length() == 9) {
-            mSSN1.setText(ssNum.substring(0, 3));
-            mSSN2.setText(ssNum.substring(3, 5));
+            mSSN1.setText("xxx");
+            mSSN2.setText("xx");
             mSSN3.setText(ssNum.substring(5));
         }
         if(!phone.equals("null") && phone.length() == 10) {
