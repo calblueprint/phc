@@ -130,13 +130,8 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
 
         @Override
         public void onResponse(JSONObject jsonObject){
-
-            // Send data to next fragment
             Bundle args = new Bundle();
-            Log.d(TAG, "jsonObject returned:" + jsonObject.toString());
 
-            args.putCharSequence("scan_result", mScanResult);
-            args.putBoolean("manual_input", mManualInput);
             // Convert JSONArray to ArrayList
             ArrayList<String> mServices = new ArrayList<String>();
             if (serviceArray != null){
@@ -148,7 +143,10 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
                     }
                 }
             }
+
             args.putStringArrayList("services",mServices);
+            args.putCharSequence("scan_result", mScanResult);
+            args.putBoolean("manual_input", mManualInput);
 
             CheckoutFormFragment formFrag = new CheckoutFormFragment();
             formFrag.setArguments(args);

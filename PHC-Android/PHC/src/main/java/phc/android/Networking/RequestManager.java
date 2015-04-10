@@ -271,7 +271,6 @@ public class RequestManager {
     }
 
     /**
-     * UncompleterequestUpdateService
      * Used to fetch all the services. need endpoint
      *
      *
@@ -282,6 +281,8 @@ public class RequestManager {
                                 final String authToken,
                                 Response.Listener<JSONObject> responseListener,
                                 Response.ErrorListener errorListener){
+
+      //TODO: Change the endpoint.
       JsonObjectRequest searchRequest = new JsonObjectRequest("http://private-b2e5c0-phcherokuconnect.apiary-mock.com/api/v1/event_registrations/get_applied",
               null,
               responseListener,
@@ -303,7 +304,7 @@ public class RequestManager {
   }
 
     /**
-     * Uncomplete
+     * 
      *
      * Used to create a new object with checkout information
      */

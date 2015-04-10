@@ -91,7 +91,7 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
         mScanResultView.setText(mScanResult);
 
         mConfirmButton = (Button) view.findViewById(R.id.checkout_confirmation_confirm_scan);
-        mConfirmButton.setOnClickListener(new ConfirmListener());
+        mConfirmButton.setOnClickListener(new SubmitListener(getActivity()));
 
         mRetryButton = (Button) view.findViewById(R.id.checkout_confirmation_retry_scan);
         mRetryButton.setOnClickListener(new RetryListener());
@@ -211,6 +211,7 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
             public void onResponse(JSONObject jsonObject){
                 //mUserInfo.edit().clear().apply();
                 // TODO: Not sure what this is for?
+
                 Log.d(TAG, jsonObject.toString());
             }
         }
