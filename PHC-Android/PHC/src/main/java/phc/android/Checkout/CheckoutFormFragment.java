@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,7 @@ public class CheckoutFormFragment extends Fragment {
     private ViewGroup mLayout;
 
     /** Array of service display names. */
-    private ArrayList<String> mServicesNotReceived;
+    private ArrayList<String> mServices;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,13 +66,14 @@ public class CheckoutFormFragment extends Fragment {
         if (savedInstanceState != null) {
             mScanResult = savedInstanceState.getCharSequence("scan_result");
             mManualInput = savedInstanceState.getBoolean("manual_input");
-            mServicesNotReceived = savedInstanceState.getStringArrayList("services_not_received");
+            mServices = savedInstanceState.getStringArrayList("services");
 
 
         } else {
             mScanResult =  getArguments().getCharSequence("scan_result");
             mManualInput = getArguments().getBoolean("manual_input");
-            mServicesNotReceived = getArguments().getStringArrayList("services_not_received");
+            mServices = getArguments().getStringArrayList("services");
+            Log.d(TAG, "service size = " + mServices.size());
         }
 
 
@@ -102,7 +104,7 @@ public class CheckoutFormFragment extends Fragment {
             }
         });
 
-     //   dynamicSetCheckboxes(view);
+        dynamicSetCheckboxes(view);
         return view;
     }
 
@@ -114,23 +116,24 @@ public class CheckoutFormFragment extends Fragment {
      * work. Android is not able to save and load dynamically created views even when their ID is
      * set, unless the views are created again with the same previous ID.
      */
-  /*  private void dynamicSetCheckboxes(View view){
+    private void dynamicSetCheckboxes(View view){
         mLayout = (LinearLayout) view.findViewById(R.id.services_list);
        //TODO: FIX THIS  mServicesNotReceived = get.getDisplayNames();
-
-        for(int i = 0; i < mServicesNotReceived.size(); i++){
+        for(int i = 0; i < mServices.size(); i++){
             CheckBox cb = new CheckBox(getActivity());
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             cb.setLayoutParams(params);
             cb.setId(i);
-            cb.setText(mServicesNotReceived.get(i));
+            cb.setText(mServices.get(i));
+            Log.d(TAG,"in dynamicsetcheckboxes");
+            Log.i("service!!!!!!!!!!!!!! ", mServices.get(i));
             mLayout.addView(cb);
         }
     }
 
-*/
+
     /**
      * Used when the user submits their inputted code.
      */

@@ -271,18 +271,18 @@ public class RequestManager {
     }
 
     /**
-     * Uncomplete
-     * Used to fetch all the services. Need Alton's returned applied
-     * but not received services
+     * UncompleterequestUpdateService
+     * Used to fetch all the services. need endpoint
      *
      *
      */
   public void requestGetApplied(final String qrCode,
+                                final JSONArray serviceArray,
                                 final String userId,
                                 final String authToken,
                                 Response.Listener<JSONObject> responseListener,
                                 Response.ErrorListener errorListener){
-      JsonObjectRequest searchRequest = new JsonObjectRequest("http://docs.phcherokuconnect.apiary.io/#reference/event-registrations/get-applied/get-applied-services",
+      JsonObjectRequest searchRequest = new JsonObjectRequest("http://private-b2e5c0-phcherokuconnect.apiary-mock.com/api/v1/event_registrations/get_applied",
               null,
               responseListener,
               errorListener){

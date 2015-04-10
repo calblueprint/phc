@@ -17,8 +17,11 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import phc.android.Helpers.OnSubmitClickListener;
 import phc.android.Helpers.Utils;
@@ -38,25 +41,22 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
     /* Holds the response from requestSearchByCode (true if qr code matches). */
     private boolean mRegistrationFound = false;
 
+    private JSONArray serviceArray;
+
     /* Holds the status boolean from requestGetApplied (true qr code maps to existing person) */
-    Boolean mStatus;
 
     @Override
     protected void confirm(){
-        Bundle args = new Bundle();
 
-        Log.d ("looking up: ", mScanResult);
+        Log.d ("looking up code: ", mScanResult);
         sRequestManager.requestGetApplied(mScanResult,
+                serviceArray,
                 mUserId,
                 mAuthToken,
                 new SearchByCodeResponseListener(),
                 new SearchByCodeErrorListener());
     // maybe this should be somewhere else
-        args.putCharSequence("scan_result", mScanResult);
-        args.putBoolean("manual_input", mManualInput);
-        CheckoutFormFragment formFrag = new CheckoutFormFragment();
-        formFrag.setArguments(args);
-        displayNextFragment(formFrag, CheckoutConfirmationFragment.TAG);
+
     }
 
     /**
@@ -84,8 +84,8 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
         @Override
         public void onResponse(JSONObject jsonObject) {
             try {
-                mStatus = jsonObject.getBoolean("status");
-                Log.d("found?", Boolean.toString(mStatus));
+                mRegistrationFound = jsonObject.getBoolean("status");
+                Log.d("found?", Boolean.toString(mRegistrationFound));
             } catch (JSONException e) {
                 Log.e(TAG, "Error parsing JSON");
                 Log.e(TAG, e.toString());
@@ -93,12 +93,16 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
 
             if (mRegistrationFound) {
                 // Get services here
-                // Use Alton's returned list of applied services
                 Log.d("found the user","");
-                String service = Utils.fieldNameHelperReverse(
-                        ((ServicesActivity)getActivity()).getServiceSelected());
-                sRequestManager.requestUpdateService(mScanResult,
-                        service,
+                try {
+                    serviceArray = jsonObject.getJSONArray("services");
+                } catch (JSONException e) {
+                    Log.d(TAG,"error getting services");
+                    e.printStackTrace();
+                }
+
+                sRequestManager.requestGetApplied(mScanResult,
+                        serviceArray,
                         mUserId,
                         mAuthToken,
                         new RegisterResponseListener(),
@@ -126,9 +130,29 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
 
         @Override
         public void onResponse(JSONObject jsonObject){
-            //mUserInfo.edit().clear().apply();
-            // TODO: Not sure what this is for?
-            Log.d(TAG, jsonObject.toString());
+
+            // Send data to next fragment
+            Bundle args = new Bundle();
+            Log.d(TAG, "jsonObject returned:" + jsonObject.toString());
+
+            args.putCharSequence("scan_result", mScanResult);
+            args.putBoolean("manual_input", mManualInput);
+            // Convert JSONArray to ArrayList
+            ArrayList<String> mServices = new ArrayList<String>();
+            if (serviceArray != null){
+                for (int i=0; i < serviceArray.length(); i++){
+                    try {
+                        mServices.add(serviceArray.get(i).toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            args.putStringArrayList("services",mServices);
+
+            CheckoutFormFragment formFrag = new CheckoutFormFragment();
+            formFrag.setArguments(args);
+            displayNextFragment(formFrag, CheckoutConfirmationFragment.TAG);
         }
     }
     private class RegisterErrorListener implements Response.ErrorListener{
@@ -174,8 +198,6 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
         FragmentManager manager = getFragmentManager();
         manager.popBackStack(CheckoutScannerConfirmationFragment.TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
-
-
 
     // Can remove when sidebar is added
     @Override
