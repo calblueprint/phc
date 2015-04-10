@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import phc.android.Main.MainActivity;
 import phc.android.R;
 
+import static phc.android.Helpers.Utils.generateViewId;
+
 public class CheckoutFormFragment extends Fragment {
     /* Name for logs and fragment transaction code */
     public final static String TAG = "CheckoutFormFragment";
@@ -71,16 +73,14 @@ public class CheckoutFormFragment extends Fragment {
             mManualInput = savedInstanceState.getBoolean("manual_input");
             mServices = savedInstanceState.getStringArrayList("services");
 
-
         } else {
             mScanResult =  getArguments().getCharSequence("scan_result");
             mManualInput = getArguments().getBoolean("manual_input");
             mServices = getArguments().getStringArrayList("services");
-            Log.d(TAG, "service size = " + mServices.size());
         }
 
         dynamicSetCheckboxes(view);
-        dynamicServiceCheck(view);
+
 
 
         mRadioGroup = (RadioGroup) view.findViewById(R.id.checkout_radiogroup);
@@ -120,13 +120,15 @@ public class CheckoutFormFragment extends Fragment {
      * @param view
      */
     private void dynamicServiceCheck(View view){
-        for (int i = 0 ;  i < checkBoxIDs.size(); i++){
-            CheckBox checkbox = (CheckBox) view.findViewById(checkBoxIDs.get(i));
-            if (checkbox.isChecked()){
-                mServicesChecked.add(mServices.get((checkBoxIDs.get((i)))));
+            for (int i = 0 ;  i < checkBoxIDs.size(); i++){
+                Log.d(TAG,"checkboxID: " + checkBoxIDs.get(i));
+                CheckBox checkbox = (CheckBox) view.findViewById(checkBoxIDs.get(i)); // not sure why this is a null object reference
+                if (checkbox.isChecked()){
+                    mServicesChecked.add(mServices.get((checkBoxIDs.get((i)))));
+                    Log.d(TAG, ("MSERVICES CHECKED : " + mServicesChecked.get(i)));
+                }
             }
         }
-    }
 
     /**
      * Dynamically populates layout with checkboxes for each service they applied but
@@ -137,6 +139,7 @@ public class CheckoutFormFragment extends Fragment {
      */
     private void dynamicSetCheckboxes(View view){
         mLayout = (LinearLayout) view.findViewById(R.id.services_list);
+        checkBoxIDs = new ArrayList<Integer>();
 
         for(int i = 0; i < mServices.size(); i++){
             CheckBox cb = new CheckBox(getActivity());
@@ -144,8 +147,11 @@ public class CheckoutFormFragment extends Fragment {
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             cb.setLayoutParams(params);
-            cb.setId(i);
-            checkBoxIDs.add(i);
+
+            int id = generateViewId();
+            Log.d(TAG,"ID is :" +id);
+            cb.setId(id);
+            checkBoxIDs.add(id);
             cb.setText(mServices.get(i));
             mLayout.addView(cb);
         }
@@ -167,6 +173,7 @@ public class CheckoutFormFragment extends Fragment {
             /**
              * Loads next fragment onto the current stack.
              */
+            dynamicServiceCheck(view);
 
             Bundle args = new Bundle();
             args.putCharSequence("scan_result", mScanResult);
@@ -177,7 +184,7 @@ public class CheckoutFormFragment extends Fragment {
                 args.putString("comments",  mComment.getText().toString());
             }
             args.putInt("experience", mExperience);
-            args.putStringArrayList("services",mServicesChecked);
+            args.putStringArrayList("services", mServicesChecked);
 
             CheckoutConfirmationFragment confFrag = new CheckoutConfirmationFragment();
             confFrag.setArguments(args);

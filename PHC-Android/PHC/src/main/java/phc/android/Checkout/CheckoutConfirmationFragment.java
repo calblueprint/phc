@@ -19,6 +19,8 @@ import com.android.volley.VolleyError;
 
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import phc.android.Helpers.OnSubmitClickListener;
@@ -39,6 +41,10 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
     /* Displays experience */
     protected TextView mExperienceView;
 
+    /* Displays experience */
+    protected TextView mServicesView;
+
+
     /* Holds their input for experience rating 0-5 */
     protected int mExperience;
 
@@ -49,6 +55,9 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
     protected TextView mPrompt;
 
     protected String mServicesNotReceived;
+
+    /* Holds their checked services*/
+    protected ArrayList<String> mServices;
 
 
 
@@ -64,11 +73,13 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
             mManualInput = savedInstanceState.getBoolean("manual_input");
             mExperience = savedInstanceState.getInt("experience");
             mComments = savedInstanceState.getString("comments");
+            mServices = savedInstanceState.getStringArrayList("services");
         } else {
             mScanResult =  getArguments().getCharSequence("scan_result").toString();
             mManualInput = getArguments().getBoolean("manual_input");
             mExperience = getArguments().getInt("experience");
-            mComments =getArguments().getString("comments");
+            mComments = getArguments().getString("comments");
+            mServices = getArguments().getStringArrayList("services");
         }
         String prompt;
         if (mManualInput) {
@@ -87,6 +98,20 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
         mCommentsView = (TextView) view.findViewById(R.id.checkout_confirmation_comments_result);
         mCommentsView.setText(mComments);
 
+        mServicesView= (TextView)view.findViewById(R.id.checkout_confirmation_services);
+/*        ArrayList<String> test = new ArrayList<String>();
+        test.add(("SWAG"));
+        mServices = test;*/
+        Log.d(TAG,"mservice.size: " + mServices.size());
+        String mServicesString = new String();
+        for(int i = 0; i < mServices.size(); i++){
+            mServicesString.concat(mServices.get(i));
+            mServicesString.concat(", ");
+        }
+        mServicesView.setText(mServicesString);
+
+
+
         mScanResultView = (TextView) view.findViewById(R.id.checkout_confirmation_scan_result);
         mScanResultView.setText(mScanResult);
 
@@ -99,6 +124,7 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
 
         return view;
     }
+
 
     /**
      * Separate method for setting up view so that this

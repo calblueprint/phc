@@ -227,6 +227,7 @@
     <string name="checkout_experience_4">4</string>
     <string name="checkout_experience_5">5</string>
     <string name="checkout_confirmation_comments">Your comments: </string>
+    <string name="checkout_confirmation_services"> Requested services: </string>
     <string name="checkout_confirmation_experience">Your experience: </string>
 
 
