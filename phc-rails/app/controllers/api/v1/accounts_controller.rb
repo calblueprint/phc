@@ -35,4 +35,19 @@ class Api::V1::AccountsController < ApplicationController
       respond_with "Error saving account!", status: 200, location: root_url
     end
   end
+
+  def duplicates
+    attributes = ActiveSupport::JSON.decode(request.params[:attributes])
+    if attributes.nil?
+      # Default is to match on SSN
+      result = Account.select('"SS_Num__c"').group('"SS_Num__c"').having("count(*)>1").count
+    else
+      # Escape each attribute with quotes to prevent lowercasing by Rails
+      # Count does not work if we have multiple fields! poop
+      attributes.map! { |x| "\"#{x}\"" }
+      result = Account.select(attributes).group(attributes).having("count(*)>1")
+    end
+    respond_with result.to_json
+  end
+
 end
