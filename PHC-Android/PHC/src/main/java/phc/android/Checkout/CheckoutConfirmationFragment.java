@@ -57,7 +57,7 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
     protected String mServicesNotReceived;
 
     /* Holds their checked services*/
-    protected ArrayList<String> mServices;
+    protected ArrayList<String> mServicesChecked;
 
 
 
@@ -73,13 +73,13 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
             mManualInput = savedInstanceState.getBoolean("manual_input");
             mExperience = savedInstanceState.getInt("experience");
             mComments = savedInstanceState.getString("comments");
-            mServices = savedInstanceState.getStringArrayList("services");
+            mServicesChecked = savedInstanceState.getStringArrayList("services");
         } else {
             mScanResult =  getArguments().getCharSequence("scan_result").toString();
             mManualInput = getArguments().getBoolean("manual_input");
             mExperience = getArguments().getInt("experience");
             mComments = getArguments().getString("comments");
-            mServices = getArguments().getStringArrayList("services");
+            mServicesChecked = getArguments().getStringArrayList("services");
         }
         String prompt;
         if (mManualInput) {
@@ -99,18 +99,14 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
         mCommentsView.setText(mComments);
 
         mServicesView= (TextView)view.findViewById(R.id.checkout_confirmation_services);
-/*        ArrayList<String> test = new ArrayList<String>();
-        test.add(("SWAG"));
-        mServices = test;*/
-        Log.d(TAG,"mservice.size: " + mServices.size());
+
+        // Set the text beneath "Requested Services:"
         String mServicesString = new String();
-        for(int i = 0; i < mServices.size(); i++){
-            mServicesString.concat(mServices.get(i));
-            mServicesString.concat(", ");
+        for(int i = 0; i < mServicesChecked.size(); i++){
+            mServicesString += mServicesChecked.get(i);
+            mServicesString += ", ";
         }
         mServicesView.setText(mServicesString);
-
-
 
         mScanResultView = (TextView) view.findViewById(R.id.checkout_confirmation_scan_result);
         mScanResultView.setText(mScanResult);

@@ -22,10 +22,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 
-import phc.android.Main.MainActivity;
 import phc.android.R;
-
-import static phc.android.Helpers.Utils.generateViewId;
 
 public class CheckoutFormFragment extends Fragment {
     /* Name for logs and fragment transaction code */
@@ -52,7 +49,7 @@ public class CheckoutFormFragment extends Fragment {
     /** Array of services applied but not received . */
     private ArrayList<String> mServices;
     /** Used to keep track IDs of checkboxes for services **/
-    private ArrayList<Integer> checkBoxIDs;
+    private ArrayList<CheckBox> checkBoxArray;
 
     /** Array of checked services still would like to receive . */
     private ArrayList<String> mServicesChecked;
@@ -80,8 +77,6 @@ public class CheckoutFormFragment extends Fragment {
         }
 
         dynamicSetCheckboxes(view);
-
-
 
         mRadioGroup = (RadioGroup) view.findViewById(R.id.checkout_radiogroup);
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
@@ -114,18 +109,18 @@ public class CheckoutFormFragment extends Fragment {
 
 
     /**
-     * Adds each checked services they applied but didn't check in for.
-     * Note: Like below, the checkBoxIDs is a fix for a hacky solution, which is still
-     * quite disgustingly hacky. Tried view.generateViewId() but API level != 17.
+     * Adds each checked services they applied but didn't check in for to mSerivcesChecked(array)
+     *
      * @param view
      */
     private void dynamicServiceCheck(View view){
-            for (int i = 0 ;  i < checkBoxIDs.size(); i++){
-                Log.d(TAG,"checkboxID: " + checkBoxIDs.get(i));
-                CheckBox checkbox = (CheckBox) view.findViewById(checkBoxIDs.get(i)); // not sure why this is a null object reference
-                if (checkbox.isChecked()){
-                    mServicesChecked.add(mServices.get((checkBoxIDs.get((i)))));
-                    Log.d(TAG, ("MSERVICES CHECKED : " + mServicesChecked.get(i)));
+        mServicesChecked = new ArrayList<String>();
+            for (int i = 0 ;  i < checkBoxArray.size(); i++){
+                // Loop through the checkBoxArray
+                CheckBox mCheckBox = (CheckBox) checkBoxArray.get(i);
+                if (mCheckBox.isChecked()){
+                    // If the mCheckBox in the checkBoxArray is checked, add that corresponding service (mServices) to mServicesChecked
+                    mServicesChecked.add(mServices.get(i));
                 }
             }
         }
@@ -139,7 +134,7 @@ public class CheckoutFormFragment extends Fragment {
      */
     private void dynamicSetCheckboxes(View view){
         mLayout = (LinearLayout) view.findViewById(R.id.services_list);
-        checkBoxIDs = new ArrayList<Integer>();
+        checkBoxArray = new ArrayList<CheckBox>();
 
         for(int i = 0; i < mServices.size(); i++){
             CheckBox cb = new CheckBox(getActivity());
@@ -147,13 +142,11 @@ public class CheckoutFormFragment extends Fragment {
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             cb.setLayoutParams(params);
-
-            int id = generateViewId();
-            Log.d(TAG,"ID is :" +id);
-            cb.setId(id);
-            checkBoxIDs.add(id);
+            cb.setId(i);
             cb.setText(mServices.get(i));
             mLayout.addView(cb);
+
+            checkBoxArray.add(cb);
         }
     }
 
@@ -173,6 +166,7 @@ public class CheckoutFormFragment extends Fragment {
             /**
              * Loads next fragment onto the current stack.
              */
+            // Check which applied services they still want
             dynamicServiceCheck(view);
 
             Bundle args = new Bundle();
