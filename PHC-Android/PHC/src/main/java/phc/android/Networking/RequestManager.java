@@ -82,6 +82,7 @@ public class RequestManager {
                                      String lastName,
                                      final String userId,
                                      final String authToken,
+                                     final int cursor,
                                      Response.Listener<JSONArray> responseListener,
                                      Response.ErrorListener errorListener) {
         // Strip whitespace from first and last name;
@@ -96,6 +97,9 @@ public class RequestManager {
         buildUrl.append("&");
         buildUrl.append("LastName=");
         buildUrl.append(lastName);
+        buildUrl.append("&");
+        buildUrl.append("cursor=");
+        buildUrl.append(cursor);
 
         JsonArrayRequest searchRequest = new JsonArrayRequest(buildUrl.toString(),
                 responseListener,
