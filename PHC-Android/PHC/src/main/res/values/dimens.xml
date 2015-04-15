@@ -33,5 +33,8 @@
     <dimen name="phone2">64dp</dimen>
     <dimen name="phone3">80dp</dimen>
 
-
+    <dimen name="search_result_list_view_height">250dp</dimen>
+    <dimen name="search_result_list_view_margin_bottom">10dp</dimen>
+    <dimen name="search_result_button_height">70dp</dimen>
+    <dimen name="search_result_button_margin">10dp</dimen>
 </resources>
