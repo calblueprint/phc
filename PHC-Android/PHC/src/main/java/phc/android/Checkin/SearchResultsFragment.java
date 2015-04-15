@@ -69,7 +69,6 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
     // Cursor for search pagination
     private int mCursor;
 
-
     private SearchResultAdapter mAdapter;
     // Button to try search again.
     private Button mSearchAgainButton;
@@ -95,7 +94,6 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
             }
             mAdapter = new SearchResultAdapter(getActivity(), mSearchResults);
             mListView.setAdapter(mAdapter);
-
             mAdapter.notifyDataSetChanged();
         } else {
             mCursor = 0;
