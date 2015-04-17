@@ -1,0 +1,266 @@
+FORMAT: 1A
+
+# PHC-API
+API to define how our Android application communicates with the 
+Postgres database in our Ruby on Rails Heroku server.
+
+## Login [/login]
+
+### Log a user into the server [POST]
++ Request (application/json)
+
+        { "email": "byron.yi.zhang@gmail.com", "pass": "PHC++" }
+
++ Response 200 (application/json)
+
+        { "success": true, "message": "", "user_id": "1", "auth_token": "authtoken1" }
+        
+
+# Group PHC Event
+Gets information about the current PHC event.
+
+## Get Services [/services]
+
+### Get all services offered [GET]
+Returns list of only the services being offered. Note that Salesforce will return a hashmap of all services possible, along with a "true" or "false" for each one. Alton, can you filter out the "false" services and get a list of only the "true" services? 
+
++ Request (application/json)
+
+    + Headers
+    
+            { "user_id": "1", "auth_token": "authtoken1" }
+
++ Response 200 (application/json)
+        
+            ["Acupuncture__c", "Addiction_Recovery__c", "CAAP__c", "Dental__c", 
+            "Disability_Services__c", "Employment__c", "Foodbank__c", 
+            "Haircuts__c", "Legal__c", "Massage__c", "Medical__c", "Showers__c", 
+            "Veteran_Services__c", "Wheelchair_Repair__c" ]
+
+# Group Accounts  
+
+## Create [/api/v1/account]
+
+### Create new account [POST]
+*NOT USED*
++ Request (application/json)
+
+    + Headers
+    
+            { "user_id": "1", "auth_token": "authtoken1" }
+            
+    + Body  
+    
+            {"FirstName": "Howard", 
+             "LastName": "Chen",
+             "SS_Num__c": "111111111",
+             "Birthdate__c": "1/1/1993",
+             "Phone": "5081111111",
+             "PersonEmail": "howardxchen@gmail.com",
+             "Gender__c": "Male",
+             "Identify_as_GLBT__c": false,
+             "Race__c": "Asian / Pacific Islander",
+             "Primary_Language__c": "English",
+             "Foster_care__c": false,
+             "Veteran__c": false,
+             "Housing_Status_New__c": "Housed",
+             "Where_do_you_usually_go_for_healthcare__c": "Does not go for care"
+            }
+
++ Response 201
+
+## Get [/api/v1/account/{sf_id}]
+
+### Get account by salesforce id [GET]
++ Parameters
+
+    + sf_id (required, number, `0000000000000001`) ... Salesforce id of the Account to grab.
+
++ Request (application/json)
+
+    + Headers
+    
+            { "user_id": "1", "auth_token": "authtoken1" }
+
++ Response 200 (application/json)
+
+        {"FirstName": "Byron", 
+         "LastName": "Zhang",
+         "sf_id": "69696969",
+         "SS_Num__c": "123456789",
+         "Birthdate__c": "7/2/1993",
+         "Phone": "7324856498",
+         "PersonEmail": "byron.yi.zhang@gmail.com",
+         "Gender__c": "Male",
+         "Identify_as_GLBT__c": false,
+         "Race__c": "Asian / Pacific Islander",
+         "Primary_Language__c": "English",
+         "Foster_care__c": false,
+         "Veteran__c": false,
+         "Housing_Status_New__c": "Housed",
+         "How_long_have_you_been_homeless__c": "",
+         "Where_do_you_usually_go_for_healthcare__c": "VA",
+         "Medical_Care_Other__c": ""
+        }
+
+
+## Search [/api/v1/search?FirstName={FirstName}&LastName={LastName}&cursor={cursor}]
+
+### Search by first and last name [GET]
+Returns list of accounts that fuzzy matched the given first and last name, in order of similarity.
+If the optional cursor parameter is specified, 20 results will be returned offset from the value specified by cursor.
+(ie. cursor=0 returns the top 20 matches)
++ Request (application/json)
+
+
++ Response 200 (application/json)
+
+        [{ "FirstName": "Byron", 
+          "LastName": "Zhang",  
+          "Birthdate__c": "1993-07-02",
+          "sf_id": "000000000000001"}, 
+         { "FirstName": "Byron", 
+          "LastName": "Wang",  
+          "Birthdate__c": "1984-08-02",
+          "sf_id": "000000000000005"},
+         { "FirstName": "Byron", 
+          "LastName": "Dang",  
+          "Birthdate__c": "1965-05-02",
+          "sf_id": "000000000000008"}
+        ]
+
+# Group Event Registrations
+
+## Create [/api/v1/event_registrations/create]
+
+### Create new Event Registration [POST]
+Creates a new Event Registration object for every client. 
+Each Event Registration needs to be linked to: 
+- the current PHC Event. use the current PHC Event's Salesforce id.
+- an Account object. If "account_sfid" is empty, then the client is a new user. Create a new Account, and link it using its *rails id*.
+If "account_sfid" exists, then the client is a returning user with an existing Account. 
+In this case, Link to it using its existing *salesforce id*.
+
++ Request (application/json)
+
+    + Headers
+    
+            { "user_id": "1", "auth_token": "authtoken1" }
+            
+    + Body  
+    
+            {
+             "account_sfid": "",
+
+             "FirstName": "BabyD", 
+             "LastName": "Wu",
+             "SS_Num__c": "987654321",
+             "Birthdate__c": "1/1/1969",
+             "Phone": "5081111111",
+             "PersonEmail": "babyd@gmail.com",
+             "Gender__c": "Transgender",
+             "Identify_as_GLBT__c": true,
+             "Race__c": "Native American",
+             "Primary_Language__c": "Vietnamese",
+             "Foster_care__c": true,
+             "Veteran__c": true,
+             
+             "Housing_Status_New__c": "Homeless",
+             "How_long_have_you_been_homeless__c": "15 years and more",
+             "Where_do_you_usually_go_for_healthcare__c": "Other",
+             "Medical_Care_Other__c": "DaddyBigD", 
+             
+             "Number__c": "1111", 
+             
+             "Acupuncture__c": true,
+             "CAAP__c": true,
+             "Massage__c": true,
+             "Showers__c": true
+            }
+
++ Response 201
+
+        {"Status": "Success"}
+
+
+## Search [/api/v1/event_registrations/search]
+
+### Search Event Registrations by qr code [GET]
+Returns true if an Event Registration with the QR code is found, or false otherwise.
+
++ Request (application/json)
+
+    + Headers
+    
+            { "user_id": "1", "auth_token": "abcd1234" }
+            
+    + Body
+    
+            { "Number__c": "1111" } 
+            
++ Response 200 (application/json)
+
+        { "present": true }
+
+
+## Update Service [/api/v1/event_registrations/update_service]
+
+### Update service field [POST]
+First grabs the Event Registration object specified by the QR code.
+Then updates the service (specified by "service_name") of that Event Registration object from either "Applied" to "Received" or "None" to "Drop-in". 
+
++ Request (application/json)
+
+    + Headers
+    
+            { "user_id": "1", "auth_token": "abcd1234" }
+            
+    + Body
+    
+            { "Number__c": "1111"
+              "service_name": "Massage__c" }
+            
++ Response 201 
+
+## Get Applied [/api/v1/event_registrations/get_applied]
+
+### Get applied services [GET]
+If the qr code number exists, returns the list of all services marked as "applied" - that is, services that the client applied for but did not receive.
+
++ Request (application/json)
+
+    + Headers
+    
+            { "user_id": "1", "auth_token": "abcd1234" }
+            
+    + Body
+    
+            { "Number__c": "1111",
+              "service_name": "Massage__c" }
+            
++ Response 200 
+
+        { "status": true ,
+          "services": ["Acupuncture", "Haircuts", "Massage"]
+        }
+
+## Update Feedback [/api/v1/event_registrations/update_feedback]
+
+### Update feedback fields [PUT]
+The feedback fields have not yet been created in Salesforce.
+
++ Request (application/json)
+
+    + Headers
+    
+            { "user_id": "1", "auth_token": "abcd1234" }
+            
+    + Body
+    
+            { "Number__c": "1111", 
+              "Experience__c": 5, 
+              "Services_Needed__c": "Acupuncture, Haircuts",
+              "Feedback__c": "I love you guys!"
+            } 
+            
++ Response 201 
