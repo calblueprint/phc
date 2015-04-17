@@ -43,9 +43,12 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
     private static final String TAG = "Search";
     public static final String SEARCH_RESULT = "SEARCH_RESULT";
     public static final String CACHED_RESULTS = "CACHED_RESULTS";
+    public static final String SAVED_CURSOR = "CURSOR";
 
     // Key for user shared preferences
     private static final String USER_AUTH_PREFS_NAME = "UserKey";
+
+    private static final int RESULTS_PER_PAGE = 20;
 
     private static RequestManager sRequestManager;
     private static RequestQueue sRequestQueue;
@@ -63,12 +66,16 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
     private ListView mListView;
     // TextView holding the "No Results Found" message.
     private TextView mTextView;
+    // Cursor for search pagination
+    private int mCursor;
 
     private SearchResultAdapter mAdapter;
     // Button to try search again.
     private Button mSearchAgainButton;
     // Button to register client as a new user.
     private Button mRegisterAsNewButton;
+    // Button to get next page of results
+    private Button mNextResultsButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,6 +87,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
         setupButtons(view);
 
         if (savedInstanceState != null) {
+            mCursor = savedInstanceState.getInt(SAVED_CURSOR);
             mSearchResults = (SearchResult[]) savedInstanceState.get(CACHED_RESULTS);
             if (mSearchResults.length == 0) {
                 setNoResultsMessage();
@@ -88,25 +96,9 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
             mListView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
         } else {
+            mCursor = 0;
             // Initialize search results to be empty
             mSearchResults = new SearchResult[0];
-        }
-
-        // Create a new progress dialog if no cached search results
-        if (mSearchResults.length == 0) {
-            mProgressDialog = new ProgressDialog(getActivity());
-            mProgressDialog.setTitle("Search Results");
-            mProgressDialog.setMessage("Loading...");
-            mProgressDialog.setCancelable(true);
-            mProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    sRequestQueue.cancelAll(TAG);
-                    dialog.dismiss();
-                }
-            });
-            mProgressDialog.setIndeterminate(false);
-            mProgressDialog.show();
         }
 
         //Set up Volley request framework
@@ -114,6 +106,22 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
         sRequestManager = new RequestManager(TAG, sRequestQueue);
 
         return view;
+    }
+
+    private void showProgressDialog() {
+        mProgressDialog = new ProgressDialog(getActivity());
+        mProgressDialog.setTitle("Search Results");
+        mProgressDialog.setMessage("Loading...");
+        mProgressDialog.setCancelable(true);
+        mProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sRequestQueue.cancelAll(TAG);
+                dialog.dismiss();
+            }
+        });
+        mProgressDialog.setIndeterminate(false);
+        mProgressDialog.show();
     }
 
 
@@ -138,6 +146,15 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                 transaction.commit();
             }
         });
+
+        mNextResultsButton = (Button) view.findViewById(R.id.button_search_next);
+        mNextResultsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCursor += RESULTS_PER_PAGE;
+                getPage(mCursor);
+            }
+        });
     }
 
     /**
@@ -151,6 +168,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
     public void onSaveInstanceState(Bundle outState) {
         // Save the cached results
         outState.putParcelableArray(CACHED_RESULTS, mSearchResults);
+        outState.putInt(SAVED_CURSOR, mCursor);
 
         // Remove the progress dialog on orientation change
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
@@ -166,6 +184,11 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
 
     @Override
     public void onResume() {
+        getPage(mCursor);
+        super.onResume();
+    }
+
+    private void getPage(int cursor) {
         // Get the search parameters
         Bundle args = getArguments();
         String firstName = args.getString("firstName");
@@ -184,10 +207,11 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                     lastName,
                     userId,
                     authToken,
+                    cursor,
                     new SearchResultResponseListener(),
                     new SearchResultErrorListener());
+            showProgressDialog();
         }
-        super.onResume();
     }
 
     @Override
@@ -278,6 +302,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                 // if there are no results, show the no results message
                 if (mSearchResults.length == 0) {
                     setNoResultsMessage();
+                    mListView.setVisibility(View.INVISIBLE);
                 }
                 // otherwise, populate the list view with the results
                 else {

@@ -9,14 +9,24 @@
 
     <TextView
         android:id="@+id/search_text_results"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/fragment_top_margin"
-        android:gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
         android:text="@string/search_results_title"
         android:textSize="@dimen/text_size_large"
         android:layout_marginBottom="@dimen/prompt_bottom_margin"
         />
+
+    <Button
+        android:id="@+id/button_search_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/fragment_top_margin"
+        android:text="@string/search_next_results"
+        android:layout_marginLeft="@dimen/search_next_left_margin"
+        android:layout_alignBaseline="@id/search_text_results"
+        android:layout_toRightOf="@id/search_text_results"/>
 
     <TextView
         android:id="@+id/search_text_no_results"
