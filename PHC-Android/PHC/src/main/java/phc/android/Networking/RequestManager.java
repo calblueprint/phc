@@ -304,7 +304,6 @@ public class RequestManager {
   }
 
     /**
-     * 
      *
      * Used to create a new object with checkout information
      */

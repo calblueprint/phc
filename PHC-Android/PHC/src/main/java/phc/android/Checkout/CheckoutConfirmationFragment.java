@@ -111,8 +111,8 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
         mScanResultView = (TextView) view.findViewById(R.id.checkout_confirmation_scan_result);
         mScanResultView.setText(mScanResult);
 
-        mConfirmButton = (Button) view.findViewById(R.id.checkout_confirmation_confirm_scan);
-        mConfirmButton.setOnClickListener(new SubmitListener(getActivity()));
+      /*  mConfirmButton = (Button) view.findViewById(R.id.checkout_confirmation_confirm_scan);
+        mConfirmButton.setOnClickListener(new SubmitListener(getActivity()));*/
 
         mRetryButton = (Button) view.findViewById(R.id.checkout_confirmation_retry_scan);
         mRetryButton.setOnClickListener(new RetryListener());
@@ -186,8 +186,8 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
      */
     @Override
     protected void confirm() {
-        //TODO: Submit results
         //recordScan();
+        fillFields();
         FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
         SuccessFragment successFragment = new SuccessFragment();
         successFragment.setType(SuccessFragment.SuccessType.CHECKOUT_SUCCESS);
@@ -196,79 +196,65 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
     }
 
     /**
-     * Used to submit checkout fields
-     * Uses OnSubmit
+     * Creates hashmap that has checkout fields (comments, experience, services not received
      */
-    protected class SubmitListener extends OnSubmitClickListener implements View.OnClickListener{
-        public SubmitListener(Context context){ super (context); }
+    private void fillFields(){
+       HashMap<String, Object> fields = getFields();
+        mUserPreferences = getActivity().getSharedPreferences(USER_AUTH_PREFS_NAME,
+                Context.MODE_PRIVATE);
+        String userId = mUserPreferences.getString("user_id", null);
+        String authToken = mUserPreferences.getString("auth_token", null);
+
+        sRequestManager.requestUpdateFeedback(
+                fields,
+                userId,
+                authToken,
+                new RegisterResponseListener(),
+                new RegisterErrorListener());
+    }
+
+    private class RegisterResponseListener implements Response.Listener<JSONObject>{
+
         @Override
-        public void onClick(View view){
-            // mPreferenceEditor.storescanresult(mScanResult);
-            fillFields();
-            // clear previous information
-            super.onClick(view);
+        public void onResponse(JSONObject jsonObject){
+            //mUserInfo.edit().clear().apply();
+            // TODO: Not sure what this is for?
+
+            Log.d(TAG, jsonObject.toString());
         }
-
-        /**
-         * Creates hashmap that has checkout fields (comments, experience, services not received
-         */
-        private void fillFields(){
-           HashMap<String, Object> fields = getFields();
-            mUserPreferences = getActivity().getSharedPreferences(USER_AUTH_PREFS_NAME,
-                    Context.MODE_PRIVATE);
-            String userId = mUserPreferences.getString("user_id", null);
-            String authToken = mUserPreferences.getString("auth_token", null);
-
-            sRequestManager.requestUpdateFeedback(
-                    fields,
-                    userId,
-                    authToken,
-                    new RegisterResponseListener(),
-                    new RegisterErrorListener());
-        }
-
-        private class RegisterResponseListener implements Response.Listener<JSONObject>{
-
-            @Override
-            public void onResponse(JSONObject jsonObject){
-                //mUserInfo.edit().clear().apply();
-                // TODO: Not sure what this is for?
-
-                Log.d(TAG, jsonObject.toString());
-            }
-        }
-        private class RegisterErrorListener implements Response.ErrorListener{
-            @Override
-            public void onErrorResponse(VolleyError volleyError){
-                if (volleyError.getLocalizedMessage() != null){
-                    Log.e(TAG, "Volley Error");
-                    volleyError.printStackTrace();
-                }
+    }
+    private class RegisterErrorListener implements Response.ErrorListener{
+        @Override
+        public void onErrorResponse(VolleyError volleyError){
+            if (volleyError.getLocalizedMessage() != null){
+                Log.e(TAG, "Volley Error");
                 volleyError.printStackTrace();
-                Toast toast = Toast.makeText(getActivity(), "Error checking out user", Toast.LENGTH_SHORT);
-                toast.show();
             }
+
+            volleyError.printStackTrace();
+            Toast toast = Toast.makeText(getActivity(), "Error checking out user", Toast.LENGTH_SHORT);
+            toast.show();
         }
+    }
 
-        /**
-         * A Helper function for getting the relevant information to post
-         * @return a Map containing key value pairs of checkout information. The keys are
-         * field names, and the values are their associated values.
-         */
-        private HashMap<String, Object> getFields(){
-            HashMap<String, Object> fields = new HashMap<String,Object>();
+    /**
+     * A Helper function for getting the relevant information to post
+     * @return a Map containing key value pairs of checkout information. The keys are
+     * field names, and the values are their associated values.
+     */
+    private HashMap<String, Object> getFields(){
+        HashMap<String, Object> fields = new HashMap<String,Object>();
 
-            fields.put("Comment", mComments);
-            fields.put("Experience", mExperience);
-            fields.put("ServicesNotReceived", mServicesNotReceived);
-            fields.put("Number__c", mScanResult);
+        fields.put("Comment", mComments);
+        fields.put("Experience", mExperience);
+        fields.put("ServicesNotReceived", mServicesNotReceived);
+        fields.put("Number__c", mScanResult);
 
-            return fields;
-        }
-
+        return fields;
     }
 
 }
+
 
 
 

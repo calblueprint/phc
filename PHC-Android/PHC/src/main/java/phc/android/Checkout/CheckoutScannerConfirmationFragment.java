@@ -55,8 +55,6 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
                 mAuthToken,
                 new SearchByCodeResponseListener(),
                 new SearchByCodeErrorListener());
-    // maybe this should be somewhere else
-
     }
 
     /**
