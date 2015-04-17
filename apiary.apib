@@ -2,7 +2,7 @@ FORMAT: 1A
 
 # PHC-API
 API to define how our Android application communicates with the 
-Postgres database in our Ruby on Rails Heroku server. PHC++
+Postgres database in our Ruby on Rails Heroku server.
 
 ## Login [/login]
 
@@ -28,7 +28,8 @@ Returns list of only the services being offered. Note that Salesforce will retur
 
     + Headers
     
-            { "user_id": "1", "auth_token": "authtoken1" }
+            user_id: "1"
+            auth_token: "authtoken1"
 
 + Response 200 (application/json)
         
@@ -47,7 +48,8 @@ Returns list of only the services being offered. Note that Salesforce will retur
 
     + Headers
     
-            { "user_id": "1", "auth_token": "authtoken1" }
+            user_id: "1"
+            auth_token: "authtoken1"
             
     + Body  
     
@@ -80,7 +82,8 @@ Returns list of only the services being offered. Note that Salesforce will retur
 
     + Headers
     
-            { "user_id": "1", "auth_token": "authtoken1" }
+            user_id: "1"
+            auth_token: "authtoken1"
 
 + Response 200 (application/json)
 
@@ -145,7 +148,8 @@ In this case, Link to it using its existing *salesforce id*.
 
     + Headers
     
-            { "user_id": "1", "auth_token": "authtoken1" }
+            user_id: "1"
+            auth_token: "authtoken1"
             
     + Body  
     
@@ -192,7 +196,8 @@ Returns true if an Event Registration with the QR code is found, or false otherw
 
     + Headers
     
-            { "user_id": "1", "auth_token": "abcd1234" }
+            user_id: "1"
+            auth_token: "authtoken1"
             
     + Body
     
@@ -213,7 +218,8 @@ Then updates the service (specified by "service_name") of that Event Registratio
 
     + Headers
     
-            { "user_id": "1", "auth_token": "abcd1234" }
+            user_id: "1"
+            auth_token: "authtoken1"
             
     + Body
     
@@ -231,13 +237,13 @@ If the qr code number exists, returns the list of all services marked as "applie
 
     + Headers
     
-            { "user_id": "1", "auth_token": "abcd1234" }
+            user_id: "1"
+            auth_token: "authtoken1"
             
     + Body
     
-            { "Number__c": "1111",
-              "service_name": "Massage__c" }
-            
+            { "Number__c": "1111" }
+
 + Response 200 
 
         { "status": true ,
@@ -253,7 +259,8 @@ The feedback fields have not yet been created in Salesforce.
 
     + Headers
     
-            { "user_id": "1", "auth_token": "abcd1234" }
+            user_id: "1"
+            auth_token: "authtoken1"
             
     + Body
     
