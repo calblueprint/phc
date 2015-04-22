@@ -1,0 +1,10 @@
+<h1>Duplicate Accounts</h1>
+
+<% @accounts.each do |group| %>
+  <b> <%= group[0].SS_Num__c %> </b>
+  <ul>
+  <% group.each do |account| %>
+    <li><%= account.FirstName + " " + account.LastName %></li>
+  <% end %>
+  </ul>
+<% end %>

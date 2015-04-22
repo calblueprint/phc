@@ -5,7 +5,6 @@ Rails.application.routes.draw do
     namespace :v1 do
       get "search", to: "accounts#search"
       get "check", to: "accounts#check"
-      get "duplicates", to: "accounts#duplicates"
       get "accounts/:sf_id", to: "accounts#show"
       post "create", to: "accounts#create"
 
@@ -18,6 +17,7 @@ Rails.application.routes.draw do
 
   resources :users
 
+  get "accounts/duplicates", to: "accounts#duplicates"
   get 'login', to:'sessions#new'
   post 'login', to:'sessions#login'
   delete 'logout', to:'sessions#destroy'
