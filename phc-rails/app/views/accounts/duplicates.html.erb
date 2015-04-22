@@ -1,9 +1,8 @@
 <h1>Duplicate Accounts</h1>
 
 <% @accounts.each do |group| %>
-  <table>
-    <caption> <%= group[0][:ssn] %> </caption>
-
+  <h1> <%= group[0][:ssn] %> </h1>
+  <table class="table table-hover ">
     <% group.each do |account| %>
       <tr>
         <td><%= account[:name] %></td>

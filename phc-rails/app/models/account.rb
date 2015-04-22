@@ -70,9 +70,9 @@ class Account < ActiveRecord::Base
   end
 
   def to_hash
-    first = self.FirstName.nil? ? "(None)" : self.FirstName
-    last = self.LastName.nil? ? "(None)" : self.LastName
-    ssn = self.SS_Num__c[-4..-1] || self.SS_Num__c
+    first = self.FirstName.empty? ? "(None)" : self.FirstName
+    last = self.LastName.empty? ? "(None)" : self.LastName
+    ssn = "x"*6 + self.SS_Num__c[-4..-1] || self.SS_Num__c
     birthday = self.Birthdate__c
     {name: name(first,last), ssn: ssn, birthday: birthday}
   end
