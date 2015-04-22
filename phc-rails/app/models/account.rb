@@ -44,4 +44,41 @@ class Account < ActiveRecord::Base
 
   end
 
+  def self.find_duplicates_by(attrs)
+    groups = []
+    if attrs == []
+      # Default is to match on SSN
+      result = Account.select('"SS_Num__c"').group('"SS_Num__c"').having("count(*)>1").count
+      result.first(100).each do |ssn, count|
+        if ssn != ""
+          accounts = Account.where(SS_Num__c: ssn)
+          groups.append(accounts.map(&:to_hash))
+        end
+      end
+    else
+      # Escape each attribute with quotes to prevent lowercasing by Rails
+      attrs.map! { |x| "\"#{x}\"" }
+      result = Account.select(attrs).group(attrs).having("count(*)>1")
+      byebug
+      result.each do |attributes|
+        accounts = Account.where(SS_Num__c: ssn)
+        groups.append(accounts)
+      end
+    end
+
+    return groups
+  end
+
+  def to_hash
+    first = self.FirstName.nil? ? "(None)" : self.FirstName
+    last = self.LastName.nil? ? "(None)" : self.LastName
+    ssn = self.SS_Num__c[-4..-1] || self.SS_Num__c
+    birthday = self.Birthdate__c
+    {name: name(first,last), ssn: ssn, birthday: birthday}
+  end
+
+  def name(first, last)
+    "#{first} #{last}"
+  end
+
 end
