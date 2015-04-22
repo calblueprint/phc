@@ -44,14 +44,14 @@ class Account < ActiveRecord::Base
 
   end
 
-  def self.find_duplicates_by(attrs)
+  def self.find_duplicates_by(attrs, count, cursor)
     groups = []
     if attrs == []
       # Default is to match on SSN
-      result = Account.select('"SS_Num__c"').group('"SS_Num__c"').having("count(*)>1").count
-      result.each do |ssn, count|
-        if ssn != ""
-          accounts = Account.where(SS_Num__c: ssn)
+      result = Account.select('"SS_Num__c"').group('"SS_Num__c"').having("count(*)>1")
+      result[cursor..cursor+count].each do |account|
+        if account.SS_Num__c != ""
+          accounts = Account.where(SS_Num__c: account.SS_Num__c)
           groups.append(accounts.map(&:to_hash))
         end
       end
@@ -60,7 +60,7 @@ class Account < ActiveRecord::Base
       attrs.map! { |x| "\"#{x}\"" }
       result = Account.select(attrs).group(attrs).having("count(*)>1")
       byebug
-      result.each do |attributes|
+      result[cursor..cursor+count].each do |attributes|
         accounts = Account.where(SS_Num__c: ssn)
         groups.append(accounts)
       end
@@ -72,9 +72,9 @@ class Account < ActiveRecord::Base
   def to_hash
     first = (self.FirstName.nil? || self.FirstName.empty?) ? "(None)" : self.FirstName
     last = (self.LastName.nil? || self.FirstName.empty?) ? "(None)" : self.LastName
-    ssn = self.SS_Num__c.nil? ? "(None)" : (self.SS_Num__c[-4..-1] || self.SS_Num__c)
+    ssn = self.SS_Num__c.nil? ? "" : ("x"*6 + self.SS_Num__c[-4..-1] || self.SS_Num__c)
     birthday = self.Birthdate__c
-    {name: name(first,last), ssn: "x"*6 + ssn, birthday: birthday, sf_id: self.sf_id, created_at: self.created_at}
+    {name: name(first,last), ssn: ssn, birthday: birthday, sf_id: self.sf_id, created_at: self.created_at}
   end
 
   def name(first, last)
