@@ -1,14 +1,25 @@
-<h1>Duplicate Accounts</h1>
+<h1>Duplicate Accounts by SSN</h1>
 
-<% @accounts.each do |group| %>
-  <h1> <%= group[0][:ssn] %> </h1>
-  <table class="table table-hover ">
-    <% group.each do |account| %>
-      <tr>
-        <td><%= account[:name] %></td>
-        <td><%= account[:birthday] %></td>
-      </tr>
+<div class="container">
+  <table class="table table-hover">
+    <tr>
+      <th>Name</th>
+      <th>Birthdate</th>
+      <th>Salesforce ID</th>
+      <th>Date Created</th>
+    </tr>
+    <% @accounts.each do |group| %>
+        <tr>
+          <th> SSN: <%= group[0][:ssn] %> </th>
+        </tr>
+        <% group.each do |account| %>
+          <tr>
+            <td><%= account[:name] %></td>
+            <td><%= account[:birthday] %></td>
+            <td><%= account[:sf_id] %></td>
+            <td><%= account[:created_at] %></td>
+          </tr>
+        <% end %>
     <% end %>
-
   </table>
-<% end %>
+</div>

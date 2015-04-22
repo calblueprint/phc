@@ -49,7 +49,7 @@ class Account < ActiveRecord::Base
     if attrs == []
       # Default is to match on SSN
       result = Account.select('"SS_Num__c"').group('"SS_Num__c"').having("count(*)>1").count
-      result.first(100).each do |ssn, count|
+      result.each do |ssn, count|
         if ssn != ""
           accounts = Account.where(SS_Num__c: ssn)
           groups.append(accounts.map(&:to_hash))
@@ -70,11 +70,11 @@ class Account < ActiveRecord::Base
   end
 
   def to_hash
-    first = self.FirstName.empty? ? "(None)" : self.FirstName
-    last = self.LastName.empty? ? "(None)" : self.LastName
-    ssn = "x"*6 + self.SS_Num__c[-4..-1] || self.SS_Num__c
+    first = (self.FirstName.nil? || self.FirstName.empty?) ? "(None)" : self.FirstName
+    last = (self.LastName.nil? || self.FirstName.empty?) ? "(None)" : self.LastName
+    ssn = self.SS_Num__c.nil? ? "(None)" : (self.SS_Num__c[-4..-1] || self.SS_Num__c)
     birthday = self.Birthdate__c
-    {name: name(first,last), ssn: ssn, birthday: birthday}
+    {name: name(first,last), ssn: "x"*6 + ssn, birthday: birthday, sf_id: self.sf_id, created_at: self.created_at}
   end
 
   def name(first, last)
