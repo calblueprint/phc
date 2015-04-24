@@ -280,7 +280,6 @@ public class RequestManager {
      *
      */
   public void requestGetApplied(final String qrCode,
-                                final JSONArray serviceArray,
                                 final String userId,
                                 final String authToken,
                                 Response.Listener<JSONObject> responseListener,
@@ -309,7 +308,7 @@ public class RequestManager {
 
     /**
      *
-     * Used to create a new object with checkout information
+     * Used to create a new object with checkout information. Similar to requestUpdateService
      */
     public void requestUpdateFeedback(HashMap<String, Object> params,
                                       final String userId,
@@ -324,11 +323,11 @@ public class RequestManager {
 
             @Override
             public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("user_id", userId);
-                headers.put("auth_token", authToken);
-                headers.put("Accept", "*/*");  // What is this used for
-                return headers;
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("user_id", userId);
+                params.put("auth_token", authToken);
+                params.put("Accept", "*/*");  // What is this used for?
+                return params;
             }
         };
         createRequest.setTag(sTAG);

@@ -50,7 +50,6 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
 
         Log.d ("looking up code: ", mScanResult);
         sRequestManager.requestGetApplied(mScanResult,
-                serviceArray,
                 mUserId,
                 mAuthToken,
                 new SearchByCodeResponseListener(),
@@ -94,17 +93,33 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
                 Log.d("found the user","");
                 try {
                     serviceArray = jsonObject.getJSONArray("services");
+
+                    Bundle args = new Bundle();
+
+                    // Convert JSONArray to ArrayList
+                    ArrayList<String> mServices = new ArrayList<String>();
+                    if (serviceArray != null){
+                        for (int i=0; i < serviceArray.length(); i++){
+                            try {
+                                mServices.add(serviceArray.get(i).toString());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    args.putStringArrayList("services",mServices);
+                    args.putCharSequence("scan_result", mScanResult);
+                    args.putBoolean("manual_input", mManualInput);
+
+                    CheckoutFormFragment formFrag = new CheckoutFormFragment();
+                    formFrag.setArguments(args);
+                    displayNextFragment(formFrag, CheckoutConfirmationFragment.TAG);
                 } catch (JSONException e) {
                     Log.d(TAG,"error getting services");
                     e.printStackTrace();
                 }
 
-                sRequestManager.requestGetApplied(mScanResult,
-                        serviceArray,
-                        mUserId,
-                        mAuthToken,
-                        new RegisterResponseListener(),
-                        new RegisterErrorListener());
             } else{
                 notFoundDialogue();
             }
@@ -124,47 +139,6 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
                 toast.show();
         }
     }
-    private class RegisterResponseListener implements Response.Listener<JSONObject>{
-
-        @Override
-        public void onResponse(JSONObject jsonObject){
-            Bundle args = new Bundle();
-
-            // Convert JSONArray to ArrayList
-            ArrayList<String> mServices = new ArrayList<String>();
-            if (serviceArray != null){
-                for (int i=0; i < serviceArray.length(); i++){
-                    try {
-                        mServices.add(serviceArray.get(i).toString());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            args.putStringArrayList("services",mServices);
-            args.putCharSequence("scan_result", mScanResult);
-            args.putBoolean("manual_input", mManualInput);
-
-            CheckoutFormFragment formFrag = new CheckoutFormFragment();
-            formFrag.setArguments(args);
-            displayNextFragment(formFrag, CheckoutConfirmationFragment.TAG);
-        }
-    }
-    private class RegisterErrorListener implements Response.ErrorListener{
-        @Override
-        public void onErrorResponse(VolleyError volleyError){
-            if (volleyError.getLocalizedMessage() != null){
-                Log.e(TAG, "Volley Error");
-                volleyError.printStackTrace();
-            }
-            volleyError.printStackTrace();
-            Toast toast = Toast.makeText(getActivity(), "Error checking out user", Toast.LENGTH_SHORT);
-            toast.show();
-        }
-    }
-
-
     /**
      * Creates an alert dialogue to tell the user that the qr code is not found,
      * along with a button to try another.
