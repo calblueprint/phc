@@ -41,38 +41,44 @@ class Account < ActiveRecord::Base
     if account.save then account else nil end
 
     #### TODO: POST TO SALESFORCE #####
-
   end
 
   def self.find_duplicates_by(attrs, count, cursor)
     groups = []
+    attr_names = ""
     if attrs == []
       # Default is to match on SSN
       result = Account.select('"SS_Num__c"').group('"SS_Num__c"').having("count(*)>1")
       result[cursor..cursor+count].each do |account|
-        if account.SS_Num__c != ""
-          accounts = Account.where(SS_Num__c: account.SS_Num__c)
-          groups.append(accounts.map(&:to_hash))
-        end
+        accounts = Account.where(SS_Num__c: account.SS_Num__c)
+        groups.append(accounts.map(&:to_hash))
       end
+      attr_names = "SSN"
     else
       # Escape each attribute with quotes to prevent lowercasing by Rails
+      attr_names = attrs
       attrs.map! { |x| "\"#{x}\"" }
       result = Account.select(attrs).group(attrs).having("count(*)>1")
-      byebug
-      result[cursor..cursor+count].each do |attributes|
-        accounts = Account.where(SS_Num__c: ssn)
-        groups.append(accounts)
+      result[cursor..cursor+count].each do |account|
+        attrs = account.attributes
+        attrs.delete('id')
+        accounts = Account.where(attrs)
+        groups.append(accounts.map(&:to_hash))
       end
     end
 
-    return groups
+    return groups, attr_names
+  end
+
+  def self.find_new_accounts()
+    # Returns a list of new accounts made at the last PHC event, aka ones with no Salesforce ID
+
   end
 
   def to_hash
     first = (self.FirstName.nil? || self.FirstName.empty?) ? "(None)" : self.FirstName
-    last = (self.LastName.nil? || self.FirstName.empty?) ? "(None)" : self.LastName
-    ssn = self.SS_Num__c.nil? ? "" : ("x"*6 + self.SS_Num__c[-4..-1] || self.SS_Num__c)
+    last = (self.LastName.nil? || self.FirstName.empty?) ? "" : self.LastName
+    ssn = self.SS_Num__c.nil? ? "" : "x"*6 + (self.SS_Num__c[-4..-1] || self.SS_Num__c)
     birthday = self.Birthdate__c
     {name: name(first,last), ssn: ssn, birthday: birthday, sf_id: self.sf_id, created_at: self.created_at}
   end

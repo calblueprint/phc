@@ -1,4 +1,4 @@
-<h1>Duplicate Accounts by SSN</h1>
+<h1><%= @title %></h1>
 
 <div class="container">
   <table class="table table-hover">
@@ -10,6 +10,7 @@
     </tr>
     <% @accounts.each do |group| %>
         <tr>
+          <!-- TODO: Display what the groups matched on -->
           <th> SSN: <%= group[0][:ssn] %> </th>
         </tr>
         <% group.each do |account| %>

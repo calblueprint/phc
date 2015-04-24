@@ -19,6 +19,8 @@ class AccountsController < ApplicationController
     attrs = attrs.nil? ? [] : ActiveSupport::JSON.decode(attrs)
 
     # Account.all(:conditions => { :created_at => (Time.now.midnight - 1.day)..Time.now.midnight})
-    @accounts = Account.find_duplicates_by(attrs, count, cursor)
+    @accounts, @title = Account.find_duplicates_by(attrs, count, cursor)
+
+    @title = "Duplicate records by #{@title.join(",")}"
   end
 end
