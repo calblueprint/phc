@@ -20,6 +20,7 @@
     <dimen name="selection_button_height">70dp</dimen>
     <dimen name="rectangle_button_width">250dp</dimen>
     <dimen name="prompt_bottom_margin">20dp</dimen>
+    <dimen name="search_next_left_margin">20dp</dimen>
 
     <dimen name="ssn1">64dp</dimen>
     <dimen name="ssn2">58dp</dimen>

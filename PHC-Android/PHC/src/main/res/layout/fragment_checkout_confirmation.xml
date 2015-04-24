@@ -8,7 +8,7 @@
     android:layout_marginBottom="@dimen/top_bottom_margins">
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:id="@+id/checkout_layout"
         android:orientation="vertical"
         android:layout_width="match_parent"
