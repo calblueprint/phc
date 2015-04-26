@@ -10,17 +10,17 @@ class AccountsController < ApplicationController
     count = request.params[:count]
     cursor = cursor.nil? ? 0 : cursor.to_i
     count = count.nil? ? 20 : count.to_i
-    if auth_token != ENV['AUTH_TOKEN']
-      @accounts = []
-      return
-    end
+    # if auth_token != ENV['AUTH_TOKEN']
+    #   @accounts = []
+    #   return
+    # end
 
     attrs = request.params[:attributes]
-    attrs = attrs.nil? ? [] : ActiveSupport::JSON.decode(attrs)
+    attrs = attrs.nil? ? ["SS_Num__c"] : ActiveSupport::JSON.decode(attrs)
 
     # Account.all(:conditions => { :created_at => (Time.now.midnight - 1.day)..Time.now.midnight})
-    @accounts = Account.find_duplicates_by(attrs, count, cursor)
+    @groups = Account.find_duplicates_by(attrs, count, cursor)
+    @title = "Duplicate records by #{attrs.join(",")}"
 
-    @title = "Duplicate records by #{@attrs.join(",")}"
   end
 end

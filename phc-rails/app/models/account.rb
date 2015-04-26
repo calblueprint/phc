@@ -44,27 +44,17 @@ class Account < ActiveRecord::Base
   end
 
   def self.find_duplicates_by(attrs, count, cursor)
-    groups = []
-    if attrs == []
-      # If no attributes are specified, find duplicates by SSN
-      result = Account.select('"SS_Num__c"').group('"SS_Num__c"').having("count(*)>1")
-      result[cursor..cursor+count].each do |account|
-        accounts = Account.where(SS_Num__c: account.SS_Num__c)
-        groups.append(accounts.map(&:to_hash))
-      end
-    else
-      # Escape each attribute with quotes to prevent lowercasing by Rails
-      attrs.map! { |x| "\"#{x}\"" }
-      result = Account.select(attrs).group(attrs).having("count(*)>1")
-      result[cursor..cursor+count].each do |account|
-        attrs = account.attributes
-        attrs.delete('id')
-        accounts = Account.where(attrs)
-        groups.append(accounts.map(&:to_hash))
-      end
+    groups = {}
+    # Escape each attribute with quotes to prevent lowercasing by Rails
+    attrs.map! { |x| "\"#{x}\"" }
+    result = Account.select(attrs).group(attrs).having("count(*)>1")
+    result[cursor..cursor+count].each do |account|
+      fields = account.attributes
+      fields.delete('id')
+      accounts = Account.where(fields)
+      groups[fields] = accounts.map(&:to_hash)
     end
-
-    return groups
+    groups
   end
 
   def self.find_new_accounts()
@@ -78,7 +68,8 @@ class Account < ActiveRecord::Base
       ssn: ssn(self.SS_Num__c),
       birthday: self.Birthdate__c,
       sf_id: self.sf_id,
-      created_at: self.created_at
+      created_at: self.created_at,
+      phone: self.Phone
     }
   end
 
@@ -95,10 +86,10 @@ class Account < ActiveRecord::Base
   def ssn(ssn)
     if ssn.nil? or ssn.empty?
       "(None)"
-    elsif ssn.length < 9:
+    elsif ssn.length < 9
       ssn
     else
-      "x"*6 + (self.SS_Num__c[-4..-1]
+      "x"*6 + self.SS_Num__c[-4..-1]
     end
   end
 
