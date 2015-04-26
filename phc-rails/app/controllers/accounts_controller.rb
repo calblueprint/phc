@@ -1,7 +1,7 @@
 class AccountsController < ApplicationController
   respond_to :json
   skip_before_action :verify_authenticity_token
-#  before_action :verify_security_token
+  #before_action :verify_security_token
 
   def duplicates
     # TEMP AUTH TOKEN FOR DEMOS
@@ -14,13 +14,11 @@ class AccountsController < ApplicationController
       @accounts = []
       return
     end
-
     attrs = request.params[:attributes]
     attrs = attrs.nil? ? ["SS_Num__c"] : ActiveSupport::JSON.decode(attrs)
 
     # Account.all(:conditions => { :created_at => (Time.now.midnight - 1.day)..Time.now.midnight})
     @groups = Account.find_duplicates_by(attrs, count, cursor)
-    @title = "Duplicate records by #{attrs.join(",")}"
-
+    @title = "Duplicate records by #{attrs.join(',')}"
   end
 end
