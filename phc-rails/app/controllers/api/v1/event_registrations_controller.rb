@@ -42,7 +42,7 @@ class Api::V1::EventRegistrationsController < ApplicationController
 
   def get_applied
     @event_registration = EventRegistration.find_by(Number__c: params[:Number__c])
-    if @event_registration.exists?
+    if !@event_registration.nil?
       @services = @event_registration.services
       render json: { status: "true", services: ["Acupuncture", "Haircuts", "Massage"] }
     else
