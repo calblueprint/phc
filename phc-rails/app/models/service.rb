@@ -12,6 +12,7 @@
 class Service < ActiveRecord::Base
   has_and_belongs_to_many :event_registrations
 
+  # TODO: Change this to an enum column.
   # CONSTANTS for Service statuses
   def self.NONE
     "None"
