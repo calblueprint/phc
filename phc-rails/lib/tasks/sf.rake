@@ -59,6 +59,9 @@ namespace :sf do
       else
       # Create the account if we couldn't find a matching salesforce ID
         a = account.as_json
+
+        # REMOVE THIS BEFORE PROD!!!! AHHH
+        a["FirstName"] = (a["FirstName"] || "") + "-- Updated"
         a.delete("id")
         a.delete("sf_id")
         a.delete("created_at")
@@ -72,8 +75,8 @@ namespace :sf do
     password = ENV["sf_password"] + ENV["sf_security_token"]
     # True => Sandbox
     # False => Production
-    # salesforce = SalesforceBulk::Api.new(username, password, true)
-    # result_create = salesforce.create("Account", accounts_to_create)
-    # result_update = salesforce.update("Account", accounts_to_update)
+    salesforce = SalesforceBulk::Api.new(username, password, true)
+    result_create = salesforce.create("Account", accounts_to_create)
+    result_update = salesforce.update("Account", accounts_to_update)
   end
 end
