@@ -255,19 +255,18 @@ If the qr code number exists, returns the list of all services marked as "applie
 ### Update feedback fields [POST]
 The feedback fields have not yet been created in Salesforce.
 
-<!--+ Request (application/json)-->
-
-<!--    + Headers-->
++ Request (application/json)
+    + Headers
     
-<!--            user_id: "1"-->
-<!--            auth_token: "authtoken1"-->
+            user_id: "1"
+            auth_token: "authtoken1"
             
-<!--    + Body-->
+    + Body
     
-<!--            { "Number__c": "1111", -->
-<!--              "Experience__c": "5", -->
-<!--              "Services_Needed__c": {"hi", "hello"},-->
-<!--              "Feedback__c": "I love you guys!"-->
-<!--            } -->
+            { "Number__c": "1111", 
+              "Experience__c": "5", 
+              "Services_Needed__c": {"hi", "hello"},
+              "Feedback__c": "I love you guys!"
+            } 
             
 + Response 201
