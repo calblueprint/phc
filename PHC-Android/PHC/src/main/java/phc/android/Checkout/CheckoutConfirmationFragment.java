@@ -17,8 +17,11 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,7 +57,7 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
     /* Displays correct prompt */
     protected TextView mPrompt;
 
-    protected String mServicesNotReceived;
+    protected JSONArray mServicesNotReceived;
 
     /* Holds their checked services*/
     protected ArrayList<String> mServicesChecked;
@@ -100,9 +103,12 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
 
         mServicesView= (TextView)view.findViewById(R.id.checkout_confirmation_services);
 
+        mServicesNotReceived = new JSONArray();
+
         // Set the text beneath "Requested Services:"
         String mServicesString = new String();
         for(int i = 0; i < mServicesChecked.size(); i++){
+            mServicesNotReceived.put(mServicesChecked.get(i).toString());
             mServicesString += mServicesChecked.get(i);
             mServicesString += ", ";
         }
@@ -111,12 +117,11 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
         mScanResultView = (TextView) view.findViewById(R.id.checkout_confirmation_scan_result);
         mScanResultView.setText(mScanResult);
 
-      /*  mConfirmButton = (Button) view.findViewById(R.id.checkout_confirmation_confirm_scan);
-        mConfirmButton.setOnClickListener(new SubmitListener(getActivity()));*/
+        mConfirmButton = (Button) view.findViewById(R.id.checkout_confirmation_confirm_scan);
+        mConfirmButton.setOnClickListener(new ConfirmListener());
 
         mRetryButton = (Button) view.findViewById(R.id.checkout_confirmation_retry_scan);
         mRetryButton.setOnClickListener(new RetryListener());
-
 
         return view;
     }
@@ -179,6 +184,16 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
         outState.putString("comments", mComments);
     }
 
+    /**
+     * Used to confirm the scan result.
+     */
+    public class ConfirmListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            confirm();
+        }
+    }
+
 
     /**
      * Records the scan, returns to scanner fragment,
@@ -186,13 +201,8 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
      */
     @Override
     protected void confirm() {
-        //recordScan();
         fillFields();
-        FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
-        SuccessFragment successFragment = new SuccessFragment();
-        successFragment.setType(SuccessFragment.SuccessType.CHECKOUT_SUCCESS);
-        transaction.replace(R.id.checkout_activity_container, successFragment);
-        transaction.commit();
+
     }
 
     /**
@@ -209,29 +219,32 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
                 fields,
                 userId,
                 authToken,
-                new RegisterResponseListener(),
-                new RegisterErrorListener());
+                new UpdateResponseListener(),
+                new UpdateErrorListener());
     }
 
-    private class RegisterResponseListener implements Response.Listener<JSONObject>{
+    private class UpdateResponseListener implements Response.Listener<JSONObject>{
 
         @Override
         public void onResponse(JSONObject jsonObject){
             //mUserInfo.edit().clear().apply();
-            // TODO: Not sure what this is for?
+            FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
+            SuccessFragment successFragment = new SuccessFragment();
+            successFragment.setType(SuccessFragment.SuccessType.CHECKOUT_SUCCESS);
+            transaction.replace(R.id.checkout_activity_container, successFragment);
+            transaction.commit();
+
 
             Log.d(TAG, jsonObject.toString());
         }
     }
-    private class RegisterErrorListener implements Response.ErrorListener{
+    private class UpdateErrorListener implements Response.ErrorListener{
         @Override
         public void onErrorResponse(VolleyError volleyError){
-            if (volleyError.getLocalizedMessage() != null){
-                Log.e(TAG, "Volley Error");
+            if (volleyError != null && volleyError.getLocalizedMessage()!=null) {
+                Log.e(TAG, "volleyError.getLocalizedMessage() " + volleyError.getLocalizedMessage());
                 volleyError.printStackTrace();
             }
-
-            volleyError.printStackTrace();
             Toast toast = Toast.makeText(getActivity(), "Error checking out user", Toast.LENGTH_SHORT);
             toast.show();
         }
@@ -245,13 +258,14 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
     private HashMap<String, Object> getFields(){
         HashMap<String, Object> fields = new HashMap<String,Object>();
 
-        fields.put("Comment", mComments);
-        fields.put("Experience", mExperience);
-        fields.put("ServicesNotReceived", mServicesNotReceived);
+        fields.put("Feedback__c", mComments);
+        fields.put("Experience__c", mExperience);
+        fields.put("Services_Needed__c", mServicesNotReceived);
         fields.put("Number__c", mScanResult);
 
         return fields;
     }
+
 
 }
 

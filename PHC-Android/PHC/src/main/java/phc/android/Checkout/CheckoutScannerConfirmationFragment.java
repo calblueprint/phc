@@ -131,8 +131,9 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
 
             @Override
             public void onErrorResponse(VolleyError volleyError){
+                Log.e(TAG, "VolleyError.getLocalizedMessage = " + volleyError.getLocalizedMessage());
                 if (volleyError.getLocalizedMessage() != null){
-                    Log.e(TAG, volleyError.toString());
+                    Log.e(TAG, "VolleyError.toString() " + volleyError.toString());
                 }
                 Toast toast = Toast.makeText(getActivity(), "Error looking up the QR Code",
                         Toast.LENGTH_SHORT);

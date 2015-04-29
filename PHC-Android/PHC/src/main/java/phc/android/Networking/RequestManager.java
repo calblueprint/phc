@@ -1,5 +1,7 @@
 package phc.android.Networking;
 
+import android.util.Log;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -187,7 +189,7 @@ public class RequestManager {
     }
 
     /**
-     * Used to create a new Event Registration object in the databse
+     * Used to create a new Event Registration object in the database
      * @param params key values that descrive the event registration object being created
      * @param userId user_id of logged in user
      * @param authToken auth_token of logged in user
@@ -285,21 +287,25 @@ public class RequestManager {
                                 Response.Listener<JSONObject> responseListener,
                                 Response.ErrorListener errorListener){
 
-      //TODO: Change the endpoint.
-      JsonObjectRequest searchRequest = new JsonObjectRequest("http://private-b2e5c0-phcherokuconnect.apiary-mock.com/api/v1/event_registrations/get_applied",
+      StringBuilder buildUrl = new StringBuilder(BASE_URL);
+      buildUrl.append("/api/v1/event_registrations/get_applied");
+      buildUrl.append("/");
+      buildUrl.append("?");
+      buildUrl.append("Number__c=");
+      buildUrl.append(qrCode);
+
+      JsonObjectRequest searchRequest = new JsonObjectRequest(buildUrl.toString(),
               null,
               responseListener,
               errorListener){
       @Override
       public Map<String, String> getHeaders(){
-          HashMap<String, String> params = new HashMap<String, String>();
-          params.put("user_id", "1");
-          params.put("user_id", userId);
-          params.put("auth_token", "vqWbG-dyt-cu9d9zqt1fXw");
-          params.put("auth_token", authToken);
-          params.put("Accept", "*/*");
-          params.put("Number__c", qrCode);
-          return params;
+          HashMap<String, String> header = new HashMap<String, String>();
+          header.put("user_id", userId);
+//          header.put("auth_token", "vqWbG-dyt-cu9d9zqt1fXw");
+          header.put("auth_token", authToken);
+          header.put("Accept", "*/*");
+          return header;
       }
     };
       searchRequest.setTag(sTAG);
@@ -316,20 +322,27 @@ public class RequestManager {
                                       Response.Listener<JSONObject> responseListener,
                                       Response.ErrorListener errorListener){
 
-        JsonObjectRequest createRequest = new JsonObjectRequest(BASE_URL + CREATE_EVENT_REG_ENDPOINT,
+        Log.d("---------------", "IN REQUEST UPDATE FEEDBACK");
+        JsonObjectRequest createRequest = new JsonObjectRequest(BASE_URL + "/api/v1/event_registrations/update_feedback",
                 new JSONObject(params),
                 responseListener,
                 errorListener) {
+            // pass in the sales force id
+
+
 
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> params = new HashMap<String, String>();
                 params.put("user_id", userId);
                 params.put("auth_token", authToken);
-                params.put("Accept", "*/*");  // What is this used for?
+                params.put("Accept", "*/*");
+                params.put("content-type", "application/json");
                 return params;
             }
         };
+
+//        params.put()
         createRequest.setTag(sTAG);
         sRequestQueue.add(createRequest);
     }
