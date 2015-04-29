@@ -74,6 +74,7 @@ class Api::V1::EventRegistrationsController < ApplicationController
   end
 
   def update_feedback
+    render :json => { status: 201, message: "Good job Shimmy" }
   end
 
 end
