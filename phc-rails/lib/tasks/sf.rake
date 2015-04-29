@@ -2,8 +2,9 @@ namespace :sf do
   desc "Imports Accounts data from salesforce"
   task import: :environment do
     byebug
-    username = ENV["sf_username"]
-    password = ENV["sf_password"] + ENV["sf_security_token"]
+    env = "production"
+    username = ENV["sf_username_" + env]
+    password = ENV["sf_password"] + ENV["sf_security_token_" + env]
 
     # True => Sandbox
     # False => Production
@@ -61,7 +62,7 @@ namespace :sf do
         a = account.as_json
 
         # REMOVE THIS BEFORE PROD!!!! AHHH
-        a["FirstName"] = (a["FirstName"] || "") + "-- Updated"
+        a["FirstName"] = (a["FirstName"] || "New ") + "-- Updated"
         a.delete("id")
         a.delete("sf_id")
         a.delete("created_at")
@@ -70,13 +71,12 @@ namespace :sf do
       end
     end
     byebug
-
-    username = ENV["sf_username"]
-    password = ENV["sf_password"] + ENV["sf_security_token"]
-    # True => Sandbox
-    # False => Production
+    env = "sandbox"
+    username = ENV["sf_username_" + env]
+    password = ENV["sf_password"] + ENV["sf_security_token_" + env]
     salesforce = SalesforceBulk::Api.new(username, password, true)
-    result_create = salesforce.create("Account", accounts_to_create)
-    result_update = salesforce.update("Account", accounts_to_update)
+
+    result_create = salesforce.create("Account", accounts_to_create, true).result
+    result_update = salesforce.update("Account", accounts_to_update, true).result
   end
 end
