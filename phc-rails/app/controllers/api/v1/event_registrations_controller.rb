@@ -40,6 +40,16 @@ class Api::V1::EventRegistrationsController < ApplicationController
     render :json => { present: (EventRegistration.exists?(Number__c: qr_code) ? true : false) }
   end
 
+  def get_applied
+    @event_registration = EventRegistration.find_by(Number__c: params[:Number__c])
+    if @event_registration.exists?
+      @services = @event_registration.services
+      render json: { status: "true", services: ["Acupuncture", "Haircuts", "Massage"] }
+    else
+      render json: { status: 404, message: "Did not find event registration corresponding to QR code." }
+    end
+  end
+
   def update_service
     registration = EventRegistration.find_by(Number__c: params[:Number__c])
     if registration.nil?
@@ -74,7 +84,7 @@ class Api::V1::EventRegistrationsController < ApplicationController
   end
 
   def update_feedback
-    @event_registration = EventRegistration.find_by(:Number__c, params[:Number__c])
+    @event_registration = EventRegistration.find_by(Number__c: params[:Number__c])
     if @event_registration.update(event_registration_params)
       render :json => { status: 201, message: "Good job Shimmy" }
     else
