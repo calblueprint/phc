@@ -43,13 +43,13 @@ class Api::V1::EventRegistrationsController < ApplicationController
   def update_service
     registration = EventRegistration.find_by(Number__c: params[:Number__c])
     if registration.nil?
-      render :json => { status: "Failure", message: "Did not find event registration corresponding to QR code." }
+      render :json => { status: 404, message: "Did not find event registration corresponding to QR code." }
       return
     end
 
     service = registration.services.find_by(name: params[:service_name])
     if service.nil?
-      render :json => { status: "Failure", message: "Did not find specified service for current event." }
+      render :json => { status: 404, message: "Did not find specified service for current event." }
       return
     end
 
@@ -74,6 +74,18 @@ class Api::V1::EventRegistrationsController < ApplicationController
   end
 
   def update_feedback
+    @event_registration = EventRegistration.find_by(:Number__c, params[:Number__c])
+    if @event_registration.update(event_registration_params)
+      render :json => { status: 201, message: "Good job Shimmy" }
+    else
+      render :json => { status: 404, message: "Did not find an event registration with that number" }
+    end
+  end
+
+  private
+
+  def event_registration_params
+    params.permit(:Number__c, :Experience__c, :Services_Needed__c, :Feedback__c)
   end
 
 end
