@@ -59,7 +59,7 @@ class Account < ActiveRecord::Base
 
   def self.find_new_accounts()
     # Returns a list of new accounts made at the last PHC event, aka ones with no Salesforce ID
-
+    Account.where(sf_id: nil)
   end
 
   def to_hash

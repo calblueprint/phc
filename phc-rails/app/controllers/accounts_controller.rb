@@ -21,4 +21,13 @@ class AccountsController < ApplicationController
     @groups = Account.find_duplicates_by(attrs, count, cursor)
     @title = "Duplicate records by #{attrs.join(',')}"
   end
+
+  def post_to_salesforce
+    username = ENV["sf_username"]
+    password = ENV["sf_password"] + ENV["sf_security_token"]
+
+    # Make sure to remove the true argument in production.
+    salesforce = SalesforceBulk::Api.new(username, password, true)
+
+  end
 end
