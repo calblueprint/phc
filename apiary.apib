@@ -252,7 +252,7 @@ If the qr code number exists, returns the list of all services marked as "applie
 
 ## Update Feedback [/api/v1/event_registrations/update_feedback]
 
-### Update feedback fields [PUT]
+### Update feedback fields [POST]
 The feedback fields have not yet been created in Salesforce.
 
 + Request (application/json)
@@ -265,8 +265,8 @@ The feedback fields have not yet been created in Salesforce.
     + Body
     
             { "Number__c": "1111", 
-              "Experience__c": 5, 
-              "Services_Needed__c": "Acupuncture, Haircuts",
+              "Experience__c": "5", 
+              "Services_Needed__c": {"hi", "hello"},
               "Feedback__c": "I love you guys!"
             } 
             
