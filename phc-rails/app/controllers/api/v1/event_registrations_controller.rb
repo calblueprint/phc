@@ -31,7 +31,8 @@ class Api::V1::EventRegistrationsController < ApplicationController
       (event_reg.services ||= []) << Service.new(name: service, status:status)
     end
 
-    render json: { status: (event_reg.save ? "Success" : "Failure") }
+    status = event_reg.save ? "Success" : "Failure"
+    api_message_response(status)
   end
 
   def search
@@ -46,20 +47,20 @@ class Api::V1::EventRegistrationsController < ApplicationController
       @services = @event_registration.services
       render json: { status: "true", services: ["Acupuncture", "Haircuts", "Massage"] }
     else
-      render json: { status: 404, message: "Did not find event registration corresponding to QR code." }
+      api_message_response(404, "Event registration with that number does not exist.")
     end
   end
 
   def update_service
     registration = EventRegistration.find_by(Number__c: params[:Number__c])
     if registration.nil?
-      render json: { status: 404, message: "Did not find event registration corresponding to QR code." }
+      api_message_response(404, "Event registration with that number does not exist.")
       return
     end
 
     service = registration.services.find_by(name: params[:service_name])
     if service.nil?
-      render json: { status: 404, message: "Did not find specified service for current event." }
+      api_message_response(404, "Service with that name does not exist.")
       return
     end
 
@@ -86,9 +87,9 @@ class Api::V1::EventRegistrationsController < ApplicationController
   def update_feedback
     @event_registration = EventRegistration.find_by(Number__c: params[:Number__c])
     if @event_registration.update(event_registration_params)
-      render json: { status: 201, message: "Good job Shimmy" }
+      api_message_response(201, "Good job Shimmy")
     else
-      render json: { status: 404, message: "Did not find an event registration with that number" }
+      api_message_response(404, "Event registration with that number does not exist.")
     end
   end
 

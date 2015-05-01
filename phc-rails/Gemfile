@@ -1,10 +1,7 @@
 source "https://rubygems.org"
 
-# Living life on the edge with the most recent version of ruby
-# ruby "2.1.3"
-
 # Bundle edge Rails instead: gem "rails", github: "rails/rails"
-gem "rails", "4.1.5"
+gem "rails"
 # Use PostgreSQL as the database for Active Record
 gem "pg"
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder

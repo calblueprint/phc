@@ -30,4 +30,8 @@ class ApplicationController < ActionController::Base
     return false
   end
 
+  def api_message_response(status, message="")
+    render json: { status: status, message: message }
+  end
+
 end
