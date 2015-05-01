@@ -31,13 +31,13 @@ class Api::V1::EventRegistrationsController < ApplicationController
       (event_reg.services ||= []) << Service.new(name: service, status:status)
     end
 
-    render :json => { status: (event_reg.save ? "Success" : "Failure") }
+    render json: { status: (event_reg.save ? "Success" : "Failure") }
   end
 
   def search
     qr_code = request.headers["HTTP_NUMBER__C"]
     puts qr_code
-    render :json => { present: (EventRegistration.exists?(Number__c: qr_code) ? true : false) }
+    render json: { present: (EventRegistration.exists?(Number__c: qr_code) ? true : false) }
   end
 
   def get_applied
@@ -53,30 +53,30 @@ class Api::V1::EventRegistrationsController < ApplicationController
   def update_service
     registration = EventRegistration.find_by(Number__c: params[:Number__c])
     if registration.nil?
-      render :json => { status: 404, message: "Did not find event registration corresponding to QR code." }
+      render json: { status: 404, message: "Did not find event registration corresponding to QR code." }
       return
     end
 
     service = registration.services.find_by(name: params[:service_name])
     if service.nil?
-      render :json => { status: 404, message: "Did not find specified service for current event." }
+      render json: { status: 404, message: "Did not find specified service for current event." }
       return
     end
 
     case service.status
     when Service.NONE
       service.update_attribute(:status, Service.DROPIN)
-      render :json => { message: "The client is a drop-in." }
+      render json: { message: "The client is a drop-in." }
       return
     when Service.APPLIED
       service.update_attribute(:status, Service.RECIEVED)
-      render :json => { message: "" }
+      render json: { message: "" }
       return
     when Service.RECIEVED
-      render :json => { message: "The client has recieved this service before." }
+      render json: { message: "The client has recieved this service before." }
       return
     when Service.DROPIN
-      render :json => { message: "The client has recieved this service before." }
+      render json: { message: "The client has recieved this service before." }
       return
     else
       raise "Service status is not known. This should not happen!"
@@ -86,9 +86,9 @@ class Api::V1::EventRegistrationsController < ApplicationController
   def update_feedback
     @event_registration = EventRegistration.find_by(Number__c: params[:Number__c])
     if @event_registration.update(event_registration_params)
-      render :json => { status: 201, message: "Good job Shimmy" }
+      render json: { status: 201, message: "Good job Shimmy" }
     else
-      render :json => { status: 404, message: "Did not find an event registration with that number" }
+      render json: { status: 404, message: "Did not find an event registration with that number" }
     end
   end
 

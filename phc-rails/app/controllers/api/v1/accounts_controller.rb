@@ -1,5 +1,4 @@
 class Api::V1::AccountsController < ApplicationController
-  respond_to :json
   skip_before_action :verify_authenticity_token
   before_action :verify_security_token
 
