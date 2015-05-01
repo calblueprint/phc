@@ -3,8 +3,12 @@ class Api::V1::AccountsController < ApplicationController
   before_action :verify_security_token
 
   def show
-    sf_id = params[:sf_id]
-    respond_with Account.find_by sf_id: sf_id
+    account = Account.find_by(sf_id: params[:sf_id])
+    if !account.nil?
+      render json: account
+    else
+      api_message_response(401, "Account with that id does not exist.")
+    end
   end
 
   def search

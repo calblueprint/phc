@@ -7,12 +7,12 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
 
   def user_authenticated?(id, token)
-    user = User.find_by(id: id)
-    if not user
-      respond_with "Error: User ID not found in database.", status: 401
+    user = User.find(id)
+    if user.nil?
+      api_message_response(401, "User with that id does not exist.")
       return false
     elsif not user.authenticated?(token)
-      respond_with "Error: Invalid authentication token.", status: 401
+      api_message_response(401, "Invalid authentication token.")
       return false
     else
       return true
@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
     if auth_token && user_id
       return true if user_authenticated?(user_id, auth_token)
     else
-      respond_with "Error: Please include authentication token.", status: 401
+      api_message_response(401, "Please include authentication token.")
     end
     return false
   end
