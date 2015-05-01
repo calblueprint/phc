@@ -12,23 +12,7 @@
 class Service < ActiveRecord::Base
   has_and_belongs_to_many :event_registrations
 
-  # TODO: Change this to an enum column.
-  # CONSTANTS for Service statuses
-  def self.NONE
-    "None"
-  end
-
-  def self.APPLIED
-    "Applied"
-  end
-
-  def self.DROPIN
-    "Drop In"
-  end
-
-  def self.RECIEVED
-    "Received"
-  end
+  enum :status, [:none, :applied, :drop_in, :received]
 
   def self.services
     # In the future, we may retrieve these through the Salesforce API, but

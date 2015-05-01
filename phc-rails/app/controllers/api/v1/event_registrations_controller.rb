@@ -65,22 +65,18 @@ class Api::V1::EventRegistrationsController < ApplicationController
     end
 
     case service.status
-    when Service.NONE
-      service.update_attribute(:status, Service.DROPIN)
-      render json: { message: "The client is a drop-in." }
-      return
-    when Service.APPLIED
-      service.update_attribute(:status, Service.RECIEVED)
-      render json: { message: "" }
-      return
-    when Service.RECIEVED
-      render json: { message: "The client has recieved this service before." }
-      return
-    when Service.DROPIN
-      render json: { message: "The client has recieved this service before." }
-      return
+    when Service.none
+      service.update_attribute(:status, Service.drop_in)
+      api_message_response(200, "Client's status set to drop-in.")
+    when Service.applied
+      service.update_attribute(:status, Service.received)
+      api_message_response(200, "Client's status set to received.")
+    when Service.drop_in
+      api_message_response(200, "Client has already received service.")
+    when Service.received
+      api_message_response(200, "Client has already received service.")
     else
-      raise "Service status is not known. This should not happen!"
+      api_message_response(500)
     end
   end
 

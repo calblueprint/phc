@@ -8,7 +8,7 @@ gem "pg"
 gem "jbuilder", "~> 2.0"
 
 # bundle exec rake doc:rails generates the API under doc/api.
-gem "sdoc", "~> 0.4.0",          group: :doc
+gem "sdoc", "~> 0.4.0", group: :doc
 
 # Use textacular for fuzzy string searching
 gem "textacular", :git => "https://github.com/textacular/textacular.git"
