@@ -11,7 +11,7 @@
 
 class Service < ActiveRecord::Base
 
-  enum :status, [:none, :applied, :drop_in, :received]
+  enum status: [:none, :applied, :drop_in, :received]
 
   ##################################################
   # Associations
