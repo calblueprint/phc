@@ -65,7 +65,7 @@ class Api::V1::EventRegistrationsController < ApplicationController
     end
 
     case service.status
-    when Service.none
+    when Service.unspecified
       service.update_attribute(:status, Service.drop_in)
       api_message_response(200, "Client's status set to drop-in.")
     when Service.applied

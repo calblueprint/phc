@@ -6,12 +6,12 @@
 #  name       :string(255)
 #  created_at :datetime
 #  updated_at :datetime
-#  status     :string(255)
+#  status     :integer          default(0), not null
 #
 
 class Service < ActiveRecord::Base
 
-  enum status: [:none, :applied, :drop_in, :received]
+  enum status: [:unspecified, :applied, :drop_in, :received]
 
   ##################################################
   # Associations
