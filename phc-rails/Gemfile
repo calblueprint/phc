@@ -1,9 +1,11 @@
 source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails"
-gem "rails"
+gem "rails", "4.2.0"
+
 # Use PostgreSQL as the database for Active Record
 gem "pg"
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem "jbuilder", "~> 2.0"
 
@@ -25,10 +27,10 @@ gem "databasedotcom-rails"
 
 gem "rails_12factor", group: :production
 
-gem 'salesforce_bulk'
-gem 'salesforce_bulk_api'
+gem "salesforce_bulk"
+gem "salesforce_bulk_api"
 
-gem 'newrelic_rpm'
+gem "newrelic_rpm"
 
 #Recommended gems
 group :development do
