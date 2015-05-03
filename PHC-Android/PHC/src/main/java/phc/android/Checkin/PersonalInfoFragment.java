@@ -335,7 +335,6 @@ public class PersonalInfoFragment extends Fragment {
         }
     }
 
-
     /**
      * Corrects fields within the form and does a validation check
      * @return false if some fields need correcting, true if okay
@@ -382,12 +381,11 @@ public class PersonalInfoFragment extends Fragment {
         return true;
     }
 
-    public final static boolean isValidEmail(CharSequence target) {
+    private final static boolean isValidEmail(CharSequence target) {
         if (TextUtils.isEmpty(target)) {
             return false;
         } else {
             return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
         }
     }
-
 }
