@@ -93,4 +93,28 @@ class Account < ActiveRecord::Base
     end
   end
 
+  def birthdate()
+    if self.Birthdate__c.nil? then return "#N/A" end
+    year, month, day = self.Birthdate__c.split("-")
+    if year.nil? then year = "1900" end
+    if month.nil? then month = "01" end
+    if day.nil? then day = "01" end
+
+    if year.length == 2
+      year = "19" + year
+    end
+    if month.length == 1
+      month = "0" + month
+    end
+    if day.length == 1
+      day = "0" + day
+    end
+
+    day_string = "#{year}-#{month}-#{day}"
+    if "#{day_string}".length == 10
+      "#N/A"
+    else
+      day_string
+    end
+  end
 end

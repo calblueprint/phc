@@ -8,7 +8,11 @@ namespace :sf do
 
     # True => Sandbox
     # False => Production
-    salesforce = SalesforceBulk::Api.new(username, password, true)
+    if env == "production"
+      salesforce = SalesforceBulk::Api.new(username, password, false)
+    elsif
+      salesforce = SalesforceBulk::Api.new(username, password, true)
+    end
 
     fields = ["Id", "FirstName","LastName","SS_Num__c","Birthdate__c","Phone","PersonEmail","Gender__c","Identify_as_GLBT__c",
       "Race__c", "Primary_Language__c", "Foster_Care__c","Veteran__c","Housing_Status_New__c","How_long_have_you_been_homeless__c",
@@ -39,44 +43,67 @@ namespace :sf do
     accounts_to_update = [] # Contain a SF_ID field in every account
     accounts_to_create = []
     Account.find_new_accounts().each do |account|
-      matches = []
+
       # Try to find match on SSN OR FirstName+LastName+Birthdate
+      matches = []
       unless account.SS_Num__c.nil? || (account.SS_Num__c.length != 9)
         matches += Account.where.not(sf_id: nil).where(SS_Num__c: account.SS_Num__c)
       end
       unless account.FirstName.nil? || account.LastName.nil? || account.Birthdate__c.nil?
-        matches += Account.where.not(sf_id:nil)
-                          .where(FirstName: account.FirstName,LastName: account.LastName,Birthdate__c: Account.Birthdate__c)
+        unless account.FirstName.empty?
+          matches += Account.where.not(sf_id:nil)
+                            .where(FirstName: account.FirstName, LastName: account.LastName, Birthdate__c: account.Birthdate__c)
+        end
       end
+      # Properly format birthday
+      account.Birthdate__c = account.birthdate
+
+      # Filter out nil fields, and select only Salesforce fields
+      a = account.as_json.select { |k,v| sf_fields.include?(k) }
 
       # Use the Salesforce ID from the first match
       if matches.count > 0
-        account.update(sf_id: matches[0][:sf_id])
-        a = account.as_json.select { |k,v| sf_fields.includes?(k) }
-        a["id"] = a.delete("sf_id")
-        a.delete("created_at")
-        a.delete("updated_at")
+        puts "Found #{matches.count} matche(s) for #{account.FirstName} #{account.LastName}"
+        # account.update(sf_id: matches[0][:sf_id])
+        a["id"] = matches[0][:sf_id]
         accounts_to_update.push(a)
       else
       # Create the account if we couldn't find a matching salesforce ID
-        a = account.as_json
-
-        # REMOVE THIS BEFORE PROD!!!! AHHH
-        a["FirstName"] = (a["FirstName"] || "New ") + "-- Updated"
-        a.delete("id")
-        a.delete("sf_id")
-        a.delete("created_at")
-        a.delete("updated_at")
+        puts "Did not find any matche(s) for #{account.FirstName} #{account.LastName}"
         accounts_to_create.push(a)
       end
     end
-    byebug
     env = "sandbox"
     username = ENV["sf_username_" + env]
     password = ENV["sf_password"] + ENV["sf_security_token_" + env]
-    salesforce = SalesforceBulk::Api.new(username, password, true)
 
-    result_create = salesforce.create("Account", accounts_to_create, true).result
-    result_update = salesforce.update("Account", accounts_to_update, true).result
+    if env == "production"
+      salesforce = SalesforceBulk::Api.new(username, password, false)
+    elsif
+      salesforce = SalesforceBulk::Api.new(username, password, true)
+    end
+
+    def log_errors(result, data)
+      if result.has_errors?
+        File.open("errors.txt", "w+") do |f|
+          result.errors.each do |error|
+            i = error.keys()[0].to_i
+            user = data[i]
+            first, last = user["FirstName"], user["LastName"]
+            message = error.values()[0]
+            message = "Failed to upload: #{first} #{last}, because #{message} \n"
+            puts message
+            f.write(message)
+          end
+        end
+      end
+    end
+
+    result_create = salesforce.create("Account", accounts_to_create[0..100], true).result
+    result_update = salesforce.update("Account", accounts_to_update[0..100], true).result
+    log_errors(result_create, accounts_to_create)
+    log_errors(result_update, accounts_to_update)
+
+    print "Done."
   end
 end
