@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -343,6 +344,7 @@ public class PersonalInfoFragment extends Fragment {
         final String monthText = mMonth.getText().toString();
         final String dayText = mDay.getText().toString();
         final String yearText = mYear.getText().toString();
+        final String emailText = mEmail.getText().toString();
 
         if (!(yearText.length() == 4 || yearText.length() == 0)) {
             Toast.makeText(getActivity(),
@@ -360,6 +362,15 @@ public class PersonalInfoFragment extends Fragment {
             return false;
         }
 
+        if (emailText.length() != 0) {
+            if (!isValidEmail(emailText)) {
+                Toast.makeText(getActivity(),
+                        "Please enter a valid email address",
+                        Toast.LENGTH_LONG).show();
+                return false;
+            }
+        }
+
         if (mMonth.getText().length() == 1) {
             mMonth.setText("0" + mMonth.getText());
         }
@@ -370,4 +381,13 @@ public class PersonalInfoFragment extends Fragment {
 
         return true;
     }
+
+    public final static boolean isValidEmail(CharSequence target) {
+        if (TextUtils.isEmpty(target)) {
+            return false;
+        } else {
+            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+        }
+    }
+
 }
