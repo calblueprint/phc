@@ -1,7 +1,5 @@
 package phc.android.Helpers;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 /**
  * Utility methods for use in multiple fragments and activities.
  */
@@ -31,7 +29,4 @@ public class Utils {
         displayName = displayName.replace(" ", "_");
         return displayName + "__c";
     }
-
-    private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
-
 }

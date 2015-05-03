@@ -29,6 +29,7 @@ public class RequestManager {
     private static final String CREATE_EVENT_REG_ENDPOINT = "/api/v1/event_registrations/create";
     private static final String USER_INFO_ENDPOINT = "/api/v1/accounts";
     private static final String SERVICES_ENDPOINT = "/services";
+    private static final String UPDATE_FEEDBACK_ENDPOINT = "/api/v1/event_registrations/update_feedback";
 
     private static RequestQueue sRequestQueue;
     private static String sTAG;
@@ -287,27 +288,26 @@ public class RequestManager {
                                 Response.Listener<JSONObject> responseListener,
                                 Response.ErrorListener errorListener){
 
-      StringBuilder buildUrl = new StringBuilder(BASE_URL);
-      buildUrl.append("/api/v1/event_registrations/get_applied");
-      buildUrl.append("/");
-      buildUrl.append("?");
-      buildUrl.append("Number__c=");
-      buildUrl.append(qrCode);
+          StringBuilder buildUrl = new StringBuilder(BASE_URL);
+          buildUrl.append("/api/v1/event_registrations/get_applied");
+          buildUrl.append("/");
+          buildUrl.append("?");
+          buildUrl.append("Number__c=");
+          buildUrl.append(qrCode);
 
-      JsonObjectRequest searchRequest = new JsonObjectRequest(buildUrl.toString(),
-              null,
-              responseListener,
-              errorListener){
-      @Override
-      public Map<String, String> getHeaders(){
-          HashMap<String, String> header = new HashMap<String, String>();
-          header.put("user_id", userId);
-//          header.put("auth_token", "vqWbG-dyt-cu9d9zqt1fXw");
-          header.put("auth_token", authToken);
-          header.put("Accept", "*/*");
-          return header;
-      }
-    };
+          JsonObjectRequest searchRequest = new JsonObjectRequest(buildUrl.toString(),
+                  null,
+                  responseListener,
+                  errorListener){
+          @Override
+          public Map<String, String> getHeaders(){
+              HashMap<String, String> header = new HashMap<String, String>();
+              header.put("user_id", userId);
+              header.put("auth_token", authToken);
+              header.put("Accept", "*/*");
+              return header;
+          }
+        };
       searchRequest.setTag(sTAG);
       sRequestQueue.add(searchRequest);
   }
@@ -322,15 +322,10 @@ public class RequestManager {
                                       Response.Listener<JSONObject> responseListener,
                                       Response.ErrorListener errorListener){
 
-        Log.d("---------------", "IN REQUEST UPDATE FEEDBACK");
-        JsonObjectRequest createRequest = new JsonObjectRequest(BASE_URL + "/api/v1/event_registrations/update_feedback",
+        JsonObjectRequest createRequest = new JsonObjectRequest(BASE_URL + UPDATE_FEEDBACK_ENDPOINT,
                 new JSONObject(params),
                 responseListener,
                 errorListener) {
-            // pass in the sales force id
-
-
-
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> params = new HashMap<String, String>();
@@ -341,8 +336,6 @@ public class RequestManager {
                 return params;
             }
         };
-
-//        params.put()
         createRequest.setTag(sTAG);
         sRequestQueue.add(createRequest);
     }

@@ -21,7 +21,7 @@ import phc.android.SharedFragments.ScannerFragment;
 
 
 /**
- * User enters or scans code, leading to CheckoutFormFragment
+ * User enters or scans code, leading to CheckoutScannerConfirmationFragment
  */
 public class CheckoutScannerFragment extends ScannerFragment {
     /* Name for logs and fragment transaction code */
@@ -34,22 +34,10 @@ public class CheckoutScannerFragment extends ScannerFragment {
      */
     @Override
     protected void confirmScan(CharSequence scanResult, boolean manualInput) {
-//        mUserPreferences = getActivity().getSharedPreferences(USER_PREFS_NAME,
-//                Context.MODE_PRIVATE);
-//        String userId = mUserPreferences.getString("user_id", null);
-//        String authToken = mUserPreferences.getString("auth_token", null);
-
-//        sRequestManager.requestSearchByCode(scanResult.toString(),
-//                authToken,
-//                userId,
-//                new LoginResponseListener(),
-//                new LoginErrorListener());
 
         Bundle args = new Bundle();
         args.putCharSequence("scan_result", scanResult);
         args.putBoolean("manual_input", manualInput);
-//        args.putStringArrayList("services_not_received", mServicesNotReceived);
-
         Fragment scannerConfFrag = new CheckoutScannerConfirmationFragment();
         scannerConfFrag.setArguments(args);
         displayNextFragment(scannerConfFrag, CheckoutScannerConfirmationFragment.TAG);
@@ -57,37 +45,7 @@ public class CheckoutScannerFragment extends ScannerFragment {
 
 
 
-    private class LoginResponseListener implements Response.Listener<JSONObject> {
-        @Override
-        public void onResponse(JSONObject jsonObject) {
-            try {
-                // find services with "applied" value
-                // JSONArray checkedInServices = jsonObject.getJSONArray("checked_in_services");
-                Iterator<String> keys = jsonObject.keys();
 
-                while (keys.hasNext()) {
-                    String key = (String) keys.next();
-                    if (jsonObject.get(key).toString().equals("Applied")) { // if found "applied", save the key to mServicesNotReceived
-                        mServicesNotReceived.add(key.toString());
-                    }
-                }
-            }catch(JSONException e){
-                Log.e(TAG, "Error parsing JSON");
-                Log.e(TAG, e.toString());
-            }
-        }
-    }
-
-    private class LoginErrorListener implements Response.ErrorListener {
-        @Override
-        public void onErrorResponse(VolleyError volleyError) {
-            if (volleyError.getLocalizedMessage() != null) {
-                Log.e(TAG, volleyError.toString());
-            }
-            Toast toast = Toast.makeText(getActivity(), "Error during submission", Toast.LENGTH_SHORT);
-            toast.show();
-        }
-    }
 
     /**
      * Brings up another fragment when this fragment

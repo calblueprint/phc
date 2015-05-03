@@ -74,10 +74,8 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
      * Used to confirm the scan result
      * Uses OnSubmit
      */
-    // Why can't this be protected? wat
-    // this code is exactly like servicesscannerconfirmationfragmnent
 
-    class SearchByCodeResponseListener implements Response.Listener<JSONObject> {
+    protected class SearchByCodeResponseListener implements Response.Listener<JSONObject> {
         @Override
         public void onResponse(JSONObject jsonObject) {
             try {
@@ -131,12 +129,11 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
 
             @Override
             public void onErrorResponse(VolleyError volleyError){
-                Log.e(TAG, "VolleyError.getLocalizedMessage = " + volleyError.getLocalizedMessage());
                 if (volleyError.getLocalizedMessage() != null){
                     Log.e(TAG, "VolleyError.toString() " + volleyError.toString());
                 }
-                Toast toast = Toast.makeText(getActivity(), "Error looking up the QR Code",
-                        Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getActivity(), "Server error looking up the QR code",
+                        Toast.LENGTH_LONG);
                 toast.show();
         }
     }

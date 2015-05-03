@@ -57,6 +57,7 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
     /* Displays correct prompt */
     protected TextView mPrompt;
 
+    /* Holds the services they have not received, but still would like */
     protected JSONArray mServicesNotReceived;
 
     /* Holds their checked services*/
@@ -147,16 +148,7 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
 
     }
 
-   /* *//**
-     * Records the scan result in shared preferences
-     * and displays a success toast.
-     *//*
-    @Override
-    protected void recordScan() {
-        CheckoutActivity activity = (CheckoutActivity) getActivity();
-        activity.recordResult((String) mScanResult);
-    }
-*/
+
     /**
      * Returns to scanner fragment and displays a
      * failure toast.
@@ -201,15 +193,9 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
      */
     @Override
     protected void confirm() {
-        fillFields();
 
-    }
-
-    /**
-     * Creates hashmap that has checkout fields (comments, experience, services not received
-     */
-    private void fillFields(){
-       HashMap<String, Object> fields = getFields();
+        //Creates hashmap that has checkout fields (comments, experience, services not received)
+        HashMap<String, Object> fields = getFields();
         mUserPreferences = getActivity().getSharedPreferences(USER_AUTH_PREFS_NAME,
                 Context.MODE_PRIVATE);
         String userId = mUserPreferences.getString("user_id", null);
@@ -221,6 +207,7 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
                 authToken,
                 new UpdateResponseListener(),
                 new UpdateErrorListener());
+
     }
 
     private class UpdateResponseListener implements Response.Listener<JSONObject>{
@@ -233,8 +220,6 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
             successFragment.setType(SuccessFragment.SuccessType.CHECKOUT_SUCCESS);
             transaction.replace(R.id.checkout_activity_container, successFragment);
             transaction.commit();
-
-
             Log.d(TAG, jsonObject.toString());
         }
     }
@@ -265,32 +250,4 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
 
         return fields;
     }
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

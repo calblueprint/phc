@@ -32,27 +32,30 @@ public class CheckoutFormFragment extends Fragment {
     protected CharSequence mScanResult;
     protected Boolean mManualInput;
 
-    /** The textview that holds the comment. */
-    /** currently not used because comment box is not yet set up  **/
-    private EditText mComment;
-    /** Holds their input for experience rating 0-5 */
-    private int mExperience;
-
     /** Used to set listener to detect when the user rates their experience **/
     private RadioGroup mRadioGroup;
-    /** Used to set listener to detect when the user clicks submit **/
-    private Button mCodeInputSubmitButton;
 
     /** Parent layout that holds all checkbox views. */
     private ViewGroup mLayout;
 
-    /** Array of services applied but not received . */
-    private ArrayList<String> mServices;
     /** Used to keep track IDs of checkboxes for services **/
     private ArrayList<CheckBox> checkBoxArray;
 
+
+    /** Array of services applied but not received . */
+    private ArrayList<String> mServices;
+
+    /** Holds their input for experience rating 0-5 */
+    private int mExperience;
+
+    /** The textview that holds the comment. */
+    private EditText mComment;
+
     /** Array of checked services still would like to receive . */
     private ArrayList<String> mServicesChecked;
+
+    /** Used to set listener to detect when the user clicks submit **/
+    private Button mCodeInputSubmitButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -109,11 +112,10 @@ public class CheckoutFormFragment extends Fragment {
 
 
     /**
-     * Adds each checked services they applied but didn't check in for to mSerivcesChecked(array)
+     * Adds each checked services they applied but didn't check in for to mServicesChecked(array)
      *
-     * @param view
      */
-    private void dynamicServiceCheck(View view){
+    private void dynamicServiceCheck(){
         mServicesChecked = new ArrayList<String>();
             for (int i = 0 ;  i < checkBoxArray.size(); i++){
                 // Loop through the checkBoxArray
@@ -167,7 +169,7 @@ public class CheckoutFormFragment extends Fragment {
              * Loads next fragment onto the current stack.
              */
             // Check which applied services they still want
-            dynamicServiceCheck(view);
+            dynamicServiceCheck();
 
             Bundle args = new Bundle();
             args.putCharSequence("scan_result", mScanResult);
