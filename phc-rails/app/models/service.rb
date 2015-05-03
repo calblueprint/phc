@@ -6,30 +6,21 @@
 #  name       :string(255)
 #  created_at :datetime
 #  updated_at :datetime
-#  status     :string(255)
+#  status     :integer          default(0), not null
 #
 
 class Service < ActiveRecord::Base
+
+  enum status: [:unspecified, :applied, :drop_in, :received]
+
+  ##################################################
+  # Associations
+  ##################################################
   has_and_belongs_to_many :event_registrations
 
-  # TODO: Change this to an enum column.
-  # CONSTANTS for Service statuses
-  def self.NONE
-    "None"
-  end
-
-  def self.APPLIED
-    "Applied"
-  end
-
-  def self.DROPIN
-    "Drop In"
-  end
-
-  def self.RECIEVED
-    "Received"
-  end
-
+  ##################################################
+  # Methods
+  ##################################################
   def self.services
     # In the future, we may retrieve these through the Salesforce API, but
     # for now they are hardcoded in
