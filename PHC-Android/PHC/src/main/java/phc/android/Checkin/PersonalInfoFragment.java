@@ -2,9 +2,11 @@ package phc.android.Checkin;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -77,7 +80,7 @@ public class PersonalInfoFragment extends Fragment {
         }
 
         mContinueButton = (Button) view.findViewById(R.id.button_account_continue);
-        mContinueButton.setOnClickListener(new OnContinueClickListener(getActivity(),
+        mContinueButton.setOnClickListener(new OnPersonalInfoContinueClickListener(getActivity(),
                 this, mLayout, new EventInfoFragment(), getResources().getString(R.string
                 .sidebar_event_info)));
         return view;
@@ -182,17 +185,17 @@ public class PersonalInfoFragment extends Fragment {
      * Adds TextChangedListeners to the phone and ssn fields
      */
     private void addEditTextListeners(){
-        mSSN1.addTextChangedListener(new TextLengthWatcher(3,mSSN2));
-        mSSN2.addTextChangedListener(new TextLengthWatcher(2,mSSN3));
-        mSSN3.addTextChangedListener(new TextLengthWatcher(4,mMonth));
+        mSSN1.addTextChangedListener(new TextLengthWatcher(3, mSSN2));
+        mSSN2.addTextChangedListener(new TextLengthWatcher(2, mSSN3));
+        mSSN3.addTextChangedListener(new TextLengthWatcher(4, mMonth));
 
-        mMonth.addTextChangedListener(new TextLengthWatcher(2,mDay));
-        mDay.addTextChangedListener(new TextLengthWatcher(2,mYear));
-        mYear.addTextChangedListener(new TextLengthWatcher(4,mPhone1));
+        mMonth.addTextChangedListener(new TextLengthWatcher(2, mDay));
+        mDay.addTextChangedListener(new TextLengthWatcher(2, mYear));
+        mYear.addTextChangedListener(new TextLengthWatcher(4, mPhone1));
 
-        mPhone1.addTextChangedListener(new TextLengthWatcher(3,mPhone2));
-        mPhone2.addTextChangedListener(new TextLengthWatcher(3,mPhone3));
-        mPhone3.addTextChangedListener(new TextLengthWatcher(4,mEmail));
+        mPhone1.addTextChangedListener(new TextLengthWatcher(3, mPhone2));
+        mPhone2.addTextChangedListener(new TextLengthWatcher(3, mPhone3));
+        mPhone3.addTextChangedListener(new TextLengthWatcher(4, mEmail));
     }
 
     /**
@@ -310,5 +313,79 @@ public class PersonalInfoFragment extends Fragment {
         mGLBTCheckbox.setChecked(glbt);
         mMilitaryCheckbox.setChecked(military);
         mFosterCheckbox.setChecked(foster);
+    }
+
+    private class OnPersonalInfoContinueClickListener extends OnContinueClickListener {
+
+        public OnPersonalInfoContinueClickListener(Context context, Fragment currFrag, ViewGroup currLayout, Fragment nextFrag, String nextFragName) {
+            super(context, currFrag, currLayout, nextFrag, nextFragName);
+        }
+
+        /**
+         * When continue button is clicked, updates SharedPreferences and loads the next fragment.
+         * SelectServicesFragment is handled by a different method because it has dynamically
+         * added checkbox views.
+         */
+        @Override
+        public void onClick(View view) {
+            if (!validateFields()) {
+                return;
+            }
+            super.onClick(view);
+        }
+    }
+
+    /**
+     * Corrects fields within the form and does a validation check
+     * @return false if some fields need correcting, true if okay
+     */
+    private boolean validateFields() {
+        final String monthText = mMonth.getText().toString();
+        final String dayText = mDay.getText().toString();
+        final String yearText = mYear.getText().toString();
+        final String emailText = mEmail.getText().toString();
+
+        if (!(yearText.length() == 4 || yearText.length() == 0)) {
+            Toast.makeText(getActivity(),
+                    "Please enter in 4 digits for the birthday year field",
+                    Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if (!(monthText.matches("^[0-9]*$") &&
+                dayText.matches("^[0-9]*$") &&
+                yearText.matches("^[0-9]*$"))) {
+            Toast.makeText(getActivity(),
+                    "Please only enter in numerical digits for the birthday fields",
+                    Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if (emailText.length() != 0) {
+            if (!isValidEmail(emailText)) {
+                Toast.makeText(getActivity(),
+                        "Please enter a valid email address",
+                        Toast.LENGTH_LONG).show();
+                return false;
+            }
+        }
+
+        if (mMonth.getText().length() == 1) {
+            mMonth.setText("0" + mMonth.getText());
+        }
+
+        if (mDay.getText().length() == 1) {
+            mDay.setText("0" + mDay.getText());
+        }
+
+        return true;
+    }
+
+    private final static boolean isValidEmail(CharSequence target) {
+        if (TextUtils.isEmpty(target)) {
+            return false;
+        } else {
+            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+        }
     }
 }

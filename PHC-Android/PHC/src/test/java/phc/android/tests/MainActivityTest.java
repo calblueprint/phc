@@ -1,4 +1,4 @@
-package phc.android.Main;
+package phc.android.tests;
 
 import junit.framework.TestCase;
 
