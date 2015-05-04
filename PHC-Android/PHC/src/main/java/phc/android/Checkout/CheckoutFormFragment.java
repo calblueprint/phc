@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,22 +32,30 @@ public class CheckoutFormFragment extends Fragment {
     protected CharSequence mScanResult;
     protected Boolean mManualInput;
 
-    /** The textview that holds the comment. */
-    /** currently not used because comment box is not yet set up  **/
-    private EditText mComment;
-    /** Holds their input for experience rating 0-5 */
-    private int mExperience;
-
     /** Used to set listener to detect when the user rates their experience **/
     private RadioGroup mRadioGroup;
-    /** Used to set listener to detect when the user clicks submit **/
-    private Button mCodeInputSubmitButton;
 
     /** Parent layout that holds all checkbox views. */
     private ViewGroup mLayout;
 
-    /** Array of service display names. */
-    private ArrayList<String> mServicesNotReceived;
+    /** Used to keep track IDs of checkboxes for services **/
+    private ArrayList<CheckBox> checkBoxArray;
+
+
+    /** Array of services applied but not received . */
+    private ArrayList<String> mServices;
+
+    /** Holds their input for experience rating 0-5 */
+    private int mExperience;
+
+    /** The textview that holds the comment. */
+    private EditText mComment;
+
+    /** Array of checked services still would like to receive . */
+    private ArrayList<String> mServicesChecked;
+
+    /** Used to set listener to detect when the user clicks submit **/
+    private Button mCodeInputSubmitButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,21 +68,18 @@ public class CheckoutFormFragment extends Fragment {
         mCodeInputSubmitButton = (Button) view.findViewById(R.id.button_submit);
         mCodeInputSubmitButton.setOnClickListener(new SubmitListener(getActivity()));
 
-
-
         if (savedInstanceState != null) {
             mScanResult = savedInstanceState.getCharSequence("scan_result");
             mManualInput = savedInstanceState.getBoolean("manual_input");
-            mServicesNotReceived = savedInstanceState.getStringArrayList("services_not_received");
-
+            mServices = savedInstanceState.getStringArrayList("services");
 
         } else {
             mScanResult =  getArguments().getCharSequence("scan_result");
             mManualInput = getArguments().getBoolean("manual_input");
-            mServicesNotReceived = getArguments().getStringArrayList("services_not_received");
+            mServices = getArguments().getStringArrayList("services");
         }
 
-
+        dynamicSetCheckboxes(view);
 
         mRadioGroup = (RadioGroup) view.findViewById(R.id.checkout_radiogroup);
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
@@ -101,10 +107,25 @@ public class CheckoutFormFragment extends Fragment {
             }
         });
 
-        dynamicSetCheckboxes(view);
         return view;
     }
 
+
+    /**
+     * Adds each checked services they applied but didn't check in for to mServicesChecked(array)
+     *
+     */
+    private void dynamicServiceCheck(){
+        mServicesChecked = new ArrayList<String>();
+            for (int i = 0 ;  i < checkBoxArray.size(); i++){
+                // Loop through the checkBoxArray
+                CheckBox mCheckBox = (CheckBox) checkBoxArray.get(i);
+                if (mCheckBox.isChecked()){
+                    // If the mCheckBox in the checkBoxArray is checked, add that corresponding service (mServices) to mServicesChecked
+                    mServicesChecked.add(mServices.get(i));
+                }
+            }
+        }
 
     /**
      * Dynamically populates layout with checkboxes for each service they applied but
@@ -115,19 +136,22 @@ public class CheckoutFormFragment extends Fragment {
      */
     private void dynamicSetCheckboxes(View view){
         mLayout = (LinearLayout) view.findViewById(R.id.services_list);
-       // mServicesNotReceived = ((MainActivity) MainActivity.getContext()).getDisplayNames();
+        checkBoxArray = new ArrayList<CheckBox>();
 
-        for(int i = 0; i < mServicesNotReceived.size(); i++){
+        for(int i = 0; i < mServices.size(); i++){
             CheckBox cb = new CheckBox(getActivity());
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             cb.setLayoutParams(params);
             cb.setId(i);
-            cb.setText(mServicesNotReceived.get(i));
+            cb.setText(mServices.get(i));
             mLayout.addView(cb);
+
+            checkBoxArray.add(cb);
         }
     }
+
 
     /**
      * Used when the user submits their inputted code.
@@ -144,6 +168,8 @@ public class CheckoutFormFragment extends Fragment {
             /**
              * Loads next fragment onto the current stack.
              */
+            // Check which applied services they still want
+            dynamicServiceCheck();
 
             Bundle args = new Bundle();
             args.putCharSequence("scan_result", mScanResult);
@@ -154,8 +180,7 @@ public class CheckoutFormFragment extends Fragment {
                 args.putString("comments",  mComment.getText().toString());
             }
             args.putInt("experience", mExperience);
-
-
+            args.putStringArrayList("services", mServicesChecked);
 
             CheckoutConfirmationFragment confFrag = new CheckoutConfirmationFragment();
             confFrag.setArguments(args);

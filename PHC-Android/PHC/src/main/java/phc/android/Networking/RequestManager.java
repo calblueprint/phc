@@ -1,5 +1,7 @@
 package phc.android.Networking;
 
+import android.util.Log;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -8,6 +10,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +30,7 @@ public class RequestManager {
     private static final String CREATE_EVENT_REG_ENDPOINT = "/api/v1/event_registrations/create";
     private static final String USER_INFO_ENDPOINT = "/api/v1/accounts";
     private static final String SERVICES_ENDPOINT = "/services";
+    private static final String UPDATE_FEEDBACK_ENDPOINT = "/api/v1/event_registrations/update_feedback";
 
     private static RequestQueue sRequestQueue;
     private static String sTAG;
@@ -187,7 +191,7 @@ public class RequestManager {
     }
 
     /**
-     * Used to create a new Event Registration object in the databse
+     * Used to create a new Event Registration object in the database
      * @param params key values that descrive the event registration object being created
      * @param userId user_id of logged in user
      * @param authToken auth_token of logged in user
@@ -273,4 +277,81 @@ public class RequestManager {
         serviceRequest.setTag(sTAG);
         sRequestQueue.add(serviceRequest);
     }
+
+    /**
+     * Used to fetch all the services. need endpoint
+     *
+     *
+     */
+  public void requestGetApplied(final String qrCode,
+                                final String userId,
+                                final String authToken,
+                                Response.Listener<JSONObject> responseListener,
+                                Response.ErrorListener errorListener){
+
+          StringBuilder buildUrl = new StringBuilder(BASE_URL);
+          buildUrl.append("/api/v1/event_registrations/get_applied");
+          buildUrl.append("/");
+          buildUrl.append("?");
+          buildUrl.append("Number__c=");
+          buildUrl.append(qrCode);
+
+          JsonObjectRequest searchRequest = new JsonObjectRequest(buildUrl.toString(),
+                  null,
+                  responseListener,
+                  errorListener){
+          @Override
+          public Map<String, String> getHeaders(){
+              HashMap<String, String> header = new HashMap<String, String>();
+              header.put("user_id", userId);
+              header.put("auth_token", authToken);
+              header.put("Accept", "*/*");
+              return header;
+          }
+        };
+      searchRequest.setTag(sTAG);
+      sRequestQueue.add(searchRequest);
+  }
+
+    /**
+     *
+     * Used to create a new object with checkout information. Similar to requestUpdateService
+     */
+    public void requestUpdateFeedback(final String mComments,
+                                      final int mExperience,
+                                      final JSONArray mServicesNotReceived,
+                                      final String mScanResult,
+                                      final String userId,
+                                      final String authToken,
+                                      Response.Listener<JSONObject> responseListener,
+                                      Response.ErrorListener errorListener){
+
+        HashMap<String, Object> params = new HashMap<String, Object>();
+        params.put("Feedback__c", mComments);
+        params.put("Experience__c", mExperience);
+        params.put("Services_Needed__c", mServicesNotReceived);
+        params.put("Number__c", mScanResult);
+
+
+        JsonObjectRequest createRequest = new JsonObjectRequest(BASE_URL + UPDATE_FEEDBACK_ENDPOINT,
+                new JSONObject(params),
+                responseListener,
+                errorListener) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("user_id", userId);
+                params.put("auth_token", authToken);
+                params.put("Accept", "*/*");
+                params.put("content-type", "application/json");
+                return params;
+            }
+        };
+        createRequest.setTag(sTAG);
+        sRequestQueue.add(createRequest);
+    }
+
+
+
+
 }

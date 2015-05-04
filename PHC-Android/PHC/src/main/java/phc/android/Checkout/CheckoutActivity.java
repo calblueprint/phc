@@ -22,9 +22,9 @@ public class CheckoutActivity extends Activity {
         setContentView(R.layout.activity_checkout);
 
         FragmentTransaction transaction = this.getFragmentManager().beginTransaction();
-        ScannerFragment scannerFragment = new ScannerFragment();
-        scannerFragment.setType(ScannerFragment.FlowType.CHECKOUT);
-        transaction.add(R.id.checkout_activity_container, scannerFragment);
+        ScannerFragment checkoutScannerFragment = new CheckoutScannerFragment();
+        checkoutScannerFragment.setType(CheckoutScannerFragment.FlowType.CHECKOUT);
+        transaction.add(R.id.checkout_activity_container, checkoutScannerFragment);
         transaction.commit();
 
         ActionBar actionbar = getActionBar();
