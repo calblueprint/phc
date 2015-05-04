@@ -41,7 +41,6 @@ public class CheckoutFormFragment extends Fragment {
     /** Used to keep track IDs of checkboxes for services **/
     private ArrayList<CheckBox> checkBoxArray;
 
-
     /** Array of services applied but not received . */
     private ArrayList<String> mServices;
 
@@ -62,7 +61,6 @@ public class CheckoutFormFragment extends Fragment {
                                 Bundle savedInstanceState){
 
         View view = inflater.inflate(R.layout.fragment_checkout_form, container, false);
-
 
         mComment = (EditText) view.findViewById(R.id.checkout_comment);
         mCodeInputSubmitButton = (Button) view.findViewById(R.id.button_submit);
@@ -187,8 +185,6 @@ public class CheckoutFormFragment extends Fragment {
             displayNextFragment(confFrag, CheckoutConfirmationFragment.TAG);
         }
     }
-
-
 
     /**
      * Brings up another fragment when this fragment
