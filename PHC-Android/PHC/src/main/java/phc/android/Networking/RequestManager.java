@@ -10,6 +10,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -316,11 +317,21 @@ public class RequestManager {
      *
      * Used to create a new object with checkout information. Similar to requestUpdateService
      */
-    public void requestUpdateFeedback(HashMap<String, Object> params,
+    public void requestUpdateFeedback(final String mComments,
+                                      final int mExperience,
+                                      final JSONArray mServicesNotReceived,
+                                      final String mScanResult,
                                       final String userId,
                                       final String authToken,
                                       Response.Listener<JSONObject> responseListener,
                                       Response.ErrorListener errorListener){
+
+        HashMap<String, Object> params = new HashMap<String, Object>();
+        params.put("Feedback__c", mComments);
+        params.put("Experience__c", mExperience);
+        params.put("Services_Needed__c", mServicesNotReceived);
+        params.put("Number__c", mScanResult);
+
 
         JsonObjectRequest createRequest = new JsonObjectRequest(BASE_URL + UPDATE_FEEDBACK_ENDPOINT,
                 new JSONObject(params),

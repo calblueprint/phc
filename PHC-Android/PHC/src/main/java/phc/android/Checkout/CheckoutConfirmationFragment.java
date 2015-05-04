@@ -193,16 +193,16 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
      */
     @Override
     protected void confirm() {
-
-        //Creates hashmap that has checkout fields (comments, experience, services not received)
-        HashMap<String, Object> fields = getFields();
         mUserPreferences = getActivity().getSharedPreferences(USER_AUTH_PREFS_NAME,
                 Context.MODE_PRIVATE);
         String userId = mUserPreferences.getString("user_id", null);
         String authToken = mUserPreferences.getString("auth_token", null);
 
         sRequestManager.requestUpdateFeedback(
-                fields,
+                mComments,
+                mExperience,
+                mServicesNotReceived,
+                mScanResult,
                 userId,
                 authToken,
                 new UpdateResponseListener(),
@@ -233,21 +233,5 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
             Toast toast = Toast.makeText(getActivity(), "Error checking out user", Toast.LENGTH_SHORT);
             toast.show();
         }
-    }
-
-    /**
-     * A Helper function for getting the relevant information to post
-     * @return a Map containing key value pairs of checkout information. The keys are
-     * field names, and the values are their associated values.
-     */
-    private HashMap<String, Object> getFields(){
-        HashMap<String, Object> fields = new HashMap<String,Object>();
-
-        fields.put("Feedback__c", mComments);
-        fields.put("Experience__c", mExperience);
-        fields.put("Services_Needed__c", mServicesNotReceived);
-        fields.put("Number__c", mScanResult);
-
-        return fields;
     }
 }

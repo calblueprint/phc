@@ -43,10 +43,6 @@ public class CheckoutScannerFragment extends ScannerFragment {
         displayNextFragment(scannerConfFrag, CheckoutScannerConfirmationFragment.TAG);
     }
 
-
-
-
-
     /**
      * Brings up another fragment when this fragment
      * is complete
