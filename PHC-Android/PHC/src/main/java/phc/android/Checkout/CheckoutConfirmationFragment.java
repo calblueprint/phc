@@ -47,7 +47,6 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
     /* Displays experience */
     protected TextView mServicesView;
 
-
     /* Holds their input for experience rating 0-5 */
     protected int mExperience;
 
@@ -62,8 +61,6 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
 
     /* Holds their checked services*/
     protected ArrayList<String> mServicesChecked;
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -141,6 +138,7 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
 
         return view;
     }
+
     // Can remove when sidebar is added
     // TODO: Fix resumeHelper
     @Override
@@ -211,7 +209,6 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
     }
 
     private class UpdateResponseListener implements Response.Listener<JSONObject>{
-
         @Override
         public void onResponse(JSONObject jsonObject){
             //mUserInfo.edit().clear().apply();
