@@ -27,7 +27,7 @@ class Api::V1::EventRegistrationsController < ApplicationController
     # particular account for the current PHC event
     event_reg.Number__c = params[:Number__c]
     Service.services.each do |service|
-      status = (if params[service] == true then Service.APPLIED else Service.NONE end)
+      status = (if params[service] == true then Service.applied else Service.unspecified end)
       (event_reg.services ||= []) << Service.new(name: service, status:status)
     end
 
