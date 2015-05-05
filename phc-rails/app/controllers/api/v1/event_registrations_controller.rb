@@ -7,7 +7,7 @@ class Api::V1::EventRegistrationsController < ApplicationController
 
     # Create account if salesforce id was not passed in
     sf_id = params[:account_sfid]
-    if sf_id.nil?
+    if (sf_id.nil? || sf_id.empty?)
       # Create account of the parameters passed in, sf_id will be nil
       params[:sf_id] = params.delete :account_sfid
       account = Account.spawn(params)
