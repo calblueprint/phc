@@ -1,7 +1,6 @@
 namespace :sf do
   desc "Imports Accounts data from salesforce"
   task import: :environment do
-    byebug
     env = "production"
     username = ENV["sf_username_" + env]
     password = ENV["sf_password"] + ENV["sf_security_token_" + env]
@@ -18,8 +17,14 @@ namespace :sf do
       "Race__c", "Primary_Language__c", "Foster_Care__c","Veteran__c","Housing_Status_New__c","How_long_have_you_been_homeless__c",
       "Where_do_you_usually_go_for_healthcare__c","Medical_Care_Other__c"]
 
-    query  = "SELECT " + fields.join(", ") + " from Account"
-    puts "Querying salesforce..."
+    # For Event Registrations
+    # query = "SELECT Account__c, Acupuncture__c, PHC_Event__c from Event_Registration__c"
+    # response = salesforce.query("Event_Registration__c",query)
+    # records = response.result.records.map { |x| x.to_hash }
+    # byebug
+
+    # query  = "SELECT " + fields.join(", ") + " from Account"
+    # puts "Querying salesforce..."
 
     # NOTE: Should we remove filter names that are null?
     response = salesforce.query("Account", query)
@@ -35,7 +40,7 @@ namespace :sf do
   end
 
   desc "Exports new Accounts, EventRegistrations, and Services information to Salesforce"
-  task export: :environment do
+  task export_accounts: :environment do
     sf_fields = ["FirstName","LastName","SS_Num__c","Birthdate__c","Phone","PersonEmail","Gender__c","Identify_as_GLBT__c",
       "Race__c", "Primary_Language__c", "Foster_Care__c","Veteran__c","Housing_Status_New__c","How_long_have_you_been_homeless__c",
       "Where_do_you_usually_go_for_healthcare__c","Medical_Care_Other__c"]
@@ -85,7 +90,7 @@ namespace :sf do
 
     def log_errors(result, data)
       if result.has_errors?
-        File.open("errors.txt", "w+") do |f|
+        File.open("errors.txt", "a+") do |f|
           result.errors.each do |error|
             i = error.keys()[0].to_i
             user = data[i]
@@ -99,11 +104,30 @@ namespace :sf do
       end
     end
 
-    result_create = salesforce.create("Account", accounts_to_create[0..100], true).result
-    result_update = salesforce.update("Account", accounts_to_update[0..100], true).result
+    result_create = salesforce.create("Account", accounts_to_create, true).result
+    result_update = salesforce.update("Account", accounts_to_update, true).result
     log_errors(result_create, accounts_to_create)
     log_errors(result_update, accounts_to_update)
 
     print "Done."
   end
+
+  task export_registrations: :environment do
+    env = "sandbox"
+    username = ENV["sf_username_" + env]
+    password = ENV["sf_password"] + ENV["sf_security_token_" + env]
+
+    if env == "production"
+      salesforce = SalesforceBulk::Api.new(username, password, false)
+    elsif
+      salesforce = SalesforceBulk::Api.new(username, password, true)
+    end
+
+    byebug
+    data = []
+    EventRegistration.all.each do |reg|
+      data.append(reg.to_salesforce_object)
+    end
+  end
+
 end
