@@ -15,13 +15,18 @@
 class EventRegistration < ActiveRecord::Base
   has_and_belongs_to_many :services
 
-  # TODO: Add a PHC Event Field!!
-  # PHC SANDBOX EVENT: a0Re0000001hNY9
+  def self.phc_event
+    # PHC 58 - Sandbox. Switch to Production ID when ready!
+    "a0Re0000001hNY9"
+  end
+
   def to_salesforce_object
     #"{"Account__c"=>"0014000001XUoNFAA1", "Acupuncture__c"=>"None", "PHC_Event__c"=>"a0R40000007HolJEAS"}"
-    account = Account.where(id: self.account_sfid.to_i)
-    services = services.map { |x| {x.name => x.status} }
-
-    byebug
+    account = Account.where(id: self.account_sfid.to_i).first
+    obj = {"Account__c" => account.sf_id, "PHC_Event__c" => EventRegistration.phc_event}
+    self.services.each do |service|
+      obj[service.name] = service.status
+    end
+    obj
   end
 end
