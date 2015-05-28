@@ -7,15 +7,6 @@ namespace :sf do
       "Race__c", "Primary_Language__c", "Foster_Care__c","Veteran__c","Housing_Status_New__c","How_long_have_you_been_homeless__c",
       "Where_do_you_usually_go_for_healthcare__c","Medical_Care_Other__c"]
 
-    # For Event Registrations
-    # query = "SELECT Account__c, Acupuncture__c, PHC_Event__c from Event_Registration__c"
-    # response = salesforce.query("Event_Registration__c",query)
-    # records = response.result.records.map { |x| x.to_hash }
-    # byebug
-
-    # query  = "SELECT " + fields.join(", ") + " from Account"
-    # puts "Querying salesforce..."
-
     # NOTE: Should we remove filter names that are null?
     response = salesforce.query("Account", query)
     response.result.records.each do |attrs|
@@ -38,6 +29,8 @@ namespace :sf do
     accounts_to_update = [] # These accounts contain a SF_ID field, so we can match them
     accounts_to_create = []
     accounts_to_create_ids = [] # Save account id's so we can update the SF_ID after its created
+
+    # Note: In the future, new accounts WILL have a SF_ID
     Account.find_new_accounts().each do |account|
 
       # Try to find match on SSN OR FirstName+LastName+Birthdate
@@ -63,10 +56,12 @@ namespace :sf do
       # Use the Salesforce ID from the first match
       if matches.count > 0
         puts "Found #{matches.count} match(es) for #{account.FirstName} #{account.LastName} -- will update."
-        # Delete NEW account then update original account with information
-        matches[0].update(a)
-        account.delete()
-        a["id"] = matches[0][:sf_id]
+        # Delete old record and update new one with SF_ID
+        sf_id = matches[0][:sf_id]
+        matches[0].delete()
+
+        a["id"] = sf_id
+        account.update(sf_id: sf_id)
         accounts_to_update.push(a)
       else
         # Create the account if we couldn't find a matching salesforce ID
@@ -114,16 +109,14 @@ namespace :sf do
   task export_registrations: :environment do
     salesforce = get_salesforce_session()
     data = []
-    # EventRegistration.all.each do |reg|
-    #   data.append(reg.to_salesforce_object)
-    # end
-    EventRegistration.first(5).each do |reg|
+    EventRegistration.all.each do |reg|
       data.append(reg.to_salesforce_object)
     end
-    result = salesforce.create("Event_Registration__c", data, true).result
+    result = salesforce.create("Event_Registration__c", data.compact, true).result
     puts "--- Summary ---"
     puts "Failed to create: #{result.errors.count} Event Registrations."
     puts "Successfully created: #{data.count - result.errors.count} Event Registrations."
+    byebug
   end
 
   def log_errors(result, data)
