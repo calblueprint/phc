@@ -1,7 +1,5 @@
 package phc.android.Networking;
 
-import android.util.Log;
-
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -10,7 +8,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,8 +18,8 @@ import java.util.Map;
  */
 public class RequestManager {
 
-    private static final String BASE_URL = "http://phc-production.herokuapp.com";
-    private static final String TEST_URL = "http://phc-staging.herokuapp.com";
+//    private static final String BASE_URL = "http://phc-production.herokuapp.com";
+    private static final String BASE_URL = "http://phc-staging.herokuapp.com";
     private static final String LOGIN_ENDPOINT = "/login";
     private static final String SEARCH_ENDPOINT = "/api/v1/search";
     private static final String SEARCH_REG_ENDPOINT = "/api/v1/event_registrations/search";

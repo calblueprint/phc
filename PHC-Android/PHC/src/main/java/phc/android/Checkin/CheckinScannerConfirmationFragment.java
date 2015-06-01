@@ -1,8 +1,8 @@
 package phc.android.Checkin;
 
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,11 +19,11 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import phc.android.Helpers.OnSubmitClickListener;
 import phc.android.Helpers.SharedPreferenceEditorListener;
 import phc.android.Main.MainActivity;
 import phc.android.R;
 import phc.android.SharedFragments.ScannerConfirmationFragment;
+import phc.android.SharedFragments.SuccessFragment;
 
 
 public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragment {
@@ -31,14 +31,8 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
     /* Tag for logs and fragment code */
     public final static String TAG = "CHECKIN_SCANNER_CONF";
 
-    // Key for user shared preferences
-    private static final String USER_AUTH_PREFS_NAME = "UserKey";
-
     /* Name to store code in saved preferences */
     private final String mName = "qr_code";
-
-    // Shared Preferences
-    private SharedPreferences mUserPreferences;
 
     /* Preference editor for saved preferences */
     private PreferenceEditor mPreferenceEditor;
@@ -60,29 +54,22 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
     @Override
     protected View setupView(LayoutInflater inflater, ViewGroup container) {
         View view = super.setupView(inflater, container);
-        mConfirmButton.setOnClickListener(new SubmitListener(getActivity()));
+        mConfirmButton.setOnClickListener(new OnSubmitClickListener());
         mPreferenceEditor = new PreferenceEditor(getActivity().getApplicationContext());
 
         return view;
     }
 
-    /**
-     * Used to confirm the scan result.
-     * Uses OnSubmit
-     */
-    protected class SubmitListener extends OnSubmitClickListener implements View.OnClickListener {
 
-        public SubmitListener(Context context) {
-            super(context);
-        }
+    /**
+     * OnSubmitClickListener writes all entries to SalesForce DB and clears SharedPreferences.
+     */
+    protected class OnSubmitClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {
             mPreferenceEditor.storeScanResult(mScanResult);
             registerPerson();
-            // clear previous information here
-            super.onClick(view);
-
         }
 
         /**
@@ -93,8 +80,6 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
          */
         private void registerPerson() {
             HashMap<String, Object> fields = getFields();
-            mUserPreferences = getActivity().getSharedPreferences(USER_AUTH_PREFS_NAME,
-                    Context.MODE_PRIVATE);
             String userId = mUserPreferences.getString("user_id", null);
             String authToken = mUserPreferences.getString("auth_token", null);
 
@@ -110,8 +95,18 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
 
             @Override
             public void onResponse(JSONObject jsonObject) {
-                mUserInfo.edit().clear().apply();
-                Log.d(TAG, jsonObject.toString());
+                mUserPreferences.edit().clear().apply();
+                loadSuccess();
+            }
+
+            public void loadSuccess(){
+                FragmentTransaction transaction =
+                        getActivity().getFragmentManager().beginTransaction();
+                SuccessFragment successFragment = new SuccessFragment();
+                successFragment.setType(SuccessFragment.SuccessType.CHECKIN_SUCCESS);
+                transaction.replace(R.id.checkin_fragment_container, successFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         }
 
@@ -125,7 +120,9 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
                 }
                 volleyError.printStackTrace();
 
-                Toast toast = Toast.makeText(getActivity(), "Error registering user", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getActivity(),
+                                getResources().getString(R.string.register_error),
+                                Toast.LENGTH_LONG);
                 toast.show();
             }
         }
@@ -138,22 +135,20 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
          */
         private HashMap<String, Object> getFields() {
             HashMap<String, Object> fields = new HashMap<String, Object>();
-            SharedPreferences userPreferences;
-            userPreferences = mUserInfo;
 
-            fields.put("FirstName", userPreferences.getString("first_name", null));
-            fields.put("LastName", userPreferences.getString("last_name", null));
+            fields.put("FirstName", mUserPreferences.getString("first_name", null));
+            fields.put("LastName", mUserPreferences.getString("last_name", null));
 
             String ssn = "";
-            ssn = ssn + userPreferences.getString("ssn_1", "");
-            ssn = ssn + userPreferences.getString("ssn_2", "");
-            ssn = ssn + userPreferences.getString("ssn_3", "");
+            ssn = ssn + mUserPreferences.getString("ssn_1", "");
+            ssn = ssn + mUserPreferences.getString("ssn_2", "");
+            ssn = ssn + mUserPreferences.getString("ssn_3", "");
 
             fields.put("SS_Num__c", ssn);
 
-            String year = userPreferences.getString("birthday_year", "");
-            String month = userPreferences.getString("birthday_month", "");
-            String day = userPreferences.getString("birthday_day", "");
+            String year = mUserPreferences.getString("birthday_year", "");
+            String month = mUserPreferences.getString("birthday_month", "");
+            String day = mUserPreferences.getString("birthday_day", "");
 
             if(!year.equals("") && !month.equals("") && !day.equals("")) {
                 String birthday = year + "-" + month + "-" + day;
@@ -163,30 +158,30 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
             }
 
             String phone = "";
-            phone = phone + userPreferences.getString("phone_1", "");
-            phone = phone + userPreferences.getString("phone_2", "");
-            phone = phone + userPreferences.getString("phone_3", "");
+            phone = phone + mUserPreferences.getString("phone_1", "");
+            phone = phone + mUserPreferences.getString("phone_2", "");
+            phone = phone + mUserPreferences.getString("phone_3", "");
 
             fields.put("Phone", phone);
 
-            fields.put("PersonEmail", userPreferences.getString("email", ""));
+            fields.put("PersonEmail", mUserPreferences.getString("email", ""));
 
-            fields.put("Gender__c", userPreferences.getString("spinner_gender", ""));
-            fields.put("Ethnicity__pc", userPreferences.getString("spinner_ethnicity", ""));
-            fields.put("Primary_Language__c", userPreferences.getString("spinner_language", ""));
-            fields.put("Identify_as_GLBT__c", userPreferences.getBoolean("checkbox_glbt", false));
-            fields.put("Foster_Care__c", userPreferences.getBoolean("checkbox_foster", false));
-            fields.put("Veteran__c", userPreferences.getBoolean("checkbox_military", false));
-            fields.put("How_long_have_you_been_homeless__c", userPreferences.getString("spinner_homeless_duration", ""));
-            fields.put("Where_do_you_usually_go_for_healthcare__c", userPreferences.getString("spinner_healthcare", ""));
-            fields.put("Medical_Care_Other__c", userPreferences.getString("healthcare_other", ""));
-            fields.put("Number__c", userPreferences.getString("qr_code", ""));
-            fields.put("account_sfid", userPreferences.getString("SFID", ""));
+            fields.put("Gender__c", mUserPreferences.getString("spinner_gender", ""));
+            fields.put("Ethnicity__pc", mUserPreferences.getString("spinner_ethnicity", ""));
+            fields.put("Primary_Language__c", mUserPreferences.getString("spinner_language", ""));
+            fields.put("Identify_as_GLBT__c", mUserPreferences.getBoolean("checkbox_glbt", false));
+            fields.put("Foster_Care__c", mUserPreferences.getBoolean("checkbox_foster", false));
+            fields.put("Veteran__c", mUserPreferences.getBoolean("checkbox_military", false));
+            fields.put("How_long_have_you_been_homeless__c", mUserPreferences.getString("spinner_homeless_duration", ""));
+            fields.put("Where_do_you_usually_go_for_healthcare__c", mUserPreferences.getString("spinner_healthcare", ""));
+            fields.put("Medical_Care_Other__c", mUserPreferences.getString("healthcare_other", ""));
+            fields.put("Number__c", mUserPreferences.getString("qr_code", ""));
+            fields.put("account_sfid", mUserPreferences.getString("SFID", ""));
 
             // Add services
             String[] sf_names = ((MainActivity) MainActivity.getContext()).getSalesforceNames();
             for (String name : sf_names) {
-                boolean fieldValue = mUserInfo.getBoolean(name, false);
+                boolean fieldValue = mUserPreferences.getBoolean(name, false);
                 if (fieldValue) {
                     fields.put(name, fieldValue);
                 }
@@ -224,4 +219,3 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
         }
     }
 }
-

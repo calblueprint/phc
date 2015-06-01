@@ -4,17 +4,8 @@ package phc.android.Checkout;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
-
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import phc.android.R;
 import phc.android.SharedFragments.ScannerFragment;
