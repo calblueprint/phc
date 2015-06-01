@@ -4,7 +4,6 @@ package phc.android.Checkout;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,16 +17,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import phc.android.Helpers.OnSubmitClickListener;
-import phc.android.Helpers.SharedPreferenceEditorListener;
 import phc.android.R;
 import phc.android.SharedFragments.ScannerConfirmationFragment;
 import phc.android.SharedFragments.SuccessFragment;
