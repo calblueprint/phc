@@ -53,7 +53,7 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     protected String mAuthToken;
 
     // Timeout for getting services (milliseconds)
-    private static final int REQUEST_TIMEOUT = 10000;
+    private static final int REQUEST_TIMEOUT = 1000;
     // Progress Dialog
     private ProgressDialog mProgressDialog;
     // Retry Dialog that prompts users to try the request again
@@ -202,14 +202,9 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
             mRetryDialog.dismiss();
-            retryRequest();
+            confirm();
         }
     }
-
-    /**
-     * The requests to be resent. To be implemented in subclasses.
-     */
-    protected void retryRequest() {};
 
     /**
      * To be overriden by the subclass.

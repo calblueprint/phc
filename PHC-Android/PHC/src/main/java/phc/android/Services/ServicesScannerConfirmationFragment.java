@@ -47,11 +47,6 @@ public class ServicesScannerConfirmationFragment extends ScannerConfirmationFrag
         showProgressDialog(getActivity());
     }
 
-    @Override
-    protected void retryRequest(){
-        confirm();
-    }
-
     /**
      * Loads SuccessFragment with Services type.
      */
