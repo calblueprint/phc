@@ -1,6 +1,7 @@
 package phc.android.Checkin;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
@@ -32,6 +33,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import phc.android.Helpers.SearchResult;
+import phc.android.Main.MainActivity;
 import phc.android.Networking.RequestManager;
 import phc.android.R;
 
@@ -40,36 +42,47 @@ import phc.android.R;
  * and allows the user to go back to activity_checkin another client.
  */
 public class SearchResultsFragment extends Fragment implements ListView.OnItemClickListener {
+
+    /* Strings */
     private static final String TAG = "Search";
     public static final String SEARCH_RESULT = "SEARCH_RESULT";
     public static final String CACHED_RESULTS = "CACHED_RESULTS";
     public static final String SAVED_CURSOR = "CURSOR";
 
-    // Key for user shared preferences
+    /* Parent Activity */
+    private CheckinActivity mParent;
+
+    /* Shared Preferences */
     private static final String USER_AUTH_PREFS_NAME = "UserKey";
-
-    private static final int RESULTS_PER_PAGE = 20;
-
-    private static RequestManager sRequestManager;
-    private static RequestQueue sRequestQueue;
-
-    // Shared Preferences
     private SharedPreferences mUserPreferences;
 
+    /* Network Requests */
+    private static RequestManager sRequestManager;
+    private static RequestQueue sRequestQueue;
+    // Timeout for getting services (milliseconds)
+    private static final int REQUEST_TIMEOUT = 10000;
+    // Whether results have been returned
+    private boolean mRetrieved = false;
+    // Whether search has been canceled
+    private boolean mCanceled = false;
+    // Progress Dialog
     private ProgressDialog mProgressDialog;
+    // Retry Dialog that prompts users to try the request again
+    private AlertDialog mRetryDialog;
 
-    // Parent Activity
-    private CheckinActivity mParent;
+    /* Search Results */
+    private static final int RESULTS_PER_PAGE = 20;
     // Caching the search results
     private SearchResult[] mSearchResults = new SearchResult[0];
     // ListView for results and its adapter *
     private ListView mListView;
+    private SearchResultAdapter mAdapter;
     // TextView holding the "No Results Found" message.
     private TextView mTextView;
     // Cursor for search pagination
     private int mCursor;
 
-    private SearchResultAdapter mAdapter;
+    /* Other Buttons */
     // Button to try search again.
     private Button mSearchAgainButton;
     // Button to register client as a new user.
@@ -108,6 +121,10 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
         return view;
     }
 
+    /**
+     * Shows progress dialog with an option to cancel. Creates alert dialog if request times out.
+     */
+
     private void showProgressDialog() {
         mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setTitle("Search Results");
@@ -117,11 +134,50 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 sRequestQueue.cancelAll(TAG);
+                mCanceled = true;
                 dialog.dismiss();
             }
         });
         mProgressDialog.setIndeterminate(false);
         mProgressDialog.show();
+
+        // Schedules the retry dialog to appear after timeout
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        mParent.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (!mCanceled){
+                                    mProgressDialog.dismiss();
+                                    if (!mRetrieved){
+                                        sRequestQueue.cancelAll(TAG);
+                                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                                mParent);
+                                        alertDialogBuilder.setTitle("Request Timed Out");
+                                        alertDialogBuilder.setPositiveButton("Try Again", new retryDialogOnClickListener());
+                                        mRetryDialog = alertDialogBuilder.create();
+                                        mRetryDialog.show();
+                                    }
+                                }
+                            }
+                        });
+                    }
+                },
+                REQUEST_TIMEOUT);
+    }
+
+    /**
+     * OnClickListener that retries the request and shows the progress indicator again
+     */
+    private class retryDialogOnClickListener implements DialogInterface.OnClickListener {
+
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            mRetryDialog.dismiss();
+            getPage(mCursor);
+        }
     }
 
 
@@ -313,6 +369,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                 if (mProgressDialog != null && mProgressDialog.isShowing()) {
                     mProgressDialog.dismiss();
                 }
+                mRetrieved = true;
             } catch (JSONException e) {
                 Log.e(TAG, "Error parsing JSON");
                 Log.e(TAG, e.toString());
