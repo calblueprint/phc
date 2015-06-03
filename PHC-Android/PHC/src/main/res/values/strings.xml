@@ -195,6 +195,7 @@
     <!-- Checkin Scan Page -->
     <string name="prompt_scan">Please scan a QR code</string>
     <string name="submit_form">Submit Form</string>
+    <string name="register_error">Error registering user. Please ask for assistance."</string>
 
     <!-- Selection Page -->
     <string name="selection_prompt">Is this the client\'s first time at a PHC event?</string>

@@ -1,17 +1,12 @@
 package phc.android.Checkout;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -23,12 +18,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import phc.android.Helpers.OnSubmitClickListener;
-import phc.android.Helpers.Utils;
 import phc.android.R;
-import phc.android.Services.ServicesActivity;
 import phc.android.SharedFragments.ScannerConfirmationFragment;
-import phc.android.SharedFragments.SuccessFragment;
 
 /**
  * Created by Byronium on 3/9/15.
@@ -149,7 +140,8 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
             }
         });
         builder.setTitle("Code not recognized");
-        builder.setMessage("Either entered incorrectly OR person has not checked in");
+        builder.setMessage("Either the code has been entered incorrectly, " +
+                "or this client has not checked in.");
 
         AlertDialog dialog = builder.create();
         dialog.show();
