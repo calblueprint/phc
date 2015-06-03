@@ -338,6 +338,7 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
 
         @Override
         public void onResponse(JSONArray jsonArray) {
+            mRetrieved = true;
             try {
                 final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                 mSearchResults = new SearchResult[jsonArray.length()];
@@ -369,7 +370,6 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                 if (mProgressDialog != null && mProgressDialog.isShowing()) {
                     mProgressDialog.dismiss();
                 }
-                mRetrieved = true;
             } catch (JSONException e) {
                 Log.e(TAG, "Error parsing JSON");
                 Log.e(TAG, e.toString());
@@ -387,6 +387,8 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
 
         @Override
         public void onErrorResponse(VolleyError volleyError) {
+            mRetrieved = true;
+
             if (volleyError.getLocalizedMessage() != null) {
                 Log.e(TAG, volleyError.toString());
             }
@@ -396,7 +398,8 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                 mProgressDialog.dismiss();
             }
 
-            Toast toast = Toast.makeText(getActivity(), "Error during Search", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getActivity(), "Error during Search. Please ask for " +
+                    "assistance.", Toast.LENGTH_LONG);
             toast.show();
         }
     }
@@ -453,7 +456,8 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                 Log.e(TAG, volleyError.toString());
             }
 
-            Toast toast = Toast.makeText(getActivity(), "Error getting user info", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getActivity(), "Error getting user info. Please ask for " +
+                    "assistance.", Toast.LENGTH_LONG);
             toast.show();
         }
     }
