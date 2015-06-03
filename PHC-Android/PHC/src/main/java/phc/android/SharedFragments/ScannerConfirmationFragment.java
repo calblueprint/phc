@@ -53,7 +53,7 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     protected String mAuthToken;
 
     // Timeout for getting services (milliseconds)
-    private static final int REQUEST_TIMEOUT = 1000;
+    private static final int REQUEST_TIMEOUT = 2000;
     // Progress Dialog
     private ProgressDialog mProgressDialog;
     // Retry Dialog that prompts users to try the request again

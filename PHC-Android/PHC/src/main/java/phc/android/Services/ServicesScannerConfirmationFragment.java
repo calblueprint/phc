@@ -157,12 +157,14 @@ public class ServicesScannerConfirmationFragment extends ScannerConfirmationFrag
 
         @Override
         public void onErrorResponse(VolleyError volleyError) {
+            mRequestCompleted = true;
             if (volleyError.getLocalizedMessage() != null) {
                 Log.e(TAG, volleyError.toString());
             }
 
-            Toast toast = Toast.makeText(getActivity(), "Error updating service.",
-                    Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getActivity(), "Error updating service. Please ask for " +
+                            "assistance.",
+                    Toast.LENGTH_LONG);
             toast.show();
         }
     }
