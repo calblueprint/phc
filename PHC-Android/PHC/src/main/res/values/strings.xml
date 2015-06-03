@@ -26,7 +26,7 @@
     <string name="title_security">Security Key</string>
     <string name="title_error">Error</string>
     <string name="prompt_security">Please enter the security key.</string>
-    <string name="text_incorrect_security">        The security key you have entered is incorrect. Please try again.</string>
+    <string name="text_incorrect_security">The security key you have entered is incorrect. Please try again.</string>
     <string name="button_submit">Submit</string>
     <string name="button_retry">Retry</string>
 
@@ -215,6 +215,9 @@
     <string name="text_already_received">The client has already received this service.</string>
     <string name="text_drop_in_and_already_received">The client is a drop-in who has
         already received this service. </string>
+    <string name="services_code_not_recognized">Code not recognized</string>
+    <string name="services_code_not_recognized_description">Either the code has been entered
+        incorrectly, or the client has not checked in."</string>
 
     <!-- Checkout Activity -->
     <string name="button_qr_scanner">Scan QR Code and Submit</string>
