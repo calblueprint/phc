@@ -35,11 +35,20 @@ gem 'responders', '~> 2.0'
 gem "newrelic_rpm"
 
 #Recommended gems
-group :development do
-    gem "better_errors"
-    gem "binding_of_caller"
-    gem "bullet"
-    gem "annotate", "~> 2.6.5"
-    gem "spring"
-    gem "byebug"
+group :development, :test do
+  gem "better_errors"
+  gem "binding_of_caller"
+  gem "bullet"
+  gem "annotate", "~> 2.6.5"
+  gem "spring"
+  gem "byebug"
+  gem "rspec-rails"
+  gem "factory_girl_rails"
+end
+
+group :test do
+  gem 'faker'
+  gem 'capybara'
+  gem 'guard-rspec'
+  gem 'launchy'
 end
