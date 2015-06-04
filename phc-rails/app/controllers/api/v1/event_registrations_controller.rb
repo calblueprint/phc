@@ -3,13 +3,10 @@ class Api::V1::EventRegistrationsController < ApplicationController
   before_action :verify_security_token
 
   def create
-    event_reg = EventRegistration.new
-
-    byebug
-    # Create account if salesforce id was not passed in
-    sf_id = params[:account_sfid]
-    if (sf_id.nil? || sf_id.empty?)
-      params.delete :account_sfid
+    sf_id = params.delete :account_sfid
+    if (sf_id.nil? || sf_id.empty? || sf_id = "\"\"")
+      # Create account if salesforce id was not passed in
+      # TODO: Figure out how an accounts parameters are set from the Android app
       params[:sf_id] = ""
       account = Account.spawn(params)
     else
@@ -19,18 +16,17 @@ class Api::V1::EventRegistrationsController < ApplicationController
       end
       account = Account.find_by(sf_id: params[:account_sfid])
     end
-    # Event Registrations map to an account based on account id
-    event_reg[:account_id] = account.id
 
-    # Number__c is the QR_code that was passed in, which identifies a
-    # particular account for the current PHC event
-    event_reg.Number__c = params[:Number__c]
-    Service.services.each do |service|
-      service = Service.create(name:service)
-      if params[service] == true then service.applied! end
-      event_reg.services << service
+    reg = account.event_registrations.create(Number__c: params[:Number__c])
+    Service.services.each do |name|
+      # TODO: Make sure we are receiving TRUE as a boolean and not as a string
+      # TODO: Figure out when the heck each case happens and how to test each case
+      if (params[name] == true || params[name] == "true") then
+        reg.services.create(name: name, status: "applied")
+      end
     end
-    status = event_reg.save ? "Success" : "Failure"
+
+    status = reg.save ? "Successfully saved event registration!" : "Failed to save event registration"
     api_message_response(200, status)
   end
 
@@ -87,6 +83,12 @@ class Api::V1::EventRegistrationsController < ApplicationController
   def update_feedback
     event_registration = EventRegistration.find_by(Number__c: params[:Number__c])
     if event_registration.update(event_registration_params)
+      params[:Services_Needed__c].each do |s|
+        event_registration.Services_Needed__c << s
+      end
+      event_registration.Feedback__c = params[:Feedback__c]
+      event_registration.Experience__c = params[:Experience__c].to_i
+      event_registration.save
       api_message_response(201, "Successfully recieved feedback!")
     else
       api_message_response(404, "Event registration with that number does not exist.")
