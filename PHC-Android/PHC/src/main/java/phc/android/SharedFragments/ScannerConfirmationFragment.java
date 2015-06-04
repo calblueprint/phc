@@ -1,7 +1,11 @@
 package phc.android.SharedFragments;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -17,6 +21,7 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+import phc.android.Main.MainActivity;
 import phc.android.Networking.RequestManager;
 import phc.android.R;
 
@@ -46,6 +51,15 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     protected SharedPreferences mUserPreferences;
     protected String mUserId;
     protected String mAuthToken;
+
+    // Timeout for getting services (milliseconds)
+    private static final int REQUEST_TIMEOUT = 2000;
+    // Progress Dialog
+    private ProgressDialog mProgressDialog;
+    // Retry Dialog that prompts users to try the request again
+    private AlertDialog mRetryDialog;
+    // Whether request has been completed
+    protected boolean mRequestCompleted = false;
 
     /** Keeps track of whether the user
      * scanned a code or input it
@@ -135,6 +149,59 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     public class ConfirmListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
+            confirm();
+        }
+    }
+
+    /**
+     * Shows the progress dialog and creates an alert dialog if the request times out
+     */
+    protected void showProgressDialog(final Context c) {
+
+        mProgressDialog =
+                ProgressDialog.show(c, "Please wait...", "Submitting Data", true);
+
+        // Schedules the retry dialog to appear after timeout
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        ((Activity) c).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mProgressDialog.dismiss();
+                                sRequestQueue.cancelAll(TAG);
+                                if (!mRequestCompleted) {
+                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog
+                                            .Builder(c);
+                                    alertDialogBuilder.setTitle("Request Timed Out");
+                                    alertDialogBuilder.setPositiveButton("Try Again",
+                                            new retryDialogOnClickListener(c));
+                                    mRetryDialog = alertDialogBuilder.create();
+                                    mRetryDialog.show();
+                                }
+                            }
+                        });
+                    }
+                },
+                REQUEST_TIMEOUT
+        );
+    }
+
+    /**
+     * OnClickListener that retries the request and shows the progress dialog again
+     */
+    private class retryDialogOnClickListener implements DialogInterface.OnClickListener {
+
+        Context mContext;
+
+        public retryDialogOnClickListener(Context c){
+            mContext = c;
+        }
+
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            mRetryDialog.dismiss();
             confirm();
         }
     }

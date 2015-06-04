@@ -15,10 +15,9 @@ import android.widget.TextView;
 import phc.android.R;
 
 /**
- * SearchFragment is launched on successful submission of a client's form data,
- * and allows the user to go back to activity_checkin another client.
+ * SearchFragment allows user to enter a client's first and/or last name
+ * to search them in the Salesforce database.
  */
-
 
 public class SearchFragment extends CheckinFragment {
 

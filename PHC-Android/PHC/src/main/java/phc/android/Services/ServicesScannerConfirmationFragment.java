@@ -44,6 +44,7 @@ public class ServicesScannerConfirmationFragment extends ScannerConfirmationFrag
                 new SearchByCodeResponseListener(),
                 new SearchByCodeErrorListener());
 
+        showProgressDialog(getActivity());
     }
 
     /**
@@ -68,8 +69,8 @@ public class ServicesScannerConfirmationFragment extends ScannerConfirmationFrag
                 retry();
             }
         });
-        builder.setTitle("Code not recognized");
-        builder.setMessage("Either entered incorrectly OR person has not checked in");
+        builder.setTitle(getResources().getString(R.string.services_code_not_recognized));
+        builder.setMessage(getResources().getString(R.string.services_code_not_recognized_description));
 
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -134,6 +135,7 @@ public class ServicesScannerConfirmationFragment extends ScannerConfirmationFrag
 
         @Override
         public void onResponse(JSONObject jsonObject) {
+            mRequestCompleted = true;
             try {
                 String message = jsonObject.getString("message");
                 // makes a toast if receive an unexpected service status message
@@ -143,9 +145,7 @@ public class ServicesScannerConfirmationFragment extends ScannerConfirmationFrag
                     Toast toast = Toast.makeText(c, message, Toast.LENGTH_LONG);
                     toast.show();
                 }
-
                 loadServicesSuccess();
-
             } catch(JSONException e) {
                 Log.e(TAG, "Error parsing JSON");
                 Log.e(TAG, e.toString());
@@ -157,12 +157,14 @@ public class ServicesScannerConfirmationFragment extends ScannerConfirmationFrag
 
         @Override
         public void onErrorResponse(VolleyError volleyError) {
+            mRequestCompleted = true;
             if (volleyError.getLocalizedMessage() != null) {
                 Log.e(TAG, volleyError.toString());
             }
 
-            Toast toast = Toast.makeText(getActivity(), "Error updating service.",
-                    Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getActivity(), "Error updating service. Please ask for " +
+                            "assistance.",
+                    Toast.LENGTH_LONG);
             toast.show();
         }
     }

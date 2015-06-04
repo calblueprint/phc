@@ -110,7 +110,7 @@ public class MainActivity extends Activity {
     }
 
     /**
-     * Shows the progress dialog and creates an alert dialog is the request times out
+     * Shows the progress dialog and creates an alert dialog if the request times out
      */
     private void showProgressIndicator() {
         mProgressDialog =
