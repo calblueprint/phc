@@ -20,10 +20,11 @@ class Api::V1::EventRegistrationsController < ApplicationController
 
     reg = account.event_registrations.create(Number__c: params[:Number__c])
     Service.services.each do |name|
+      service = reg.services.create(name: name)
       # TODO: Make sure we are receiving TRUE as a boolean and not as a string
       # TODO: Figure out when the heck each case happens and how to test each case
       if (params[name] == true || params[name] == "true") then
-        reg.services.create(name: name, status: "applied")
+        service.applied!
       end
     end
 
