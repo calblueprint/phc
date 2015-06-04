@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150604052045) do
+ActiveRecord::Schema.define(version: 20150604060637) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,13 +43,16 @@ ActiveRecord::Schema.define(version: 20150604052045) do
   add_index "accounts", ["LastName"], name: "index_accounts_on_LastName", using: :btree
 
   create_table "event_registrations", force: :cascade do |t|
-    t.string   "account_id", limit: 255
-    t.string   "phc_sfid",   limit: 255
-    t.string   "FirstName",  limit: 255
-    t.string   "LastName",   limit: 255
+    t.string   "account_id",         limit: 255
+    t.string   "phc_sfid",           limit: 255
+    t.string   "FirstName",          limit: 255
+    t.string   "LastName",           limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "Number__c",  limit: 255
+    t.string   "Number__c",          limit: 255
+    t.integer  "Experience__c"
+    t.text     "Services_Needed__c"
+    t.text     "Feedback__c"
   end
 
   create_table "event_registrations_services", id: false, force: :cascade do |t|
