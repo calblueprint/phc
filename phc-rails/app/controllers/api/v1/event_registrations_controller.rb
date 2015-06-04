@@ -6,7 +6,8 @@ class Api::V1::EventRegistrationsController < ApplicationController
     sf_id = params.delete :account_sfid
     if (sf_id.nil? || sf_id.empty? || sf_id = "\"\"")
       # Create account if salesforce id was not passed in
-      # TODO: Figure out how an accounts parameters are set from the Android app
+      # TODO: Right now, the client basically creates accounts through this endpoint
+      # We should seperate it into 2 API calls, the first to api/v1/create (which is unused right now)
       params[:sf_id] = ""
       account = Account.spawn(params)
     else
