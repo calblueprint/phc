@@ -5,34 +5,33 @@ class Api::V1::EventRegistrationsController < ApplicationController
   def create
     event_reg = EventRegistration.new
 
+    byebug
     # Create account if salesforce id was not passed in
     sf_id = params[:account_sfid]
     if (sf_id.nil? || sf_id.empty?)
-      # Create account of the parameters passed in, sf_id will be nil
-      params[:sf_id] = params.delete :account_sfid
+      params.delete :account_sfid
+      params[:sf_id] = ""
       account = Account.spawn(params)
-
-      # Since we don't know the SF id yet, use the unique rails id for now to identify the account
-      event_reg[:account_sfid] = account.id
     else
       # We retrieve the corresponding account if the salesforce id was passed in
       if not Account.exists?(sf_id: sf_id)
         raise "Unknown Salesforce ID. This should not happen!"
       end
       account = Account.find_by(sf_id: params[:account_sfid])
-      event_reg[:account_sfid] = account.sf_id
     end
+    # Event Registrations map to an account based on account id
+    event_reg[:account_id] = account.id
 
     # Number__c is the QR_code that was passed in, which identifies a
     # particular account for the current PHC event
     event_reg.Number__c = params[:Number__c]
     Service.services.each do |service|
-      status = (if params[service] == true then 0 else 1 end)
-      (event_reg.services ||= []) << Service.new(name: service, status:status)
+      service = Service.create(name:service)
+      if params[service] == true then service.applied! end
+      event_reg.services << service
     end
-
     status = event_reg.save ? "Success" : "Failure"
-    api_message_response(status)
+    api_message_response(200, status)
   end
 
   def search
@@ -42,18 +41,23 @@ class Api::V1::EventRegistrationsController < ApplicationController
   end
 
   def get_applied
-    @event_registration = EventRegistration.find_by(Number__c: params[:Number__c])
-    if !@event_registration.nil?
-      @services = @event_registration.services
-      render json: { status: "true", services: ["Acupuncture", "Haircuts", "Massage"] }
+    event_registration = EventRegistration.find_by(Number__c: params[:Number__c])
+    if !event_registration.nil?
+      applied_services = []
+      event_registration.services.each do |s|
+        if s.applied?
+          applied_services << s.name
+        end
+      end
+      render json: { status: "true", services: applied_services }
     else
       api_message_response(404, "Event registration with that number does not exist.")
     end
   end
 
   def update_service
-    registration = EventRegistration.find_by(Number__c: params[:Number__c])
-    if registration.nil?
+    event_registration = EventRegistration.find_by(Number__c: params[:Number__c])
+    if event_registration.nil?
       api_message_response(404, "Event registration with that number does not exist.")
       return
     end
@@ -65,25 +69,25 @@ class Api::V1::EventRegistrationsController < ApplicationController
     end
 
     case service.status
-    when Service.unspecified
-      service.update_attribute(:status, Service.drop_in)
+    when "unspecified"
+      service.drop_in!
       api_message_response(200, "Client's status set to drop-in.")
-    when Service.applied
-      service.update_attribute(:status, Service.received)
+    when "applied"
+      service.received!
       api_message_response(200, "Client's status set to received.")
-    when Service.drop_in
+    when "drop_in"
       api_message_response(200, "Client has already received service.")
-    when Service.received
+    when "received"
       api_message_response(200, "Client has already received service.")
     else
-      api_message_response(500)
+      api_message_response(400, "Invalid status.")
     end
   end
 
   def update_feedback
-    @event_registration = EventRegistration.find_by(Number__c: params[:Number__c])
-    if @event_registration.update(event_registration_params)
-      api_message_response(201, "Good job Shimmy")
+    event_registration = EventRegistration.find_by(Number__c: params[:Number__c])
+    if event_registration.update(event_registration_params)
+      api_message_response(201, "Successfully recieved feedback!")
     else
       api_message_response(404, "Event registration with that number does not exist.")
     end
