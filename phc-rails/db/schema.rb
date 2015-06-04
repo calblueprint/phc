@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150505021012) do
+ActiveRecord::Schema.define(version: 20150603024140) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,7 +24,6 @@ ActiveRecord::Schema.define(version: 20150505021012) do
     t.string   "FirstName",                                 limit: 255
     t.string   "LastName",                                  limit: 255
     t.string   "SS_Num__c",                                 limit: 255
-    t.string   "Birthdate__c",                              limit: 255
     t.string   "Phone",                                     limit: 255
     t.string   "PersonEmail",                               limit: 255
     t.string   "Gender__c",                                 limit: 255
@@ -37,6 +36,7 @@ ActiveRecord::Schema.define(version: 20150505021012) do
     t.string   "How_long_have_you_been_homeless__c",        limit: 255
     t.string   "Where_do_you_usually_go_for_healthcare__c", limit: 255
     t.string   "Medical_Care_Other__c",                     limit: 255
+    t.date     "Birthdate__c"
   end
 
   add_index "accounts", ["FirstName"], name: "index_accounts_on_FirstName", using: :btree

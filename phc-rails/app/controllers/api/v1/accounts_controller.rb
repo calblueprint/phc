@@ -32,10 +32,18 @@ class Api::V1::AccountsController < ApplicationController
   end
 
   def create
-    if not Account.spawn(params).nil?
-      respond_with "Successfully saved account!", status: 200, location: root_url
-    else
-      respond_with "Error saving account!", status: 200, location: root_url
-    end
+    @account = Account.new(account_params)
+
+    # if not Account.create(params).nil?
+    #   respond_with "Successfully saved account!", status: 200, location: root_url
+    # else
+    #   respond_with "Error saving account!", status: 200, location: root_url
+    # end
   end
+
+  private
+
+    def account_params
+      params.require(:account).permit(:FirstName,)
+
 end
