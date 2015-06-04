@@ -168,7 +168,7 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
         fields.put("PersonEmail", mUserPreferences.getString("email", ""));
 
         fields.put("Gender__c", mUserPreferences.getString("spinner_gender", ""));
-        fields.put("Ethnicity__pc", mUserPreferences.getString("spinner_ethnicity", ""));
+        fields.put("Race__c", mUserPreferences.getString("spinner_ethnicity", ""));
         fields.put("Primary_Language__c", mUserPreferences.getString("spinner_language", ""));
         fields.put("Identify_as_GLBT__c", mUserPreferences.getBoolean("checkbox_glbt", false));
         fields.put("Foster_Care__c", mUserPreferences.getBoolean("checkbox_foster", false));
