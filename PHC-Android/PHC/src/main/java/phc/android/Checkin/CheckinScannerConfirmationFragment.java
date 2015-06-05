@@ -130,6 +130,10 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
         public void onErrorResponse(VolleyError volleyError) {
             mRequestCompleted = true;
 
+            if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                mProgressDialog.dismiss();
+            }
+
             if (volleyError.getLocalizedMessage() != null) {
                 Log.e(TAG, "Volley Error");
                 volleyError.printStackTrace();
