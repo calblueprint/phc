@@ -35,28 +35,9 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
     /* Name to store code in saved preferences */
     private final String mName = "qr_code";
 
-    /* Preference editor for saved preferences */
-    private PreferenceEditor mPreferenceEditor;
-
-    /**
-     * Used to store a scan result in Shared Preferences
-     */
-    private class PreferenceEditor extends SharedPreferenceEditorListener {
-        public PreferenceEditor(Context context) {
-            super(context);
-        }
-
-        public void storeScanResult(String result) {
-            mUserInfoEditor.putString(mName, result);
-            mUserInfoEditor.apply();
-        }
-    }
-
     @Override
     protected View setupView(LayoutInflater inflater, ViewGroup container) {
         View view = super.setupView(inflater, container);
-        mPreferenceEditor = new PreferenceEditor(getActivity().getApplicationContext());
-
         return view;
     }
 
@@ -65,7 +46,8 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
      */
     @Override
     protected void confirm() {
-        mPreferenceEditor.storeScanResult(mScanResult);
+        mClientPreferencesEditor.putString(mName, mScanResult);
+        mClientPreferencesEditor.apply();
         registerPerson();
     }
 
@@ -100,16 +82,7 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
                 mProgressDialog.dismiss();
             }
 
-            // Clear everything in user preferences but user_id and auth_token. Should later
-            // put this info in a separate SharedPreferences category
-            String userId = mUserPreferences.getString("user_id", null);
-            String authToken = mUserPreferences.getString("auth_token", null);
-            mUserPreferences.edit().clear().apply();
-            SharedPreferences.Editor editor = mUserPreferences.edit();
-            editor.putString("user_id", userId);
-            editor.putString("auth_token", authToken);
-            editor.apply();
-
+            mClientPreferences.edit().clear().apply();
             loadSuccess();
         }
 
@@ -156,19 +129,19 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
     private HashMap<String, Object> getFields() {
         HashMap<String, Object> fields = new HashMap<String, Object>();
 
-        fields.put("FirstName", mUserPreferences.getString("first_name", null));
-        fields.put("LastName", mUserPreferences.getString("last_name", null));
+        fields.put("FirstName", mClientPreferences.getString("first_name", null));
+        fields.put("LastName", mClientPreferences.getString("last_name", null));
 
         String ssn = "";
-        ssn = ssn + mUserPreferences.getString("ssn_1", "");
-        ssn = ssn + mUserPreferences.getString("ssn_2", "");
-        ssn = ssn + mUserPreferences.getString("ssn_3", "");
+        ssn = ssn + mClientPreferences.getString("ssn_1", "");
+        ssn = ssn + mClientPreferences.getString("ssn_2", "");
+        ssn = ssn + mClientPreferences.getString("ssn_3", "");
 
         fields.put("SS_Num__c", ssn);
 
-        String year = mUserPreferences.getString("birthday_year", "");
-        String month = mUserPreferences.getString("birthday_month", "");
-        String day = mUserPreferences.getString("birthday_day", "");
+        String year = mClientPreferences.getString("birthday_year", "");
+        String month = mClientPreferences.getString("birthday_month", "");
+        String day = mClientPreferences.getString("birthday_day", "");
 
         if(!year.equals("") && !month.equals("") && !day.equals("")) {
             String birthday = year + "-" + month + "-" + day;
@@ -178,30 +151,30 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
         }
 
         String phone = "";
-        phone = phone + mUserPreferences.getString("phone_1", "");
-        phone = phone + mUserPreferences.getString("phone_2", "");
-        phone = phone + mUserPreferences.getString("phone_3", "");
+        phone = phone + mClientPreferences.getString("phone_1", "");
+        phone = phone + mClientPreferences.getString("phone_2", "");
+        phone = phone + mClientPreferences.getString("phone_3", "");
 
         fields.put("Phone", phone);
 
-        fields.put("PersonEmail", mUserPreferences.getString("email", ""));
+        fields.put("PersonEmail", mClientPreferences.getString("email", ""));
 
-        fields.put("Gender__c", mUserPreferences.getString("spinner_gender", ""));
-        fields.put("Race__c", mUserPreferences.getString("spinner_ethnicity", ""));
-        fields.put("Primary_Language__c", mUserPreferences.getString("spinner_language", ""));
-        fields.put("Identify_as_GLBT__c", mUserPreferences.getBoolean("checkbox_glbt", false));
-        fields.put("Foster_Care__c", mUserPreferences.getBoolean("checkbox_foster", false));
-        fields.put("Veteran__c", mUserPreferences.getBoolean("checkbox_military", false));
-        fields.put("How_long_have_you_been_homeless__c", mUserPreferences.getString("spinner_homeless_duration", ""));
-        fields.put("Where_do_you_usually_go_for_healthcare__c", mUserPreferences.getString("spinner_healthcare", ""));
-        fields.put("Medical_Care_Other__c", mUserPreferences.getString("healthcare_other", ""));
-        fields.put("Number__c", mUserPreferences.getString("qr_code", ""));
-        fields.put("account_sfid", mUserPreferences.getString("SFID", ""));
+        fields.put("Gender__c", mClientPreferences.getString("spinner_gender", ""));
+        fields.put("Race__c", mClientPreferences.getString("spinner_ethnicity", ""));
+        fields.put("Primary_Language__c", mClientPreferences.getString("spinner_language", ""));
+        fields.put("Identify_as_GLBT__c", mClientPreferences.getBoolean("checkbox_glbt", false));
+        fields.put("Foster_Care__c", mClientPreferences.getBoolean("checkbox_foster", false));
+        fields.put("Veteran__c", mClientPreferences.getBoolean("checkbox_military", false));
+        fields.put("How_long_have_you_been_homeless__c", mClientPreferences.getString("spinner_homeless_duration", ""));
+        fields.put("Where_do_you_usually_go_for_healthcare__c", mClientPreferences.getString("spinner_healthcare", ""));
+        fields.put("Medical_Care_Other__c", mClientPreferences.getString("healthcare_other", ""));
+        fields.put("Number__c", mClientPreferences.getString("qr_code", ""));
+        fields.put("account_sfid", mClientPreferences.getString("SFID", ""));
 
         // Add services
         String[] sf_names = ((MainActivity) MainActivity.getContext()).getSalesforceNames();
         for (String name : sf_names) {
-            boolean fieldValue = mUserPreferences.getBoolean(name, false);
+            boolean fieldValue = mClientPreferences.getBoolean(name, false);
             if (fieldValue) {
                 fields.put(name, fieldValue);
             }
