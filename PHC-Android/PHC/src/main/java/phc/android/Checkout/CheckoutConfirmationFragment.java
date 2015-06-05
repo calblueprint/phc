@@ -21,6 +21,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import phc.android.Helpers.Utils;
 import phc.android.R;
 import phc.android.SharedFragments.ScannerConfirmationFragment;
 import phc.android.SharedFragments.SuccessFragment;
@@ -100,9 +101,10 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
         String mServicesString = new String();
         for(int i = 0; i < mServicesChecked.size(); i++){
             mServicesNotReceived.put(mServicesChecked.get(i).toString());
-            mServicesString += mServicesChecked.get(i);
+            mServicesString += Utils.fieldNameHelper(mServicesChecked.get(i));
             mServicesString += ", ";
         }
+        mServicesString = mServicesString.substring(0, mServicesString.length()-2);
         mServicesView.setText(mServicesString);
 
         mScanResultView = (TextView) view.findViewById(R.id.checkout_confirmation_scan_result);
@@ -210,14 +212,12 @@ public class CheckoutConfirmationFragment extends ScannerConfirmationFragment {
             successFragment.setType(SuccessFragment.SuccessType.CHECKOUT_SUCCESS);
             transaction.replace(R.id.checkout_activity_container, successFragment);
             transaction.commit();
-            Log.d(TAG, jsonObject.toString());
         }
     }
     private class UpdateErrorListener implements Response.ErrorListener{
         @Override
         public void onErrorResponse(VolleyError volleyError){
             if (volleyError != null && volleyError.getLocalizedMessage()!=null) {
-                Log.e(TAG, "volleyError.getLocalizedMessage() " + volleyError.getLocalizedMessage());
                 volleyError.printStackTrace();
             }
             Toast toast = Toast.makeText(getActivity(), "Error checking out user", Toast.LENGTH_SHORT);

@@ -21,6 +21,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 
+import phc.android.Helpers.Utils;
 import phc.android.R;
 
 public class CheckoutFormFragment extends Fragment {
@@ -142,7 +143,7 @@ public class CheckoutFormFragment extends Fragment {
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             cb.setLayoutParams(params);
             cb.setId(i);
-            cb.setText(mServices.get(i));
+            cb.setText(Utils.fieldNameHelper(mServices.get(i)));
             mLayout.addView(cb);
 
             checkBoxArray.add(cb);
