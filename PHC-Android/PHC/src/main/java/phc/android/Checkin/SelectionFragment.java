@@ -92,7 +92,7 @@ public class SelectionFragment extends CheckinFragment {
         editor.remove("Gender");
         editor.remove("Ethnicity");
         editor.remove("Language");
-        editor.remove("SFID");
+//        editor.remove("SFID");
         editor.apply();
     }
 }

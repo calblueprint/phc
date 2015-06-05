@@ -413,6 +413,11 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
         public void onResponse(JSONObject jsonObject) {
             SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SEARCH_RESULT, 0);
             SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            SharedPreferences clientPreferences = getActivity().getSharedPreferences
+                    ("ClientKey",Context.MODE_PRIVATE);
+            SharedPreferences.Editor clientPreferencesEditor = clientPreferences.edit();
+
             try {
                 editor.putString("SS_Num", jsonObject.getString("SS_Num__c"));
                 editor.putString("FirstName", jsonObject.getString("FirstName"));
@@ -426,7 +431,10 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                 editor.putBoolean("GLBT", jsonObject.getBoolean("Identify_as_GLBT__c"));
                 editor.putBoolean("Foster", jsonObject.getBoolean("Foster_Care__c"));
                 editor.putBoolean("Veteran", jsonObject.getBoolean("Veteran__c"));
-                editor.putString("SFID", jsonObject.getString("sf_id"));
+
+                clientPreferencesEditor.putString("SFID", jsonObject.getString("sf_id"));
+                clientPreferencesEditor.putString("ssn_full", jsonObject.getString("SS_Num__c"));
+                clientPreferencesEditor.apply();
             } catch (JSONException e2) {
                 Log.e(TAG, e2.toString());
             } finally {
