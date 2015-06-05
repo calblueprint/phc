@@ -3,6 +3,7 @@ package phc.android.Checkin;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -94,7 +95,21 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
         @Override
         public void onResponse(JSONObject jsonObject) {
             mRequestCompleted = true;
+
+            if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                mProgressDialog.dismiss();
+            }
+
+            // Clear everything in user preferences but user_id and auth_token. Should later
+            // put this info in a separate SharedPreferences category
+            String userId = mUserPreferences.getString("user_id", null);
+            String authToken = mUserPreferences.getString("auth_token", null);
             mUserPreferences.edit().clear().apply();
+            SharedPreferences.Editor editor = mUserPreferences.edit();
+            editor.putString("user_id", userId);
+            editor.putString("auth_token", authToken);
+            editor.apply();
+
             loadSuccess();
         }
 
