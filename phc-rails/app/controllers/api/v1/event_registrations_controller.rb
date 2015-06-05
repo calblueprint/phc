@@ -4,7 +4,7 @@ class Api::V1::EventRegistrationsController < ApplicationController
 
   def create
     sf_id = params.delete :account_sfid
-    if (sf_id.nil? || sf_id.empty? || sf_id = "\"\"")
+    if sf_id.nil? || sf_id.empty? || sf_id = "\"\""
       # Create account if salesforce id was not passed in
       # TODO: Right now, the client basically creates accounts through this endpoint
       # We should seperate it into 2 API calls, the first to api/v1/create (which is unused right now)
@@ -23,7 +23,7 @@ class Api::V1::EventRegistrationsController < ApplicationController
       service = reg.services.create(name: name)
       # TODO: Make sure we are receiving TRUE as a boolean and not as a string
       # TODO: Figure out when the heck each case happens and how to test each case
-      if (params[name] == true || params[name] == "true") then
+      if params[name] == true || params[name] == "true"
         service.applied!
       end
     end

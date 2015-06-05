@@ -25,7 +25,6 @@
 #
 
 class Account < ActiveRecord::Base
-
   has_many :event_registrations
 
   @fields = [:sf_id, "FirstName","LastName","SS_Num__c","Birthdate__c","Phone","PersonEmail","Gender__c","Identify_as_GLBT__c",
