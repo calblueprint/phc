@@ -431,7 +431,9 @@ public class SearchResultsFragment extends Fragment implements ListView.OnItemCl
                 editor.putBoolean("GLBT", jsonObject.getBoolean("Identify_as_GLBT__c"));
                 editor.putBoolean("Foster", jsonObject.getBoolean("Foster_Care__c"));
                 editor.putBoolean("Veteran", jsonObject.getBoolean("Veteran__c"));
+
                 clientPreferencesEditor.putString("SFID", jsonObject.getString("sf_id"));
+                clientPreferencesEditor.putString("ssn_full", jsonObject.getString("SS_Num__c"));
                 clientPreferencesEditor.apply();
             } catch (JSONException e2) {
                 Log.e(TAG, e2.toString());

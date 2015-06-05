@@ -132,11 +132,13 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
         fields.put("FirstName", mClientPreferences.getString("first_name", null));
         fields.put("LastName", mClientPreferences.getString("last_name", null));
 
-        String ssn = "";
-        ssn = ssn + mClientPreferences.getString("ssn_1", "");
-        ssn = ssn + mClientPreferences.getString("ssn_2", "");
-        ssn = ssn + mClientPreferences.getString("ssn_3", "");
-
+        String ssn = mClientPreferences.getString("ssn_full", null);
+        // client was not an existing client whose ssn was prepopulated into shared preferences
+        if (ssn == null){
+            ssn = mClientPreferences.getString("ssn_1", "")
+                    + mClientPreferences.getString("ssn_2", "")
+                    + mClientPreferences.getString("ssn_3", "");
+        }
         fields.put("SS_Num__c", ssn);
 
         String year = mClientPreferences.getString("birthday_year", "");
