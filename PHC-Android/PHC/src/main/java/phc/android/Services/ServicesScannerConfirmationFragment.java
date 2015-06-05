@@ -132,7 +132,7 @@ public class ServicesScannerConfirmationFragment extends ScannerConfirmationFrag
             if (mProgressDialog != null && mProgressDialog.isShowing()) {
                 mProgressDialog.dismiss();
             }
-            
+
             if (volleyError.getLocalizedMessage() != null) {
                 Log.e(TAG, volleyError.toString());
             }
