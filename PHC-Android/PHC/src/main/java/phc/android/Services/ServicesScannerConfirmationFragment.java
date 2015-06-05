@@ -91,6 +91,7 @@ public class ServicesScannerConfirmationFragment extends ScannerConfirmationFrag
 
         @Override
         public void onResponse(JSONObject jsonObject) {
+            mRequestCompleted = true;
             try {
                 mRegistrationFound = jsonObject.getBoolean("present");
                 Log.d("found?", Boolean.toString(mRegistrationFound));
@@ -121,6 +122,7 @@ public class ServicesScannerConfirmationFragment extends ScannerConfirmationFrag
 
         @Override
         public void onErrorResponse(VolleyError volleyError) {
+            mRequestCompleted = true;
             if (volleyError.getLocalizedMessage() != null) {
                 Log.e(TAG, volleyError.toString());
             }
