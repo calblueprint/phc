@@ -92,6 +92,11 @@ public class ServicesScannerConfirmationFragment extends ScannerConfirmationFrag
         @Override
         public void onResponse(JSONObject jsonObject) {
             mRequestCompleted = true;
+
+            if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                mProgressDialog.dismiss();
+            }
+
             try {
                 mRegistrationFound = jsonObject.getBoolean("present");
                 Log.d("found?", Boolean.toString(mRegistrationFound));
@@ -123,6 +128,11 @@ public class ServicesScannerConfirmationFragment extends ScannerConfirmationFrag
         @Override
         public void onErrorResponse(VolleyError volleyError) {
             mRequestCompleted = true;
+
+            if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                mProgressDialog.dismiss();
+            }
+            
             if (volleyError.getLocalizedMessage() != null) {
                 Log.e(TAG, volleyError.toString());
             }
@@ -138,6 +148,11 @@ public class ServicesScannerConfirmationFragment extends ScannerConfirmationFrag
         @Override
         public void onResponse(JSONObject jsonObject) {
             mRequestCompleted = true;
+
+            if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                mProgressDialog.dismiss();
+            }
+
             try {
                 String message = jsonObject.getString("message");
                 // makes a toast if receive an unexpected service status message
@@ -160,6 +175,11 @@ public class ServicesScannerConfirmationFragment extends ScannerConfirmationFrag
         @Override
         public void onErrorResponse(VolleyError volleyError) {
             mRequestCompleted = true;
+
+            if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                mProgressDialog.dismiss();
+            }
+
             if (volleyError.getLocalizedMessage() != null) {
                 Log.e(TAG, volleyError.toString());
             }
