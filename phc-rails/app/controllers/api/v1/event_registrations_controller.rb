@@ -60,7 +60,7 @@ class Api::V1::EventRegistrationsController < ApplicationController
       return
     end
 
-    service = registration.services.find_by(name: params[:service_name])
+    service = event_registration.services.find_by(name: params[:service_name])
     if service.nil?
       api_message_response(404, "Service with that name does not exist.")
       return
@@ -69,14 +69,14 @@ class Api::V1::EventRegistrationsController < ApplicationController
     case service.status
     when "unspecified"
       service.drop_in!
-      api_message_response(200, "Client's status set to drop-in.")
+      api_message_response(201, "Client's status set to drop-in.")
     when "applied"
       service.received!
-      api_message_response(200, "Client's status set to received.")
+      api_message_response(201, "Client's status set to received.")
     when "drop_in"
-      api_message_response(200, "Client has already received service.")
+      api_message_response(201, "Client has already received service.")
     when "received"
-      api_message_response(200, "Client has already received service.")
+      api_message_response(201, "Client has already received service.")
     else
       api_message_response(400, "Invalid status.")
     end
@@ -84,13 +84,8 @@ class Api::V1::EventRegistrationsController < ApplicationController
 
   def update_feedback
     event_registration = EventRegistration.find_by(Number__c: params[:Number__c])
-    if event_registration.update(event_registration_params)
-      params[:Services_Needed__c].each do |s|
-        event_registration.Services_Needed__c << s
-      end
-      event_registration.Feedback__c = params[:Feedback__c]
-      event_registration.Experience__c = params[:Experience__c].to_i
-      event_registration.save
+    if !event_registration.nil?
+      event_registration.update(event_registration_params)
       api_message_response(201, "Successfully recieved feedback!")
     else
       api_message_response(404, "Event registration with that number does not exist.")
@@ -100,7 +95,7 @@ class Api::V1::EventRegistrationsController < ApplicationController
   private
 
   def event_registration_params
-    params.permit(:Number__c, :Experience__c, :Services_Needed__c, :Feedback__c)
+    params.permit(:Number__c, :Experience__c, :Feedback__c, :Services_Needed__c => [])
   end
 
 end
