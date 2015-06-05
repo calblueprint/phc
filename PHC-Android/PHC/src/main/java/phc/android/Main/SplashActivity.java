@@ -14,7 +14,7 @@ public class SplashActivity extends Activity {
     // Show splash screen for 2 seconds
     private static final int SPLASH_TIME_OUT = 2000;
     // Key for user shared prefenreces
-    private static final String USER_PREFS_NAME = "UserKey";
+    private static final String USER_AUTH_PREFS_NAME = "UserKey";
     // Shared Preferences
     SharedPreferences mUserPreferences;
 
@@ -32,7 +32,7 @@ public class SplashActivity extends Activity {
 
             @Override
             public void run() {
-                mUserPreferences = getSharedPreferences(USER_PREFS_NAME,
+                mUserPreferences = getSharedPreferences(USER_AUTH_PREFS_NAME,
                         Context.MODE_PRIVATE);
                 String userId = mUserPreferences.getString("user_id", null);
                 String auth_token = mUserPreferences.getString("auth_token", null);
