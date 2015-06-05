@@ -15,7 +15,6 @@ class Service < ActiveRecord::Base
 
   has_and_belongs_to_many :event_registrations
 
-
   def self.services
     # In the future, we may retrieve these through the Salesforce API, but
     # for now they are hardcoded in
@@ -27,7 +26,8 @@ class Service < ActiveRecord::Base
                "Foodbank__c", "Foot_Washing__c", "Haircuts__c", "Housing_Info__c", \
                "Legal__c", "Lunch__c", "Pet_Care__c", "Phone_Calls__c", "Senior_Services__c", \
                "Showers__c", "SSI_SSDI_Medi_Cal__c", "Veteran_Services__c", "Voicemail__c", \
-               "Wheelchair_Repair__c", "Women_Services__c", "Youth_Services__c"]
+               "Wheelchair_Repair__c", "Women_Services__c", "Youth_Services__c", \
+               "CalWORKS__c", "Homeless_Prenatal__c"]
     return medical + support
   end
 
