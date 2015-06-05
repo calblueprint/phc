@@ -174,7 +174,8 @@ public class SuccessFragment extends CheckinFragment {
     protected void setupUI(View view) {
         // Set up text that appears in textview
         TextView mSuccessText = (TextView) view.findViewById(R.id.text_success);
-        SharedPreferences sharedPref = getActivity().getSharedPreferences(SharedPreferenceEditorListener.USER_PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences
+                (SharedPreferenceEditorListener.CLIENT_INFO_PREFS_NAME, Context.MODE_PRIVATE);
         String clientName = "";
 
         String firstName = sharedPref.getString("first_name", "");
