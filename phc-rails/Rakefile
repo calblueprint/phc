@@ -7,7 +7,7 @@ require 'salesforce_bulk'
 
 task :load_sf => :environment do
   username = ENV["sf_username"]
-  password = ENV["sf_password"] + ENV["sf_security_token"]
+  password = ENV["sf_password"] + ENV["sf_security_token_production"]
 
   # Make sure to remove the true argument in production.
   salesforce = SalesforceBulk::Api.new(username, password, false)
