@@ -39,7 +39,7 @@
             android:layout_centerHorizontal="true"
             />
 
-        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <FrameLayout
             android:id="@+id/service_fragment_container"
             android:name="phc.android.ServiceFragment"
             android:layout_width="match_parent"

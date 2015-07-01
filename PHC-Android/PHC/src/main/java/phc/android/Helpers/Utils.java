@@ -29,5 +29,4 @@ public class Utils {
         displayName = displayName.replace(" ", "_");
         return displayName + "__c";
     }
-
 }

@@ -102,14 +102,12 @@
                 <CheckBox android:id="@+id/checkbox_military"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/prompt_military"
-                    android:onClick="onCheckboxClicked"/>
+                    android:text="@string/prompt_military"/>
 
                 <CheckBox android:id="@+id/checkbox_foster"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/prompt_foster"
-                    android:onClick="onCheckboxClicked"/>
+                    android:text="@string/prompt_foster"/>
 
                 <Button
                     android:id="@+id/continue_button"
@@ -118,8 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="@string/action_continue"
-                    android:textStyle="bold"
-                    android:onClick=""/>
+                    android:textStyle="bold"/>
             </LinearLayout>
     </ScrollView>
 

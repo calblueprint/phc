@@ -18,7 +18,8 @@ import java.util.Map;
  */
 public class RequestManager {
 
-    private static final String BASE_URL = "http://phc-staging.herokuapp.com";
+    private static final String BASE_URL = "http://phc-production.herokuapp.com";
+//    private static final String BASE_URL = "http://phc-staging.herokuapp.com";
     private static final String LOGIN_ENDPOINT = "/login";
     private static final String SEARCH_ENDPOINT = "/api/v1/search";
     private static final String SEARCH_REG_ENDPOINT = "/api/v1/event_registrations/search";
@@ -27,6 +28,7 @@ public class RequestManager {
     private static final String CREATE_EVENT_REG_ENDPOINT = "/api/v1/event_registrations/create";
     private static final String USER_INFO_ENDPOINT = "/api/v1/accounts";
     private static final String SERVICES_ENDPOINT = "/services";
+    private static final String UPDATE_FEEDBACK_ENDPOINT = "/api/v1/event_registrations/update_feedback";
 
     private static RequestQueue sRequestQueue;
     private static String sTAG;
@@ -82,6 +84,7 @@ public class RequestManager {
                                      String lastName,
                                      final String userId,
                                      final String authToken,
+                                     final int cursor,
                                      Response.Listener<JSONArray> responseListener,
                                      Response.ErrorListener errorListener) {
         // Strip whitespace from first and last name;
@@ -96,6 +99,9 @@ public class RequestManager {
         buildUrl.append("&");
         buildUrl.append("LastName=");
         buildUrl.append(lastName);
+        buildUrl.append("&");
+        buildUrl.append("cursor=");
+        buildUrl.append(cursor);
 
         JsonArrayRequest searchRequest = new JsonArrayRequest(buildUrl.toString(),
                 responseListener,
@@ -183,7 +189,7 @@ public class RequestManager {
     }
 
     /**
-     * Used to create a new Event Registration object in the databse
+     * Used to create a new Event Registration object in the database
      * @param params key values that descrive the event registration object being created
      * @param userId user_id of logged in user
      * @param authToken auth_token of logged in user
@@ -269,4 +275,81 @@ public class RequestManager {
         serviceRequest.setTag(sTAG);
         sRequestQueue.add(serviceRequest);
     }
+
+    /**
+     * Used to fetch all the services. need endpoint
+     *
+     *
+     */
+  public void requestGetApplied(final String qrCode,
+                                final String userId,
+                                final String authToken,
+                                Response.Listener<JSONObject> responseListener,
+                                Response.ErrorListener errorListener){
+
+          StringBuilder buildUrl = new StringBuilder(BASE_URL);
+          buildUrl.append("/api/v1/event_registrations/get_applied");
+          buildUrl.append("/");
+          buildUrl.append("?");
+          buildUrl.append("Number__c=");
+          buildUrl.append(qrCode);
+
+          JsonObjectRequest searchRequest = new JsonObjectRequest(buildUrl.toString(),
+                  null,
+                  responseListener,
+                  errorListener){
+          @Override
+          public Map<String, String> getHeaders(){
+              HashMap<String, String> header = new HashMap<String, String>();
+              header.put("user_id", userId);
+              header.put("auth_token", authToken);
+              header.put("Accept", "*/*");
+              return header;
+          }
+        };
+      searchRequest.setTag(sTAG);
+      sRequestQueue.add(searchRequest);
+  }
+
+    /**
+     *
+     * Used to create a new object with checkout information. Similar to requestUpdateService
+     */
+    public void requestUpdateFeedback(final String mComments,
+                                      final int mExperience,
+                                      final JSONArray mServicesNotReceived,
+                                      final String mScanResult,
+                                      final String userId,
+                                      final String authToken,
+                                      Response.Listener<JSONObject> responseListener,
+                                      Response.ErrorListener errorListener){
+
+        HashMap<String, Object> params = new HashMap<String, Object>();
+        params.put("Feedback__c", mComments);
+        params.put("Experience__c", mExperience);
+        params.put("Services_Needed__c", mServicesNotReceived);
+        params.put("Number__c", mScanResult);
+
+
+        JsonObjectRequest createRequest = new JsonObjectRequest(BASE_URL + UPDATE_FEEDBACK_ENDPOINT,
+                new JSONObject(params),
+                responseListener,
+                errorListener) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("user_id", userId);
+                params.put("auth_token", authToken);
+                params.put("Accept", "*/*");
+                params.put("content-type", "application/json");
+                return params;
+            }
+        };
+        createRequest.setTag(sTAG);
+        sRequestQueue.add(createRequest);
+    }
+
+
+
+
 }

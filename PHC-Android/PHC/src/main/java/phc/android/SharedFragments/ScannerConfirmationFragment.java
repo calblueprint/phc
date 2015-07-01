@@ -1,7 +1,11 @@
 package phc.android.SharedFragments;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -42,10 +46,25 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     protected static RequestQueue sRequestQueue;
 
     /* Shared Preferences */
+    // Holds auth information of current user
     protected static final String USER_AUTH_PREFS_NAME = "UserKey";
     protected SharedPreferences mUserPreferences;
+    protected SharedPreferences.Editor mUserPreferencesEditor;
     protected String mUserId;
     protected String mAuthToken;
+    // Holds personal information of current client
+    protected static final String CLIENT_INFO_PREFS_NAME = "ClientKey";
+    protected SharedPreferences mClientPreferences;
+    protected SharedPreferences.Editor mClientPreferencesEditor;
+
+    // Timeout for getting services (milliseconds)
+    private static final int REQUEST_TIMEOUT = 10000;
+    // Progress Dialog
+    protected ProgressDialog mProgressDialog;
+    // Retry Dialog that prompts users to try the request again
+    private AlertDialog mRetryDialog;
+    // Whether request has been completed
+    protected boolean mRequestCompleted = false;
 
     /** Keeps track of whether the user
      * scanned a code or input it
@@ -84,6 +103,10 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
                 Context.MODE_PRIVATE);
         mUserId = mUserPreferences.getString("user_id", null);
         mAuthToken = mUserPreferences.getString("auth_token", null);
+
+        mClientPreferences = getActivity().getSharedPreferences(CLIENT_INFO_PREFS_NAME,
+                Context.MODE_PRIVATE);
+        mClientPreferencesEditor = mClientPreferences.edit();
 
         return view;
     }
@@ -140,10 +163,64 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     }
 
     /**
+     * Shows the progress dialog and creates an alert dialog if the request times out
+     */
+    protected void showProgressDialog(final Context c) {
+
+        mProgressDialog =
+                ProgressDialog.show(c, "Please wait...", "Submitting Data", true);
+
+        // Schedules the retry dialog to appear after timeout
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        ((Activity) c).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mProgressDialog.dismiss();
+                                sRequestQueue.cancelAll(TAG);
+                                if (!mRequestCompleted) {
+                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog
+                                            .Builder(c);
+                                    alertDialogBuilder.setTitle("Request Timed Out");
+                                    alertDialogBuilder.setPositiveButton("Try Again",
+                                            new retryDialogOnClickListener(c));
+                                    mRetryDialog = alertDialogBuilder.create();
+                                    mRetryDialog.show();
+                                }
+                            }
+                        });
+                    }
+                },
+                REQUEST_TIMEOUT
+        );
+    }
+
+    /**
+     * OnClickListener that retries the request and shows the progress dialog again
+     */
+    private class retryDialogOnClickListener implements DialogInterface.OnClickListener {
+
+        Context mContext;
+
+        public retryDialogOnClickListener(Context c){
+            mContext = c;
+        }
+
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            mRetryDialog.dismiss();
+            confirm();
+        }
+    }
+
+    /**
      * To be overriden by the subclass.
      * Each type of ScannerConfirmation Fragment will perform a different operation
      * when the "confirm" button is pressed.
      */
+
     protected void confirm() {}
 
     /**

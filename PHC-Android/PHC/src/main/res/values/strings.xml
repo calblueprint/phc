@@ -26,7 +26,7 @@
     <string name="title_security">Security Key</string>
     <string name="title_error">Error</string>
     <string name="prompt_security">Please enter the security key.</string>
-    <string name="text_incorrect_security">        The security key you have entered is incorrect. Please try again.</string>
+    <string name="text_incorrect_security">The security key you have entered is incorrect. Please try again.</string>
     <string name="button_submit">Submit</string>
     <string name="button_retry">Retry</string>
 
@@ -63,6 +63,7 @@
     <string name="search_again">Try searching again</string>
     <string name="search_register_as_new">Register client as new user</string>
     <string name="search_no_results">No Results Found.</string>
+    <string name="search_next_results">Next 20 Results</string>
 
 
     <!-- Splash Page -->
@@ -194,6 +195,7 @@
     <!-- Checkin Scan Page -->
     <string name="prompt_scan">Please scan a QR code</string>
     <string name="submit_form">Submit Form</string>
+    <string name="register_error">Error registering user. Please ask for assistance."</string>
 
     <!-- Selection Page -->
     <string name="selection_prompt">Is this the client\'s first time at a PHC event?</string>
@@ -213,6 +215,9 @@
     <string name="text_already_received">The client has already received this service.</string>
     <string name="text_drop_in_and_already_received">The client is a drop-in who has
         already received this service. </string>
+    <string name="services_code_not_recognized">Code not recognized</string>
+    <string name="services_code_not_recognized_description">Either the code has been entered
+        incorrectly, or the client has not checked in."</string>
 
     <!-- Checkout Activity -->
     <string name="button_qr_scanner">Scan QR Code and Submit</string>
@@ -227,6 +232,7 @@
     <string name="checkout_experience_4">4</string>
     <string name="checkout_experience_5">5</string>
     <string name="checkout_confirmation_comments">Your comments: </string>
+    <string name="checkout_confirmation_services"> Requested services: </string>
     <string name="checkout_confirmation_experience">Your experience: </string>
 
 

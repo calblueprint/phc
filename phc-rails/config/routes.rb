@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
       get 'event_registrations/search'
       post 'event_registrations/create'
+      get 'event_registrations/get_applied'
       post 'event_registrations/update_service'
       post 'event_registrations/update_feedback'
     end

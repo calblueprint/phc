@@ -28,6 +28,7 @@ import org.json.JSONException;
 import java.util.HashMap;
 
 import phc.android.Checkin.CheckinActivity;
+import phc.android.Checkout.CheckoutActivity;
 import phc.android.Helpers.Utils;
 import phc.android.Networking.RequestManager;
 import phc.android.R;
@@ -109,7 +110,7 @@ public class MainActivity extends Activity {
     }
 
     /**
-     * Shows the progress dialog and creates an alert dialog is the request times out
+     * Shows the progress dialog and creates an alert dialog if the request times out
      */
     private void showProgressIndicator() {
         mProgressDialog =
@@ -166,7 +167,7 @@ public class MainActivity extends Activity {
         mCheckinButton = (Button) findViewById(R.id.button_checkin);
         mCheckoutButton = (Button) findViewById(R.id.button_checkout);
         // Todo: Remove once Checkout is fixed
-        mCheckoutButton.setVisibility(View.GONE);
+        //mCheckoutButton.setVisibility(View.GONE);
 
         if (!mInitialized){
             disableAllButtons();
@@ -225,7 +226,7 @@ public class MainActivity extends Activity {
         setButtonEnabled(mServicesButton, ServicesActivity.class);
         setButtonEnabled(mCheckinButton, CheckinActivity.class);
         // TODO: Uncomment once checkout is fixed
-//        setButtonEnabled(mCheckoutButton, CheckoutActivity.class);
+        setButtonEnabled(mCheckoutButton, CheckoutActivity.class);
     }
 
     private void disableAllButtons(){
