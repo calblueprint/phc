@@ -1,4 +1,28 @@
 namespace :sf do
+
+  # task test_birthdate_export: :environment do
+  #   salesforce = get_salesforce_session()
+
+  #   test_account = Account.last
+  #   sf_fields = ["FirstName","LastName","SS_Num__c","Birthdate__c","Phone","PersonEmail","Gender__c","Identify_as_GLBT__c",
+  #     "Race__c", "Primary_Language__c", "Foster_Care__c","Veteran__c","Housing_Status_New__c","How_long_have_you_been_homeless__c",
+  #     "Where_do_you_usually_go_for_healthcare__c","Medical_Care_Other__c"]
+  #   salesforce_id = test_account.sf_id
+  #   a = test_account.as_json.select { |k,v| sf_fields.include?(k) }
+
+  #   a["id"] = salesforce_id
+
+  #   a["Gender__c"] = "Male"
+  #   a["FirstName"] = ""
+  #   a["Birthdate__c"] = ""
+
+
+  #   result = salesforce.update("Account", [a], true).result
+  #   puts result.message
+
+  #   byebug
+  # end
+
   desc "Imports Accounts data from salesforce"
   task import: :environment do
     salesforce = get_salesforce_session()
@@ -6,6 +30,9 @@ namespace :sf do
     fields = ["Id", "FirstName","LastName","SS_Num__c","Birthdate__c","Phone","PersonEmail","Gender__c","Identify_as_GLBT__c",
       "Race__c", "Primary_Language__c", "Foster_Care__c","Veteran__c","Housing_Status_New__c","How_long_have_you_been_homeless__c",
       "Where_do_you_usually_go_for_healthcare__c","Medical_Care_Other__c"]
+
+    query  = "SELECT " + fields.join(", ") + " from Account"
+    puts "Querying salesforce..."
 
     # NOTE: Should we remove filter names that are null?
     response = salesforce.query("Account", query)
