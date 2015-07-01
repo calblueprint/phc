@@ -54,6 +54,8 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    bootstrap-sass (3.2.0.2)
+      sass (~> 3.2)
     builder (3.2.2)
     bullet (4.14.5)
       activesupport (>= 3.0.0)
@@ -133,6 +135,7 @@ GEM
     salesforce_bulk_api (0.0.12)
       json
       xml-simple
+    sass (3.4.13)
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
@@ -158,6 +161,7 @@ DEPENDENCIES
   bcrypt
   better_errors
   binding_of_caller
+  bootstrap-sass (~> 3.2.0)
   bullet
   byebug
   databasedotcom

@@ -24,14 +24,12 @@ gem "bcrypt"
 # Salesforce gems
 gem "databasedotcom"
 gem "databasedotcom-rails"
-
 gem "rails_12factor", group: :production
 
+gem 'bootstrap-sass', '~> 3.2.0'
 gem "salesforce_bulk"
 gem "salesforce_bulk_api"
-
 gem 'responders', '~> 2.0'
-
 gem "newrelic_rpm"
 
 #Recommended gems
