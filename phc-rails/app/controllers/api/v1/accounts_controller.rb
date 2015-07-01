@@ -38,4 +38,5 @@ class Api::V1::AccountsController < ApplicationController
       respond_with "Error saving account!", status: 200, location: root_url
     end
   end
+
 end

@@ -41,7 +41,80 @@ class Account < ActiveRecord::Base
     if account.save then account else nil end
 
     #### TODO: POST TO SALESFORCE #####
-
   end
 
+  def self.find_duplicates_by(attrs, count, cursor)
+    groups = {}
+    # Escape each attribute with quotes to prevent lowercasing by Rails
+    attrs.map! { |x| "\"#{x}\"" }
+    result = Account.select(attrs).group(attrs).having("count(*)>1")
+    result[cursor..cursor+count].each do |account|
+      fields = account.attributes
+      fields.delete('id')
+      accounts = Account.where(fields)
+      groups[fields] = accounts.map(&:to_hash)
+    end
+    groups
+  end
+
+  def self.find_new_accounts()
+    # Returns a list of new accounts made at the last PHC event, aka ones with no Salesforce ID
+    Account.where(sf_id: nil)
+  end
+
+  def to_hash
+    {
+      name: name(self.FirstName, self.LastName),
+      ssn: ssn(self.SS_Num__c),
+      birthday: self.Birthdate__c,
+      sf_id: self.sf_id,
+      created_at: self.created_at,
+      phone: self.Phone
+    }
+  end
+
+  def name(first, last)
+    if first.nil? or first.empty?
+      first = "(None)"
+    end
+    if last.nil?
+      last = ""
+    end
+    "#{first} #{last}"
+  end
+
+  def ssn(ssn)
+    if ssn.nil? or ssn.empty?
+      "(None)"
+    elsif ssn.length < 9
+      ssn
+    else
+      "x"*6 + self.SS_Num__c[-4..-1]
+    end
+  end
+
+  def birthdate()
+    if self.Birthdate__c.nil? then return "#N/A" end
+    year, month, day = self.Birthdate__c.split("-")
+    if year.nil? then year = "1900" end
+    if month.nil? then month = "01" end
+    if day.nil? then day = "01" end
+
+    if year.length == 2
+      year = "19" + year
+    end
+    if month.length == 1
+      month = "0" + month
+    end
+    if day.length == 1
+      day = "0" + day
+    end
+
+    day_string = "#{year}-#{month}-#{day}"
+    if "#{day_string}".length == 10
+      "#N/A"
+    else
+      day_string
+    end
+  end
 end
