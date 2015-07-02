@@ -7,22 +7,23 @@ import android.content.SharedPreferences;
  * Superclass for all Listeners that edit SharedPreferences.
  */
 public class SharedPreferenceEditorListener {
-    /** User Input SharedPreferences file name. */
-    public static final String USER_PREFS_NAME = "UserInputFile";
-    /** User Input SharedPreferences object. */
-    protected SharedPreferences mUserInfo;
-    /** User Input SharedPreferences editor object. */
-    protected SharedPreferences.Editor mUserInfoEditor;
+    /** Client Info SharedPreferences file name. */
+    public static final String CLIENT_INFO_PREFS_NAME = "ClientKey";
+    /** Client Info SharedPreferences object. */
+    protected SharedPreferences mClientPreferences;
+    /** Client Info SharedPreferences editor object. */
+    protected SharedPreferences.Editor mClientPreferencesEditor;
     /** Context of the listener (i.e. the Activity using it). */
     protected Context mContext;
 
     /**
      * Constructor takes in the context of the button, grabs the context's
-     * SharedPreferences file to store the user input.
+     * SharedPreferences file to store the Client input.
      */
     public SharedPreferenceEditorListener(Context context) {
         mContext = context;
-        mUserInfo = context.getSharedPreferences(USER_PREFS_NAME, Context.MODE_PRIVATE);
-        mUserInfoEditor = mUserInfo.edit();
+        mClientPreferences = context.getSharedPreferences(CLIENT_INFO_PREFS_NAME,
+                Context.MODE_PRIVATE);
+        mClientPreferencesEditor = mClientPreferences.edit();
     }
 }

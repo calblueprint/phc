@@ -32,6 +32,8 @@ class Api::V1::AccountsController < ApplicationController
   end
 
   def create
+    # This is definitely broken lol.
+
     @account = Account.new(account_params)
 
     # if not Account.create(params).nil?
@@ -44,6 +46,8 @@ class Api::V1::AccountsController < ApplicationController
   private
 
     def account_params
+      # Figure out what params are mandatory and which are not
       params.require(:account).permit(:FirstName,)
+    end
 
 end

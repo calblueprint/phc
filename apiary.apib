@@ -43,7 +43,6 @@ Returns list of only the services being offered. Note that Salesforce will retur
 ## Create [/api/v1/account]
 
 ### Create new account [POST]
-*NOT USED*
 + Request (application/json)
 
     + Headers
@@ -253,7 +252,14 @@ If the qr code number exists, returns the list of all services marked as "applie
 ## Update Feedback [/api/v1/event_registrations/update_feedback]
 
 ### Update feedback fields [POST]
-The feedback fields have not yet been created in Salesforce.
+The feedback fields have not yet been created in Salesforce, but we'll store them 
+in our database anyway.
+
+Updates the feedback associated with an event registration in the database.
+
+Experience is on a scale of 1-5
+Services is an array of services that are needed. (Can be anything)
+Feedback is a block of text.
 
 + Request (application/json)
     + Headers
@@ -265,7 +271,7 @@ The feedback fields have not yet been created in Salesforce.
     
             { "Number__c": "1111", 
               "Experience__c": "5", 
-              "Services_Needed__c": {"hi", "hello"},
+              "Services_Needed__c": ["hi", "hello"],
               "Feedback__c": "I love you guys!"
             } 
             
