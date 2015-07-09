@@ -27,6 +27,7 @@
 require 'rails_helper'
 
 describe Account do
+
   it "has a valid factory" do
     FactoryGirl.create(:account).should be_valid
   end
@@ -42,8 +43,32 @@ describe Account do
   # end
 
   it "has a valid birthdate" do
-    FactoryGirl.build(:account, Birthdate__c: "1/32/192").should_not be_valid
-    FactoryGirl.build(:account, Birthdate__c: "1/32").should_not be_valid
     FactoryGirl.build(:account, Birthdate__c: nil).should be_valid
   end
+
+  it "has a valid email" do
+    FactoryGirl.build(:account, PersonEmail: "asdfsdf@").should_not be_valid
+    FactoryGirl.build(:account, PersonEmail: "pineapples@fruits").should_not be_valid
+    FactoryGirl.build(:account, PersonEmail: "asdfsdf@.com").should_not be_valid
+    FactoryGirl.build(:account, PersonEmail: "asdfsdf@asd.").should_not be_valid
+  end
+
+  it "returns account name as a string" do
+    account = FactoryGirl.create(:account, FirstName: "Lil", LastName: "Wayne")
+    account.name.should == "Lil Wayne"
+  end
+
+  it "returns birthdate as a string" do
+    birthdate = Date.parse("1993-08-28")
+    FactoryGirl.create(:account, Birthdate__c: birthdate).birthdate.should == "1993-08-28"
+    FactoryGirl.create(:account, Birthdate__c: nil).birthdate.should == ""
+  end
+
+  it "returns a list of new accounts"
+
+  it "returns SSN as a string"
+
+  it "return a hash of "
+
+
 end

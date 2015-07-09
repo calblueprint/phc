@@ -9,9 +9,11 @@ class ApplicationController < ActionController::Base
   def user_authenticated?(id, token)
     user = User.find(id)
     if user.nil?
+      byebug
       api_message_response(401, "User with that id does not exist.")
       return false
     elsif not user.authenticated?(token)
+      byebug
       api_message_response(401, "Invalid authentication token.")
       return false
     else
@@ -31,7 +33,7 @@ class ApplicationController < ActionController::Base
   end
 
   def api_message_response(status, message="")
-    render json: { status: status, message: message }
+    render json: { message: message }, status: status
   end
 
 end

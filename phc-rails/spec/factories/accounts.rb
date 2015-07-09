@@ -30,6 +30,9 @@ FactoryGirl.define do
   factory :account do |f|
     f.FirstName { Faker::Name.first_name }
     f.LastName { Faker::Name.last_name }
-    f.Birthdate__c { Faker::Date }
+    f.Birthdate__c { Faker::Date.between(100.years.ago, Date.today) }
+    f.PersonEmail { Faker::Internet.email }
+    f.sf_id { rand(36**16).to_s(36) }
   end
+
 end

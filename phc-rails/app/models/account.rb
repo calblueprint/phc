@@ -25,9 +25,12 @@
 #
 
 class Account < ActiveRecord::Base
+  validates_format_of :PersonEmail, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
+
   @fields = [:sf_id, "FirstName","LastName","SS_Num__c","Birthdate__c","Phone","PersonEmail","Gender__c","Identify_as_GLBT__c",
       "Race__c", "Primary_Language__c", "Foster_Care__c","Veteran__c","Housing_Status_New__c","How_long_have_you_been_homeless__c",
       "Where_do_you_usually_go_for_healthcare__c","Medical_Care_Other__c"]
+
 
   # I'm not sure if calling this 'create' will overwrite something and cause funky behavior, so it's called spawn 8)
   def self.spawn(params)
@@ -62,7 +65,7 @@ class Account < ActiveRecord::Base
 
   def to_hash
     {
-      name: name(self.FirstName, self.LastName),
+      name: name,
       ssn: ssn(self.SS_Num__c),
       birthday: self.Birthdate__c,
       sf_id: self.sf_id,
@@ -71,14 +74,8 @@ class Account < ActiveRecord::Base
     }
   end
 
-  def name(first, last)
-    if first.nil? or first.empty?
-      first = "(None)"
-    end
-    if last.nil?
-      last = ""
-    end
-    "#{first} #{last}"
+  def name
+    [self.FirstName, self.LastName].join " "
   end
 
   def ssn(ssn)
@@ -92,8 +89,11 @@ class Account < ActiveRecord::Base
   end
 
   def birthdate()
-    if self.Birthdate__c.nil? then return "" end
-    Birthdate__c.strftime("%F")
+    if self.Birthdate__c.nil? then
+      ""
+    else
+      self.Birthdate__c.strftime("%F")
+    end
 
     # year, month, day = self.Birthdate__c.split("-")
     # if year.nil? then year = "1900" end

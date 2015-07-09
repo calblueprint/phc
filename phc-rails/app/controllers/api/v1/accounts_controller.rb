@@ -5,9 +5,9 @@ class Api::V1::AccountsController < ApplicationController
   def show
     account = Account.find_by(sf_id: params[:sf_id])
     if !account.nil?
-      render json: account
+      render json: account, status: :ok
     else
-      api_message_response(401, "Account with that id does not exist.")
+      api_message_response(404, "Account with that id does not exist.")
     end
   end
 
@@ -25,29 +25,32 @@ class Api::V1::AccountsController < ApplicationController
       result = result[cursor.to_i, 20] # Hardcoded 20 pagination size
     end
     if result.nil?
-      respond_with [].to_json
+      render json: [].to_json, status: :ok
     else
-      respond_with result.to_json(only: [:FirstName, :LastName, :Birthdate__c, :sf_id])
+      render json: result.to_json(only: [:FirstName, :LastName, :Birthdate__c, :sf_id]), status: :ok
     end
   end
 
   def create
-    # This is definitely broken lol.
+    if not valid_birthdate
+      render json: { message: 'Invalid birthdate.' }, status: :bad_request
+    end
 
     @account = Account.new(account_params)
 
-    # if not Account.create(params).nil?
-    #   respond_with "Successfully saved account!", status: 200, location: root_url
-    # else
-    #   respond_with "Error saving account!", status: 200, location: root_url
-    # end
+    if @account.save
+      render json: { message: 'Successfully saved account.' }, status: :ok
+    else
+      render json: { message: 'Error saving account: #{@account.errors.join(",")' } , status: :bad_request
+    end
+
   end
 
   private
 
     def account_params
       # Figure out what params are mandatory and which are not
-      params.require(:account).permit(:FirstName,)
+      params.require(:account).permit(:FirstName)
     end
 
 end
