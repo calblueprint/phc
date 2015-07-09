@@ -80,7 +80,7 @@ class Account < ActiveRecord::Base
 
   def ssn
     if self.SS_Num__c.nil? or self.SS_Num__c.empty?
-      "(None)"
+      "n/a"
     elsif self.SS_Num__c.length < 9
       self.SS_Num__c
     else
