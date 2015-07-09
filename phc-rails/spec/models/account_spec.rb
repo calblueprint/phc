@@ -64,11 +64,19 @@ describe Account do
     FactoryGirl.create(:account, Birthdate__c: nil).birthdate.should == ""
   end
 
-  it "returns a list of new accounts"
+  it "returns a list of new accounts (based on nil salesforce id - will need to change later)" do
+    FactoryGirl.create_list(:account, 10, sf_id: nil)
+    Account.find_new_accounts().count.should == 10
+  end
 
-  it "returns SSN as a string"
+  it "returns SSN as a string" do
+    account = FactoryGirl.create(:account, SS_Num__c: 292891623)
+    account.ssn.should == "xxxxxx1623"
+  end
 
-  it "return a hash of "
-
-
+  it "return a hash of data" do
+    account = FactoryGirl.create(:account, SS_Num__c: 292891623)
+    account.to_hash[:ssn].should == "xxxxxx1623"
+    account.to_hash[:birthday].should == account.birthdate
+  end
 end

@@ -66,8 +66,8 @@ class Account < ActiveRecord::Base
   def to_hash
     {
       name: name,
-      ssn: ssn(self.SS_Num__c),
-      birthday: self.Birthdate__c,
+      ssn: ssn,
+      birthday: birthdate,
       sf_id: self.sf_id,
       created_at: self.created_at,
       phone: self.Phone
@@ -78,11 +78,11 @@ class Account < ActiveRecord::Base
     [self.FirstName, self.LastName].join " "
   end
 
-  def ssn(ssn)
-    if ssn.nil? or ssn.empty?
+  def ssn
+    if self.SS_Num__c.nil? or self.SS_Num__c.empty?
       "(None)"
-    elsif ssn.length < 9
-      ssn
+    elsif self.SS_Num__c.length < 9
+      self.SS_Num__c
     else
       "x"*6 + self.SS_Num__c[-4..-1]
     end
