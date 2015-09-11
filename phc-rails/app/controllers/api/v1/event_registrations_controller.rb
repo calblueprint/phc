@@ -4,7 +4,7 @@ class Api::V1::EventRegistrationsController < ApplicationController
 
   def create
     sf_id = params.delete :account_sfid
-    if sf_id.nil? || sf_id.empty? || sf_id = "\"\""
+    if sf_id.nil? || sf_id.empty? || sf_id == "\"\""
       # Create account if salesforce id was not passed in
       # TODO: Right now, the client basically creates accounts through this endpoint
       # We should seperate it into 2 API calls, the first to api/v1/create (which is unused right now)
@@ -40,13 +40,8 @@ class Api::V1::EventRegistrationsController < ApplicationController
 
   def get_applied
     event_registration = EventRegistration.find_by(Number__c: params[:Number__c])
-    if !event_registration.nil?
-      applied_services = []
-      event_registration.services.each do |s|
-        if s.applied?
-          applied_services << s.name
-        end
-      end
+    if event_registration
+      applied_services = event_registration.services.filter(:applied?).map(:name)
       render json: { status: "true", services: applied_services }
     else
       api_message_response(404, "Event registration with that number does not exist.")
@@ -84,7 +79,7 @@ class Api::V1::EventRegistrationsController < ApplicationController
 
   def update_feedback
     event_registration = EventRegistration.find_by(Number__c: params[:Number__c])
-    if !event_registration.nil?
+    if event_registration
       event_registration.update(event_registration_params)
       api_message_response(201, "Successfully recieved feedback!")
     else
