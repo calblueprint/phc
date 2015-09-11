@@ -22,6 +22,7 @@
 #  How_long_have_you_been_homeless__c        :string(255)
 #  Where_do_you_usually_go_for_healthcare__c :string(255)
 #  Medical_Care_Other__c                     :string(255)
+#  updated                                   :boolean          default(FALSE), not null
 #
 
 class Account < ActiveRecord::Base
@@ -61,7 +62,7 @@ class Account < ActiveRecord::Base
 
   def self.find_new_accounts()
     # Returns a list of new accounts made at the last PHC event, aka ones with no Salesforce ID
-    Account.where(sf_id: nil)
+    Account.where(updated: true)
   end
 
   def to_hash

@@ -32,7 +32,9 @@ class Api::V1::AccountsController < ApplicationController
   end
 
   def create
-    if not Account.spawn(params).nil?
+    account = Account.spawn(params)
+    if not account.nil?
+      account.update(updated: true)
       api_message_response(200, "Successfully saved account!")
     else
       api_message_response(400, "Account could not be created.")

@@ -21,6 +21,7 @@ class Api::V1::EventRegistrationsController < ApplicationController
       end
     end
 
+    account.update(updated: true)
     reg = account.event_registrations.create(Number__c: params[:Number__c])
     Service.services.each do |name|
       service = reg.services.create(name: name)
