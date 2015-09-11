@@ -77,27 +77,27 @@ public class OnContinueClickListener
             if (v instanceof CheckBox) {
                 name = mContext.getResources().getResourceEntryName(v.getId());
                 boolean checked = ((CheckBox) v).isChecked();
-                mUserInfoEditor.putBoolean(name, checked);
+                mClientPreferencesEditor.putBoolean(name, checked);
             } else if (v instanceof EditText) {
                 name = mContext.getResources().getResourceEntryName(v.getId());
                 String text = ((EditText) v).getText().toString();
-                mUserInfoEditor.putString(name, text);
+                mClientPreferencesEditor.putString(name, text);
             } else if (v instanceof Spinner) {
                 name = mContext.getResources().getResourceEntryName(v.getId());
                 Object item = ((Spinner) v).getSelectedItem();
                 if (item != null) {
                     String selection = item.toString();
                     if (!Arrays.asList(sSpinnerNames).contains(selection)) {
-                        mUserInfoEditor.putString(name, selection);
+                        mClientPreferencesEditor.putString(name, selection);
                     }
                 } else {
-                    mUserInfoEditor.putString(name, null);
+                    mClientPreferencesEditor.putString(name, null);
                 }
             } else if (v instanceof ViewGroup) {
                 updateSharedPreferences((ViewGroup) v);
             }
         }
-        mUserInfoEditor.commit();
+        mClientPreferencesEditor.commit();
     }
 
     /**
@@ -112,10 +112,10 @@ public class OnContinueClickListener
 
             if (v instanceof CheckBox) {
                 boolean checked = ((CheckBox)v).isChecked();
-                mUserInfoEditor.putBoolean(names[i], checked);
+                mClientPreferencesEditor.putBoolean(names[i], checked);
             }
         }
-        mUserInfoEditor.commit();
+        mClientPreferencesEditor.commit();
     }
 
     /**

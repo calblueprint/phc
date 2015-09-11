@@ -1,0 +1,29 @@
+<h1><%= @title %></h1>
+
+<div class="container">
+  <table class="table table-hover">
+    <tr>
+      <th>Name</th>
+      <th>Birthdate</th>
+      <th>Salesforce ID</th>
+      <th>Phone #</th>
+    </tr>
+    <% @groups.each do |matched_on, group| %>
+        <tr>
+          <!-- TODO: Display what the groups matched on -->
+          <th style="font-size:18px"> <%= format_hash(matched_on) %> </th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+        <% group.each do |account| %>
+          <tr>
+            <td><%= account[:name] %></td>
+            <td><%= account[:birthday] %></td>
+            <td><%= account[:sf_id] %></td>
+            <td><%= account[:phone] %></td>
+          </tr>
+        <% end %>
+    <% end %>
+  </table>
+</div>

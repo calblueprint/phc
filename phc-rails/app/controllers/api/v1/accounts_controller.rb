@@ -38,4 +38,5 @@ class Api::V1::AccountsController < ApplicationController
       api_message_response(400, "Account could not be created.")
     end
   end
+
 end

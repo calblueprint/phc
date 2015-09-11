@@ -69,6 +69,12 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
     protected class SearchByCodeResponseListener implements Response.Listener<JSONObject> {
         @Override
         public void onResponse(JSONObject jsonObject) {
+            mRequestCompleted = true;
+
+            if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                mProgressDialog.dismiss();
+            }
+
             try {
                 mRegistrationFound = jsonObject.getBoolean("status");
                 Log.d("found?", Boolean.toString(mRegistrationFound));
@@ -120,6 +126,12 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
 
             @Override
             public void onErrorResponse(VolleyError volleyError){
+                mRequestCompleted = true;
+
+                if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                    mProgressDialog.dismiss();
+                }
+
                 if (volleyError.getLocalizedMessage() != null){
                     Log.e(TAG, "VolleyError.toString() " + volleyError.toString());
                 }

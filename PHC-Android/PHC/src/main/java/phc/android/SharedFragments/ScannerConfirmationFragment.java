@@ -21,7 +21,6 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
-import phc.android.Main.MainActivity;
 import phc.android.Networking.RequestManager;
 import phc.android.R;
 
@@ -47,15 +46,21 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
     protected static RequestQueue sRequestQueue;
 
     /* Shared Preferences */
+    // Holds auth information of current user
     protected static final String USER_AUTH_PREFS_NAME = "UserKey";
     protected SharedPreferences mUserPreferences;
+    protected SharedPreferences.Editor mUserPreferencesEditor;
     protected String mUserId;
     protected String mAuthToken;
+    // Holds personal information of current client
+    protected static final String CLIENT_INFO_PREFS_NAME = "ClientKey";
+    protected SharedPreferences mClientPreferences;
+    protected SharedPreferences.Editor mClientPreferencesEditor;
 
     // Timeout for getting services (milliseconds)
-    private static final int REQUEST_TIMEOUT = 2000;
+    private static final int REQUEST_TIMEOUT = 10000;
     // Progress Dialog
-    private ProgressDialog mProgressDialog;
+    protected ProgressDialog mProgressDialog;
     // Retry Dialog that prompts users to try the request again
     private AlertDialog mRetryDialog;
     // Whether request has been completed
@@ -98,6 +103,10 @@ public class ScannerConfirmationFragment extends android.app.Fragment {
                 Context.MODE_PRIVATE);
         mUserId = mUserPreferences.getString("user_id", null);
         mAuthToken = mUserPreferences.getString("auth_token", null);
+
+        mClientPreferences = getActivity().getSharedPreferences(CLIENT_INFO_PREFS_NAME,
+                Context.MODE_PRIVATE);
+        mClientPreferencesEditor = mClientPreferences.edit();
 
         return view;
     }
