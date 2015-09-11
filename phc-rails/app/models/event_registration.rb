@@ -34,7 +34,7 @@ class EventRegistration < ActiveRecord::Base
     #"{"Account__c"=>"0014000001XUoNFAA1", "Acupuncture__c"=>"None", "PHC_Event__c"=>"a0R40000007HolJEAS"}"
 
     # TODO: We should rename account_sfid because it's confusing AF
-    account = Account.where(id: self.account_sfid.to_i).first
+    account = Account.where(id: self.account_id.to_i).first
     if account.nil?
       puts "Account #{self.account_sfid.to_i} has no associated account, skipping..."
       return

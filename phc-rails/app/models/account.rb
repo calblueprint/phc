@@ -9,6 +9,7 @@
 #  FirstName                                 :string(255)
 #  LastName                                  :string(255)
 #  SS_Num__c                                 :string(255)
+#  Birthdate__c                              :string(255)
 #  Phone                                     :string(255)
 #  PersonEmail                               :string(255)
 #  Gender__c                                 :string(255)
@@ -21,7 +22,6 @@
 #  How_long_have_you_been_homeless__c        :string(255)
 #  Where_do_you_usually_go_for_healthcare__c :string(255)
 #  Medical_Care_Other__c                     :string(255)
-#  Birthdate__c                              :date
 #
 
 class Account < ActiveRecord::Base
@@ -113,7 +113,7 @@ class Account < ActiveRecord::Base
     end
 
     day_string = "#{year}-#{month}-#{day}"
-    if "#{day_string}".length == 10
+    if "#{day_string}".length != 10
       "#N/A"
     else
       day_string

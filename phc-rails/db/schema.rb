@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 20150604060637) do
     t.string   "FirstName",                                 limit: 255
     t.string   "LastName",                                  limit: 255
     t.string   "SS_Num__c",                                 limit: 255
+    t.string   "Birthdate__c",                              limit: 255
     t.string   "Phone",                                     limit: 255
     t.string   "PersonEmail",                               limit: 255
     t.string   "Gender__c",                                 limit: 255
@@ -36,7 +37,6 @@ ActiveRecord::Schema.define(version: 20150604060637) do
     t.string   "How_long_have_you_been_homeless__c",        limit: 255
     t.string   "Where_do_you_usually_go_for_healthcare__c", limit: 255
     t.string   "Medical_Care_Other__c",                     limit: 255
-    t.date     "Birthdate__c"
   end
 
   add_index "accounts", ["FirstName"], name: "index_accounts_on_FirstName", using: :btree
