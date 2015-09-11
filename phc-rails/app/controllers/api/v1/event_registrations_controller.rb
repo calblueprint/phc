@@ -8,14 +8,17 @@ class Api::V1::EventRegistrationsController < ApplicationController
       # Create account if salesforce id was not passed in
       # TODO: Right now, the client basically creates accounts through this endpoint
       # We should seperate it into 2 API calls, the first to api/v1/create (which is unused right now)
-      params[:sf_id] = ""
+      params[:sf_id] = nil
       account = Account.spawn(params)
     else
       # We retrieve the corresponding account if the salesforce id was passed in
-      if not Account.exists?(sf_id: sf_id)
-        raise "Unknown Salesforce ID. This should not happen!"
+      account = Account.find_by(sf_id: sf_id)
+
+      # An account should always be found for a salesforce ID,
+      # but if not create the account anyway and treat it as a new account
+      if account.nil?
+        account = Account.spawn(params)
       end
-      account = Account.find_by(sf_id: params[:account_sfid])
     end
 
     reg = account.event_registrations.create(Number__c: params[:Number__c])

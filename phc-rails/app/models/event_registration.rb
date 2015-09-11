@@ -40,10 +40,16 @@ class EventRegistration < ActiveRecord::Base
       return
     end
 
-    obj = {"Account__c" => account.sf_id, "PHC_Event__c" => EventRegistration.phc_event}
+    obj = {"Account__c" => account.sf_id,
+           "PHC_Event__c" => EventRegistration.phc_event,
+           "Experience__c" => self.Experience__c || "",
+           "Services_Needed__c" => self.Services_Needed__c || "",
+           "Feedback__c" => self.Feedback__c || "" }
+
     self.services.each do |service|
       obj[service.name] = service.status
     end
+
     obj
   end
 end
