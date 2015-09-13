@@ -22,9 +22,12 @@
 #  How_long_have_you_been_homeless__c        :string(255)
 #  Where_do_you_usually_go_for_healthcare__c :string(255)
 #  Medical_Care_Other__c                     :string(255)
+#  updated                                   :boolean          default(FALSE), not null
 #
 
 class Account < ActiveRecord::Base
+  has_many :event_registrations
+
   @fields = [:sf_id, "FirstName","LastName","SS_Num__c","Birthdate__c","Phone","PersonEmail","Gender__c","Identify_as_GLBT__c",
       "Race__c", "Primary_Language__c", "Foster_Care__c","Veteran__c","Housing_Status_New__c","How_long_have_you_been_homeless__c",
       "Where_do_you_usually_go_for_healthcare__c","Medical_Care_Other__c"]
@@ -59,7 +62,7 @@ class Account < ActiveRecord::Base
 
   def self.find_new_accounts()
     # Returns a list of new accounts made at the last PHC event, aka ones with no Salesforce ID
-    Account.where(sf_id: nil)
+    Account.where(updated: true)
   end
 
   def to_hash
@@ -111,7 +114,7 @@ class Account < ActiveRecord::Base
     end
 
     day_string = "#{year}-#{month}-#{day}"
-    if "#{day_string}".length == 10
+    if "#{day_string}".length != 10
       "#N/A"
     else
       day_string

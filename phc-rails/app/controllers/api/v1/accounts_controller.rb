@@ -7,7 +7,7 @@ class Api::V1::AccountsController < ApplicationController
     if !account.nil?
       render json: account
     else
-      api_message_response(401, "Account with that id does not exist.")
+      api_message_response(400, "Account with that id does not exist.")
     end
   end
 
@@ -32,10 +32,12 @@ class Api::V1::AccountsController < ApplicationController
   end
 
   def create
-    if not Account.spawn(params).nil?
-      respond_with "Successfully saved account!", status: 200, location: root_url
+    account = Account.spawn(params)
+    if not account.nil?
+      account.update(updated: true)
+      api_message_response(200, "Successfully saved account!")
     else
-      respond_with "Error saving account!", status: 200, location: root_url
+      api_message_response(400, "Account could not be created.")
     end
   end
 
