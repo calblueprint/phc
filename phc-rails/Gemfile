@@ -31,6 +31,7 @@ gem "salesforce_bulk"
 gem "salesforce_bulk_api"
 gem 'responders', '~> 2.0'
 gem "newrelic_rpm"
+gem "uglifier"
 
 #Recommended gems
 group :development do
