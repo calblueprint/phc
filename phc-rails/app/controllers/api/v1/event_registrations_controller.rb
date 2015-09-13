@@ -18,6 +18,8 @@ class Api::V1::EventRegistrationsController < ApplicationController
       # but if not create the account anyway and treat it as a new account
       if account.nil?
         account = Account.spawn(params)
+      else
+        account.update params.reject{ |k,v| !Account.fields.member?(k) }
       end
     end
 
@@ -45,7 +47,7 @@ class Api::V1::EventRegistrationsController < ApplicationController
   def get_applied
     event_registration = EventRegistration.find_by(Number__c: params[:Number__c])
     if event_registration
-      applied_services = event_registration.services.filter(:applied?).map(:name)
+      applied_services = event_registration.services.where(status: Service.statuses[:applied]).map(&:name)
       render json: { status: "true", services: applied_services }
     else
       api_message_response(404, "Event registration with that number does not exist.")

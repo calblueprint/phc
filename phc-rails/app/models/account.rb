@@ -120,4 +120,9 @@ class Account < ActiveRecord::Base
       day_string
     end
   end
+
+  def self.fields
+    @fields
+  end
+
 end
