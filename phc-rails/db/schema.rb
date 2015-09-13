@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150911063010) do
+ActiveRecord::Schema.define(version: 20150913233305) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,8 +46,6 @@ ActiveRecord::Schema.define(version: 20150911063010) do
   create_table "event_registrations", force: :cascade do |t|
     t.string   "account_id",         limit: 255
     t.string   "phc_sfid",           limit: 255
-    t.string   "FirstName",          limit: 255
-    t.string   "LastName",           limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "Number__c",          limit: 255

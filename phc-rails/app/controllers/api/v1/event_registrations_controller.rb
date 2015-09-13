@@ -19,7 +19,8 @@ class Api::V1::EventRegistrationsController < ApplicationController
       if account.nil?
         account = Account.spawn(params)
       else
-        account.update params.reject{ |k,v| !Account.fields.member?(k) }
+        account_params = params.permit(Account.fields)
+        account.update account_params
       end
     end
 
