@@ -164,7 +164,7 @@ namespace :sf do
   end
 
   def get_salesforce_session()
-    env = "sandbox"
+    env = ENV["sf_env"]
     username = ENV["sf_username_" + env]
     password = ENV["sf_password"] + ENV["sf_security_token_" + env]
     if env == "production"
