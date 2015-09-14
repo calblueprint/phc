@@ -31,14 +31,7 @@ class EventRegistration < ActiveRecord::Base
   def to_salesforce_object
     #"{"Account__c"=>"0014000001XUoNFAA1", "Acupuncture__c"=>"None", "PHC_Event__c"=>"a0R40000007HolJEAS"}"
 
-    # TODO: We should rename account_sfid because it's confusing AF
-    account = Account.where(id: self.account_id.to_i).first
-    if account.nil?
-      puts "Account #{self.account_sfid.to_i} has no associated account, skipping..."
-      return
-    end
-
-    obj = {"Account__c" => account.sf_id,
+    obj = {"Account__c" => self.account.sf_id,
            "PHC_Event__c" => EventRegistration.phc_event,
            "Experience__c" => self.Experience__c || "",
            "Services_Needed__c" => self.Services_Needed__c || "",
