@@ -167,6 +167,8 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
         fields.put("Identify_as_GLBT__c", mClientPreferences.getBoolean("checkbox_glbt", false));
         fields.put("Foster_Care__c", mClientPreferences.getBoolean("checkbox_foster", false));
         fields.put("Veteran__c", mClientPreferences.getBoolean("checkbox_military", false));
+        fields.put("Housing_Status_New__c", mClientPreferences.getString
+                ("spinner_housing", ""));
         fields.put("How_long_have_you_been_homeless__c", mClientPreferences.getString("spinner_homeless_duration", ""));
         fields.put("Where_do_you_usually_go_for_healthcare__c", mClientPreferences.getString("spinner_healthcare", ""));
         fields.put("Medical_Care_Other__c", mClientPreferences.getString("healthcare_other", ""));
