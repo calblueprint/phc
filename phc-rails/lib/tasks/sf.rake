@@ -59,42 +59,19 @@ namespace :sf do
 
     # Note: In the future, new accounts WILL have a SF_ID
     Account.find_new_accounts().each do |account|
-
-      # Try to find match on SSN OR FirstName+LastName+Birthdate
-      matches = []
-      unless account.SS_Num__c.nil? || (account.SS_Num__c.length != 9)
-        matches += Account.where.not(sf_id: nil).where(SS_Num__c: account.SS_Num__c)
-      end
-      unless account.FirstName.nil? || account.LastName.nil? || account.Birthdate__c.nil?
-        unless account.FirstName.empty?
-          matches += Account.where.not(sf_id:nil)
-                            .where(FirstName: account.FirstName,
-                                   LastName: account.LastName,
-                                   Birthdate__c: account.Birthdate__c)
-        end
-      end
-
       # Properly format birthday
       account.Birthdate__c = account.birthdate
 
       # Filter out nil fields, and select only Salesforce fields
       a = account.as_json.select { |k,v| sf_fields.include?(k) }
 
-      # Use the Salesforce ID from the first match
-      if matches.count > 0
-        puts "Found #{matches.count} match(es) for #{account.FirstName} #{account.LastName} -- will update."
-        # Delete old record and update new one with SF_ID
-        sf_id = matches[0][:sf_id]
-        matches[0].delete()
-
-        a["id"] = sf_id
-        account.update(sf_id: sf_id)
-        accounts_to_update.push(a)
-      else
-        # Create the account if we couldn't find a matching salesforce ID
-        puts "Did not find any matches for #{account.FirstName} #{account.LastName} -- will create."
+      # If sf_id is empty, then account is new
+      if account.sf_id.blank?
         accounts_to_create.push(a)
         accounts_to_create_ids.push(account.id)
+      else
+        a["id"] = account.sf_id
+        accounts_to_update.push(a)
       end
     end
 
@@ -124,6 +101,7 @@ namespace :sf do
     end
 
     if accounts_to_update.any?
+      byebug
       result_update = salesforce.update("Account", accounts_to_update, true).result
       log_errors(result_update, accounts_to_update)
       puts "Failed to update: #{result_update.errors.count} accounts."
@@ -143,7 +121,6 @@ namespace :sf do
     puts "--- Summary ---"
     puts "Failed to create: #{result.errors.count} Event Registrations."
     puts "Successfully created: #{data.count - result.errors.count} Event Registrations."
-    byebug
   end
 
   def log_errors(result, data)
