@@ -20,6 +20,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.james.mime4j.field.datetime.DateTime;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -340,10 +342,27 @@ public class PersonalInfoFragment extends Fragment {
      * @return false if some fields need correcting, true if okay
      */
     private boolean validateFields() {
+        return validateBirthday() && validateEmail();
+    }
+
+    private boolean validateBirthday() {
         final String monthText = mMonth.getText().toString();
         final String dayText = mDay.getText().toString();
         final String yearText = mYear.getText().toString();
-        final String emailText = mEmail.getText().toString();
+        final String birthdate = monthText + dayText + yearText;
+
+        //tests validity of date
+        try {
+            SimpleDateFormat df = new SimpleDateFormat("MMddyyyy");
+            //illegal dates are not allowed, even if correctly formatted (e.g. 2/30/1980)
+            df.setLenient(false);
+            df.parse(birthdate);
+        } catch (ParseException e) {
+            Toast.makeText(getActivity(),
+                    "Please enter in a valid date",
+                    Toast.LENGTH_LONG).show();
+            return false;
+        }
 
         if (!(yearText.length() == 4 || yearText.length() == 0)) {
             Toast.makeText(getActivity(),
@@ -361,15 +380,6 @@ public class PersonalInfoFragment extends Fragment {
             return false;
         }
 
-        if (emailText.length() != 0) {
-            if (!isValidEmail(emailText)) {
-                Toast.makeText(getActivity(),
-                        "Please enter a valid email address",
-                        Toast.LENGTH_LONG).show();
-                return false;
-            }
-        }
-
         if (mMonth.getText().length() == 1) {
             mMonth.setText("0" + mMonth.getText());
         }
@@ -378,6 +388,19 @@ public class PersonalInfoFragment extends Fragment {
             mDay.setText("0" + mDay.getText());
         }
 
+        return true;
+    }
+
+    private boolean validateEmail() {
+        final String emailText = mEmail.getText().toString();
+        if (emailText.length() != 0) {
+            if (!isValidEmail(emailText)) {
+                Toast.makeText(getActivity(),
+                        "Please enter a valid email address",
+                        Toast.LENGTH_LONG).show();
+                return false;
+            }
+        }
         return true;
     }
 
