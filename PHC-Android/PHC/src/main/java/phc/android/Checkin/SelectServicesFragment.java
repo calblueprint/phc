@@ -67,6 +67,7 @@ public class SelectServicesFragment extends CheckinFragment {
             cb.setLayoutParams(params);
             cb.setId(i);
             cb.setText(mDisplayNames[i]);
+            cb.setPadding(0,0,0,30);
             mLayout.addView(cb);
         }
     }
