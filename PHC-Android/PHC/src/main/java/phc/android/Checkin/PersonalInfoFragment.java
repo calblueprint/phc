@@ -342,52 +342,69 @@ public class PersonalInfoFragment extends Fragment {
      * @return false if some fields need correcting, true if okay
      */
     private boolean validateFields() {
-        return validateBirthday() && validateEmail();
+        return validateSSN() && validateBirthday() && validateEmail();
+    }
+
+    private boolean validateSSN(){
+        final String SSN = mSSN1.getText().toString()
+                        + mSSN2.getText().toString()
+                        + mSSN3.getText().toString();
+
+        //only allow either empty or properly formatted SSN
+        if (SSN.length() == 0 || SSN.length() == 9) { return true; }
+        Toast.makeText(getActivity(),
+                "Please enter in either a valid SSN or none at all",
+                Toast.LENGTH_LONG).show();
+        return false;
     }
 
     private boolean validateBirthday() {
-        final String monthText = mMonth.getText().toString();
-        final String dayText = mDay.getText().toString();
-        final String yearText = mYear.getText().toString();
-        final String birthdate = monthText + dayText + yearText;
+        String monthText = mMonth.getText().toString();
+        String dayText = mDay.getText().toString();
+        String yearText = mYear.getText().toString();
+        String birthdate = monthText + dayText + yearText;
 
-        //tests validity of date
-        try {
-            SimpleDateFormat df = new SimpleDateFormat("MMddyyyy");
-            //illegal dates are not allowed, even if correctly formatted (e.g. 2/30/1980)
-            df.setLenient(false);
-            df.parse(birthdate);
-        } catch (ParseException e) {
-            Toast.makeText(getActivity(),
-                    "Please enter in a valid date",
-                    Toast.LENGTH_LONG).show();
-            return false;
+        //do not use validation checks if birthday is completely empty
+        if (birthdate.length() != 0) {
+            if (!(yearText.length() == 4 || yearText.length() == 0)) {
+                Toast.makeText(getActivity(),
+                        "Please enter in 4 digits for the birthday year field",
+                        Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+            if (!(monthText.matches("^[0-9]*$") &&
+                    dayText.matches("^[0-9]*$") &&
+                    yearText.matches("^[0-9]*$"))) {
+                Toast.makeText(getActivity(),
+                        "Please only enter in numerical digits for the birthday fields",
+                        Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+            if (mMonth.getText().length() == 1) {
+                mMonth.setText("0" + mMonth.getText());
+                monthText = "0" + monthText;
+            }
+
+            if (mDay.getText().length() == 1) {
+                mDay.setText("0" + mDay.getText());
+                dayText = "0" + dayText;
+            }
+
+            //tests validity of date
+            try {
+                SimpleDateFormat df = new SimpleDateFormat("MMddyyyy");
+                //illegal dates are not allowed, even if correctly formatted (e.g. 2-30-1980)
+                df.setLenient(false);
+                df.parse(birthdate);
+            } catch (ParseException e) {
+                Toast.makeText(getActivity(),
+                        "Please enter in a valid date",
+                        Toast.LENGTH_LONG).show();
+                return false;
+            }
         }
-
-        if (!(yearText.length() == 4 || yearText.length() == 0)) {
-            Toast.makeText(getActivity(),
-                    "Please enter in 4 digits for the birthday year field",
-                    Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        if (!(monthText.matches("^[0-9]*$") &&
-                dayText.matches("^[0-9]*$") &&
-                yearText.matches("^[0-9]*$"))) {
-            Toast.makeText(getActivity(),
-                    "Please only enter in numerical digits for the birthday fields",
-                    Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        if (mMonth.getText().length() == 1) {
-            mMonth.setText("0" + mMonth.getText());
-        }
-
-        if (mDay.getText().length() == 1) {
-            mDay.setText("0" + mDay.getText());
-        }
-
         return true;
     }
 
