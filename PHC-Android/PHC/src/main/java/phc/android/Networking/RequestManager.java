@@ -1,5 +1,6 @@
 package phc.android.Networking;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -10,12 +11,14 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by tonywu on 2/24/15.
  * Contains abstractions for doing network requests.
  * Should be instantiated by any class that needs to do network requests
  */
+
 public class RequestManager {
 
     private static final String BASE_URL = "http://phc-production.herokuapp.com";
@@ -68,6 +71,7 @@ public class RequestManager {
         };
 
         loginRequest.setTag(sTAG);
+        setRetryPolicy(loginRequest);
         sRequestQueue.add(loginRequest);
     }
 
@@ -116,6 +120,7 @@ public class RequestManager {
             }
         };
         searchRequest.setTag(sTAG);
+        setRetryPolicy(searchRequest);
         sRequestQueue.add(searchRequest);
     }
 
@@ -152,6 +157,7 @@ public class RequestManager {
             }
         };
         userInfoRequest.setTag(sTAG);
+        setRetryPolicy(userInfoRequest);
         sRequestQueue.add(userInfoRequest);
     }
 
@@ -175,9 +181,7 @@ public class RequestManager {
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> params = new HashMap<String, String>();
-//                params.put("user_id", "1");
                 params.put("user_id", userId);
-//                params.put("auth_token", "vqWbG-dyt-cu9d9zqt1fXw");
                 params.put("auth_token", authToken);
                 params.put("Accept", "*/*");
                 params.put("Number__c", qrCode);
@@ -185,6 +189,7 @@ public class RequestManager {
             }
         };
         searchRequest.setTag(sTAG);
+        setRetryPolicy(searchRequest);
         sRequestQueue.add(searchRequest);
     }
 
@@ -216,6 +221,7 @@ public class RequestManager {
             }
         };
         createRequest.setTag(sTAG);
+        setRetryPolicy(createRequest);
         sRequestQueue.add(createRequest);
     }
 
@@ -244,8 +250,6 @@ public class RequestManager {
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> params = new HashMap<String, String>();
-//                params.put("user_id", "1");
-//                params.put("auth_token", "vqWbG-dyt-cu9d9zqt1fXw");
                 params.put("user_id", userId);
                 params.put("auth_token", authToken);
                 params.put("Accept", "*/*");
@@ -253,6 +257,7 @@ public class RequestManager {
             }
         };
         updateRequest.setTag(sTAG);
+        setRetryPolicy(updateRequest);
         sRequestQueue.add(updateRequest);
     }
 
@@ -273,12 +278,12 @@ public class RequestManager {
             }
         };
         serviceRequest.setTag(sTAG);
+        setRetryPolicy(serviceRequest);
         sRequestQueue.add(serviceRequest);
     }
 
     /**
      * Used to fetch all the services. need endpoint
-     *
      *
      */
   public void requestGetApplied(final String qrCode,
@@ -308,11 +313,11 @@ public class RequestManager {
           }
         };
       searchRequest.setTag(sTAG);
+      setRetryPolicy(searchRequest);
       sRequestQueue.add(searchRequest);
   }
 
     /**
-     *
      * Used to create a new object with checkout information. Similar to requestUpdateService
      */
     public void requestUpdateFeedback(final String mComments,
@@ -330,7 +335,6 @@ public class RequestManager {
         params.put("Services_Needed__c", mServicesNotReceived);
         params.put("Number__c", mScanResult);
 
-
         JsonObjectRequest createRequest = new JsonObjectRequest(BASE_URL + UPDATE_FEEDBACK_ENDPOINT,
                 new JSONObject(params),
                 responseListener,
@@ -346,10 +350,27 @@ public class RequestManager {
             }
         };
         createRequest.setTag(sTAG);
+        setRetryPolicy(createRequest);
         sRequestQueue.add(createRequest);
     }
 
+    /**
+     * Volley by default sends a second retry request if there is no response for the first after
+     * 2.5 seconds. Because many of our requests can take more than 2.5 seconds, Volley ends up
+     * sending a lot of double request, which causes issues for POSTs. setRetryPolicy()
+     * increase the time before the second retry to 10 seconds, matching the time it takes for a
+     * retry alertdialog to appear.
+     */
+    private void setRetryPolicy(JsonObjectRequest request){
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                (int) TimeUnit.SECONDS.toMillis(10), 0,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
 
-
-
+    private void setRetryPolicy(JsonArrayRequest request){
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                (int) TimeUnit.SECONDS.toMillis(10), 0,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
+    
 }
