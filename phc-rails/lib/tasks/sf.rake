@@ -101,7 +101,6 @@ namespace :sf do
     end
 
     if accounts_to_update.any?
-      byebug
       result_update = salesforce.update("Account", accounts_to_update, true).result
       log_errors(result_update, accounts_to_update)
       puts "Failed to update: #{result_update.errors.count} accounts."
