@@ -27,7 +27,7 @@ class Service < ActiveRecord::Base
                "Legal__c", "Pet_Care__c", "Phone_Calls__c", "Senior_Services__c", \
                "Showers__c", "SSI_SSDI_Medi_Cal__c", "Veteran_Services__c", "Voicemail__c", \
                "Wheelchair_Repair__c", "Youth_Services__c", "CalFresh__c", "Foodbank__c", "HIV_STI_Testing__c", \
-               "Lunch__c", "Needle_Exchange__c", "Disability_Services__c", "Women_Services__c"]
+               "Lunch__c", "Needle_Exchange__c", "Disability_Services__c", "Women_Services__c", "Flu_Shot__c", "Hearing_Care__c", "Photo_Portraits__c", "Voter_Registration__c", "Vision_Screening__c"]
 
     # services = ["Acupuncture__c", "Addiction_Recovery__c", "Dental__c", \
     #            "Healthy_SF__c", "Massage__c", "Medical__c", "Mental_Health__c", \
