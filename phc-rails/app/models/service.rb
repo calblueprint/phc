@@ -18,8 +18,7 @@ class Service < ActiveRecord::Base
   def self.services
     # In the future, we may retrieve these through the Salesforce API, but
     # for now they are hardcoded in
-
-    services = ["Acupuncture__c", "Addiction_Recovery__c", "Dental__c", \
+    services = ["Addiction_Recovery__c", "Adult_Probation__c", "Banking__c", "Dental__c", \
                "Healthy_SF__c", "Massage__c", "Medical__c", "Mental_Health__c", \
                "TB_Testing__c", "Vision_Readers__c", "Vision_Prescription__c", \
                "Adult_Probation__c", "Banking__c", "Books__c", "CAAP__c", \
@@ -27,8 +26,19 @@ class Service < ActiveRecord::Base
                "Foot_Washing__c", "Haircuts__c", "Homeward_Bound__c", "Housing_Info__c", \
                "Legal__c", "Pet_Care__c", "Phone_Calls__c", "Senior_Services__c", \
                "Showers__c", "SSI_SSDI_Medi_Cal__c", "Veteran_Services__c", "Voicemail__c", \
-               "Wheelchair_Repair__c", "Youth_Services__c", "CalFresh__c"]
-              ]
+               "Wheelchair_Repair__c", "Youth_Services__c", "CalFresh__c", "Foodbank__c", "HIV_STI_Testing__c", \
+               "Lunch__c", "Needle_Exchange__c", "Disability_Services__c", "Women_Services__c"]
+
+    # services = ["Acupuncture__c", "Addiction_Recovery__c", "Dental__c", \
+    #            "Healthy_SF__c", "Massage__c", "Medical__c", "Mental_Health__c", \
+    #            "TB_Testing__c", "Vision_Readers__c", "Vision_Prescription__c", \
+    #            "Adult_Probation__c", "Banking__c", "Books__c", "CAAP__c", \
+    #            "Disablility_Services__c", "DMV_ID__c", "Employment__c", "Family_Services__c", \
+    #            "Foot_Washing__c", "Haircuts__c", "Homeward_Bound__c", "Housing_Info__c", \
+    #            "Legal__c", "Pet_Care__c", "Phone_Calls__c", "Senior_Services__c", \
+    #            "Showers__c", "SSI_SSDI_Medi_Cal__c", "Veteran_Services__c", "Voicemail__c", \
+    #            "Wheelchair_Repair__c", "Youth_Services__c", "CalFresh__c"]
+    #           ]
 
     # medical = ["Addiction_Recovery__c", "Dental__c", "HIV_STI_Testing__c", "Massage__c", \
     #            "Medical__c", "Mental_Health__c", "Needle_Exchange__c", "Podiatry__c", \
