@@ -23,7 +23,7 @@ class Api::V1::EventRegistrationsController < ApplicationController
         account.update account_params
       end
     end
-    account.update(updated: true)
+    account.update(updated: false)
     reg = account.event_registrations.create(Number__c: params[:Number__c])
     Service.services.each do |name|
       service = reg.services.create(name: name)

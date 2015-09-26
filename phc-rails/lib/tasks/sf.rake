@@ -1,28 +1,4 @@
 namespace :sf do
-
-  # task test_birthdate_export: :environment do
-  #   salesforce = get_salesforce_session()
-
-  #   test_account = Account.last
-  #   sf_fields = ["FirstName","LastName","SS_Num__c","Birthdate__c","Phone","PersonEmail","Gender__c","Identify_as_GLBT__c",
-  #     "Race__c", "Primary_Language__c", "Foster_Care__c","Veteran__c","Housing_Status_New__c","How_long_have_you_been_homeless__c",
-  #     "Where_do_you_usually_go_for_healthcare__c","Medical_Care_Other__c"]
-  #   salesforce_id = test_account.sf_id
-  #   a = test_account.as_json.select { |k,v| sf_fields.include?(k) }
-
-  #   a["id"] = salesforce_id
-
-  #   a["Gender__c"] = "Male"
-  #   a["FirstName"] = ""
-  #   a["Birthdate__c"] = ""
-
-
-  #   result = salesforce.update("Account", [a], true).result
-  #   puts result.message
-
-  #   byebug
-  # end
-
   desc "Imports Accounts data from salesforce"
   task import: :environment do
     salesforce = get_salesforce_session()
@@ -37,7 +13,7 @@ namespace :sf do
     # NOTE: Should we remove filter names that are null?
     response = salesforce.query("Account", query)
     response.result.records.each do |attrs|
-      #Rename ID to SF_ID so we don't overrate ActiveRecord's primary key
+      # Store Salesforce ID as "sf_id"
       attrs = attrs.to_hash
       attrs[:sf_id] = attrs.delete("Id")
       puts "Updating account #{attrs[:sf_id]}: #{attrs["FirstName"]} #{attrs["LastName"]}"
@@ -57,7 +33,6 @@ namespace :sf do
     accounts_to_create = []
     accounts_to_create_ids = [] # Save account id's so we can update the SF_ID after its created
 
-    # Note: In the future, new accounts WILL have a SF_ID
     Account.find_new_accounts().each do |account|
       # Properly format birthday
       account.Birthdate__c = account.birthdate
@@ -65,7 +40,7 @@ namespace :sf do
       # Filter out nil fields, and select only Salesforce fields
       a = account.as_json.select { |k,v| sf_fields.include?(k) }
 
-      # If sf_id is empty, then account is new
+      # If the account doesn't have a Salesforce ID is empty, it needs to be created
       if account.sf_id.blank?
         accounts_to_create.push(a)
         accounts_to_create_ids.push(account.id)
@@ -81,12 +56,15 @@ namespace :sf do
     if accounts_to_create.any?
       result_create = salesforce.create("Account", accounts_to_create, true).result
 
-      # We need to map the newly created SF_IDs back to the Account objects
+      # Map the newly created salesforce object id's back to the Account objects
       result_create.records.each_with_index do |record, i|
         account = Account.find(accounts_to_create_ids[i])
         if record["Success"] == true
           sf_id = record["Id"]
+
+          # Update account salesforce id and mark as updated
           account.update(sf_id: sf_id)
+          account.update(updated: true)
         else
           error = record["Error"]
           puts "Error on #{accounts_to_create_ids[i]} #{account.to_hash()[:name]}: \n \t #{error}"
@@ -114,10 +92,16 @@ namespace :sf do
     salesforce = get_salesforce_session()
     data = []
     EventRegistration.all.each do |reg|
+      # Skip Event Registrations that don't have a Salesforce account associated with them
+      # This would happen if the account wasn't created because of an error
+      if reg.account.sf_id.blank?
+        next
+      end
       data.append(reg.to_salesforce_object)
     end
     result = salesforce.create("Event_Registration__c", data.compact, true).result
     puts "--- Summary ---"
+    puts result.message
     puts "Failed to create: #{result.errors.count} Event Registrations."
     puts "Successfully created: #{data.count - result.errors.count} Event Registrations."
   end

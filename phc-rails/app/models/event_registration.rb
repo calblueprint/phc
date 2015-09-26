@@ -30,7 +30,6 @@ class EventRegistration < ActiveRecord::Base
 
   def to_salesforce_object
     #"{"Account__c"=>"0014000001XUoNFAA1", "Acupuncture__c"=>"None", "PHC_Event__c"=>"a0R40000007HolJEAS"}"
-
     obj = {"Account__c" => self.account.sf_id,
            "PHC_Event__c" => EventRegistration.phc_event,
            "Experience__c" => self.Experience__c || "",
@@ -38,7 +37,7 @@ class EventRegistration < ActiveRecord::Base
            "Feedback__c" => self.Feedback__c || "" }
 
     self.services.each do |service|
-      obj[service.name] = service.status
+      obj[service.name] = service.status_string
     end
 
     obj
