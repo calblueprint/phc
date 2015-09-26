@@ -22,7 +22,7 @@
 #  How_long_have_you_been_homeless__c        :string(255)
 #  Where_do_you_usually_go_for_healthcare__c :string(255)
 #  Medical_Care_Other__c                     :string(255)
-#  updated                                   :boolean          default(FALSE), not null
+#  updated                                   :boolean          default(TRUE), not null
 #
 
 class Account < ActiveRecord::Base
@@ -42,8 +42,6 @@ class Account < ActiveRecord::Base
       account[key] = params[key]
     end
     if account.save then account else nil end
-
-    #### TODO: POST TO SALESFORCE #####
   end
 
   def self.find_duplicates_by(attrs, count, cursor)
@@ -61,8 +59,7 @@ class Account < ActiveRecord::Base
   end
 
   def self.find_new_accounts()
-    # Returns a list of new accounts made at the last PHC event, aka ones with no Salesforce ID
-    Account.where(updated: true)
+    Account.where(updated: false)
   end
 
   def to_hash
@@ -114,10 +111,15 @@ class Account < ActiveRecord::Base
     end
 
     day_string = "#{year}-#{month}-#{day}"
-    if "#{day_string}".length != 10
-      "#N/A"
+    if day_string.length != 10
+      ""
     else
       day_string
     end
   end
+
+  def self.fields
+    @fields
+  end
+
 end

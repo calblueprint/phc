@@ -18,10 +18,12 @@ class Api::V1::EventRegistrationsController < ApplicationController
       # but if not create the account anyway and treat it as a new account
       if account.nil?
         account = Account.spawn(params)
+      else
+        account_params = params.permit(Account.fields)
+        account.update account_params
       end
     end
-
-    account.update(updated: true)
+    account.update(updated: false)
     reg = account.event_registrations.create(Number__c: params[:Number__c])
     Service.services.each do |name|
       service = reg.services.create(name: name)
@@ -30,6 +32,16 @@ class Api::V1::EventRegistrationsController < ApplicationController
       if params[name] == true || params[name] == "true"
         service.applied!
       end
+
+      # TODO: Don't save every service to speed up queries
+      # if params.include? name
+      #   service = reg.services.create(name: name)
+      #   # TODO: Make sure we are receiving TRUE as a boolean and not as a string
+      #   # TODO: Figure out when the heck each case happens and how to test each case
+      #   if params[name] == true || params[name] == "true"
+      #     service.applied!
+      #   end
+      # end
     end
 
     status = reg.save ? "Successfully saved event registration!" : "Failed to save event registration"
@@ -45,7 +57,7 @@ class Api::V1::EventRegistrationsController < ApplicationController
   def get_applied
     event_registration = EventRegistration.find_by(Number__c: params[:Number__c])
     if event_registration
-      applied_services = event_registration.services.filter(:applied?).map(:name)
+      applied_services = event_registration.services.where(status: Service.statuses[:applied]).map(&:name)
       render json: { status: "true", services: applied_services }
     else
       api_message_response(404, "Event registration with that number does not exist.")
@@ -84,7 +96,7 @@ class Api::V1::EventRegistrationsController < ApplicationController
   def update_feedback
     event_registration = EventRegistration.find_by(Number__c: params[:Number__c])
     if event_registration
-      event_registration.update(event_registration_params)
+      event_registration.update(event_feedback_params)
       api_message_response(201, "Successfully recieved feedback!")
     else
       api_message_response(404, "Event registration with that number does not exist.")
@@ -93,7 +105,7 @@ class Api::V1::EventRegistrationsController < ApplicationController
 
   private
 
-  def event_registration_params
+  def event_feedback_params
     params.permit(:Number__c, :Experience__c, :Feedback__c, :Services_Needed__c => [])
   end
 

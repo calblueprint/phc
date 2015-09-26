@@ -1,212 +1,39 @@
 
- ----- Export on 22/05/2015 16:09 ----- 
-Error on account Tim Limbach: INVALID_EMAIL_ADDRESS:Email: invalid email address: daddybeartim3aol.com:PersonEmail -- 
+ ----- Export on 26/09/2015 14:07 ----- 
+Error on account Victor Boston: INVALID_CROSS_REFERENCE_KEY:invalid cross reference id:-- 
+Error on account Cesar Torres: INVALID_CROSS_REFERENCE_KEY:invalid cross reference id:-- 
+Error on account Jason Montanaro: INVALID_CROSS_REFERENCE_KEY:invalid cross reference id:-- 
+Error on account Peter Aksraratananon: INVALID_CROSS_REFERENCE_KEY:invalid cross reference id:-- 
+Error on account Olivia Cain: INVALID_CROSS_REFERENCE_KEY:invalid cross reference id:-- 
+Error on account Carolyn Jones: INVALID_CROSS_REFERENCE_KEY:invalid cross reference id:-- 
+Error on account Barbie Farias: INVALID_CROSS_REFERENCE_KEY:invalid cross reference id:-- 
+Error on account Donald Brunmeier: INVALID_CROSS_REFERENCE_KEY:invalid cross reference id:-- 
+Error on account Ron Pavlak: INVALID_CROSS_REFERENCE_KEY:invalid cross reference id:-- 
+Error on account Lenard Carter: INVALID_CROSS_REFERENCE_KEY:invalid cross reference id:-- 
+
+ ----- Export on 26/09/2015 14:08 ----- 
+Error on account  : REQUIRED_FIELD_MISSING:Required fields are missing: [Name]:Name -- 
+
+ ----- Export on 26/09/2015 14:12 ----- 
+Error on account  : REQUIRED_FIELD_MISSING:Required fields are missing: [Name]:Name -- 
+
+ ----- Export on 26/09/2015 14:43 ----- 
+Error on account  : REQUIRED_FIELD_MISSING:Required fields are missing: [Name]:Name -- 
+Error on account  : REQUIRED_FIELD_MISSING:Required fields are missing: [Name]:Name -- 
+Error on account Maruicfelton : INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName:FirstName -- 
 Error on account  : REQUIRED_FIELD_MISSING:Required fields are missing: [Name]:Name -- 
 Error on account  : REQUIRED_FIELD_MISSING:Required fields are missing: [Name]:Name -- 
 Error on account  : REQUIRED_FIELD_MISSING:Required fields are missing: [Name]:Name -- 
-Error on account Kevin Nichols: INVALID_EMAIL_ADDRESS:Email: invalid email address: tastyhannibalthumbless@.com:PersonEmail -- 
-Error on account  : REQUIRED_FIELD_MISSING:Required fields are missing: [Name]:Name -- 
-Error on account Jame Sales: INVALID_FIELD:Failed to deserialize field at col 3. Due to, '162-10-25' is not a valid value for the type xsd:date:Birthdate__c -- 
-Error on account Brandon : INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName:FirstName -- 
-Error on account Richard Rice: INVALID_EMAIL_ADDRESS:Email: invalid email address: r.rice87@ yahoo.com:PersonEmail -- 
+Error on account Stanley Long: FIELD_INTEGRITY_EXCEPTION:Birthdate: invalid date: Sat Mar 29 00:00:00 GMT 7541:Birthdate__c -- 
 Error on account  : REQUIRED_FIELD_MISSING:Required fields are missing: [Name]:Name -- 
 Error on account  : REQUIRED_FIELD_MISSING:Required fields are missing: [Name]:Name -- 
-Error on account Jefferson : INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName:FirstName -- 
 Error on account  : REQUIRED_FIELD_MISSING:Required fields are missing: [Name]:Name -- 
 Error on account  : REQUIRED_FIELD_MISSING:Required fields are missing: [Name]:Name -- 
-Error on account Elijah : INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName:FirstName -- 
-Error on account Silvia Pineda: INVALID_FIELD:Failed to deserialize field at col 3. Due to, '2-11-17' is not a valid value for the type xsd:date:Birthdate__c -- 
+Error on account Kyleneklinker : INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName:FirstName -- 
 Error on account  : REQUIRED_FIELD_MISSING:Required fields are missing: [Name]:Name -- 
-Error on account Anonymous : INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName:FirstName -- 
+Error on account  : REQUIRED_FIELD_MISSING:Required fields are missing: [Name]:Name -- 
+Error on account Quoncenta : INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName:FirstName -- 
 Error on account  : REQUIRED_FIELD_MISSING:Required fields are missing: [Name]:Name -- 
 Error on account  : REQUIRED_FIELD_MISSING:Required fields are missing: [Name]:Name -- 
 
- ----- Export on 22/05/2015 16:10 ----- 
-Error on account Lamont Shirley: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Melvin Clark: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Ronny Dixion: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Theodore Wright: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Stanley Farmer: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Lloyd Perriatt: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Marvin Ronson: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Kenneth Muhammad: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Bernagine Santana: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Doreen Pulis: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Tommy Davis: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Andrew Salinas: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Denise Redrick: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account JAMES BEASLY: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Phillip Collins: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account William Comerford: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account edmond worthington: ENTITY_IS_DELETED:entity is deleted:-- 
-Error on account Anthony Cerrato: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Victor Frazier: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Williams Jahdi: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account DONALD SWAN: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Danny Blackmon: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account James Morales: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account James Woodland: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Joseph Jones: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Emmett Holland: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Darren Cubie: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Hwasun Zimniski: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Michael Berry: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Ezell Bishop: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account SAITAUGA LEUI: INVALID_EMAIL_ADDRESS:Email: invalid email address: genojasonleui@gmail:PersonEmail -- 
-Error on account Frederick Treadwell: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Larry Emery: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Kevin Stull: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Robert Stull: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Wayne Self: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Charlote Jordan: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Regina Lewis: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Francisco Martinez: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Robert Matthew: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Glen Luce: ENTITY_IS_DELETED:entity is deleted:-- 
-Error on account Khanh Truong: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Khanh Truong: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Patrick Thompson: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Doris Jacobs: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account James Richards: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Michael Recchia: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Anil Rajpal: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account James Rugley: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Calvin Higgins Jr: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Fareed Hassan: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Philip Mousky: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Susan Trunk: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Todd Mozak: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Lerone Turner: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Allan Walden: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Wilbur Brantley: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Oscar Mckinney: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Curtis Bell: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Ag Ross: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Nealie Yarbrough: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account John Martel: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Reginald Johnson: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Abdallah Meggahed: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Paul Ngigi: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Paul Ngigi: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Barry Stover: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Bruce Wilbert: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Fred Green: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Gilbert Duru: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Georgia Vanya: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Cruz Rincon: ENTITY_IS_DELETED:entity is deleted:-- 
-Error on account Kulbir Singh: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account John Earle: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Julie Lefcourt: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Tracy Flintroy: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Ann Thompson: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account John Krueger: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Ras Swafford: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Mohsin Gul: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Grady Curry: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Rita Lark: ENTITY_IS_DELETED:entity is deleted:-- 
-Error on account John Ostwald: ENTITY_IS_DELETED:entity is deleted:-- 
-Error on account Tammy Shelton: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Cassandra Morgan: INVALID_EMAIL_ADDRESS:Email: invalid email address: cassie.sherre@gmailcom:PersonEmail -- 
-Error on account Vera Pettway: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Christopher Underwood: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Shay Masten: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Earline Franklin: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account John Bryner: ENTITY_IS_DELETED:entity is deleted:-- 
-Error on account James James: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Jonathan Larry: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account James Kelly: INVALID_EMAIL_ADDRESS:Email: invalid email address: jamesmkelly69yahoo.com:PersonEmail -- 
-Error on account Joseph Gonzalez: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Ronald Jones: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Ronald Jones: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Kenneth Culler: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Michael Meadows: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Debra Singleton: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Dennis Dayton: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Bernadine Emperador: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Crystal Trujillo: ENTITY_IS_DELETED:entity is deleted:-- 
-Error on account Craig Lemons: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Chuck Caldwell: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Dennis Clark: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Alonzo Scott: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Dale Theriault: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Andrew Hudson: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Jennifer Haun: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account George Davis: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Rosa Cruz: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Charles Robinson: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Kent Clark: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account John Riojas: ENTITY_IS_DELETED:entity is deleted:-- 
-Error on account George Remmy: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Lamont Green: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Lonnie Pierce: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Angelica Torres Mercado: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Frank Williams: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Ivan Hernandez: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Leslie Butler: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Mark Keever: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Stephen Allen: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Gregory Gross: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Selawin Norris: ENTITY_IS_DELETED:entity is deleted:-- 
-Error on account Jose Maya: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Margarita Montavlo: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account c. Derek Anderson: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Philmore Holmes: ENTITY_IS_DELETED:entity is deleted:-- 
-Error on account Dan Manilla: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Dewayne Shelton: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Anthony Greenlee: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Michael Elmore: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Ajlon Armstrong: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Patricia Allen: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Kelvin Jackson: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Samantha Bennett: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Jarvis Ferguson: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Henry Johnson: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Patrick Seymore: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Leonard Givens: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Denise Shea: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Josephine Ortiz: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Perry Jones: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Ernest Patron: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Matthew Griffin: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Eric Clark: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Richard Latt: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Patricia Tripp: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Tony Ferrari: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Stephen Chassanoff: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Ocelia Slinkey: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Mark Patton: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account John Dwyer: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Sandy Vandusen: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Van Johnson: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Monica Hinojos: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Mccranie French: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Jim Lastra: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Anthony Hampton: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Jame Nash: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Michael Chaney: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Robert Harrison: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Hector L. Cintron: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Brett Major: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Patricia Hudson: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Darius Murrell: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account James Cox: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Terrance Porter: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Darrick Taylor: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Gregory Clark: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Jennifer Hollingsworth: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Kevin Thomas: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Leonor Verde: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Yolanda James: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account Benetta Ardion: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Karen Klob: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Michael Varn: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Patricia Jackson: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Anthony Robertson: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: FirstName, LastName:FirstName LastName -- 
-Error on account George Greene: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Susan Cunningham: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account John Chavez: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Todd Moolier: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Anthony Franklin: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Jackie Williams: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Anthony Sheppard: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
-Error on account Darius Murrell: INVALID_FIELD_FOR_INSERT_UPDATE:Account: bad field names on insert/update call: LastName, FirstName:LastName FirstName -- 
+ ----- Export on 26/09/2015 14:44 ----- 
