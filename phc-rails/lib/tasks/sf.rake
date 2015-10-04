@@ -1,11 +1,14 @@
 namespace :sf do
+
+  sf_fields = ["FirstName","LastName","SS_Num__c","Birthdate__c","Phone","PersonEmail","Gender__c","Identify_as_GLBT__c",
+      "Race__c", "Primary_Language__c", "Foster_Care__c","Veteran__c","Housing_Status_New__c","How_long_have_you_been_homeless__c",
+      "Where_do_you_usually_go_for_healthcare__c","Medical_Care_Other__c"]
+
   desc "Imports Accounts data from salesforce"
   task import: :environment do
     salesforce = get_salesforce_session()
 
-    fields = ["Id", "FirstName","LastName","SS_Num__c","Birthdate__c","Phone","PersonEmail","Gender__c","Identify_as_GLBT__c",
-      "Race__c", "Primary_Language__c", "Foster_Care__c","Veteran__c","Housing_Status_New__c","How_long_have_you_been_homeless__c",
-      "Where_do_you_usually_go_for_healthcare__c","Medical_Care_Other__c"]
+    fields = sf_fields << "Id"
 
     query  = "SELECT " + fields.join(", ") + " from Account"
     puts "Querying salesforce..."
@@ -25,11 +28,8 @@ namespace :sf do
 
   desc "Exports new Accounts, EventRegistrations, and Services information to Salesforce"
   task export_accounts: :environment do
-    sf_fields = ["FirstName","LastName","SS_Num__c","Birthdate__c","Phone","PersonEmail","Gender__c","Identify_as_GLBT__c",
-      "Race__c", "Primary_Language__c", "Foster_Care__c","Veteran__c","Housing_Status_New__c","How_long_have_you_been_homeless__c",
-      "Where_do_you_usually_go_for_healthcare__c","Medical_Care_Other__c"]
-
-    accounts_to_update = [] # These accounts contain a SF_ID field, so we can match them
+    accounts_to_update = []
+    accounts_to_update_ids = []
     accounts_to_create = []
     accounts_to_create_ids = [] # Save account id's so we can update the SF_ID after its created
 
@@ -47,6 +47,7 @@ namespace :sf do
       else
         a["id"] = account.sf_id
         accounts_to_update.push(a)
+        accounts_to_update_ids.push(account.id)
       end
     end
 
@@ -71,7 +72,7 @@ namespace :sf do
         end
       end
 
-      log_errors(result_create, accounts_to_create)
+      log_errors("account_create", result_create, accounts_to_create_id)
       puts "Failed to create: #{result_create.errors.count} accounts."
       puts "Successfully created: #{accounts_to_create.count - result_create.errors.count} accounts."
     else
@@ -80,7 +81,7 @@ namespace :sf do
 
     if accounts_to_update.any?
       result_update = salesforce.update("Account", accounts_to_update, true).result
-      log_errors(result_update, accounts_to_update)
+      log_errors("account_update", result_update, accounts_to_update_id)
       puts "Failed to update: #{result_update.errors.count} accounts."
       puts "Successfully updated: #{accounts_to_update.count - result_update.errors.count} accounts."
     else
@@ -91,35 +92,40 @@ namespace :sf do
   task export_registrations: :environment do
     salesforce = get_salesforce_session()
     data = []
+    ids = []
     EventRegistration.all.each do |reg|
       # Skip Event Registrations that don't have a Salesforce account associated with them
       # This would happen if the account wasn't created because of an error
       if reg.account.sf_id.blank?
         next
       end
-      data.append(reg.to_salesforce_object)
+      data << reg.to_salesforce_object
+      ids << reg.id
     end
     result = salesforce.create("Event_Registration__c", data.compact, true).result
+
+    log_errors("event_reg", result, ids)
     puts "--- Summary ---"
     puts result.message
-    puts "Failed to create: #{result.errors.count} Event Registrations."
-    puts "Successfully created: #{data.count - result.errors.count} Event Registrations."
+    puts "Failed to create: #{failure.count} Event Registrations."
+    puts "Successfully created: #{success.count} Event Registrations."
   end
 
-  def log_errors(result, data)
-    File.open("errors.txt", "a+") do |f|
-      f.write("\n ----- Export on #{Time.now.strftime("%d/%m/%Y %H:%M")} ----- \n")
-      result.errors.each do |error|
-        i = error.keys()[0].to_i
-        user = data[i]
-        first, last = user["FirstName"], user["LastName"]
-        message = error.values()[0]
-        message = "Error on account #{first} #{last}: #{message} \n"
-        f.write(message)
+  def log_errors(name, result, ids)
+    failure = []
+    result.records.each_with_index do |record, i|
+      if !record["Success"]
+        failure << data_id[i]
       end
-      if result.success?
-        puts "Salesforce returned success!"
-      end
+    end
+    export_yaml("data/#{name}_result", result)
+    export_yaml("data/#{name}_failure_ids", failure)
+  end
+
+  def export_yaml(filename, data)
+    File.open(filename, "a+") do |f|
+      serialized = YAML::dump(data)
+      f.write(serialized)
     end
   end
 

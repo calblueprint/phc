@@ -24,8 +24,8 @@ class EventRegistration < ActiveRecord::Base
   serialize :Services_Needed__c
 
   def self.phc_event
-    # PHC 60 - PRODUCTION
-    "a0R40000007lj0X"
+    # PHC 59 - PRODUCTION
+    "a0R40000007lUs6"
   end
 
   def to_salesforce_object
@@ -34,7 +34,8 @@ class EventRegistration < ActiveRecord::Base
            "PHC_Event__c" => EventRegistration.phc_event,
            "Experience__c" => self.Experience__c || "",
            "Services_Needed__c" => self.Services_Needed__c || "",
-           "Feedback__c" => self.Feedback__c || "" }
+           "Feedback__c" => self.Feedback__c || ""
+          }
 
     self.services.each do |service|
       obj[service.name] = service.status_string

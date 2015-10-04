@@ -96,7 +96,10 @@ class Account < ActiveRecord::Base
   def birthdate()
     if self.Birthdate__c.nil? then return "#N/A" end
     year, month, day = self.Birthdate__c.split("-")
-    if year.nil? then year = "1900" end
+    if year.nil?
+      return ""
+    end
+
     if month.nil? then month = "01" end
     if day.nil? then day = "01" end
 
