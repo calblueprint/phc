@@ -24,8 +24,8 @@ class EventRegistration < ActiveRecord::Base
   serialize :Services_Needed__c
 
   def self.phc_event
-    # PHC 59 - PRODUCTION
-    "a0R40000007lUs6"
+    # PHC 61 - PRODUCTION
+    "a0R40000008Kx0b"
   end
 
   def to_salesforce_object
