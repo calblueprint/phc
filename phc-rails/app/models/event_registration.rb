@@ -18,7 +18,7 @@ class EventRegistration < ActiveRecord::Base
   ##################################################
   # Associations
   ##################################################
-  has_and_belongs_to_many :services
+  has_and_belongs_to_many :services, :dependent => :destroy
   belongs_to :account
 
   serialize :Services_Needed__c

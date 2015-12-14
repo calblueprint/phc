@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/textacular/textacular.git
-  revision: ac38162f20d70d5bee9cdf73e6681abe4d0b079a
+  revision: f39bf8c99074039f8844b0c8e39d457aa95f93f5
   specs:
     textacular (4.0.0.alpha)
-      activerecord (>= 3.0, < 5.0)
+      activerecord (>= 3.0, <= 5.0)
 
 GEM
   remote: https://rubygems.org/
@@ -57,15 +57,23 @@ GEM
     bootstrap-sass (3.2.0.2)
       sass (~> 3.2)
     builder (3.2.2)
-    bullet (4.14.7)
+    bullet (4.14.10)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.9.0)
-    byebug (6.0.2)
+    byebug (8.2.1)
     coderay (1.1.0)
-    databasedotcom (1.3.2)
+    coffee-rails (4.1.0)
+      coffee-script (>= 2.2.0)
+      railties (>= 4.0.0, < 5.0)
+    coffee-script (2.4.1)
+      coffee-script-source
+      execjs
+    coffee-script-source (1.10.0)
+    concurrent-ruby (1.0.0)
+    databasedotcom (1.3.3)
       activesupport
       json
-      multipart-post (~> 1.1)
+      multipart-post (~> 2.0.0)
     databasedotcom-rails (1.1.0)
       databasedotcom
     debug_inspector (0.0.2)
@@ -73,27 +81,46 @@ GEM
     execjs (2.6.0)
     figaro (1.1.1)
       thor (~> 0.14)
+    font-awesome-rails (4.5.0.0)
+      railties (>= 3.2, < 5.0)
+    font-awesome-sass (4.4.0)
+      sass (>= 3.2)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
+    haml (4.0.7)
+      tilt
     i18n (0.7.0)
-    jbuilder (2.3.1)
+    jbuilder (2.3.2)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
+    jquery-rails (4.0.5)
+      rails-dom-testing (~> 1.0)
+      railties (>= 4.2.0)
+      thor (>= 0.14, < 2.0)
+    jquery-ui-rails (5.0.5)
+      railties (>= 3.2.16)
     json (1.8.3)
+    kaminari (0.16.3)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
-    mime-types (2.6.1)
-    mini_portile (0.6.2)
-    minitest (5.8.0)
+    mime-types (2.99)
+    mini_portile2 (2.0.0)
+    minitest (5.8.3)
     multi_json (1.11.2)
-    multipart-post (1.2.0)
-    newrelic_rpm (3.13.0.299)
-    nokogiri (1.6.6.2)
-      mini_portile (~> 0.6.0)
-    pg (0.18.3)
+    multipart-post (2.0.0)
+    nested_form (0.3.2)
+    newrelic_rpm (3.14.1.311)
+    nokogiri (1.6.7)
+      mini_portile2 (~> 2.0.0.rc2)
+    pg (0.18.4)
     rack (1.6.4)
+    rack-pjax (0.8.0)
+      nokogiri (~> 1.5)
+      rack (~> 1.1)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.2.0)
@@ -118,6 +145,20 @@ GEM
     rails_12factor (0.0.3)
       rails_serve_static_assets
       rails_stdout_logging
+    rails_admin (0.8.1)
+      builder (~> 3.1)
+      coffee-rails (~> 4.0)
+      font-awesome-rails (>= 3.0, < 5)
+      haml (~> 4.0)
+      jquery-rails (>= 3.0, < 5)
+      jquery-ui-rails (~> 5.0)
+      kaminari (~> 0.14)
+      nested_form (~> 0.3)
+      rack-pjax (~> 0.7)
+      rails (~> 4.0)
+      remotipart (~> 1.0)
+      safe_yaml (~> 1.0)
+      sass-rails (>= 4.0, < 6)
     rails_serve_static_assets (0.0.4)
     rails_stdout_logging (0.0.4)
     railties (4.2.0)
@@ -128,26 +169,36 @@ GEM
     rake (10.4.2)
     rdoc (4.2.0)
       json (~> 1.4)
+    remotipart (1.2.1)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
+    safe_yaml (1.0.4)
     salesforce_bulk (1.0.3)
       xml-simple
     salesforce_bulk_api (0.0.12)
       json
       xml-simple
-    sass (3.4.18)
+    sass (3.4.20)
+    sass-rails (5.0.4)
+      railties (>= 4.0.0, < 5.0)
+      sass (~> 3.1)
+      sprockets (>= 2.8, < 4.0)
+      sprockets-rails (>= 2.0, < 4.0)
+      tilt (>= 1.1, < 3)
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
-    spring (1.4.0)
-    sprockets (3.3.4)
-      rack (~> 1.0)
+    spring (1.5.0)
+    sprockets (3.5.2)
+      concurrent-ruby (~> 1.0)
+      rack (> 1, < 3)
     sprockets-rails (2.3.3)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
     thor (0.19.1)
     thread_safe (0.3.5)
+    tilt (2.0.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (2.7.2)
@@ -170,11 +221,14 @@ DEPENDENCIES
   databasedotcom
   databasedotcom-rails
   figaro
+  font-awesome-rails
+  font-awesome-sass (~> 4.4.0)
   jbuilder (~> 2.0)
   newrelic_rpm
   pg
   rails (= 4.2.0)
   rails_12factor
+  rails_admin
   responders (~> 2.0)
   salesforce_bulk
   salesforce_bulk_api

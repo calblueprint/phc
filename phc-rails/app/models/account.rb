@@ -26,7 +26,7 @@
 #
 
 class Account < ActiveRecord::Base
-  has_many :event_registrations
+  has_many :event_registrations, :dependent => :destroy
 
   @fields = [:sf_id, "FirstName","LastName","SS_Num__c","Birthdate__c","Phone","PersonEmail","Gender__c","Identify_as_GLBT__c",
       "Race__c", "Primary_Language__c", "Foster_Care__c","Veteran__c","Housing_Status_New__c","How_long_have_you_been_homeless__c",
@@ -64,7 +64,7 @@ class Account < ActiveRecord::Base
 
   def to_hash
     {
-      name: name(self.FirstName, self.LastName),
+      name: get_name(self.FirstName, self.LastName),
       ssn: ssn(self.SS_Num__c),
       birthday: self.Birthdate__c,
       sf_id: self.sf_id,
@@ -73,7 +73,7 @@ class Account < ActiveRecord::Base
     }
   end
 
-  def name(first, last)
+  def get_name(first, last)
     if first.nil? or first.empty?
       first = "(None)"
     end

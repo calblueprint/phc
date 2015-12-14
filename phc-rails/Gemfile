@@ -33,6 +33,10 @@ gem 'responders', '~> 2.0'
 gem "newrelic_rpm"
 gem "uglifier"
 
+gem "rails_admin"
+gem "font-awesome-rails"
+gem 'font-awesome-sass', '~> 4.4.0'
+
 #Recommended gems
 group :development do
     gem "better_errors"
