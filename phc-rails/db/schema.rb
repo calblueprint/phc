@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150926222615) do
+ActiveRecord::Schema.define(version: 20160102033701) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,16 @@ ActiveRecord::Schema.define(version: 20150926222615) do
     t.datetime "updated_at"
     t.string   "last_modified"
   end
+
+  create_table "service_lists", force: :cascade do |t|
+    t.string   "name"
+    t.string   "salesforce_name"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "service_lists", ["name"], name: "index_service_lists_on_name", unique: true, using: :btree
+  add_index "service_lists", ["salesforce_name"], name: "index_service_lists_on_salesforce_name", unique: true, using: :btree
 
   create_table "services", force: :cascade do |t|
     t.string   "name"
