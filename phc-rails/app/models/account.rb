@@ -28,21 +28,9 @@
 class Account < ActiveRecord::Base
   has_many :event_registrations, :dependent => :destroy
 
-  @fields = [:sf_id, "FirstName","LastName","SS_Num__c","Birthdate__c","Phone","PersonEmail","Gender__c","Identify_as_GLBT__c",
+  FIELDS = [:sf_id, "FirstName","LastName","SS_Num__c","Birthdate__c","Phone","PersonEmail","Gender__c","Identify_as_GLBT__c",
       "Race__c", "Primary_Language__c", "Foster_Care__c","Veteran__c","Housing_Status_New__c","How_long_have_you_been_homeless__c",
       "Where_do_you_usually_go_for_healthcare__c","Medical_Care_Other__c"]
-
-  # I'm not sure if calling this 'create' will overwrite something and cause funky behavior, so it's called spawn 8)
-  def self.spawn(params)
-    # NOTE, new accounts for now will not have an Salesforce ID associated with them until we
-    # implement posting to Salesforce. Therefore, for now, sf_id can be empty, and we will
-    # match an event registration to an account through the Rails ID primary key.
-    account = Account.new
-    @fields.each do |key|
-      account[key] = params[key]
-    end
-    if account.save then account else nil end
-  end
 
   def self.find_duplicates_by(attrs, count, cursor)
     groups = {}
@@ -64,65 +52,30 @@ class Account < ActiveRecord::Base
 
   def to_hash
     {
-      name: get_name(self.FirstName, self.LastName),
-      ssn: ssn(self.SS_Num__c),
-      birthday: self.Birthdate__c,
+      name: full_name,
+      birthday: birthdate,
       sf_id: self.sf_id,
-      created_at: self.created_at,
-      phone: self.Phone
     }
   end
 
-  def get_name(first, last)
-    if first.nil? or first.empty?
-      first = "(None)"
-    end
-    if last.nil?
-      last = ""
-    end
-    "#{first} #{last}"
-  end
-
-  def ssn(ssn)
-    if ssn.nil? or ssn.empty?
-      "(None)"
-    elsif ssn.length < 9
-      ssn
-    else
-      "x"*6 + self.SS_Num__c[-4..-1]
-    end
+  def full_name
+    "#{self.FirstName} #{self.LastName}"
   end
 
   def birthdate()
-    if self.Birthdate__c.nil? then return "#N/A" end
+    return "#N/A" if self.Birthdate__c.nil?
+
     year, month, day = self.Birthdate__c.split("-")
-    if year.nil?
-      return ""
-    end
 
-    if month.nil? then month = "01" end
-    if day.nil? then day = "01" end
+    month ||= "01"
+    day ||= "01"
 
-    if year.length == 2
-      year = "19" + year
-    end
-    if month.length == 1
-      month = "0" + month
-    end
-    if day.length == 1
-      day = "0" + day
-    end
+    year = "19#{year}" if year.length == 2
+    month = "0#{month}" if month.length == 1
+    day = "0#{day}" if day.length == 1
 
     day_string = "#{year}-#{month}-#{day}"
-    if day_string.length != 10
-      ""
-    else
-      day_string
-    end
-  end
-
-  def self.fields
-    @fields
+    day_string.length == 10 ? day_string : "#N/A"
   end
 
 end
