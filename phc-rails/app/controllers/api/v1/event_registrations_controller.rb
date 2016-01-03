@@ -2,94 +2,92 @@ class Api::V1::EventRegistrationsController < ApplicationController
   skip_before_action :verify_authenticity_token
   before_action :verify_security_token
 
+  # Creates an event registration and corresponding account
+  # if it does not exist. Any services that were applied for
+  # are set to applied for the given registration
+  #
+  # @param [String] account_sfid Salesforce ID of Account
+  # @param [Integer] Number__c Unique ID for an event registration
+  # @param [Boolean] *service True if given service was applied for
   def create
-    sf_id = params.delete :account_sfid
-    if sf_id.nil? || sf_id.empty? || sf_id == "\"\""
-      # Create account if salesforce id was not passed in
-      # TODO: Right now, the client basically creates accounts through this endpoint
-      # We should seperate it into 2 API calls, the first to api/v1/create (which is unused right now)
-      params[:sf_id] = nil
-      account = Account.spawn(params)
+    sf_id =  params[:account_sfid]
+    account = Account.find_by(sf_id: sf_id)
+    account_params = params.permit(Account::API_FIELDS)
+    account_params[:updated] = false
+
+    # Update or create account with params
+    if sf_id.blank? || sf_id == '""' || account.nil?
+      account = Account.create(account_params)
     else
-      # We retrieve the corresponding account if the salesforce id was passed in
-      account = Account.find_by(sf_id: sf_id)
-
-      # An account should always be found for a salesforce ID,
-      # but if not create the account anyway and treat it as a new account
-      if account.nil?
-        account = Account.spawn(params)
-      else
-        account_params = params.permit(Account.fields)
-        account.update account_params
-      end
-    end
-    account.update(updated: false)
-    reg = account.event_registrations.create(Number__c: params[:Number__c])
-    Service.services.each do |name|
-      service = reg.services.create(name: name)
-      # TODO: Make sure we are receiving TRUE as a boolean and not as a string
-      # TODO: Figure out when the heck each case happens and how to test each case
-      if params[name] == true || params[name] == "true"
-        service.applied!
-      end
-
-      # TODO: Don't save every service to speed up queries
-      # if params.include? name
-      #   service = reg.services.create(name: name)
-      #   # TODO: Make sure we are receiving TRUE as a boolean and not as a string
-      #   # TODO: Figure out when the heck each case happens and how to test each case
-      #   if params[name] == true || params[name] == "true"
-      #     service.applied!
-      #   end
-      # end
+      account.update(account_params)
     end
 
-    status = reg.save ? "Successfully saved event registration!" : "Failed to save event registration"
-    api_message_response(200, status)
+    event_reg = account.event_registrations.create(Number__c: params[:Number__c])
+    ServiceList.services.each do |name|
+      event_reg.services.create(name: name).applied! if params[name].to_s == "true"
+    end
+
+    render json: { status: true, message: "Successfully saved event registration!" }
   end
 
+  # Check if an event registration has been created for a given QR code
+  # number.
+  #
+  # @param [Integer] Number__c Unique QR code for registration
   def search
+    # Should probably change API to pass it as query param not header
     qr_code = request.headers["HTTP_NUMBER__C"]
-    puts qr_code
     render json: { present: (EventRegistration.exists?(Number__c: qr_code) ? true : false) }
   end
 
+  # Returns a list of the services applied for by a guest,
+  # and their associated event registration
+  #
+  # @param [Integer] Number__c Unique QR code for registration
   def get_applied
     event_registration = EventRegistration.find_by(Number__c: params[:Number__c])
     if event_registration
       applied_services = event_registration.services.where(status: Service.statuses[:applied]).map(&:name)
       render json: { status: "true", services: applied_services }
     else
-      api_message_response(404, "Event registration with that number does not exist.")
+      render status: 404, json: { message: "Event registration with that number does not exist." }
     end
   end
 
+  # Updates the status for a service. This occurs when a
+  # guest checks in at a service station.
+  #
+  # Unspecified => Drop In
+  # Applied => Received
+  # Drop In => Drop In (Client has already received service)
+  # Received => Received (Client has already received service)
+  #
+  # @param [Integer] Number__c Unique QR code for registration
+  # @param [String] service_name Name of the service
   def update_service
     event_registration = EventRegistration.find_by(Number__c: params[:Number__c])
     if event_registration.nil?
-      api_message_response(404, "Event registration with that number does not exist.")
-      return
+      render status: 404, json: { message: "Event registration with that number does not exist." } and return
     end
 
     service = event_registration.services.find_by(name: params[:service_name])
     if service.nil?
-      api_message_response(404, "Service with that name does not exist.")
-      return
+      render status: 404, json: { message: "Service with that name does not exist." } and return
     end
 
     case service.status
     when "unspecified"
       service.drop_in!
-      api_message_response(201, "Client's status set to drop-in.")
+      render json: { message: "Client's status set to drop-in." }
     when "applied"
       service.received!
-      api_message_response(201, "Client's status set to received.")
+      render json: { message: "Client's status set to received." }
     when "drop_in"
-      api_message_response(201, "Client has already received service.")
+      render json: { message: "Client has already received service." }
     when "received"
-      api_message_response(201, "Client has already received service.")
+      render json: { message: "Client has already received service." }
     else
-      api_message_response(400, "Invalid status.")
+      render status: 400, json: { message: "Invalid status." }
     end
   end
 
@@ -97,9 +95,9 @@ class Api::V1::EventRegistrationsController < ApplicationController
     event_registration = EventRegistration.find_by(Number__c: params[:Number__c])
     if event_registration
       event_registration.update(event_feedback_params)
-      api_message_response(201, "Successfully recieved feedback!")
+      render json: { message: "Successfully received feedback!" }
     else
-      api_message_response(404, "Event registration with that number does not exist.")
+      render status: 400, json: { message: "Event registration with that number does not exist." }
     end
   end
 

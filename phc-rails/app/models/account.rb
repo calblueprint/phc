@@ -28,23 +28,23 @@
 class Account < ActiveRecord::Base
   has_many :event_registrations, :dependent => :destroy
 
-  FIELDS = [:sf_id, "FirstName","LastName","SS_Num__c","Birthdate__c","Phone","PersonEmail","Gender__c","Identify_as_GLBT__c",
-      "Race__c", "Primary_Language__c", "Foster_Care__c","Veteran__c","Housing_Status_New__c","How_long_have_you_been_homeless__c",
-      "Where_do_you_usually_go_for_healthcare__c","Medical_Care_Other__c"]
+  API_FIELDS = [:sf_id, :FirstName, :LastName, :SS_Num__c, :Birthdate__c, :Phone, :PersonEmail, :Gender__c, :Identify_as_GLBT__c,
+      :Race__c,  :Primary_Language__c,  :Foster_Care__c, :Veteran__c, :Housing_Status_New__c, :How_long_have_you_been_homeless__c,
+      :Where_do_you_usually_go_for_healthcare__c, :Medical_Care_Other__c]
 
-  def self.find_duplicates_by(attrs, count, cursor)
-    groups = {}
-    # Escape each attribute with quotes to prevent lowercasing by Rails
-    attrs.map! { |x| "\"#{x}\"" }
-    result = Account.select(attrs).group(attrs).having("count(*)>1")
-    result[cursor..cursor+count].each do |account|
-      fields = account.attributes
-      fields.delete('id')
-      accounts = Account.where(fields)
-      groups[fields] = accounts.map(&:to_hash)
-    end
-    groups
-  end
+  # def self.find_duplicates_by(attrs, count, cursor)
+  #   groups = {}
+  #   # Escape each attribute with quotes to prevent lowercasing by Rails
+  #   attrs.map! { |x| "\"#{x}\"" }
+  #   result = Account.select(attrs).group(attrs).having("count(*)>1")
+  #   result[cursor..cursor+count].each do |account|
+  #     fields = account.attributes
+  #     fields.delete('id')
+  #     accounts = Account.where(fields)
+  #     groups[fields] = accounts.map(&:to_hash)
+  #   end
+  #   groups
+  # end
 
   def self.find_new_accounts()
     Account.where(updated: false)
