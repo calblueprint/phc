@@ -14,26 +14,17 @@
 #
 
 class EventRegistration < ActiveRecord::Base
-
-  ##################################################
-  # Associations
-  ##################################################
   has_and_belongs_to_many :services, :dependent => :destroy
   belongs_to :account
 
   serialize :Services_Needed__c
 
-  def self.phc_event
-    # PHC 61 - PRODUCTION
-    "a0R40000008Kx0b"
-  end
-
   def to_salesforce_object
-    #"{"Account__c"=>"0014000001XUoNFAA1", "Acupuncture__c"=>"None", "PHC_Event__c"=>"a0R40000007HolJEAS"}"
-    obj = {"Account__c" => self.account.sf_id,
-           "PHC_Event__c" => EventRegistration.phc_event,
+    obj = {
+           "Account__c" => self.account.sf_id,
+           "PHC_Event__c" => ENV["phc_event_id"],
            "Experience__c" => self.Experience__c || "",
-           "Services_Needed__c" => self.Services_Needed__c || "",
+           "Services_Needed__c" => self.Services_Needed__c.join(", ") || "",
            "Feedback__c" => self.Feedback__c || ""
           }
 
