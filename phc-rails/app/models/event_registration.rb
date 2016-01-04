@@ -3,11 +3,11 @@
 # Table name: event_registrations
 #
 #  id                 :integer          not null, primary key
-#  account_id         :string(255)
-#  phc_sfid           :string(255)
+#  account_id         :string
+#  phc_sfid           :string
 #  created_at         :datetime
 #  updated_at         :datetime
-#  Number__c          :string(255)
+#  Number__c          :string
 #  Experience__c      :integer
 #  Services_Needed__c :text
 #  Feedback__c        :text

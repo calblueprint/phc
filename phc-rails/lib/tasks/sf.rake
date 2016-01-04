@@ -63,9 +63,9 @@ namespace :sf do
         if record["Success"] == true
           sf_id = record["Id"]
 
-          # Update account salesforce id and mark as updated
+          # Update account salesforce id and mark as not modified
           account.update(sf_id: sf_id)
-          account.update(updated: true)
+          account.update(modified: false)
         else
           error = record["Error"]
           puts "Error on #{accounts_to_create_ids[i]} #{account.to_hash()[:name]}: \n \t #{error}"

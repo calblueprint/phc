@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: services
+#
+#  id         :integer          not null, primary key
+#  name       :string
+#  created_at :datetime
+#  updated_at :datetime
+#  status     :integer          default(0), not null
+#
+
 require 'rails_helper'
 
 describe Service, type: :model do

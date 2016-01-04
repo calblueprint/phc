@@ -18,7 +18,7 @@ class Api::V1::AccountsController < ApplicationController
     result = Account.fuzzy_search({ FirstName: first_name, LastName: last_name }, false)
     result.each do |account|
       if account.sf_id.nil?
-        account.sf_id = "None"
+        account.sf_id ||= "None"
       end
     end
     unless cursor.nil?
@@ -34,7 +34,7 @@ class Api::V1::AccountsController < ApplicationController
   def create
     account = Account.spawn(params)
     if not account.nil?
-      account.update(updated: false)
+      account.update(modified: true)
       api_message_response(200, "Successfully saved account!")
     else
       api_message_response(400, "Account could not be created.")

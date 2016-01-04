@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id              :integer          not null, primary key
+#  name            :string
+#  email           :string
+#  created_at      :datetime
+#  updated_at      :datetime
+#  password_digest :string
+#  auth_digest     :string
+#
+
 require 'rails_helper'
 
 describe User, type: :model do

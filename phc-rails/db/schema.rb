@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160102033701) do
+ActiveRecord::Schema.define(version: 20160103234418) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 20160102033701) do
     t.string   "How_long_have_you_been_homeless__c"
     t.string   "Where_do_you_usually_go_for_healthcare__c"
     t.string   "Medical_Care_Other__c"
-    t.boolean  "updated",                                   default: true, null: false
+    t.boolean  "modified",                                  default: false, null: false
   end
 
   add_index "accounts", ["FirstName"], name: "index_accounts_on_FirstName", using: :btree

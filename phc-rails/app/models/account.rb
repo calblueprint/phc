@@ -5,24 +5,24 @@
 #  id                                        :integer          not null, primary key
 #  created_at                                :datetime
 #  updated_at                                :datetime
-#  sf_id                                     :string(255)
-#  FirstName                                 :string(255)
-#  LastName                                  :string(255)
-#  SS_Num__c                                 :string(255)
-#  Birthdate__c                              :string(255)
-#  Phone                                     :string(255)
-#  PersonEmail                               :string(255)
-#  Gender__c                                 :string(255)
+#  sf_id                                     :string
+#  FirstName                                 :string
+#  LastName                                  :string
+#  SS_Num__c                                 :string
+#  Birthdate__c                              :string
+#  Phone                                     :string
+#  PersonEmail                               :string
+#  Gender__c                                 :string
 #  Identify_as_GLBT__c                       :boolean
-#  Race__c                                   :string(255)
-#  Primary_Language__c                       :string(255)
+#  Race__c                                   :string
+#  Primary_Language__c                       :string
 #  Foster_Care__c                            :boolean
 #  Veteran__c                                :boolean
-#  Housing_Status_New__c                     :string(255)
-#  How_long_have_you_been_homeless__c        :string(255)
-#  Where_do_you_usually_go_for_healthcare__c :string(255)
-#  Medical_Care_Other__c                     :string(255)
-#  updated                                   :boolean          default(TRUE), not null
+#  Housing_Status_New__c                     :string
+#  How_long_have_you_been_homeless__c        :string
+#  Where_do_you_usually_go_for_healthcare__c :string
+#  Medical_Care_Other__c                     :string
+#  modified                                  :boolean          default(FALSE), not null
 #
 
 class Account < ActiveRecord::Base
@@ -47,7 +47,7 @@ class Account < ActiveRecord::Base
   # end
 
   def self.find_new_accounts()
-    Account.where(updated: false)
+    Account.where(modified: true)
   end
 
   def to_hash

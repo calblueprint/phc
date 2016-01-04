@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: event_registrations
+#
+#  id                 :integer          not null, primary key
+#  account_id         :string
+#  phc_sfid           :string
+#  created_at         :datetime
+#  updated_at         :datetime
+#  Number__c          :string
+#  Experience__c      :integer
+#  Services_Needed__c :text
+#  Feedback__c        :text
+#
+
 require 'rails_helper'
 
 describe EventRegistration, type: :model do

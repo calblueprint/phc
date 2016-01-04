@@ -13,7 +13,7 @@ class Api::V1::EventRegistrationsController < ApplicationController
     sf_id =  params[:account_sfid]
     account = Account.find_by(sf_id: sf_id)
     account_params = params.permit(Account::API_FIELDS)
-    account_params[:updated] = false
+    account_params[:modified] = true
 
     # Update or create account with params
     if sf_id.blank? || sf_id == '""' || account.nil?

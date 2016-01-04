@@ -69,7 +69,7 @@ describe Api::V1::EventRegistrationsController, type: :controller do
         account.reload
         expect(account.FirstName).to eq("testfirst")
         expect(account.LastName).to eq("testlast")
-        expect(account.updated).to eq(false)
+        expect(account.modified).to eq(true)
       end
 
       it "creates an event registration for the account" do
