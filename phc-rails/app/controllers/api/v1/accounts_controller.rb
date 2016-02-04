@@ -4,30 +4,27 @@ class Api::V1::AccountsController < ApplicationController
 
   def show
     account = Account.find_by(sf_id: params[:sf_id])
-    if !account.nil?
-      render json: account
-    else
-      api_message_response(400, "Account with that id does not exist.")
+    if account.nil?
+      render status: 400,
+        json: { message: "Account with that id does not exist." } and return
     end
+    render json: account.attributes.slice(*Account::API_FIELDS.map(&:to_s))
   end
 
   def search
-    first_name = request.params[:FirstName]
-    last_name = request.params[:LastName]
-    cursor = request.params[:cursor]
+    first_name, last_name, cursor = request.params.values_at(:FirstName, :LastName, :cursor)
     result = Account.fuzzy_search({ FirstName: first_name, LastName: last_name }, false)
     result.each do |account|
-      if account.sf_id.nil?
-        account.sf_id ||= "None"
-      end
+      account.sf_id ||= "None"
     end
-    unless cursor.nil?
+
+    unless cursor.blank?
       result = result[cursor.to_i, 20] # Hardcoded 20 pagination size
     end
-    if result.nil?
-      respond_with [].to_json
+    if result.nil? || result.empty?
+      render json: []
     else
-      respond_with result.to_json(only: [:FirstName, :LastName, :Birthdate__c, :sf_id])
+      render json: result.to_json(only: [:FirstName, :LastName, :Birthdate__c, :sf_id])
     end
   end
 
