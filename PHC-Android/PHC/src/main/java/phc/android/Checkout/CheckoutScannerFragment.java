@@ -1,11 +1,8 @@
 package phc.android.Checkout;
 
-
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-
-import java.util.ArrayList;
 
 import phc.android.R;
 import phc.android.SharedFragments.ScannerFragment;
@@ -17,7 +14,6 @@ import phc.android.SharedFragments.ScannerFragment;
 public class CheckoutScannerFragment extends ScannerFragment {
     /* Name for logs and fragment transaction code */
     public final static String TAG = "CheckoutScannerFragment";
-    private ArrayList<String> mServicesNotReceived = new ArrayList<String>();
 
     /**
      * Sets up the view for the user to confirm
@@ -25,7 +21,6 @@ public class CheckoutScannerFragment extends ScannerFragment {
      */
     @Override
     protected void confirmScan(CharSequence scanResult, boolean manualInput) {
-
         Bundle args = new Bundle();
         args.putCharSequence("scan_result", scanResult);
         args.putBoolean("manual_input", manualInput);
@@ -40,7 +35,6 @@ public class CheckoutScannerFragment extends ScannerFragment {
      * @param nextFrag Fragment to display next
      * @param fragName String fragment names
      */
-
     protected void displayNextFragment(Fragment nextFrag, String fragName) {
         FragmentTransaction transaction =
                 (getActivity()).getFragmentManager().beginTransaction();
@@ -52,7 +46,6 @@ public class CheckoutScannerFragment extends ScannerFragment {
     // Can remove when sidebar is added
     @Override
     protected void resumeHelper(){
-        ;
     }
 
 }

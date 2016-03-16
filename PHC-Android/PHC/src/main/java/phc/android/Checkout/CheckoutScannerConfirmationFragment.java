@@ -21,9 +21,6 @@ import java.util.ArrayList;
 import phc.android.R;
 import phc.android.SharedFragments.ScannerConfirmationFragment;
 
-/**
- * Created by Byronium on 3/9/15.
- */
 public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFragment{
 
     /* Tag for logs and fragment code */
@@ -34,12 +31,9 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
 
     private JSONArray serviceArray;
 
-    /* Holds the status boolean from requestGetApplied (true qr code maps to existing person) */
 
     @Override
     protected void confirm(){
-
-        Log.d ("looking up code: ", mScanResult);
         sRequestManager.requestGetApplied(mScanResult,
                 mUserId,
                 mAuthToken,
@@ -65,7 +59,6 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
      * Used to confirm the scan result
      * Uses OnSubmit
      */
-
     protected class SearchByCodeResponseListener implements Response.Listener<JSONObject> {
         @Override
         public void onResponse(JSONObject jsonObject) {
@@ -140,6 +133,7 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
                 toast.show();
         }
     }
+
     /**
      * Creates an alert dialogue to tell the user that the qr code is not found,
      * along with a button to try another.
@@ -160,7 +154,6 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
 
     }
 
-
     /**
      * Returns to scanner fragment and displays a
      * failure toast.
@@ -174,7 +167,5 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
     // Can remove when sidebar is added
     @Override
     protected void resumeHelper(){
-        ;
     }
-
 }

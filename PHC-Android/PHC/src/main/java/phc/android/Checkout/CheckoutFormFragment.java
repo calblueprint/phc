@@ -16,13 +16,18 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import phc.android.Helpers.Utils;
 import phc.android.R;
+import phc.android.SharedFragments.SuccessFragment;
 
 public class CheckoutFormFragment extends Fragment {
     /* Name for logs and fragment transaction code */
@@ -70,7 +75,6 @@ public class CheckoutFormFragment extends Fragment {
             mScanResult = savedInstanceState.getCharSequence("scan_result");
             mManualInput = savedInstanceState.getBoolean("manual_input");
             mServices = savedInstanceState.getStringArrayList("services");
-
         } else {
             mScanResult =  getArguments().getCharSequence("scan_result");
             mManualInput = getArguments().getBoolean("manual_input");
@@ -111,13 +115,12 @@ public class CheckoutFormFragment extends Fragment {
 
     /**
      * Adds each checked services they applied but didn't check in for to mServicesChecked(array)
-     *
      */
     private void dynamicServiceCheck(){
         mServicesChecked = new ArrayList<String>();
             for (int i = 0 ;  i < checkBoxArray.size(); i++){
                 // Loop through the checkBoxArray
-                CheckBox mCheckBox = (CheckBox) checkBoxArray.get(i);
+                CheckBox mCheckBox = checkBoxArray.get(i);
                 if (mCheckBox.isChecked()){
                     // If the mCheckBox in the checkBoxArray is checked, add that corresponding service (mServices) to mServicesChecked
                     mServicesChecked.add(mServices.get(i));
@@ -149,7 +152,6 @@ public class CheckoutFormFragment extends Fragment {
             checkBoxArray.add(cb);
         }
     }
-
 
     /**
      * Used when the user submits their inputted code.
@@ -192,72 +194,11 @@ public class CheckoutFormFragment extends Fragment {
      * @param nextFrag Fragment to display next
      * @param fragName String fragment names
      */
-
     protected void displayNextFragment(Fragment nextFrag, String fragName) {
         FragmentTransaction transaction =
                 (getActivity()).getFragmentManager().beginTransaction();
         transaction.replace(R.id.checkout_activity_container, nextFrag, fragName);
         transaction.addToBackStack(fragName);
         transaction.commit();
-    }
-
-
-    /**
-     * Used when the user wants to send an intent
-     * to the scanner app.Confirmation
-     */
-    protected class ScanListener implements View.OnClickListener{
-        @Override
-        public void onClick(View view) {
-            startScan();
-        }
-    }
-
-    /**
-     * Starts the BarcodeScanner app.
-     */
-    protected void startScan() {
-        IntentIntegrator integrator = new IntentIntegrator(this);
-        integrator.initiateScan();
-    }
-
-    /**
-     * Used to retrieve the result from the
-     * BarcodeScanner app.
-     *
-     * @param reqCode int request code
-     * @param resCode int result code
-     * @param data Intent containing the result data
-     */
-    @Override
-    public void onActivityResult(int reqCode, int resCode, Intent data) {
-
-        IntentResult result = IntentIntegrator.parseActivityResult(reqCode, resCode, data);
-        mScanResult = result.getContents();
-        if (mScanResult == null) {
-            showFailureToast();
-        } else {
-            confirmScan();
-        }
-    }
-
-    /** Shows toast if the QR Scan was not successful. */
-    protected void showFailureToast() {
-        CharSequence message = getResources().getString(R.string.toast_scan_failure);
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(getActivity(), message, duration);
-        toast.show();
-    }
-
-    /** Method that runs when a QR scan is successful. */
-    protected void confirmScan() {
-        CharSequence message = getResources().getString(R.string.toast_scan_success);
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(getActivity(), message, duration);
-        toast.show();
-        // TODO: Load success fragment: Onclick listener that wipes comments, experience, and services
-        // TODO:
-        // mComment.setText("");
-        // reloadSuccessFragment();
     }
 }
