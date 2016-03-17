@@ -102,7 +102,7 @@ public class CheckoutScannerConfirmationFragment extends ScannerConfirmationFrag
 
                     CheckoutFormFragment formFrag = new CheckoutFormFragment();
                     formFrag.setArguments(args);
-                    displayNextFragment(formFrag, CheckoutConfirmationFragment.TAG);
+                    displayNextFragment(formFrag, CheckoutFormFragment.TAG);
                 } catch (JSONException e) {
                     Log.d(TAG,"error getting services");
                     e.printStackTrace();

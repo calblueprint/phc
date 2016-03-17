@@ -22,12 +22,10 @@ import java.util.concurrent.TimeUnit;
 public class RequestManager {
 
     private static final String BASE_URL = "http://phc-production.herokuapp.com";
-//    private static final String BASE_URL = "http://phc-staging.herokuapp.com";
     private static final String LOGIN_ENDPOINT = "/login";
     private static final String SEARCH_ENDPOINT = "/api/v1/search";
     private static final String SEARCH_REG_ENDPOINT = "/api/v1/event_registrations/search";
-    private static final String UPDATE_SERVICE_ENDPOINT =
-            "/api/v1/event_registrations/update_service";
+    private static final String UPDATE_SERVICE_ENDPOINT = "/api/v1/event_registrations/update_service";
     private static final String CREATE_EVENT_REG_ENDPOINT = "/api/v1/event_registrations/create";
     private static final String USER_INFO_ENDPOINT = "/api/v1/accounts";
     private static final String SERVICES_ENDPOINT = "/services";
@@ -320,20 +318,20 @@ public class RequestManager {
     /**
      * Used to create a new object with checkout information. Similar to requestUpdateService
      */
-    public void requestUpdateFeedback(final String mComments,
-                                      final int mExperience,
-                                      final JSONArray mServicesNotReceived,
-                                      final String mScanResult,
+    public void requestUpdateFeedback(final String comments,
+                                      final int experience,
+                                      final JSONArray servicesNotReceived,
+                                      final String scanResult,
                                       final String userId,
                                       final String authToken,
                                       Response.Listener<JSONObject> responseListener,
                                       Response.ErrorListener errorListener){
 
         HashMap<String, Object> params = new HashMap<String, Object>();
-        params.put("Feedback__c", mComments);
-        params.put("Experience__c", mExperience);
-        params.put("Services_Needed__c", mServicesNotReceived);
-        params.put("Number__c", mScanResult);
+        params.put("Feedback__c", comments);
+        params.put("Experience__c", experience);
+        params.put("Services_Needed__c", servicesNotReceived);
+        params.put("Number__c", scanResult);
 
         JsonObjectRequest createRequest = new JsonObjectRequest(BASE_URL + UPDATE_FEEDBACK_ENDPOINT,
                 new JSONObject(params),
