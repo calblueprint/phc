@@ -1,14 +1,10 @@
 namespace :sf do
 
-  sf_fields = ["FirstName","LastName","SS_Num__c","Birthdate__c","Phone","PersonEmail","Gender__c","Identify_as_GLBT__c",
-      "Race__c", "Primary_Language__c", "Foster_Care__c","Veteran__c","Housing_Status_New__c","How_long_have_you_been_homeless__c",
-      "Where_do_you_usually_go_for_healthcare__c","Medical_Care_Other__c"]
-
   desc "Imports Accounts data from salesforce"
   task import: :environment do
     salesforce = get_salesforce_session()
 
-    fields = sf_fields << "Id"
+    fields = Account::FIELDS << "Id"
 
     query  = "SELECT " + fields.join(", ") + " from Account"
     puts "Querying salesforce..."
@@ -38,7 +34,7 @@ namespace :sf do
       account.Birthdate__c = account.birthdate
 
       # Filter out nil fields, and select only Salesforce fields
-      a = account.as_json.select { |k,v| sf_fields.include?(k) }
+      a = account.as_json.select { |k,v| Account::FIELDS.include?(k) }
 
       # If the account doesn't have a Salesforce ID is empty, it needs to be created
       if account.sf_id.blank?
@@ -52,7 +48,6 @@ namespace :sf do
     end
 
     salesforce = get_salesforce_session()
-
     puts "--- Summary ---"
     if accounts_to_create.any?
       result_create = salesforce.create("Account", accounts_to_create, true).result
@@ -72,7 +67,7 @@ namespace :sf do
         end
       end
 
-      log_errors("account_create", result_create, accounts_to_create_id)
+      log_errors("account_create", result_create, accounts_to_create_ids)
       puts "Failed to create: #{result_create.errors.count} accounts."
       puts "Successfully created: #{accounts_to_create.count - result_create.errors.count} accounts."
     else
@@ -81,7 +76,7 @@ namespace :sf do
 
     if accounts_to_update.any?
       result_update = salesforce.update("Account", accounts_to_update, true).result
-      log_errors("account_update", result_update, accounts_to_update_id)
+      log_errors("account_update", result_update, accounts_to_update_ids)
       puts "Failed to update: #{result_update.errors.count} accounts."
       puts "Successfully updated: #{accounts_to_update.count - result_update.errors.count} accounts."
     else
@@ -93,6 +88,7 @@ namespace :sf do
     salesforce = get_salesforce_session()
     data = []
     ids = []
+
     EventRegistration.all.each do |reg|
       # Skip Event Registrations that don't have a Salesforce account associated with them
       # This would happen if the account wasn't created because of an error
@@ -104,11 +100,12 @@ namespace :sf do
     end
     result = salesforce.create("Event_Registration__c", data.compact, true).result
 
-    log_errors("event_reg", result, ids)
     puts "--- Summary ---"
     puts result.message
-    puts "Failed to create: #{failure.count} Event Registrations."
-    puts "Successfully created: #{success.count} Event Registrations."
+    puts "Failed to create: #{result.errors.count} Event Registrations."
+    puts "Successfully created: #{result.records.count - result.errors.count} Event Registrations."
+
+    log_errors("event_reg", result, ids)
   end
 
   def log_errors(name, result, ids)
