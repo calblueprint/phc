@@ -106,7 +106,9 @@ class Api::V1::EventRegistrationsController < ApplicationController
   private
 
   def event_feedback_params
-    params.permit(:Number__c, :Experience__c, :Feedback__c, :Services_Needed__c => [])
+    event_params = params.permit(:Number__c, :Experience__c, :Feedback__c, :Services_Needed__c => [])
+    event_params[:Services_Needed__c].join(', ')
+    event_params
   end
 
 end
