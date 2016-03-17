@@ -2,8 +2,6 @@ package phc.android.Checkin;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +18,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import phc.android.Helpers.SharedPreferenceEditorListener;
 import phc.android.Main.MainActivity;
 import phc.android.R;
 import phc.android.SharedFragments.ScannerConfirmationFragment;
@@ -37,8 +34,7 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
 
     @Override
     protected View setupView(LayoutInflater inflater, ViewGroup container) {
-        View view = super.setupView(inflater, container);
-        return view;
+        return super.setupView(inflater, container);
     }
 
     /**
@@ -180,7 +176,7 @@ public class CheckinScannerConfirmationFragment extends ScannerConfirmationFragm
         for (String name : sf_names) {
             boolean fieldValue = mClientPreferences.getBoolean(name, false);
             if (fieldValue) {
-                fields.put(name, fieldValue);
+                fields.put(name, true);
             }
         }
 
