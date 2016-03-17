@@ -38,7 +38,7 @@ class Account < ActiveRecord::Base
     # implement posting to Salesforce. Therefore, for now, sf_id can be empty, and we will
     # match an event registration to an account through the Rails ID primary key.
     account = Account.new
-    @fields.each do |key|
+    FIELDS.each do |key|
       account[key] = params[key]
     end
     if account.save then account else nil end
@@ -122,7 +122,7 @@ class Account < ActiveRecord::Base
   end
 
   def self.fields
-    @fields
+    FIELDS
   end
 
 end
