@@ -20,8 +20,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.james.mime4j.field.datetime.DateTime;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -262,7 +260,7 @@ public class PersonalInfoFragment extends Fragment {
         if(!firstName.equals("null")) mFirstName.setText(firstName);
         if(!lastName.equals("null")) mLastName.setText(lastName);
         if(!email.equals("null")) mEmail.setText(email);
-        if(ssNum != null && ssNum.length() == 9) {
+        if(ssNum.length() == 9) {
             mSSN1.setText("xxx");
             mSSN2.setText("xx");
             mSSN3.setText(ssNum.substring(5));
@@ -384,12 +382,10 @@ public class PersonalInfoFragment extends Fragment {
 
             if (mMonth.getText().length() == 1) {
                 mMonth.setText("0" + mMonth.getText());
-                monthText = "0" + monthText;
             }
 
             if (mDay.getText().length() == 1) {
                 mDay.setText("0" + mDay.getText());
-                dayText = "0" + dayText;
             }
 
             //tests validity of date
@@ -421,11 +417,7 @@ public class PersonalInfoFragment extends Fragment {
         return true;
     }
 
-    private final static boolean isValidEmail(CharSequence target) {
-        if (TextUtils.isEmpty(target)) {
-            return false;
-        } else {
-            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
-        }
+    private static boolean isValidEmail(CharSequence target) {
+        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 }

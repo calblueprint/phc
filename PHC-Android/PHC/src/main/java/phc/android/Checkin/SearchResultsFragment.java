@@ -33,7 +33,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import phc.android.Helpers.SearchResult;
-import phc.android.Main.MainActivity;
 import phc.android.Networking.RequestManager;
 import phc.android.R;
 
