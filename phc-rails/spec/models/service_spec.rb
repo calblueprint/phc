@@ -19,4 +19,11 @@ describe Service, type: :model do
       expect(service.status_string).to eq("Applied")
     end
   end
+
+  it "belongs to a service in a service list" do
+    service_list = ServiceList.create(name: "Interpretive Dance", salesforce_name: "interpretive_dance")
+    service = service_list.services.create
+    service.applied!
+    expect(service.service_list).to eq(service_list.id)
+  end
 end

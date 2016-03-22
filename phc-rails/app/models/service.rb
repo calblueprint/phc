@@ -14,6 +14,7 @@ class Service < ActiveRecord::Base
   enum status: [:unspecified, :applied, :drop_in, :received]
 
   has_and_belongs_to_many :event_registrations
+  belongs_to :service_list
 
   def status_string
     case self.status
