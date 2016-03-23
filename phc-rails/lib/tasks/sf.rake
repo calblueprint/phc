@@ -5,6 +5,7 @@ namespace :sf do
     salesforce = get_salesforce_session()
 
     fields = Account::FIELDS << "Id"
+    fields.delete(:sf_id)
 
     query  = "SELECT " + fields.join(", ") + " from Account"
     puts "Querying salesforce..."
