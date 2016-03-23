@@ -22,6 +22,8 @@ RailsAdmin.config do |config|
   config.authorize_with do
     authenticate_or_request_with_http_basic('Site Message') do |username, password|
       user = User.find_by(email: username)
+      # Hehe hardcode to one admin user
+      return false unless user.email == "phcsf@gmail.com"
       user && user.authenticate(password)
     end
   end
